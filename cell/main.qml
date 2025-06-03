@@ -181,20 +181,20 @@ Window {
                 Layout.alignment: Qt.AlignHCenter
             }
 
-            ButtonX {
+            Button {
                 id: btn0
                 objectName: "btn0"
                 text: "Clique aqui"
                 iconSource: "../icons/document-save.svg"
             }
-            ButtonX {
+            Button {
                 id: btn01
                 objectName: "btn01"
                 text: "Item 1"
                 iconSource: "../icons/document-save.svg"
             }
             
-            ButtonX {
+            Button {
                 id: btn02
                 objectName: "btn02"
                 text: "Item 2"
@@ -217,43 +217,43 @@ Window {
                         width: parent.width
                         spacing: 10
 
-                        ButtonX {
+                        Button {
                             text: "Item 1"
                             iconSource: "../icons/document-save.svg"
                             }
-                        ButtonX {
+                        Button {
                             text: "Item 2"
                             iconSource: "../icons/document-save.svg"
                             }
-                        ButtonX {
+                        Button {
                             text: "Item 3"
                             iconSource: "../icons/document-save.svg"
                             }
-                        ButtonX {
+                        Button {
                             text: "Item 4"
                             iconSource: "../icons/document-save.svg"
                             }
-                        ButtonX {
+                        Button {
                             text: "Item 5"
                             iconSource: "../icons/document-save.svg"
                             }
-                        ButtonX {
+                        Button {
                             text: "Item 6"
                             iconSource: "../icons/document-save.svg"
                             }
-                        ButtonX {
+                        Button {
                             text: "Item 7"
                             iconSource: "../icons/document-save.svg"
                             }
-                        ButtonX {
+                        Button {
                             text: "Item 8"
                             iconSource: "../icons/document-save.svg"
                             }
-                        ButtonX {
+                        Button {
                             text: "Item 9"
                             iconSource: "../icons/document-save.svg"
                             }
-                        ButtonX {
+                        Button {
                             text: "Item 10"
                             iconSource: "../icons/document-save.svg"
                             }
@@ -261,7 +261,7 @@ Window {
                 }
             }
 
-            ButtonX {
+            Button {
                 text: "Outro botão"
                 Layout.alignment: Qt.AlignHCenter
             }
