@@ -38,12 +38,12 @@ style = {
     '[Label:inactive]': {
         'font_color': '#666',
         },
-    '[Window]': {
+    '[MainFrame]': {
         'background_color': '#2A2A2A',  # Alt 282828
         'border_color': '#383838',
         'border_radius': 20,
         },
-    '[Window:inactive]': {
+    '[MainFrame:inactive]': {
         'background_color': '#222',
         'border_color': '#333',
         'border_radius': 20,
@@ -51,7 +51,7 @@ style = {
     }
 
 
-class WindowEventFilter(QtCore.QObject):
+class MainFrameEventFilter(QtCore.QObject):
     def __init__(self, main_rect):
         super().__init__()
         self.__main_rect = main_rect
@@ -70,9 +70,9 @@ class WindowEventFilter(QtCore.QObject):
 
     def __state_style(self, state: str = '') -> None:
         self.__main_rect.setProperty(
-            'color', style[f'[Window{state}]']['background_color'])
+            'color', style[f'[MainFrame{state}]']['background_color'])
         self.__main_rect.setProperty(
-            'borderColor', style[f'[Window{state}]']['border_color'])
+            'borderColor', style[f'[MainFrame{state}]']['border_color'])
 
         for child in self.__childrens:
             if 'Label' in child.metaObject().className():
@@ -131,11 +131,12 @@ class AppLogic(QtCore.QObject):
         if self.__main_rect:
             if (state & QtCore.Qt.WindowFullScreen
                     or state & QtCore.Qt.WindowMaximized):
-                self.__main_rect.setProperty('radius', style['[Window]'])
+                self.__main_rect.setProperty('radius', 0)
                 self.__main_rect.setProperty('borderWidth', 0)
                 self.__main_rect.setProperty('margins', 0)
             else:  # WindowNoState
-                self.__main_rect.setProperty('radius', 20)
+                self.__main_rect.setProperty(
+                    'radius', style['[MainFrame]']['border_radius'])
                 self.__main_rect.setProperty('borderWidth', 1)
                 self.__main_rect.setProperty('margins', 1)
 
@@ -193,7 +194,7 @@ if __name__ == "__main__":
 
     window = engine.rootObjects()[0]
     main_rect = window.findChild(QtCore.QObject, 'mainRect')
-    event_filter = WindowEventFilter(main_rect)
+    event_filter = MainFrameEventFilter(main_rect)
     window.installEventFilter(event_filter)
 
     logic = AppLogic(window)
