@@ -3,6 +3,7 @@ import QtQuick.Controls 2.15
 
 Button {
     id: button
+    objectName: "button"
     property string qmlType: "Button"
     property color borderColor: "#555"
     property color backgroundColor: "#444"

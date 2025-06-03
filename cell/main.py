@@ -41,10 +41,12 @@ style = {
     '[Window]': {
         'background_color': '#2A2A2A',  # Alt 282828
         'border_color': '#383838',
+        'border_radius': 20,
         },
     '[Window:inactive]': {
         'background_color': '#222',
         'border_color': '#333',
+        'border_radius': 20,
         },
     }
 
@@ -77,7 +79,8 @@ class WindowEventFilter(QtCore.QObject):
                 child.setProperty(
                     'color', style[f'[Label{state}]']['font_color'])
 
-            if child.metaObject().className().startswith('Button'):
+            # child.metaObject().className()
+            if child.property('qmlType') == 'Button':
                 child.findChild(QtCore.QObject, 'backgroundId').setProperty(
                     'color', style[f'[Button{state}]']['background_color'])
                 child.findChild(QtCore.QObject, 'backgroundId').setProperty(
@@ -111,7 +114,7 @@ class AppLogic(QtCore.QObject):
             QtCore.QObject, options=QtCore.Qt.FindChildrenRecursively)
 
         for child in self.__childrens:
-            if child.metaObject().className().startswith('Button'):
+            if child.property('qmlType') == 'Button':
                 button = self.__window.findChild(
                     QtCore.QObject, child.objectName())
 
@@ -128,7 +131,7 @@ class AppLogic(QtCore.QObject):
         if self.__main_rect:
             if (state & QtCore.Qt.WindowFullScreen
                     or state & QtCore.Qt.WindowMaximized):
-                self.__main_rect.setProperty('radius', 0)
+                self.__main_rect.setProperty('radius', style['[Window]'])
                 self.__main_rect.setProperty('borderWidth', 0)
                 self.__main_rect.setProperty('margins', 0)
             else:  # WindowNoState
