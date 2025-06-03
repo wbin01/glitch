@@ -21,7 +21,7 @@ Window {
         color: "transparent"
         border.color: "#44000000"
         border.width: borderWidth
-        radius: 21
+        radius: 11
         z: 0
 
         property int borderWidth: 1
@@ -32,7 +32,7 @@ Window {
         objectName: "mainRect"
         width: 300
         height: 200
-        radius: 20
+        radius: 10
         color: "#333"
         border.color: borderColor
         border.width: borderWidth

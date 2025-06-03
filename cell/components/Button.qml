@@ -24,8 +24,6 @@ Button {
             objectName: "icon"
             source: ""
             visible: icon.source !== ""
-            //width: 16
-            //height: 16
             fillMode: Image.PreserveAspectFit
             anchors.verticalCenter: parent.verticalCenter
         }
@@ -40,8 +38,8 @@ Button {
     }
 
     background: Rectangle {
-        id: backgroundId
-        objectName: "backgroundId"
+        id: buttonBackground
+        objectName: "buttonBackground"
         color: "#444"
 
         property color borderColor: "#444"

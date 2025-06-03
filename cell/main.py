@@ -41,12 +41,12 @@ style = {
     '[MainFrame]': {
         'background_color': '#2A2A2A',  # Alt 282828
         'border_color': '#383838',
-        'border_radius': 20,
+        'border_radius': 10,
         },
     '[MainFrame:inactive]': {
         'background_color': '#222',
         'border_color': '#333',
-        'border_radius': 20,
+        'border_radius': 10,
         },
     }
 
@@ -75,15 +75,17 @@ class MainFrameEventFilter(QtCore.QObject):
             'borderColor', style[f'[MainFrame{state}]']['border_color'])
 
         for child in self.__childrens:
-            if 'Label' in child.metaObject().className():
+            # child.metaObject().className()
+            if child.property('qmlType') == 'Label':
                 child.setProperty(
                     'color', style[f'[Label{state}]']['font_color'])
 
-            # child.metaObject().className()
             if child.property('qmlType') == 'Button':
-                child.findChild(QtCore.QObject, 'backgroundId').setProperty(
+                child.findChild(
+                    QtCore.QObject, 'buttonBackground').setProperty(
                     'color', style[f'[Button{state}]']['background_color'])
-                child.findChild(QtCore.QObject, 'backgroundId').setProperty(
+                child.findChild(
+                    QtCore.QObject, 'buttonBackground').setProperty(
                     'borderColor', style[f'[Button{state}]']['border_color'])
 
                 child_icon = child.findChild(QtCore.QObject, 'icon')
@@ -148,9 +150,9 @@ class AppLogic(QtCore.QObject):
     @QtCore.Slot()
     def __button_pressed(self, button) -> None:
         if self.__main_rect.property('isActive'):
-            button.findChild(QtCore.QObject, 'backgroundId').setProperty(
+            button.findChild(QtCore.QObject, 'buttonBackground').setProperty(
                 'color', style['[Button:clicked]']['background_color'])
-            button.findChild(QtCore.QObject, 'backgroundId').setProperty(
+            button.findChild(QtCore.QObject, 'buttonBackground').setProperty(
                 'borderColor', style['[Button:clicked]']['border_color'])
 
             button_text = button.findChild(QtCore.QObject, 'text')
@@ -166,9 +168,9 @@ class AppLogic(QtCore.QObject):
         else:
             state = '' if is_active else ':inactive'
 
-        button.findChild(QtCore.QObject, 'backgroundId').setProperty(
+        button.findChild(QtCore.QObject, 'buttonBackground').setProperty(
             'color', style[f'[Button{state}]']['background_color'])
-        button.findChild(QtCore.QObject, 'backgroundId').setProperty(
+        button.findChild(QtCore.QObject, 'buttonBackground').setProperty(
             'borderColor', style[f'[Button{state}]']['border_color'])
 
         button_text = button.findChild(QtCore.QObject, 'text')
