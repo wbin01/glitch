@@ -166,8 +166,8 @@ Window {
         }
 
         ColumnLayout {
-            id: columnLayoutId
-            objectName: "columnLayoutId"
+            id: columnLayout
+            objectName: "columnLayout"
             anchors.centerIn: parent
             spacing: 20
 
@@ -205,7 +205,7 @@ Window {
             Rectangle {
                 width: 200
                 height: 100
-                color: "transparent"
+                color: "#11000000" // "transparent"
                 Layout.alignment: Qt.AlignHCenter
 
                 ScrollView {
