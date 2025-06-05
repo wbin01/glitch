@@ -211,6 +211,10 @@ Window {
                 ScrollView {
                     anchors.fill: parent
                     clip: true
+                    anchors.leftMargin: 5
+                    anchors.rightMargin: 5
+                    anchors.topMargin: 0
+                    anchors.bottomMargin: 0
                     // ScrollBar.vertical.policy: ScrollBar.AlwaysOn
 
                     Column {
