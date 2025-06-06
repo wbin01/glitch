@@ -41,14 +41,12 @@ class Controller(object):
 		# Mais codigo de controle abaixo
 
 	def build_ui(self, ui):
-		tab = 0
-		if ui:
-			tab += 4
-			for o in ui.added_objects:
-				self.build_ui(o)
-				ui.qml_code += '\n'.join(
-					[(' ' * tab) + x for x in o.qml_code.split('\n')])
-			ui.qml_code += '\n}'
+		for obj in ui.added_objects:
+			self.build_ui(obj)
+			ui.qml_code += '\n'.join(
+				['    '  + x if x else ''
+				for x in obj.qml_code.split('\n')])
+		ui.qml_code += '\n}'
 
 		self.ui = ui.qml_code
 
@@ -62,9 +60,8 @@ class Application(object):
 		print(self.controller.ui)
 
 
-
 if __name__ == '__main__':
-	class Ui(Ui):
+	class MainView(Ui):
 		def __init__(self):
 			super().__init__()
 			
@@ -87,7 +84,7 @@ if __name__ == '__main__':
 	class Controller(Controller):
 		def __init__(self):
 			super().__init__()
-			self.build_ui(Ui())
+			self.build_ui(MainView())
 			# Mais códigos de controle daqui para baixo
 
 
