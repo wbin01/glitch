@@ -82,9 +82,12 @@ class AppFrame(Layout):
         self.object_id = 'appFrame'
         self.object_code = (
             'AppFrame {'
-            f'\n    id: appFrame'
+            f'\n    id: appFrame\n'
+            '\n    Rectangle {'
+            '\n        id: mainRect'
             '\n// **closing_key**'
-            f'\n}}  // {self.object_id}')
+            '\n    }  // Rectangle id: mainRect'
+            '\n}  // AppFrame id: appFrame')
         self.added_objects = []
 
 
@@ -99,7 +102,7 @@ class Box(Layout):
             '\nBox {'
             f'\n    id: {self.object_id}'
             '\n// **closing_key**'
-            f'\n}}  // {self.object_id}')
+            f'\n}}  // Box id: {self.object_id}')
         self.added_objects = []
 
 
@@ -114,7 +117,7 @@ class Button(Element):
             '\nButton {'
             f'\n    id: {self.object_id}'
             '\n// **closing_key**'
-            f'\n}}  // {self.object_id}')
+            f'\n}}  // Button id: {self.object_id}')
 
 
 class Label(Element):
@@ -128,7 +131,7 @@ class Label(Element):
             '\nLabel {'
             f'\n    id: {self.object_id}'
             '\n// **closing_key**'
-            f'\n}}  // {self.object_id}')
+            f'\n}}  // Label id: {self.object_id}')
 
 
 class Model(object):
@@ -143,44 +146,34 @@ class Handler(object):
         """..."""
         self.__qml_code = None
         self.__app_frame = None
+        self.__load_ui_iter = 0
         # ...
 
     def qml_code(self) -> str:
         """..."""
         return self.__qml_code
 
-    def load_ui_bkp(self, app_frame: AppFrame) -> None:
-        """..."""
-        for element in app_frame.added_objects:
-            if isinstance(element, Layout):
-                self.load_ui(element)
-
-            app_frame.object_code += '\n'.join(
-                ['    ' + x if x else ''
-                for x in element.object_code.split('\n')]) + '\n    }'
-
-        self.__qml_code = app_frame.object_code + '\n}'
-
     def load_ui(self, app_frame) -> None:  # .split('\n// **closing_key**')
         """..."""
         end = '\n// **closing_key**'
         app_frame.object_code, app_close = app_frame.object_code.split(end)
-
         for element in app_frame.added_objects:
+            tab = '        ' if self.__load_ui_iter == 0 else '    '
 
             elm_close = None
             if end in element.object_code:
                 elm_close = element.object_code.split(end)[1]
 
             if isinstance(element, Layout):
+                self.__load_ui_iter += 1
                 self.load_ui(element)
 
             app_frame.object_code += '\n'.join(
-                ['    ' + x if x else ''
+                [tab + x if x else ''
                 for x in element.object_code.split(end)[0].split('\n')])
 
             if elm_close:
-                app_frame.object_code += elm_close.replace('\n', '\n    ')
+                app_frame.object_code += elm_close.replace('\n', '\n' + tab)
 
         self.__qml_code = app_frame.object_code + app_close
 
