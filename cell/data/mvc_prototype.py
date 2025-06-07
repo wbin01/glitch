@@ -9,29 +9,30 @@ class Element(object):
 
 class Layout(Layout):
     """..."""
-    def __init__(self, object_id: str, *args, **kwargs) -> None:
+    def __init__(self, *args, **kwargs) -> None:
         """..."""
-        self.__object_id = object_id
-        self.__object_code = None
+        self.__id = str(id(self))
+        self.__qml = self.__id
         self.__added_objects = []
 
     @property
     def object_id(self) -> str:
         """..."""
-        return self.__object_id
+        return self.__id
 
     @object_id.setter
     def object_id(self, object_id: str) -> None:
-        self.__object_id = object_id
+        self.__qml = self.__qml.replace(f'id: {self.__id}', f'id: {object_id}')
+        self.__id = object_id
 
     @property
-    def object_code(self) -> str:
+    def qml(self) -> str:
         """..."""
-        return self.__object_code
+        return self.__qml
 
-    @object_code.setter
-    def object_code(self, object_code: str) -> None:
-        self.__object_code = object_code
+    @qml.setter
+    def qml(self, qml: str) -> None:
+        self.__qml = qml
 
     @property
     def added_objects(self) -> list:
@@ -50,28 +51,29 @@ class Layout(Layout):
 
 class Element(Element):
     """..."""
-    def __init__(self, object_id: str, *args, **kwargs) -> None:
+    def __init__(self, *args, **kwargs) -> None:
         """..."""
-        self.__object_id = object_id
-        self.__object_code = None
+        self.__id = str(id(self))
+        self.__qml = self.__id
 
     @property
     def object_id(self) -> str:
         """..."""
-        return self.__object_id
+        return self.__id
 
     @object_id.setter
     def object_id(self, object_id: str) -> None:
-        self.__object_id = object_id
+        self.__qml = self.__qml.replace(f'id: {self.__id}', f'id: {object_id}')
+        self.__id = object_id
 
     @property
-    def object_code(self) -> str:
+    def qml(self) -> str:
         """..."""
-        return self.__object_code
+        return self.__qml
 
-    @object_code.setter
-    def object_code(self, object_code: str) -> None:
-        self.__object_code = object_code
+    @qml.setter
+    def qml(self, qml: str) -> None:
+        self.__qml = qml
 
 
 class AppFrame(Layout):
@@ -80,7 +82,7 @@ class AppFrame(Layout):
         """..."""
         super().__init__('appFrame', *args, **kwargs)
         self.object_id = 'appFrame'
-        self.object_code = (
+        self.qml = (
             'AppFrame {'
             f'\n    id: appFrame\n'
             '\n    Rectangle {'
@@ -93,11 +95,10 @@ class AppFrame(Layout):
 
 class Box(Layout):
     """..."""
-    def __init__(self, object_id: str, *args, **kwargs) -> None:
+    def __init__(self, *args, **kwargs) -> None:
         """..."""
-        super().__init__(object_id, *args, **kwargs)
-        self.object_id = object_id
-        self.object_code = (
+        super().__init__(*args, **kwargs)
+        self.qml = (
             '\n'
             '\nBox {'
             f'\n    id: {self.object_id}'
@@ -108,11 +109,10 @@ class Box(Layout):
 
 class Button(Element):
     """..."""
-    def __init__(self, object_id: str, *args, **kwargs) -> None:
+    def __init__(self, *args, **kwargs) -> None:
         """..."""
-        super().__init__(object_id, *args, **kwargs)
-        self.object_id = object_id
-        self.object_code = (
+        super().__init__(*args, **kwargs)
+        self.qml = (
             '\n'
             '\nButton {'
             f'\n    id: {self.object_id}'
@@ -122,11 +122,10 @@ class Button(Element):
 
 class Label(Element):
     """..."""
-    def __init__(self, object_id: str, *args, **kwargs) -> None:
+    def __init__(self, *args, **kwargs) -> None:
         """..."""
-        super().__init__(object_id, *args, **kwargs)
-        self.object_id = object_id
-        self.object_code = (
+        super().__init__(*args, **kwargs)
+        self.qml = (
             '\n'
             '\nLabel {'
             f'\n    id: {self.object_id}'
@@ -149,33 +148,49 @@ class Handler(object):
         self.__load_ui_iter = 0
         # ...
 
+    def load_ui(self, app_frame: AppFrame) -> None:
+        """..."""
+        # TODO: Write qml file
+        self.__build_attrs(app_frame)
+        self.__build_qml(app_frame)
+
     def qml_code(self) -> str:
         """..."""
         return self.__qml_code
 
-    def load_ui(self, app_frame) -> None:  # .split('\n// **closing_key**')
-        """..."""
+    def __build_attrs(self, app_frame: AppFrame) -> None:
+        for attr, value in app_frame.__dict__.items():
+            if not attr.startswith('_'):
+                # TODO:
+                # obj_value = window.findChild(QtCore.QObject, value.object_id)
+                # setattr(self, attr, obj_value)
+                setattr(self, attr, attr)
+
+                obj = getattr(app_frame, attr)
+                obj.object_id = attr  # -> app_frame.button.object_id = attr
+
+    def __build_qml(self, app_frame: AppFrame) -> None:
         end = '\n// **closing_key**'
-        app_frame.object_code, app_close = app_frame.object_code.split(end)
+        app_frame.qml, app_close = app_frame.qml.split(end)
         for element in app_frame.added_objects:
             tab = '        ' if self.__load_ui_iter == 0 else '    '
 
             elm_close = None
-            if end in element.object_code:
-                elm_close = element.object_code.split(end)[1]
+            if end in element.qml:
+                elm_close = element.qml.split(end)[1]
 
             if isinstance(element, Layout):
                 self.__load_ui_iter += 1
                 self.load_ui(element)
 
-            app_frame.object_code += '\n'.join(
+            app_frame.qml += '\n'.join(
                 [tab + x if x else ''
-                for x in element.object_code.split(end)[0].split('\n')])
+                for x in element.qml.split(end)[0].split('\n')])
 
             if elm_close:
-                app_frame.object_code += elm_close.replace('\n', '\n' + tab)
+                app_frame.qml += elm_close.replace('\n', '\n' + tab)
 
-        self.__qml_code = app_frame.object_code + app_close
+        self.__qml_code = app_frame.qml + app_close
 
 
 class Application(object):
@@ -195,26 +210,25 @@ if __name__ == '__main__':
         def __init__(self, *args, **kwargs) -> None:
             super().__init__(*args, **kwargs)
             
-            button = self.add(Button('button'))
-            label = self.add(Label('label'))
+            button0 = self.add(Button())
+            # button0.object_id = 'button0'
+            label = self.add(Label())
 
-            box1 = self.add(Box('box1'))
-            self.button1 = box1.add(Button('button111111'))
-            label1 = box1.add(Label('label1'))
+            box1 = self.add(Box())
+            self.button1 = box1.add(Button())
+            # self.button1.object_id = 'button1'
+            label1 = box1.add(Label())
 
-            box2 = box1.add(Box('box2'))
-            label2 = box2.add(Label('label2'))
+            box2 = box1.add(Box())
+            label2 = box2.add(Label())
 
 
     class Handles(Handler):
         def __init__(self) -> None:
             super().__init__()
-            self.app = View()
-            self.load_ui(self.app)
-
-            # for attr, valor in self.app.__dict__.items():
-            #     if not attr.startswith('_'):
-            #         print(attr)
+            self.load_ui(View())
+            
+            print(self.button1)
 
 
     app = Application(Handles())
