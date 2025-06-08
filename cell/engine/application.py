@@ -4,7 +4,8 @@ import pathlib
 
 from PySide6 import QtCore, QtGui, QtQml, QtQuick
 
-from .handler import Handler
+# from .handler import Handler
+from ..ui.layout import Layout
 
 
 style = {
@@ -100,7 +101,7 @@ class MainFrameEventFilter(QtCore.QObject):
                     'color', style[f'[Button{state}]']['font_color'])
 
 
-class AppLogic(QtCore.QObject):
+class Handler(QtCore.QObject):
     """..."""
     buttonClicked = QtCore.Signal()
 
@@ -192,10 +193,35 @@ class AppLogic(QtCore.QObject):
 
 class Application(object):
     """..."""
-    def __init__(self) -> None:
+    def __init__(self, ui) -> None:
         """..."""
+        self.__ui = ui
         self.__handler = None
-        # ...
+
+        self.__app_frame = None
+        self.__main_rect = None
+
+        self.__app = None
+        self.__qml_code = None
+        self.__load_ui_iter = 0
+
+        self.engine = None
+
+        # self.__exec()
+        self.load_ui()
+
+        self.__app = QtGui.QGuiApplication(sys.argv)
+        self.engine = QtQml.QQmlApplicationEngine()
+
+        self.engine.load(
+            pathlib.Path(__file__).parent.parent / 'static' / 'qml' / 'main.qml')
+
+        if not self.engine.rootObjects():
+            sys.exit(-1)
+
+        self.__app_frame = self.engine.rootObjects()[0]
+        self.__main_rect = self.__app_frame.findChild(QtCore.QObject, 'mainRect')
+        # self.__handler._build_attrs(self.__app_frame)
 
     @property
     def handler(self) -> None:
@@ -206,28 +232,81 @@ class Application(object):
     def handler(self, handler: Handler) -> None:
         self.__handler = handler
 
-    def exec(self):
+    @property
+    def ui(self) -> None:
         """..."""
-        if self.__handler:
-            # print(self.__handler.qml_code())
+        return self.__ui
 
-            app = QtGui.QGuiApplication(sys.argv)
-            engine = QtQml.QQmlApplicationEngine()
+    @ui.setter
+    def ui(self, ui) -> None:
+        self.__ui = ui
 
-            engine.load(
-                pathlib.Path(__file__).parent.parent / 'qml' / 'main.qml')
+    @property
+    def app_frame(self):
+        return self.__app_frame
 
-            if not engine.rootObjects():
-                sys.exit(-1)
+    def exec(self):
+        # self.__app = QtGui.QGuiApplication(sys.argv)
+        # self.engine = QtQml.QQmlApplicationEngine()
 
-            window = engine.rootObjects()[0]
-            main_rect = window.findChild(QtCore.QObject, 'mainRect')
-            # self.__handler._build_attrs(window)
-            
-            event_filter = MainFrameEventFilter(main_rect)
-            window.installEventFilter(event_filter)
+        # self.engine.load(
+        #     pathlib.Path(__file__).parent.parent / 'static' / 'qml' / 'main.qml')
 
-            logic = AppLogic(window)
-            engine.rootContext().setContextProperty('logic', logic)
+        # if not self.engine.rootObjects():
+        #     sys.exit(-1)
 
-            sys.exit(app.exec())
+        # self.__app_frame = self.engine.rootObjects()[0]
+        # self.__main_rect = self.__app_frame.findChild(QtCore.QObject, 'mainRect')
+        # # self.__handler._build_attrs(self.__app_frame)
+        
+        event_filter = MainFrameEventFilter(self.__main_rect)
+        self.__app_frame.installEventFilter(event_filter)
+
+        # logic = Handler(self.__app_frame)
+
+        # logic = Handler(self.__app_frame)
+        self.engine.rootContext().setContextProperty('logic', self.__handler)
+        sys.exit(self.__app.exec())
+
+    def __build_attrs(self, app):
+        for attr, value in self.__ui.__dict__.items():
+            if not attr.startswith('_'):
+                obj_value = app.findChild(QtCore.QObject, attr)
+                # print(obj_value)
+                # print(attr)
+                setattr(self, attr, obj_value)
+
+    def load_ui(self) -> None:
+        """..."""
+        # button_press.object_id = "button_press"
+        for attr, value in self.__ui.__dict__.items():
+            if not attr.startswith('_'):
+                getattr(self.__ui, attr).object_id = attr
+
+        self.__load_ui_build_qml()
+
+        qml_path = pathlib.Path(__file__).parent.parent / 'static' / 'qml' / 'main.qml'
+        qml_path.write_text(self.__qml_code)
+
+    def __load_ui_build_qml(self) -> None:
+        end = '\n// **closing_key**'
+        self.__ui.qml, app_close = self.__ui.qml.split(end)
+        for element in self.__ui.added_objects:
+            tab = ' ' * 12 if self.__load_ui_iter == 0 else '    '
+
+            elm_close = None
+            if end in element.qml:
+                elm_close = element.qml.split(end)[1]
+
+            if isinstance(element, Layout):
+                self.__load_ui_iter += 1
+                self.load_ui(element)
+
+            self.__ui.qml += '\n'.join(
+                [tab + x if x else ''
+                for x in element.qml.split(end)[0].split('\n')])
+
+            if elm_close:
+                self.__ui.qml += elm_close.replace('\n', '\n' + tab)
+
+        self.__qml_code = self.__ui.qml + app_close

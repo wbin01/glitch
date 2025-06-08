@@ -6,7 +6,7 @@ from cell.ui import AppFrame, Button
 class View(AppFrame):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
-        
+
         self.button = self.add(Button('Press'))
         # label = self.add(Label())
 
@@ -20,14 +20,15 @@ class View(AppFrame):
 
 
 class Controller(Handler):
-    def __init__(self) -> None:
-        super().__init__()
+    def __init__(self, *args, **kwargs) -> None:
+        super().__init__(*args, **kwargs)
 
-        self.load_ui(View())
+        # self.load_ui(View())
+        # self.build_attrs()
         
         # print(self.button)
 
 if __name__ == '__main__':
-    app = Application()
-    app.handler = Controller()
+    app = Application(View())
+    app.handler = Controller(app.app_frame)
     app.exec()
