@@ -4,8 +4,10 @@ import pathlib
 
 from PySide6 import QtCore, QtGui, QtQml, QtQuick
 
-# from .handler import Handler
 from ..ui.layout import Layout
+from ..ui.app_frame import AppFrame
+from ..ui import Button
+import cell._ui as UiObj
 
 
 style = {
@@ -55,14 +57,17 @@ style = {
     }
 
 
-class MainFrameEventFilter(QtCore.QObject):
-    def __init__(self, main_rect):
+class AppFrameEventFilter(QtCore.QObject):
+    """..."""
+    def __init__(self, main_rect: QtQuick.QQuickItem) -> None:
+        """..."""
         super().__init__()
         self.__main_rect = main_rect
         self.__childrens = self.__main_rect.findChildren(
             QtCore.QObject, options=QtCore.Qt.FindChildrenRecursively)
 
-    def eventFilter(self, obj, event):
+    def eventFilter(self, obj: QtCore.QObject, event: QtCore.QEvent) -> bool:
+        """..."""
         if event.type() == QtCore.QEvent.WindowActivate:
             self.__main_rect.setProperty('isActive', 'true')
             self.__state_style()
@@ -105,25 +110,28 @@ class Handler(QtCore.QObject):
     """..."""
     buttonClicked = QtCore.Signal()
 
-    def __init__(self, window, ui) -> None:
+    def __init__(self, app: QtQuick.QQuickWindow, ui: AppFrame) -> None:
         """..."""
         super().__init__()
-        if not isinstance(window, QtCore.QObject):
+        if not isinstance(app, QtCore.QObject):
             raise TypeError('Waiting for a root QML QObject')
-
-        self.__ui = ui
         
-        self.__window = window
-        self.__window.windowStateChanged.connect(self.__window_state_changed)
+        self.__app = app
+        self.__ui = ui
 
-        self.__main_rect = self.__window.findChild(QtCore.QObject, 'mainRect')
+        self.__app.windowStateChanged.connect(self.__app_state_changed)
+        self.__main_rect = self.__app.findChild(QtCore.QObject, 'mainRect')
 
         self.__childrens = self.__main_rect.findChildren(
             QtCore.QObject, options=QtCore.Qt.FindChildrenRecursively)
 
+        self.__build_state_style()
+        self.__build_attrs()
+
+    def __build_state_style(self) -> None:
         for child in self.__childrens:
             if child.property('qmlType') == 'Button':
-                button = self.__window.findChild(
+                button = self.__app.findChild(
                     QtCore.QObject, child.objectName())
 
                 child.clicked.connect(self.__button_clicked)
@@ -134,24 +142,20 @@ class Handler(QtCore.QObject):
                 child.released.connect(
                     lambda child=child: self.__button_hover(child))
 
-        self.__build_attrs(self.__window)
-
-    def __build_attrs(self, app):
+    def __build_attrs(self) -> None:
         for attr, value in self.__ui.__dict__.items():
             if not attr.startswith('_'):
-                obj_value = app.findChild(QtCore.QObject, attr)
-                # print(obj_value)
-                # print(attr)
-                class Button(object):
-                    def __init__(self, obj):
-                        self.__obj = obj
+                obj_value = self.__app.findChild(QtCore.QObject, attr)
 
-                        self.text = obj.property('text')
+                if obj_value.property('qmlType') == 'Button':
+                    element = UiObj.Button(obj_value.property('text'))
+                else:
+                    element = None
 
-                setattr(self, attr, Button(obj_value))
+                setattr(self, attr, element)
 
     @QtCore.Slot()
-    def __window_state_changed(self, state) -> None:
+    def __app_state_changed(self, state: QtCore.Qt.WindowState) -> None:
         if self.__main_rect:
             if (state & QtCore.Qt.WindowFullScreen
                     or state & QtCore.Qt.WindowMaximized):
@@ -170,7 +174,7 @@ class Handler(QtCore.QObject):
             self.buttonClicked.emit()
 
     @QtCore.Slot()
-    def __button_pressed(self, button) -> None:
+    def __button_pressed(self, button: QtQuick.QQuickItem) -> None:
         if self.__main_rect.property('isActive'):
             button.findChild(QtCore.QObject, 'buttonBackground').setProperty(
                 'color', style['[Button:clicked]']['background_color'])
@@ -182,7 +186,7 @@ class Handler(QtCore.QObject):
                 'color', style['[Button:clicked]']['font_color'])
 
     @QtCore.Slot()
-    def __button_hover(self, button) -> None:
+    def __button_hover(self, button: QtQuick.QQuickItem) -> None:
         is_active = self.__main_rect.property('isActive')
 
         if button.property('hovered'):
@@ -201,45 +205,37 @@ class Handler(QtCore.QObject):
 
     @QtCore.Slot()
     def start_move(self) -> None:
-        self.__window.startSystemMove()
+        """..."""
+        self.__app.startSystemMove()
 
     @QtCore.Slot(int)
     def start_resize(self, edge: int) -> None:
+        """..."""
         edge = QtCore.Qt.Edge(edge)
-        self.__window.startSystemResize(edge)
+        self.__app.startSystemResize(edge)
 
 
 class Application(object):
     """..."""
-    def __init__(self, ui) -> None:
+    def __init__(self, ui: AppFrame) -> None:
         """..."""
         self.__ui = ui
         self.__handler = None
 
-        self.__app_frame = None
-        self.__main_rect = None
-
-        self.__app = None
         self.__qml_code = None
         self.__load_ui_iter = 0
+        self.__load_ui()
 
-        self.engine = None
-
-        # self.__exec()
-        self.load_ui()
-
-        self.__app = QtGui.QGuiApplication(sys.argv)
+        self.__qt_gui_application = QtGui.QGuiApplication(sys.argv)
         self.engine = QtQml.QQmlApplicationEngine()
-
         self.engine.load(
-            pathlib.Path(__file__).parent.parent / 'static' / 'qml' / 'main.qml')
+            pathlib.Path(__file__).parent.parent /'static'/'qml'/'main.qml')
 
         if not self.engine.rootObjects():
             sys.exit(-1)
 
-        self.__app_frame = self.engine.rootObjects()[0]
-        self.__main_rect = self.__app_frame.findChild(QtCore.QObject, 'mainRect')
-        # self.__handler._build_attrs(self.__app_frame)
+        self.__app = self.engine.rootObjects()[0]
+        self.__main_rect = self.__app.findChild(QtCore.QObject, 'mainRect')
 
     @property
     def handler(self) -> None:
@@ -260,34 +256,23 @@ class Application(object):
         self.__ui = ui
 
     @property
-    def app_frame(self):
-        return self.__app_frame
-
-    def exec(self):
-        # self.__app = QtGui.QGuiApplication(sys.argv)
-        # self.engine = QtQml.QQmlApplicationEngine()
-
-        # self.engine.load(
-        #     pathlib.Path(__file__).parent.parent / 'static' / 'qml' / 'main.qml')
-
-        # if not self.engine.rootObjects():
-        #     sys.exit(-1)
-
-        # self.__app_frame = self.engine.rootObjects()[0]
-        # self.__main_rect = self.__app_frame.findChild(QtCore.QObject, 'mainRect')
-        # # self.__handler._build_attrs(self.__app_frame)
-        
-        event_filter = MainFrameEventFilter(self.__main_rect)
-        self.__app_frame.installEventFilter(event_filter)
-
-        # logic = Handler(self.__app_frame)
-
-        # logic = Handler(self.__app_frame)
-        self.engine.rootContext().setContextProperty('logic', self.__handler)
-        sys.exit(self.__app.exec())
-
-    def load_ui(self) -> None:
+    def app(self) -> QtQuick.QQuickWindow:
         """..."""
+        return self.__app
+
+    @app.setter
+    def app(self, app: QtQuick.QQuickWindow) -> None:
+        self.__app = app
+
+    def exec(self) -> None:
+        """..."""
+        event_filter = AppFrameEventFilter(self.__main_rect)
+        self.__app.installEventFilter(event_filter)
+
+        self.engine.rootContext().setContextProperty('logic', self.__handler)
+        sys.exit(self.__qt_gui_application.exec())
+
+    def __load_ui(self) -> None:
         # button_press.object_id = "button_press"
         for attr, value in self.__ui.__dict__.items():
             if not attr.startswith('_'):
@@ -295,8 +280,8 @@ class Application(object):
 
         self.__load_ui_build_qml()
 
-        qml_path = pathlib.Path(__file__).parent.parent / 'static' / 'qml' / 'main.qml'
-        qml_path.write_text(self.__qml_code)
+        qml = pathlib.Path(__file__).parent.parent /'static'/'qml'/'main.qml'
+        qml.write_text(self.__qml_code)
 
     def __load_ui_build_qml(self) -> None:
         end = '\n// **closing_key**'
@@ -310,7 +295,7 @@ class Application(object):
 
             if isinstance(element, Layout):
                 self.__load_ui_iter += 1
-                self.load_ui(element)
+                self.__load_ui(element)
 
             self.__ui.qml += '\n'.join(
                 [tab + x if x else ''

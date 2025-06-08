@@ -22,14 +22,10 @@ class View(AppFrame):
 class Controller(Handler):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
-
-        # self.load_ui(View())
-        # self.build_attrs()
-        
         print(self.button)
         print(self.button.text)
 
 if __name__ == '__main__':
-    app = Application(View())
-    app.handler = Controller(app.app_frame, app.ui)
-    app.exec()
+    application = Application(View())
+    application.handler = Controller(application.app, application.ui)
+    application.exec()

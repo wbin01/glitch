@@ -1,14 +1,23 @@
 #/usr/bin/env python3
 
 
+class Layout(object):
+    """..."""
+    pass
+
+
 class Element(object):
     """..."""
+    pass
+
+
+class Layout(Layout):
+    """..."""
     def __init__(self, *args, **kwargs) -> None:
-        """
-        self.qml is instance: static/elements/<element>.qml
-        """
+        """..."""
         self.__id = '_' + str(id(self))
         self.__qml = self.__id
+        self.__added_objects = []
 
     @property
     def object_id(self) -> str:
@@ -30,3 +39,17 @@ class Element(object):
     @qml.setter
     def qml(self, qml: str) -> None:
         self.__qml = qml
+
+    @property
+    def added_objects(self) -> list:
+        """..."""
+        return self.__added_objects
+
+    @added_objects.setter
+    def added_objects(self, added_objects: list) -> None:
+        self.__added_objects = added_objects
+
+    def add(self, obj) -> Layout | Element:
+        """..."""
+        self.__added_objects.append(obj)
+        return obj
