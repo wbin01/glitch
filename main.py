@@ -24,6 +24,10 @@ class Controller(Handler):
         super().__init__(*args, **kwargs)
         print(self.button)
         print(self.button.text)
+        self.button.connect(self.on_button)
+
+    def on_button(self):
+        self.button.text = 'Apertou miseravi!'
 
 if __name__ == '__main__':
     application = Application(View())

@@ -146,9 +146,10 @@ class Handler(QtCore.QObject):
         for attr, value in self.__ui.__dict__.items():
             if not attr.startswith('_'):
                 obj_value = self.__app.findChild(QtCore.QObject, attr)
+                print(type(obj_value))
 
                 if obj_value.property('qmlType') == 'Button':
-                    element = UiObj.Button(obj_value.property('text'))
+                    element = UiObj.Button(obj_value)
                 else:
                     element = None
 
