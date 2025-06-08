@@ -183,8 +183,4 @@ class AppFrame(Layout):
         """..."""
         super().__init__('appFrame', *args, **kwargs)
         self.object_id = 'appFrame'
-        self.object_code = object_code 
-        # (
-        #     'AppFrame {'
-        #     f'\n    id: appFrame')
-        self.added_objects = []
+        self.qml = object_code

@@ -1,11 +1,15 @@
 #/usr/bin/env python3
+
+
 class Layout(object):
     """..."""
     pass
 
+
 class Element(object):
     """..."""
     pass
+
 
 class Layout(Layout):
     """..."""
@@ -90,7 +94,6 @@ class AppFrame(Layout):
             '\n// **closing_key**'
             '\n    }  // Rectangle id: mainRect'
             '\n}  // AppFrame id: appFrame')
-        self.added_objects = []
 
 
 class Box(Layout):
@@ -104,7 +107,6 @@ class Box(Layout):
             f'\n    id: {self.object_id}'
             '\n// **closing_key**'
             f'\n}}  // Box id: {self.object_id}')
-        self.added_objects = []
 
 
 class Button(Element):

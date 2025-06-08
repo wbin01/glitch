@@ -5,35 +5,38 @@ class Layout(object):
     """..."""
     pass
 
+
 class Element(object):
     """..."""
     pass
 
+
 class Layout(Layout):
     """..."""
-    def __init__(self, object_id: str, *args, **kwargs) -> None:
+    def __init__(self, *args, **kwargs) -> None:
         """..."""
-        self.__object_id = object_id
-        self.__object_code = None
+        self.__id = str(id(self))
+        self.__qml = self.__id
         self.__added_objects = []
 
     @property
     def object_id(self) -> str:
         """..."""
-        return self.__object_id
+        return self.__id
 
     @object_id.setter
     def object_id(self, object_id: str) -> None:
-        self.__object_id = object_id
+        self.__qml = self.__qml.replace(f'id: {self.__id}', f'id: {object_id}')
+        self.__id = object_id
 
     @property
-    def object_code(self) -> str:
+    def qml(self) -> str:
         """..."""
-        return self.__object_code
+        return self.__qml
 
-    @object_code.setter
-    def object_code(self, object_code: str) -> None:
-        self.__object_code = object_code
+    @qml.setter
+    def qml(self, qml: str) -> None:
+        self.__qml = qml
 
     @property
     def added_objects(self) -> list:
