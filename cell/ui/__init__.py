@@ -1,3 +1,3 @@
 #/usr/bin/env python3
-from .app_frame import AppFrame
+from .ui import Ui
 from .button import Button

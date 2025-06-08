@@ -1,9 +1,9 @@
 #/usr/bin/env python3
 from cell.engine import Application, Handler
-from cell.ui import AppFrame, Button
+from cell.ui import Ui, Button
 
 
-class View(AppFrame):
+class View(Ui):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 
@@ -22,14 +22,12 @@ class View(AppFrame):
 class Controller(Handler):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
-        print(self.button)
-        print(self.button.text)
         self.button.connect(self.on_button)
 
     def on_button(self):
         self.button.text = 'Apertou miseravi!'
 
 if __name__ == '__main__':
-    application = Application(View())
-    application.handler = Controller(application.app, application.ui)
-    application.exec()
+    app = Application(View())
+    app.handler = Controller(app.gui, app.ui)
+    app.exec()

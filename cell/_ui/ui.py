@@ -186,7 +186,7 @@ Window {
 
 """
 
-class AppFrame(Layout):
+class Ui(Layout):
     """..."""
     def __init__(self, *args, **kwargs) -> None:
         """..."""
