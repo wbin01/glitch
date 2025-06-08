@@ -1,4 +1,6 @@
 #/usr/bin/env python3
+import pathlib
+
 from cell.ui import AppFrame
 
 
@@ -13,9 +15,14 @@ class Handler(object):
 
     def load_ui(self, app_frame: AppFrame) -> None:
         """..."""
-        # TODO: Write qml file
-        self.__build_attrs(app_frame)
         self.__build_qml(app_frame)
+
+        qml_path = pathlib.Path(__file__).parent.parent / 'qml' / 'main.qml'
+        qml_path.write_text(self.__qml_code)
+        # qml_path.parent.mkdir(parents=True, exist_ok=True)
+        # qml_path.exists()
+
+        self.__build_attrs(app_frame)
 
     def qml_code(self) -> str:
         """..."""
@@ -28,13 +35,7 @@ class Handler(object):
                 # obj_value = window.findChild(QtCore.QObject, value.object_id)
                 # setattr(self, attr, obj_value)
                 setattr(self, attr, attr)
-
-                print('xxxxxxxxxxxxxxx', type(app_frame))
-                print(isinstance(app_frame, AppFrame))
-                print(attr)
                 obj = getattr(app_frame, attr)
-                # print(obj, type(obj))
-
                 obj.object_id = attr  # -> app_frame.button.object_id = attr
 
     def __build_qml(self, app_frame: AppFrame) -> None:

@@ -1,6 +1,5 @@
 #/usr/bin/env python3
 import sys
-import textwrap
 
 from PySide6 import QtCore, QtGui, QtQml, QtQuick
 
