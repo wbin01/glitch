@@ -26,9 +26,10 @@ class Controller(Handler):
         # self.load_ui(View())
         # self.build_attrs()
         
-        # print(self.button)
+        print(self.button)
+        print(self.button.text)
 
 if __name__ == '__main__':
     app = Application(View())
-    app.handler = Controller(app.app_frame)
+    app.handler = Controller(app.app_frame, app.ui)
     app.exec()

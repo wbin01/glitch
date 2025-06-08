@@ -105,11 +105,13 @@ class Handler(QtCore.QObject):
     """..."""
     buttonClicked = QtCore.Signal()
 
-    def __init__(self, window) -> None:
+    def __init__(self, window, ui) -> None:
         """..."""
         super().__init__()
         if not isinstance(window, QtCore.QObject):
             raise TypeError('Waiting for a root QML QObject')
+
+        self.__ui = ui
         
         self.__window = window
         self.__window.windowStateChanged.connect(self.__window_state_changed)
@@ -131,6 +133,22 @@ class Handler(QtCore.QObject):
                     lambda child=child: self.__button_pressed(child))
                 child.released.connect(
                     lambda child=child: self.__button_hover(child))
+
+        self.__build_attrs(self.__window)
+
+    def __build_attrs(self, app):
+        for attr, value in self.__ui.__dict__.items():
+            if not attr.startswith('_'):
+                obj_value = app.findChild(QtCore.QObject, attr)
+                # print(obj_value)
+                # print(attr)
+                class Button(object):
+                    def __init__(self, obj):
+                        self.__obj = obj
+
+                        self.text = obj.property('text')
+
+                setattr(self, attr, Button(obj_value))
 
     @QtCore.Slot()
     def __window_state_changed(self, state) -> None:
@@ -267,14 +285,6 @@ class Application(object):
         # logic = Handler(self.__app_frame)
         self.engine.rootContext().setContextProperty('logic', self.__handler)
         sys.exit(self.__app.exec())
-
-    def __build_attrs(self, app):
-        for attr, value in self.__ui.__dict__.items():
-            if not attr.startswith('_'):
-                obj_value = app.findChild(QtCore.QObject, attr)
-                # print(obj_value)
-                # print(attr)
-                setattr(self, attr, obj_value)
 
     def load_ui(self) -> None:
         """..."""
