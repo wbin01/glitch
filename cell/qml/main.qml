@@ -166,7 +166,23 @@ Window {
             onPressed: logic.start_resize(Qt.RightEdge)
         }
 
-    }
+        ColumnLayout {
+            id: _columnLayout
+            objectName: "_columnLayout"
+            anchors.centerIn: parent
+            spacing: 20
 
-}
+
+            Button {
+                id: button
+                objectName: "button"
+                text: "Press"
+                iconSource: ""
+            } // Button id: button
+
+        }  // ColumnLayout id: _columnLayout
+
+    }  // Rectangle id: mainRect
+
+}  // Window id: window
 

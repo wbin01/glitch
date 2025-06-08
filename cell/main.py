@@ -1,4 +1,5 @@
 #/usr/bin/env python3
+import pathlib
 import sys
 
 from PySide6 import QtCore, QtGui, QtQml, QtQuick
@@ -190,6 +191,7 @@ if __name__ == "__main__":
     app = QtGui.QGuiApplication(sys.argv)
     engine = QtQml.QQmlApplicationEngine()
 
+    qml_path = pathlib.Path(__file__).parent.parent / 'qml' / 'main.qml'
     engine.load("cell/main.qml")
     if not engine.rootObjects():
         sys.exit(-1)

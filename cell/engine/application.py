@@ -222,6 +222,7 @@ class Application(object):
 
             window = engine.rootObjects()[0]
             main_rect = window.findChild(QtCore.QObject, 'mainRect')
+            # self.__handler._build_attrs(window)
             
             event_filter = MainFrameEventFilter(main_rect)
             window.installEventFilter(event_filter)

@@ -15,7 +15,7 @@ class Layout(Layout):
     """..."""
     def __init__(self, *args, **kwargs) -> None:
         """..."""
-        self.__id = str(id(self))
+        self.__id = '_' + str(id(self))
         self.__qml = self.__id
         self.__added_objects = []
 
@@ -26,7 +26,9 @@ class Layout(Layout):
 
     @object_id.setter
     def object_id(self, object_id: str) -> None:
-        self.__qml = self.__qml.replace(f'id: {self.__id}', f'id: {object_id}')
+        self.__qml = self.__qml.replace(
+            f'id: {self.__id}', f'id: {object_id}').replace(
+            f'objectName: "{self.__id}"', f'objectName: "{object_id}"')
         self.__id = object_id
 
     @property

@@ -1,14 +1,13 @@
 #/usr/bin/env python3
 from cell.engine import Application, Handler
-from cell.ui import AppFrame 
+from cell.ui import AppFrame, Button
 
 
 class View(AppFrame):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         
-        # button0 = self.add(Button())
-        # # button0.object_id = 'button0'
+        self.button = self.add(Button('Press'))
         # label = self.add(Label())
 
         # box1 = self.add(Box())
@@ -26,7 +25,7 @@ class Controller(Handler):
 
         self.load_ui(View())
         
-        # print(self.button1)
+        # print(self.button)
 
 if __name__ == '__main__':
     app = Application()

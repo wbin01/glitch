@@ -170,10 +170,19 @@ Window {
             onPressed: logic.start_resize(Qt.RightEdge)
         }
 
-// **closing_key**
-    }
+        ColumnLayout {
+            id: _columnLayout
+            objectName: "_columnLayout"
+            anchors.centerIn: parent
+            spacing: 20
 
-}
+// **closing_key**
+
+        }  // ColumnLayout id: _columnLayout
+
+    }  // Rectangle id: mainRect
+
+}  // Window id: window
 
 """
 
