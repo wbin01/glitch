@@ -5,4 +5,5 @@ Label {
     id: label
     objectName: "label"
     property string qmlType: "Label"
+    color: "#fff"
 }

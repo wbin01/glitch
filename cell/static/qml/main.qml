@@ -31,11 +31,11 @@ Window {
         id: mainRect
         objectName: "mainRect"
         anchors.fill: parent
-        anchors.margins: 1
+        anchors.margins: margins
         radius: 10
         color: "#333"
-        border.color: "#444"
-        border.width: 1
+        border.color: borderColor
+        border.width: borderWidth
         z: 1
 
         property color borderColor: "#444"
@@ -174,149 +174,162 @@ Window {
             Label {
                 id: label
                 objectName: "label"
-                text: "Hello"
-                color: "white"
                 property string layoutType: "ColumnLayout"
+                property int alignment: Qt.AlignHCenter
+                Layout.alignment: alignment
                 property bool fillWidth: true
                 property bool fillHeight: true
+                Layout.fillWidth: fillWidth
+                Layout.fillHeight: fillHeight
                 property string topMargin: "0"
                 property string rightMargin: "0"
                 property string bottomMargin: "0"
                 property string leftMargin: "0"
-                Layout.alignment: Qt.AlignHCenter
-                Layout.fillWidth: fillWidth
-                Layout.fillHeight: fillHeight
                 Layout.topMargin: topMargin
                 Layout.rightMargin: rightMargin
                 Layout.bottomMargin: bottomMargin
                 Layout.leftMargin: leftMargin
-            } // Label id: label
+                text: "Hello"
+            // <property>
+            } // Element id: label
 
             Button {
                 id: button
                 objectName: "button"
-                text: "Button"
-                iconSource: "/home/user/Dev/github/cell/cell/static/icons/document-save.svg"
                 property string layoutType: "ColumnLayout"
+                property int alignment: Qt.AlignHCenter
+                Layout.alignment: alignment
                 property bool fillWidth: true
                 property bool fillHeight: true
+                Layout.fillWidth: fillWidth
+                Layout.fillHeight: fillHeight
                 property string topMargin: "0"
                 property string rightMargin: "0"
                 property string bottomMargin: "0"
                 property string leftMargin: "0"
-                Layout.alignment: Qt.AlignHCenter
-                Layout.fillWidth: fillWidth
-                Layout.fillHeight: fillHeight
                 Layout.topMargin: topMargin
                 Layout.rightMargin: rightMargin
                 Layout.bottomMargin: bottomMargin
                 Layout.leftMargin: leftMargin
-            } // Button id: button
+                text: "Button"
+                iconSource: "/home/user/Dev/github/cell/cell/static/icons/document-save.svg"
+            // <property>
+            } // Element id: button
 
             Button {
                 id: button_0
                 objectName: "button_0"
-                text: "Button 0"
-                iconSource: "/home/user/Dev/github/cell/cell/static/icons/document-save.svg"
                 property string layoutType: "ColumnLayout"
+                property int alignment: Qt.AlignHCenter
+                Layout.alignment: alignment
                 property bool fillWidth: true
                 property bool fillHeight: true
+                Layout.fillWidth: fillWidth
+                Layout.fillHeight: fillHeight
                 property string topMargin: "0"
                 property string rightMargin: "0"
                 property string bottomMargin: "0"
                 property string leftMargin: "0"
-                Layout.alignment: Qt.AlignHCenter
-                Layout.fillWidth: fillWidth
-                Layout.fillHeight: fillHeight
                 Layout.topMargin: topMargin
                 Layout.rightMargin: rightMargin
                 Layout.bottomMargin: bottomMargin
                 Layout.leftMargin: leftMargin
-            } // Button id: button_0
+                text: "Button 0"
+                iconSource: "/home/user/Dev/github/cell/cell/static/icons/document-save.svg"
+            // <property>
+            } // Element id: button_0
 
             Button {
                 id: button_1
                 objectName: "button_1"
-                text: "Button 1"
-                iconSource: "/home/user/Dev/github/cell/cell/static/icons/document-save.svg"
                 property string layoutType: "ColumnLayout"
+                property int alignment: Qt.AlignHCenter
+                Layout.alignment: alignment
                 property bool fillWidth: true
                 property bool fillHeight: true
+                Layout.fillWidth: fillWidth
+                Layout.fillHeight: fillHeight
                 property string topMargin: "0"
                 property string rightMargin: "0"
                 property string bottomMargin: "0"
                 property string leftMargin: "0"
-                Layout.alignment: Qt.AlignHCenter
-                Layout.fillWidth: fillWidth
-                Layout.fillHeight: fillHeight
                 Layout.topMargin: topMargin
                 Layout.rightMargin: rightMargin
                 Layout.bottomMargin: bottomMargin
                 Layout.leftMargin: leftMargin
-            } // Button id: button_1
+                text: "Button 1"
+                iconSource: "/home/user/Dev/github/cell/cell/static/icons/document-save.svg"
+            // <property>
+            } // Element id: button_1
 
             Button {
                 id: button_2
                 objectName: "button_2"
-                text: "Button 2"
-                iconSource: "/home/user/Dev/github/cell/cell/static/icons/document-save.svg"
                 property string layoutType: "ColumnLayout"
+                property int alignment: Qt.AlignHCenter
+                Layout.alignment: alignment
                 property bool fillWidth: true
                 property bool fillHeight: true
+                Layout.fillWidth: fillWidth
+                Layout.fillHeight: fillHeight
                 property string topMargin: "0"
                 property string rightMargin: "0"
                 property string bottomMargin: "0"
                 property string leftMargin: "0"
-                Layout.alignment: Qt.AlignHCenter
-                Layout.fillWidth: fillWidth
-                Layout.fillHeight: fillHeight
                 Layout.topMargin: topMargin
                 Layout.rightMargin: rightMargin
                 Layout.bottomMargin: bottomMargin
                 Layout.leftMargin: leftMargin
-            } // Button id: button_2
+                text: "Button 2"
+                iconSource: "/home/user/Dev/github/cell/cell/static/icons/document-save.svg"
+            // <property>
+            } // Element id: button_2
 
             Button {
                 id: button_3
                 objectName: "button_3"
-                text: "Button 3"
-                iconSource: "/home/user/Dev/github/cell/cell/static/icons/document-save.svg"
                 property string layoutType: "ColumnLayout"
+                property int alignment: Qt.AlignHCenter
+                Layout.alignment: alignment
                 property bool fillWidth: true
                 property bool fillHeight: true
+                Layout.fillWidth: fillWidth
+                Layout.fillHeight: fillHeight
                 property string topMargin: "0"
                 property string rightMargin: "0"
                 property string bottomMargin: "0"
                 property string leftMargin: "0"
-                Layout.alignment: Qt.AlignHCenter
-                Layout.fillWidth: fillWidth
-                Layout.fillHeight: fillHeight
                 Layout.topMargin: topMargin
                 Layout.rightMargin: rightMargin
                 Layout.bottomMargin: bottomMargin
                 Layout.leftMargin: leftMargin
-            } // Button id: button_3
+                text: "Button 3"
+                iconSource: "/home/user/Dev/github/cell/cell/static/icons/document-save.svg"
+            // <property>
+            } // Element id: button_3
 
             Button {
                 id: button_4
                 objectName: "button_4"
-                text: "Button 4"
-                iconSource: "/home/user/Dev/github/cell/cell/static/icons/document-save.svg"
                 property string layoutType: "ColumnLayout"
+                property int alignment: Qt.AlignHCenter
+                Layout.alignment: alignment
                 property bool fillWidth: true
                 property bool fillHeight: true
+                Layout.fillWidth: fillWidth
+                Layout.fillHeight: fillHeight
                 property string topMargin: "0"
                 property string rightMargin: "0"
                 property string bottomMargin: "0"
                 property string leftMargin: "0"
-                Layout.alignment: Qt.AlignHCenter
-                Layout.fillWidth: fillWidth
-                Layout.fillHeight: fillHeight
                 Layout.topMargin: topMargin
                 Layout.rightMargin: rightMargin
                 Layout.bottomMargin: bottomMargin
                 Layout.leftMargin: leftMargin
-            } // Button id: button_4
+                text: "Button 4"
+                iconSource: "/home/user/Dev/github/cell/cell/static/icons/document-save.svg"
+            // <property>
+            } // Element id: button_4
         }
     }
 }

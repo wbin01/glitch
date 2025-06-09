@@ -35,11 +35,11 @@ Window {
         id: mainRect
         objectName: "mainRect"
         anchors.fill: parent
-        anchors.margins: 1
+        anchors.margins: margins
         radius: 10
         color: "#333"
-        border.color: "#444"
-        border.width: 1
+        border.color: borderColor
+        border.width: borderWidth
         z: 1
 
         property color borderColor: "#444"
