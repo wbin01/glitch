@@ -1,26 +1,24 @@
 #/usr/bin/env python3
-from PySide6 import QtQuick, QtCore  # QtGui, QtQml 
-
 from .element import Element
 
 
 class Label(Element):
     """..."""
     def __init__(
-            self, qt_quick_item: QtQuick.QQuickItem, *args, **kwargs) -> None:
+            self, *args, **kwargs) -> None:
         """..."""
         super().__init__(*args, **kwargs)
-        self.__obj = qt_quick_item
-        self.__text = self.__obj.property('text')
+        # self.__obj = qt_quick_item
+        self.__text = self._obj.property('text')
 
     @property
     def text(self) -> str:
         """..."""
-        return self.__obj.property('text')
+        return self._obj.property('text')
 
     @text.setter
     def text(self, text: str) -> None:
-        self.__obj.setProperty('text', text)
+        self._obj.setProperty('text', text)
 
     @property
     def margins(self) -> tuple:
@@ -48,10 +46,10 @@ class Label(Element):
 
         """
         return (
-            int(self.__obj.property('topMargin')),
-            int(self.__obj.property('rightMargin')),
-            int(self.__obj.property('bottomMargin')),
-            int(self.__obj.property('leftMargin')))
+            int(self._obj.property('topMargin')),
+            int(self._obj.property('rightMargin')),
+            int(self._obj.property('bottomMargin')),
+            int(self._obj.property('leftMargin')))
 
     @margins.setter
     def margins(self, margins: tuple) -> None:
@@ -71,10 +69,10 @@ class Label(Element):
         bottom = prev_margins[2] if not bottom else bottom
         left = prev_margins[3] if not left else left
 
-        self.__obj.setProperty('topMargin', str(top))
-        self.__obj.setProperty('rightMargin', str(right))
-        self.__obj.setProperty('bottomMargin', str(bottom))
-        self.__obj.setProperty('leftMargin', str(left))
+        self._obj.setProperty('topMargin', str(top))
+        self._obj.setProperty('rightMargin', str(right))
+        self._obj.setProperty('bottomMargin', str(bottom))
+        self._obj.setProperty('leftMargin', str(left))
 
-    def connect(self, func: callable) -> None:
-        self.__obj.clicked.connect(func)
+    # def connect(self, func: callable) -> None:
+    #     self._obj.clicked.connect(func)

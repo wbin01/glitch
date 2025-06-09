@@ -67,18 +67,6 @@ class Element(object):
             ) + self.qml_end
 
     @property
-    def class_name(self) -> str:
-        """..."""
-        return self.__class_name
-
-    @class_name.setter
-    def class_name(self, class_name: str) -> None:
-        self.qml = self.qml.replace(
-            f'\n{self.__class_name} {{', f'\n{class_name} {{')
-
-        self.__class_name = class_name
-
-    @property
     def object_id(self) -> str:
         """..."""
         return self.__id
@@ -98,3 +86,15 @@ class Element(object):
     @qml.setter
     def qml(self, qml: str) -> None:
         self.__qml = qml
+
+    @property
+    def class_name(self) -> str:
+        """..."""
+        return self.__class_name
+
+    @class_name.setter
+    def class_name(self, class_name: str) -> None:
+        self.qml = self.qml.replace(
+            f'\n{self.__class_name} {{', f'\n{class_name} {{')
+
+        self.__class_name = class_name

@@ -39,8 +39,10 @@ class Controller(Handler):
         self.num += 1
         self.label.text = f'Button press: {self.num}'
 
-        print(self.label.margins)
-        self.label.margins = None, 100, None, 100
+        # print(self.label.margins)
+        # self.label.margins = None, 100, None, 100
+
+        self.label.margins
 
     def on_num_button(self, num):
         self.label.text = f'Button press: {num}'
