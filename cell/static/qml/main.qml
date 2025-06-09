@@ -5,12 +5,13 @@ import QtQuick.Layouts
 
 import "elements"
 
-
 Window {
     id: window
     visible: true
-    width: Math.min(contentItem.implicitWidth, Screen.width)
-    height: Math.min(contentItem.implicitHeight, Screen.height)
+    width: 400
+    height: 300
+    minimumWidth: 200
+    minimumHeight: 200
     title: qsTr("App Mínimo")
     color: "transparent"
     flags: Qt.FramelessWindowHint
@@ -21,55 +22,51 @@ Window {
         anchors.fill: parent
         color: "transparent"
         border.color: "#44000000"
-        border.width: borderWidth
+        border.width: 1
         radius: 11
         z: 0
-
-        property int borderWidth: 1
     }
 
     Rectangle {
         id: mainRect
         objectName: "mainRect"
-        width: 300
-        height: 200
+        anchors.fill: parent
+        anchors.margins: 1
         radius: 10
         color: "#333"
-        border.color: borderColor
-        border.width: borderWidth
-        anchors.margins: margins
+        border.color: "#444"
+        border.width: 1
         z: 1
-
-        anchors.fill: parent
-        //anchors.centerIn: parent
 
         property color borderColor: "#444"
         property bool isActive: true
         property int borderWidth: 1
         property int margins: 1
 
-        //Behavior on radius {
-        //    NumberAnimation {
-        //        duration: 2000
-        //        easing.type: Easing.InOutQuad
-        //    }
-        //}
-
+        // MouseArea para arrastar janela
         Rectangle {
             id: dragArea
-            width: parent.width
+            objectName: "dragArea"
+            // width: parent.width
+            // width: parent.width - 20
             height: 40
-            color: "#00000000"  // invisível
+            anchors {
+                top: parent.top
+                left: parent.left
+                right: parent.right
+                margins: 5  // margem de 10px nas laterais
+            }
+            color: "transparent"
+            z: 2
+
             MouseArea {
                 anchors.fill: parent
                 drag.target: mainRect
-
-                onPressed: {
-                    logic.start_move()
-                }
+                onPressed: logic.start_move()
             }
         }
 
+        // Redimensionamento (bordas e cantos)
         // Top left - resize NW
         MouseArea {
             id: resizeTopLeft
@@ -169,7 +166,8 @@ Window {
         ColumnLayout {
             id: _columnLayout
             objectName: "_columnLayout"
-            anchors.centerIn: parent
+            anchors.fill: parent
+            anchors.margins: 20
             spacing: 20
 
 
@@ -319,10 +317,7 @@ Window {
                 Layout.bottomMargin: bottomMargin
                 Layout.leftMargin: leftMargin
             } // Button id: button_4
-
-        }  // ColumnLayout id: _columnLayout
-
-    }  // Rectangle id: mainRect
-
-}  // Window id: window
+        }
+    }
+}
 

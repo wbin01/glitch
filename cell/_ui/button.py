@@ -17,6 +17,7 @@ class Button(Element):
 
     @property
     def text(self) -> str:
+        """..."""
         return self.__obj.property('text')
 
     @text.setter

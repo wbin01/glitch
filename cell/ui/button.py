@@ -11,7 +11,8 @@ class Button(Element):
         """..."""
         super().__init__(*args, **kwargs)
         self.__text = text
-        self.__icon = pathlib.Path( __file__).parent.parent/'static'/'icons'/f'{icon}.svg'
+        path = pathlib.Path(__file__).parent.parent
+        self.__icon = path/'static'/'icons'/f'{icon}.svg'
 
         self.__layout_type = 'ColumnLayout'
 

@@ -29,9 +29,7 @@ class Controller(Handler):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self.num = 0
-
         self.button.connect(self.on_button)
-        self.label.margins = 50, 20, 50, 20
 
         for item in range(5):
             btn = getattr(self, f'button_{item}')
@@ -40,11 +38,11 @@ class Controller(Handler):
     def on_button(self):
         self.num += 1
         self.label.text = f'Button press: {self.num}'
-        print(self.button.margins)
-        self.button.margins = None, 100, None, 100
+
+        print(self.label.margins)
+        self.label.margins = None, 100, None, 100
 
     def on_num_button(self, num):
-        # self.num += 1
         self.label.text = f'Button press: {num}'
 
 if __name__ == '__main__':

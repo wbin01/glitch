@@ -64,6 +64,8 @@ Window {
             width: parent.width
             height: 40
             color: "#00000000"  // invisível
+            anchors.fill: parent
+            
             MouseArea {
                 anchors.fill: parent
                 drag.target: mainRect

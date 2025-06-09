@@ -1,5 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import QtQuick.Layouts 1.15
+
 
 Button {
     id: button
@@ -50,6 +52,12 @@ Button {
         radius: 6
     }
 
-    implicitWidth: row.implicitWidth + 12
-    implicitHeight: row.implicitHeight + 14
+    // implicitWidth: row.implicitWidth + 12
+    // implicitHeight: row.implicitHeight + 14
+
+    Layout.minimumHeight: 30
+
+    // implicitHeight: 40  // altura mínima
+    // implicitHeight: Math.max(row.implicitHeight + 12, 100)  // 40px de altura mínima
+
 }
