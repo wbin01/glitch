@@ -11,29 +11,30 @@ Button {
     property bool isHovered: false
     property bool hasIcon: iconSource !== ""
 
-    contentItem: Row {
-        id: row
-        spacing: 8
-        anchors.fill: parent  // anchors.centerIn: parent
-        anchors.margins: 6
-        // anchors.verticalCenter: parent.verticalCenter
-        // anchors.horizontalCenter: parent.horizontalCenter
+    contentItem: Item {
+        anchors.fill: parent
 
-        Image {
-            id: icon
-            objectName: "icon"
-            source: ""
-            visible: icon.source !== ""
-            fillMode: Image.PreserveAspectFit
-            anchors.verticalCenter: parent.verticalCenter
-        }
+        Row {
+            id: row
+            spacing: 8
+            anchors.centerIn: parent  // Centraliza o conteúdo
 
-        Text {
-            id: text
-            objectName: "text"
-            text: button.text
-            color: "#ccc"
-            anchors.verticalCenter: parent.verticalCenter
+            Image {
+                id: icon
+                objectName: "icon"
+                source: ""
+                visible: icon.source !== ""
+                fillMode: Image.PreserveAspectFit
+                anchors.verticalCenter: parent.verticalCenter
+            }
+
+            Text {
+                id: text
+                objectName: "text"
+                text: button.text
+                color: "#ccc"
+                verticalAlignment: Text.AlignVCenter
+            }
         }
     }
 

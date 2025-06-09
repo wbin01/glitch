@@ -1,18 +1,14 @@
 #/usr/bin/env python3
-import pathlib
-
 from .element import Element
 
 
-class Button(Element):
+class Label(Element):
     """..."""
     def __init__(
-            self, text: str = '', icon: str = '', *args, **kwargs) -> None:
+            self, text: str = '', *args, **kwargs) -> None:
         """..."""
         super().__init__(*args, **kwargs)
         self.__text = text
-        self.__icon = pathlib.Path( __file__).parent.parent/'static'/'icons'/f'{icon}.svg'
-
         self.__layout_type = 'ColumnLayout'
 
         self.__align_key = 'Layout.alignment'
@@ -38,11 +34,11 @@ class Button(Element):
 
         self.qml = (
             '\n'
-            '\nButton {'
+            '\nLabel {'
             f'\n    id: {self.object_id}'
             f'\n    objectName: "{self.object_id}"'
             f'\n    text: "{self.__text}"'
-            f'\n    iconSource: "{self.__icon}"'
+            f'\n    color: "white"'
             f'\n    property string layoutType: "{self.__layout_type}"'
 
             f'\n    property bool fillWidth: {self.__align_fill_w_val}'
@@ -63,4 +59,4 @@ class Button(Element):
             f'\n    {self.__bottom_margin_key}: bottomMargin'
             f'\n    {self.__left_margin_key}: leftMargin'
             '\n// **closing_key**'
-            f'\n}} // Button id: {self.object_id}')
+            f'\n}} // Label id: {self.object_id}')

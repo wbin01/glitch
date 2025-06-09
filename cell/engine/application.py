@@ -149,6 +149,8 @@ class Handler(QtCore.QObject):
 
                 if obj_value.property('qmlType') == 'Button':
                     element = UiObj.Button(obj_value)
+                elif obj_value.property('qmlType') == 'Label':
+                    element = UiObj.Label(obj_value)
                 else:
                     element = None
 

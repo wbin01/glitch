@@ -4,7 +4,7 @@ from PySide6 import QtQuick, QtCore  # QtGui, QtQml
 from .element import Element
 
 
-class Button(Element):
+class Label(Element):
     """..."""
     def __init__(
             self, qt_quick_item: QtQuick.QQuickItem, *args, **kwargs) -> None:
@@ -12,11 +12,10 @@ class Button(Element):
         super().__init__(*args, **kwargs)
         self.__obj = qt_quick_item
         self.__text = self.__obj.property('text')
-        self.__icon = self.__obj.findChild(QtCore.QObject, 'icon')
-        # iconSource
 
     @property
     def text(self) -> str:
+        """..."""
         return self.__obj.property('text')
 
     @text.setter
@@ -25,7 +24,7 @@ class Button(Element):
 
     @property
     def margins(self) -> tuple:
-        """Sets the `Button` margins.
+        """Sets the `Label` margins.
 
         Get:
             (5, 10, 5, 10)
@@ -33,18 +32,20 @@ class Button(Element):
         Set:
             Missing value, only from left to right.
 
-            self.my_button.margins = 5
-            self.my_button.margins = 5, 10
-            self.my_button.margins = 5, 10, 5
-            self.my_button.margins = 5, 10, 5, 10
+            self.my_label.margins = 5
+            self.my_label.margins = 5, 10
+            self.my_label.margins = 5, 10, 5
+            self.my_label.margins = 5, 10, 5, 10
             
             If a value is missing on the left, fill it with `None`.
             `None` records the value already present in that position.
 
-            self.my_button.margins = None, 10, None, 10
-            self.my_button.margins = 5, None, None, 5
-            self.my_button.margins = None, None, 5
-            self.my_button.margins = None, None, None, 5
+            self.my_label.margins = None, 10, None, 10
+            self.my_label.margins = 5, None, None, 5
+            self.my_label.margins = None, None, 5
+            self.my_label.margins = None, None, None, 5
+            
+
         """
         return (
             int(self.__obj.property('topMargin')),
