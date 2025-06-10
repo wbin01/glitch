@@ -10,7 +10,7 @@ class View(Ui):
         self.label = self.add(Label('Hello'))
         self.button = self.add(Button('Button', 'document-save'))
 
-        for item in range(5):
+        for item in range(3):
             btn = self.add(Button(f'Button {item}', 'document-save'))
             setattr(self, f'button_{item}', btn)
             
@@ -31,7 +31,7 @@ class Controller(Handler):
         self.num = 0
         self.button.connect(self.on_button)
 
-        for item in range(5):
+        for item in range(3):
             btn = getattr(self, f'button_{item}')
             btn.connect(lambda item=item: self.on_num_button(item))
 

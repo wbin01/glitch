@@ -6,4 +6,5 @@ Label {
     objectName: "label"
     property string qmlType: "Label"
     color: "#fff"
+    // height: Math.max(50, implicitHeight)
 }

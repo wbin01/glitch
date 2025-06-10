@@ -13,6 +13,14 @@ Button {
     property bool isHovered: false
     property bool hasIcon: iconSource !== ""
 
+    // implicitWidth: row.implicitWidth + 12
+    // implicitHeight: row.implicitHeight + 14
+
+    Layout.minimumHeight: 30
+
+    // implicitHeight: 40  // Min Height
+    // implicitHeight: Math.max(row.implicitHeight + 12, 100)  // 40px Min Height
+
     contentItem: Item {
         anchors.fill: parent
 
@@ -51,13 +59,5 @@ Button {
         border.width: 1
         radius: 6
     }
-
-    // implicitWidth: row.implicitWidth + 12
-    // implicitHeight: row.implicitHeight + 14
-
-    Layout.minimumHeight: 30
-
-    // implicitHeight: 40  // altura mínima
-    // implicitHeight: Math.max(row.implicitHeight + 12, 100)  // 40px de altura mínima
 
 }

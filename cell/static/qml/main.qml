@@ -43,7 +43,7 @@ Window {
         property int borderWidth: 1
         property int margins: 1
 
-        // MouseArea para arrastar janela
+        // Drag area
         Rectangle {
             id: dragArea
             objectName: "dragArea"
@@ -66,7 +66,6 @@ Window {
             }
         }
 
-        // Redimensionamento (bordas e cantos)
         // Top left - resize NW
         MouseArea {
             id: resizeTopLeft
@@ -167,8 +166,10 @@ Window {
             id: _columnLayout
             objectName: "_columnLayout"
             anchors.fill: parent
-            anchors.margins: 20
-            spacing: 20
+            anchors.margins: 6
+            spacing: 6
+            clip: true
+            //Layout.preferredHeight: 50
 
 
             Label {
@@ -284,52 +285,6 @@ Window {
                 iconSource: "/home/user/Dev/github/cell/cell/static/icons/document-save.svg"
             // <property>
             } // Element id: button_2
-
-            Button {
-                id: button_3
-                objectName: "button_3"
-                property string layoutType: "ColumnLayout"
-                property int alignment: Qt.AlignHCenter
-                Layout.alignment: alignment
-                property bool fillWidth: true
-                property bool fillHeight: true
-                Layout.fillWidth: fillWidth
-                Layout.fillHeight: fillHeight
-                property string topMargin: "0"
-                property string rightMargin: "0"
-                property string bottomMargin: "0"
-                property string leftMargin: "0"
-                Layout.topMargin: topMargin
-                Layout.rightMargin: rightMargin
-                Layout.bottomMargin: bottomMargin
-                Layout.leftMargin: leftMargin
-                text: "Button 3"
-                iconSource: "/home/user/Dev/github/cell/cell/static/icons/document-save.svg"
-            // <property>
-            } // Element id: button_3
-
-            Button {
-                id: button_4
-                objectName: "button_4"
-                property string layoutType: "ColumnLayout"
-                property int alignment: Qt.AlignHCenter
-                Layout.alignment: alignment
-                property bool fillWidth: true
-                property bool fillHeight: true
-                Layout.fillWidth: fillWidth
-                Layout.fillHeight: fillHeight
-                property string topMargin: "0"
-                property string rightMargin: "0"
-                property string bottomMargin: "0"
-                property string leftMargin: "0"
-                Layout.topMargin: topMargin
-                Layout.rightMargin: rightMargin
-                Layout.bottomMargin: bottomMargin
-                Layout.leftMargin: leftMargin
-                text: "Button 4"
-                iconSource: "/home/user/Dev/github/cell/cell/static/icons/document-save.svg"
-            // <property>
-            } // Element id: button_4
         }
     }
 }

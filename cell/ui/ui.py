@@ -47,7 +47,7 @@ Window {
         property int borderWidth: 1
         property int margins: 1
 
-        // MouseArea para arrastar janela
+        // Drag area
         Rectangle {
             id: dragArea
             objectName: "dragArea"
@@ -70,7 +70,6 @@ Window {
             }
         }
 
-        // Redimensionamento (bordas e cantos)
         // Top left - resize NW
         MouseArea {
             id: resizeTopLeft
@@ -171,8 +170,10 @@ Window {
             id: _columnLayout
             objectName: "_columnLayout"
             anchors.fill: parent
-            anchors.margins: 20
-            spacing: 20
+            anchors.margins: 6
+            spacing: 6
+            clip: true
+            //Layout.preferredHeight: 50
 
 // **closing_key**
         }
@@ -186,6 +187,6 @@ class Ui(Layout):
     """..."""
     def __init__(self, *args, **kwargs) -> None:
         """..."""
-        super().__init__('appFrame', *args, **kwargs)
-        self.object_id = 'appFrame'
+        super().__init__('Ui', *args, **kwargs)
+        self.object_id = 'Ui'
         self.qml = object_code
