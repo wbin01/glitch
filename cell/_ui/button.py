@@ -6,8 +6,7 @@ from .element import Element
 
 class Button(Element):
     """..."""
-    def __init__(
-            self, *args, **kwargs) -> None:
+    def __init__(self, *args, **kwargs) -> None:
         """..."""
         super().__init__(*args, **kwargs)
         self.__text = self._obj.property('text')

@@ -1,14 +1,12 @@
 #/usr/bin/env python3
-from PySide6 import QtQuick, QtCore
+from PySide6 import QtQuick
 
 
 class Element(object):
     """..."""
     def __init__(
             self, qt_quick_item: QtQuick.QQuickItem, *args, **kwargs) -> None:
-        """
-        self.qml is instance: static/elements/<element>.qml
-        """
+        """..."""
         self.__obj = qt_quick_item
         self.object_id = '_' + str(id(self))
 
@@ -20,6 +18,7 @@ class Element(object):
     @object_id.setter
     def object_id(self, object_id: str) -> None:
         self._obj.setProperty('id', object_id)
+        self._obj.setProperty('objectName', object_id)
 
     @property
     def _obj(self) -> str:
