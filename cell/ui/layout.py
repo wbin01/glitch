@@ -52,4 +52,5 @@ class Layout(Layout):
     def add(self, obj) -> Layout | Element:
         """..."""
         self.__added_objects.append(obj)
+        setattr(self, obj.object_id, obj)
         return obj

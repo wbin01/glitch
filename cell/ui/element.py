@@ -16,10 +16,10 @@ class Element(object):
         self.__align_key = 'Layout.alignment'
         self.__align_val = 'Qt.AlignHCenter'
 
-        self.__align_fill_w_key = 'Layout.fillWidth'
+        self.__align_fill_w_key = 'Layout.fillWidth' # Layout.fillWidth: true
         self.__align_fill_w_val = 'true'
 
-        self.__align_fill_h_key = 'Layout.fillHeight'
+        self.__align_fill_h_key = 'Layout.fillHeight'  # 'Layout.minimumHeight'
         self.__align_fill_h_val = 'true'
 
         self.__top_margin_key = 'Layout.topMargin'

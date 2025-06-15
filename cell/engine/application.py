@@ -125,8 +125,10 @@ class Handler(QtCore.QObject):
         self.__childrens = self.__main_rect.findChildren(
             QtCore.QObject, options=QtCore.Qt.FindChildrenRecursively)
 
+        self.ui = {}
         self.__build_state_style()
-        self.__build_attrs()
+        self.__build_attrs(self.__ui)
+        # self.ui = self.__ui
 
     def __build_state_style(self) -> None:
         for child in self.__childrens:
@@ -142,19 +144,29 @@ class Handler(QtCore.QObject):
                 child.released.connect(
                     lambda child=child: self.__button_hover(child))
 
-    def __build_attrs(self) -> None:
-        for attr, value in self.__ui.__dict__.items():
+    def __build_attrs(self, layout) -> None: 
+        for attr, value in layout.__dict__.items():
             if not attr.startswith('_'):
                 obj_value = self.__gui.findChild(QtCore.QObject, attr)
+                if obj_value:
 
-                if obj_value.property('qmlType') == 'Button':
-                    element = UiObj.Button(obj_value)
-                elif obj_value.property('qmlType') == 'Label':
-                    element = UiObj.Label(obj_value)
-                else:
-                    element = None
+                    if obj_value.property('qmlType') == 'Button':
+                        element = UiObj.Button(obj_value)
+                    elif obj_value.property('qmlType') == 'Label':
+                        element = UiObj.Label(obj_value)
+                    elif obj_value.property('qmlType') == 'ScrollBox':
+                        element = UiObj.ScrollBox(obj_value)
+                        self.__build_attrs(element)
+                    else:
+                        element = None
+                    
+                    setattr(self, attr, element)
+                    # self.ui[attr] = element
+                    # setattr(self.__ui_elements, attr, element)
 
-                setattr(self, attr, element)
+                    # if obj_value.property('qmlType') == 'ScrollBox':
+                    #     # element = UiObj.ScrollBox(obj_value)
+                    #     self.__build_attrs(obj_value)
 
     @QtCore.Slot()
     def __gui_state_changed(self, state: QtCore.Qt.WindowState) -> None:
@@ -226,7 +238,7 @@ class Application(object):
 
         self.__qml_code = None
         self.__load_ui_iter = 0
-        self.__load_ui()
+        self.__load_ui(self.__ui)
 
         self.__qt_gui_application = QtGui.QGuiApplication(sys.argv)
         self.engine = QtQml.QQmlApplicationEngine()
@@ -274,21 +286,21 @@ class Application(object):
         self.engine.rootContext().setContextProperty('logic', self.__handler)
         sys.exit(self.__qt_gui_application.exec())
 
-    def __load_ui(self) -> None:
+    def __load_ui(self, layout) -> None:
         # button_press.object_id = "button_press"
-        for attr, value in self.__ui.__dict__.items():
+        for attr, value in layout.__dict__.items():
             if not attr.startswith('_'):
-                getattr(self.__ui, attr).object_id = attr
+                getattr(layout, attr).object_id = attr
 
-        self.__load_ui_build_qml()
+        self.__load_ui_build_qml(layout)
 
         qml = pathlib.Path(__file__).parent.parent /'static'/'qml'/'main.qml'
         qml.write_text(self.__qml_code)
 
-    def __load_ui_build_qml(self) -> None:
+    def __load_ui_build_qml(self, layout) -> None:
         end = '\n// **closing_key**'
-        self.__ui.qml, ui_close = self.__ui.qml.split(end)
-        for element in self.__ui.added_objects:
+        layout.qml, ui_close = layout.qml.split(end)
+        for element in layout.added_objects:
             tab = ' ' * 12 if self.__load_ui_iter == 0 else '    '
 
             elm_close = None
@@ -299,11 +311,11 @@ class Application(object):
                 self.__load_ui_iter += 1
                 self.__load_ui(element)
 
-            self.__ui.qml += '\n'.join(
+            layout.qml += '\n'.join(
                 [tab + x if x else ''
                 for x in element.qml.split(end)[0].split('\n')])
 
             if elm_close:
-                self.__ui.qml += elm_close.replace('\n', '\n' + tab)
+                layout.qml += elm_close.replace('\n', '\n' + tab)
 
-        self.__qml_code = self.__ui.qml + ui_close
+        self.__qml_code = layout.qml + ui_close

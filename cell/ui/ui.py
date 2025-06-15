@@ -167,26 +167,31 @@ Window {
         }
 
         ColumnLayout {
-            id: _columnLayout
-            objectName: "_columnLayout"
+            id: mainColumnLayout
+            objectName: "mainColumnLayout"
             anchors.fill: parent
+            anchors.top: parent.top
             anchors.margins: 6
             spacing: 6
             clip: true
-            //Layout.preferredHeight: 50
+            Layout.fillHeight: false
+            Layout.fillWidth: true
 
 // **closing_key**
+        
+
         }
+
+
     }
 }
 
 """
-
 
 class Ui(Layout):
     """..."""
     def __init__(self, *args, **kwargs) -> None:
         """..."""
         super().__init__('Ui', *args, **kwargs)
-        self.object_id = 'Ui'
+        self.object_id = 'ui'
         self.qml = object_code
