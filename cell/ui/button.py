@@ -17,7 +17,7 @@ Button {
 
     Layout.preferredHeight: 30
     Layout.fillWidth: true
-    Layout.fillHeight: false
+    //Layout.fillHeight: false
 
     contentItem: Item {
         anchors.fill: parent

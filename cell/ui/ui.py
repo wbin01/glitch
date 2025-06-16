@@ -12,8 +12,8 @@ import "elements"
 Window {
     id: window
     visible: true
-    width: 400
-    height: 300
+    width: 200
+    height: 200
     minimumWidth: 200
     minimumHeight: 200
     title: qsTr("App Mínimo")
@@ -170,19 +170,17 @@ Window {
             id: mainColumnLayout
             objectName: "mainColumnLayout"
             anchors.fill: parent
-            anchors.top: parent.top
+            // anchors.top: parent.top
             anchors.margins: 6
             spacing: 6
             clip: true
-            Layout.fillHeight: false
+            // Layout.fillHeight: false
+            Layout.alignment: Qt.AlignTop
             Layout.fillWidth: true
 
 // **closing_key**
-        
 
         }
-
-
     }
 }
 

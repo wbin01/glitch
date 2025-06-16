@@ -19,7 +19,7 @@ Button {
     // Layout.minimumHeight: 30
     Layout.preferredHeight: 30
     Layout.fillWidth: true
-    Layout.fillHeight: false  
+    //Layout.fillHeight: false  
 
     // implicitHeight: 40  // Min Height
     // implicitHeight: Math.max(row.implicitHeight + 12, 100)  // 40px Min Height

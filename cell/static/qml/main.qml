@@ -8,8 +8,8 @@ import "elements"
 Window {
     id: window
     visible: true
-    width: 400
-    height: 300
+    width: 200
+    height: 200
     minimumWidth: 200
     minimumHeight: 200
     title: qsTr("App Mínimo")
@@ -166,11 +166,12 @@ Window {
             id: mainColumnLayout
             objectName: "mainColumnLayout"
             anchors.fill: parent
-            anchors.top: parent.top
+            // anchors.top: parent.top
             anchors.margins: 6
             spacing: 6
             clip: true
-            Layout.fillHeight: false
+            // Layout.fillHeight: false
+            Layout.alignment: Qt.AlignTop
             Layout.fillWidth: true
 
 
@@ -181,7 +182,7 @@ Window {
                 property int alignment: Qt.AlignHCenter
                 Layout.alignment: alignment
                 property bool fillWidth: true
-                property bool fillHeight: true
+                property bool fillHeight: false
                 Layout.fillWidth: fillWidth
                 Layout.fillHeight: fillHeight
                 property string topMargin: "0"
@@ -203,7 +204,7 @@ Window {
                 property int alignment: Qt.AlignHCenter
                 Layout.alignment: alignment
                 property bool fillWidth: true
-                property bool fillHeight: true
+                property bool fillHeight: false
                 Layout.fillWidth: fillWidth
                 Layout.fillHeight: fillHeight
                 property string topMargin: "0"
@@ -218,29 +219,6 @@ Window {
                 iconSource: "/home/user/Dev/github/cell/cell/static/icons/document-save.svg"
             // <property>
             } // Element id: button
-
-            Button {
-                id: button_m
-                objectName: "button_m"
-                property string layoutType: "ColumnLayout"
-                property int alignment: Qt.AlignHCenter
-                Layout.alignment: alignment
-                property bool fillWidth: true
-                property bool fillHeight: true
-                Layout.fillWidth: fillWidth
-                Layout.fillHeight: fillHeight
-                property string topMargin: "0"
-                property string rightMargin: "0"
-                property string bottomMargin: "0"
-                property string leftMargin: "0"
-                Layout.topMargin: topMargin
-                Layout.rightMargin: rightMargin
-                Layout.bottomMargin: bottomMargin
-                Layout.leftMargin: leftMargin
-                text: "Button 00"
-                iconSource: "/home/user/Dev/github/cell/cell/static/icons/document-save.svg"
-            // <property>
-            } // Element id: button_m
             // ScrollBox
             ScrollView {
                 Layout.fillWidth: true
@@ -270,7 +248,7 @@ Window {
                     property int alignment: Qt.AlignHCenter
                     Layout.alignment: alignment
                     property bool fillWidth: true
-                    property bool fillHeight: true
+                    property bool fillHeight: false
                     Layout.fillWidth: fillWidth
                     Layout.fillHeight: fillHeight
                     property string topMargin: "0"
@@ -293,7 +271,7 @@ Window {
                     property int alignment: Qt.AlignHCenter
                     Layout.alignment: alignment
                     property bool fillWidth: true
-                    property bool fillHeight: true
+                    property bool fillHeight: false
                     Layout.fillWidth: fillWidth
                     Layout.fillHeight: fillHeight
                     property string topMargin: "0"
@@ -316,7 +294,7 @@ Window {
                     property int alignment: Qt.AlignHCenter
                     Layout.alignment: alignment
                     property bool fillWidth: true
-                    property bool fillHeight: true
+                    property bool fillHeight: false
                     Layout.fillWidth: fillWidth
                     Layout.fillHeight: fillHeight
                     property string topMargin: "0"
@@ -331,15 +309,34 @@ Window {
                     iconSource: "/home/user/Dev/github/cell/cell/static/icons/document-save.svg"
                 // <property>
                 } // Element id: button_2
+
+                Label {
+                    id: _123232876398784
+                    objectName: "_123232876398784"
+                    property string layoutType: "ColumnLayout"
+                    property int alignment: Qt.AlignHCenter
+                    Layout.alignment: alignment
+                    property bool fillWidth: true
+                    property bool fillHeight: false
+                    Layout.fillWidth: fillWidth
+                    Layout.fillHeight: fillHeight
+                    property string topMargin: "0"
+                    property string rightMargin: "0"
+                    property string bottomMargin: "0"
+                    property string leftMargin: "0"
+                    Layout.topMargin: topMargin
+                    Layout.rightMargin: rightMargin
+                    Layout.bottomMargin: bottomMargin
+                    Layout.leftMargin: leftMargin
+                    text: "Olá"
+                // <property>
+                } // Element id: _123232876398784
                 }
             
             }  // ScrollBox id: scroll
             
-        
 
         }
-
-
     }
 }
 

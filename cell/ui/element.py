@@ -20,7 +20,7 @@ class Element(object):
         self.__align_fill_w_val = 'true'
 
         self.__align_fill_h_key = 'Layout.fillHeight'  # 'Layout.minimumHeight'
-        self.__align_fill_h_val = 'true'
+        self.__align_fill_h_val = 'false'
 
         self.__top_margin_key = 'Layout.topMargin'
         self.__top_margin_val = '0'
