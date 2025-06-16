@@ -1,70 +1,38 @@
 #/usr/bin/env python3
 
 
+qml_code = """
+Element {
+    id: element
+    objectName: "element"
+    property int alignment: Qt.AlignHCenter
+    Layout.alignment: alignment
+    property bool fillWidth: true
+    property bool fillHeight: false
+    property string topMargin: "0"
+    property string rightMargin: "0"
+    property string bottomMargin: "0"
+    property string leftMargin: "0"
+    Layout.fillWidth: fillWidth
+    Layout.fillHeight: fillHeight
+    Layout.topMargin: topMargin
+    Layout.rightMargin: rightMargin
+    Layout.bottomMargin: bottomMargin
+    Layout.leftMargin: leftMargin
+// <property>
+
+// **closing_key**
+} // Element id: element
+"""
+
+
 class Element(object):
     """..."""
     def __init__(self, *args, **kwargs) -> None:
-        """
-        self.qml is instance: static/elements/<element>.qml
-        """
+        """..."""
         self.__class_name = 'Element'
-        self.__id = '_' + str(id(self))
-        self.__qml = self.__id
-
-        self.__layout_type = 'ColumnLayout'
-
-        self.__align_key = 'Layout.alignment'
-        self.__align_val = 'Qt.AlignHCenter'
-
-        self.__align_fill_w_key = 'Layout.fillWidth' # Layout.fillWidth: true
-        self.__align_fill_w_val = 'true'
-
-        self.__align_fill_h_key = 'Layout.fillHeight'  # 'Layout.minimumHeight'
-        self.__align_fill_h_val = 'false'
-
-        self.__top_margin_key = 'Layout.topMargin'
-        self.__top_margin_val = '0'
-
-        self.__right_margin_key = 'Layout.rightMargin'
-        self.__right_margin_val = '0'
-
-        self.__bottom_margin_key = 'Layout.bottomMargin'
-        self.__bottom_margin_val = '0'
-
-        self.__left_margin_key = 'Layout.leftMargin'
-        self.__left_margin_val = '0'
-
-        self.qml_end = (
-            '\n// **closing_key**'
-            f'\n}} // {self.__class_name} id: {self.object_id}')
-
-        self.qml = (
-            '\n'
-            f'\n{self.__class_name} {{'
-            f'\n    id: {self.object_id}'
-            f'\n    objectName: "{self.object_id}"'
-
-            f'\n    property string layoutType: "{self.__layout_type}"'
-
-            f'\n    property int alignment: {self.__align_val}'
-            f'\n    {self.__align_key}: alignment'
-            
-            f'\n    property bool fillWidth: {self.__align_fill_w_val}'
-            f'\n    property bool fillHeight: {self.__align_fill_h_val}'
-            f'\n    {self.__align_fill_w_key}: fillWidth'
-            f'\n    {self.__align_fill_h_key}: fillHeight'
-
-            f'\n    property string topMargin: "{self.__top_margin_val}"'
-            f'\n    property string rightMargin: "{self.__right_margin_val}"'
-            f'\n    property string bottomMargin: "{self.__bottom_margin_val}"'
-            f'\n    property string leftMargin: "{self.__left_margin_val}"'
-            f'\n    {self.__top_margin_key}: topMargin'
-            f'\n    {self.__right_margin_key}: rightMargin'
-            f'\n    {self.__bottom_margin_key}: bottomMargin'
-            f'\n    {self.__left_margin_key}: leftMargin'
-
-            '\n// <property>'
-            ) + self.qml_end
+        self.__id = 'element'
+        self.__qml = qml_code
 
     @property
     def object_id(self) -> str:
@@ -73,9 +41,19 @@ class Element(object):
 
     @object_id.setter
     def object_id(self, object_id: str) -> None:
-        self.__qml = self.__qml.replace(
-            f'id: {self.__id}', f'id: {object_id}').replace(
-            f'objectName: "{self.__id}"', f'objectName: "{object_id}"')
+        qml_lines = []
+        for line in self.__qml.split('\n'):
+
+            if line.strip().startswith('id:'):
+                qml_lines.append(f'id: {object_id}')
+
+            elif line.strip().startswith('objectName:'):
+                qml_lines.append(f'objectName: "{object_id}"')
+
+            else:
+                qml_lines.append(line)
+
+        self.__qml = '\n'.join(qml_lines)
         self.__id = object_id
 
     @property
@@ -94,7 +72,12 @@ class Element(object):
 
     @class_name.setter
     def class_name(self, class_name: str) -> None:
-        self.qml = self.qml.replace(
-            f'\n{self.__class_name} {{', f'\n{class_name} {{')
+        qml_lines = []
+        for line in self.__qml.split('\n'):
+            if line.strip().startswith(f'{self.__class_name} {{'):
+                qml_lines.append(f'{class_name} {{')
+            else:
+                qml_lines.append(line)
 
+        self.__qml = '\n'.join(qml_lines)
         self.__class_name = class_name
