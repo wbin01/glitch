@@ -9,6 +9,7 @@ import QtQuick.Layouts
 
 import "elements"
 
+
 Window {
     id: window
     visible: true

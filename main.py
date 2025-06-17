@@ -9,10 +9,10 @@ class View(Ui):
 
         self.label = self.add(Label('Hello'))
         self.button = self.add(Button('Button', 'document-save'))
-        # self.button_m = self.add(Button('Button 00', 'document-save'))
+        self.button_m = self.add(Button('Button 00', 'document-save'))
 
         self.scroll = self.add(ScrollBox())
-        for item in range(3):
+        for item in range(5):
             btn = self.scroll.add(Button(f'Button {item}', 'document-save'))
             setattr(self, f'button_{item}', btn)
 
@@ -24,9 +24,9 @@ class Controller(Handler):
         super().__init__(*args, **kwargs)
         self.num = 0
         self.button.connect(self.on_button)
-        # self.button_m.connect(self.on_button)
+        self.button_m.connect(self.on_button)
 
-        for item in range(3):
+        for item in range(5):
             btn = getattr(self, f'button_{item}')
             btn.connect(lambda item=item: self.on_num_button(item))
             btn.margins = 5, 10, 5, 10

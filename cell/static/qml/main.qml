@@ -5,6 +5,7 @@ import QtQuick.Layouts
 
 import "elements"
 
+
 Window {
     id: window
     visible: true
@@ -175,50 +176,29 @@ Window {
             Layout.fillWidth: true
 
             Label {
-            id: label
-            objectName: "label"
-                property int alignment: Qt.AlignHCenter
-                Layout.alignment: alignment
-                property bool fillWidth: true
-                property bool fillHeight: false
-                property string topMargin: "0"
-                property string rightMargin: "0"
-                property string bottomMargin: "0"
-                property string leftMargin: "0"
-                Layout.fillWidth: fillWidth
-                Layout.fillHeight: fillHeight
-                Layout.topMargin: topMargin
-                Layout.rightMargin: rightMargin
-                Layout.bottomMargin: bottomMargin
-                Layout.leftMargin: leftMargin
+                id: label  // <id>
+                objectName: "label"  // <objectName>
+                property string qmlType: "Label"  // <className>
                 text: "Hello"
-            // <property>
+                color: "#fff"
+            }  // _128141558450800
 
-            } // Element id: element
-            
             Button {
-            id: button
-            objectName: "button"
-                property int alignment: Qt.AlignHCenter
-                Layout.alignment: alignment
-                property bool fillWidth: true
-                property bool fillHeight: false
-                property string topMargin: "0"
-                property string rightMargin: "0"
-                property string bottomMargin: "0"
-                property string leftMargin: "0"
-                Layout.fillWidth: fillWidth
-                Layout.fillHeight: fillHeight
-                Layout.topMargin: topMargin
-                Layout.rightMargin: rightMargin
-                Layout.bottomMargin: bottomMargin
-                Layout.leftMargin: leftMargin
+                id: button  // <id>
+                objectName: "button"  // <objectName>
+                property string qmlType: "Button"  // <className>
                 text: "Button"
                 iconSource: "/home/user/Dev/github/cell/cell/static/icons/document-save.svg"
-            // <property>
+            }  // _128141558450848
 
-            } // Element id: element
-            
+            Button {
+                id: button_m  // <id>
+                objectName: "button_m"  // <objectName>
+                property string qmlType: "Button"  // <className>
+                text: "Button 00"
+                iconSource: "/home/user/Dev/github/cell/cell/static/icons/document-save.svg"
+            }  // _128141558450944
+
             // ScrollBox
             ScrollView {
                 Layout.fillWidth: true
@@ -241,96 +221,53 @@ Window {
                     spacing: 10
 
                 Button {
-                id: button_0
-                objectName: "button_0"
-                    property int alignment: Qt.AlignHCenter
-                    Layout.alignment: alignment
-                    property bool fillWidth: true
-                    property bool fillHeight: false
-                    property string topMargin: "0"
-                    property string rightMargin: "0"
-                    property string bottomMargin: "0"
-                    property string leftMargin: "0"
-                    Layout.fillWidth: fillWidth
-                    Layout.fillHeight: fillHeight
-                    Layout.topMargin: topMargin
-                    Layout.rightMargin: rightMargin
-                    Layout.bottomMargin: bottomMargin
-                    Layout.leftMargin: leftMargin
+                    id: button_0  // <id>
+                    objectName: "button_0"  // <objectName>
+                    property string qmlType: "Button"  // <className>
                     text: "Button 0"
                     iconSource: "/home/user/Dev/github/cell/cell/static/icons/document-save.svg"
-                // <property>
+                }  // _128141558450896
 
-                } // Element id: element
-                
                 Button {
-                id: button_1
-                objectName: "button_1"
-                    property int alignment: Qt.AlignHCenter
-                    Layout.alignment: alignment
-                    property bool fillWidth: true
-                    property bool fillHeight: false
-                    property string topMargin: "0"
-                    property string rightMargin: "0"
-                    property string bottomMargin: "0"
-                    property string leftMargin: "0"
-                    Layout.fillWidth: fillWidth
-                    Layout.fillHeight: fillHeight
-                    Layout.topMargin: topMargin
-                    Layout.rightMargin: rightMargin
-                    Layout.bottomMargin: bottomMargin
-                    Layout.leftMargin: leftMargin
+                    id: button_1  // <id>
+                    objectName: "button_1"  // <objectName>
+                    property string qmlType: "Button"  // <className>
                     text: "Button 1"
                     iconSource: "/home/user/Dev/github/cell/cell/static/icons/document-save.svg"
-                // <property>
+                }  // _128141439074224
 
-                } // Element id: element
-                
                 Button {
-                id: button_2
-                objectName: "button_2"
-                    property int alignment: Qt.AlignHCenter
-                    Layout.alignment: alignment
-                    property bool fillWidth: true
-                    property bool fillHeight: false
-                    property string topMargin: "0"
-                    property string rightMargin: "0"
-                    property string bottomMargin: "0"
-                    property string leftMargin: "0"
-                    Layout.fillWidth: fillWidth
-                    Layout.fillHeight: fillHeight
-                    Layout.topMargin: topMargin
-                    Layout.rightMargin: rightMargin
-                    Layout.bottomMargin: bottomMargin
-                    Layout.leftMargin: leftMargin
+                    id: button_2  // <id>
+                    objectName: "button_2"  // <objectName>
+                    property string qmlType: "Button"  // <className>
                     text: "Button 2"
                     iconSource: "/home/user/Dev/github/cell/cell/static/icons/document-save.svg"
-                // <property>
+                }  // _128141439074176
 
-                } // Element id: element
-                
+                Button {
+                    id: button_3  // <id>
+                    objectName: "button_3"  // <objectName>
+                    property string qmlType: "Button"  // <className>
+                    text: "Button 3"
+                    iconSource: "/home/user/Dev/github/cell/cell/static/icons/document-save.svg"
+                }  // _128141439500752
+
+                Button {
+                    id: button_4  // <id>
+                    objectName: "button_4"  // <objectName>
+                    property string qmlType: "Button"  // <className>
+                    text: "Button 4"
+                    iconSource: "/home/user/Dev/github/cell/cell/static/icons/document-save.svg"
+                }  // _128141439500848
+
                 Label {
-                id: element
-                objectName: "element"
-                    property int alignment: Qt.AlignHCenter
-                    Layout.alignment: alignment
-                    property bool fillWidth: true
-                    property bool fillHeight: false
-                    property string topMargin: "0"
-                    property string rightMargin: "0"
-                    property string bottomMargin: "0"
-                    property string leftMargin: "0"
-                    Layout.fillWidth: fillWidth
-                    Layout.fillHeight: fillHeight
-                    Layout.topMargin: topMargin
-                    Layout.rightMargin: rightMargin
-                    Layout.bottomMargin: bottomMargin
-                    Layout.leftMargin: leftMargin
+                    id: _128141558451808  // <id>
+                    objectName: "_128141558451808"  // <objectName>
+                    property string qmlType: "Label"  // <className>
                     text: "Olá"
-                // <property>
+                    color: "#fff"
+                }  // _128141558451808
 
-                } // Element id: element
-                
                 }
             
             }  // ScrollBox id: scroll

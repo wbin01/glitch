@@ -1,28 +1,32 @@
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+
+// import QtQuick 2.15
+// import QtQuick.Controls 2.15
+// import QtQuick.Layouts 1.15
 
 
 Button {
-    id: button
-    objectName: "button"
-    property string qmlType: "Button"
+    id: button  // <id>
+    objectName: "button"  // <objectName>
+    property string qmlType: "Button"  // <className>
     property color borderColor: "#555"
     property color backgroundColor: "#444"
     property alias iconSource: icon.source
     property bool isHovered: false
     property bool hasIcon: iconSource !== ""
-
-    // implicitWidth: row.implicitWidth + 12
-    // implicitHeight: row.implicitHeight + 14
-
-    // Layout.minimumHeight: 30
     Layout.preferredHeight: 30
     Layout.fillWidth: true
-    //Layout.fillHeight: false  
 
-    // implicitHeight: 40  // Min Height
-    // implicitHeight: Math.max(row.implicitHeight + 12, 100)  // 40px Min Height
+    property int topMargin: 0
+    property int rightMargin: 0
+    property int bottomMargin: 0
+    property int leftMargin: 0
+    Layout.topMargin: topMargin
+    Layout.rightMargin: rightMargin
+    Layout.bottomMargin: bottomMargin
+    Layout.leftMargin: leftMargin
 
     contentItem: Item {
         anchors.fill: parent
@@ -30,7 +34,7 @@ Button {
         Row {
             id: row
             spacing: 8
-            anchors.centerIn: parent  // Centraliza o conteúdo
+            anchors.centerIn: parent  // Center content
 
             Image {
                 id: icon
@@ -63,4 +67,4 @@ Button {
         radius: 6
     }
 
-}
+}  // <suffix_id>
