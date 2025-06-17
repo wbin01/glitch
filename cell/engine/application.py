@@ -6,8 +6,8 @@ from PySide6 import QtCore, QtGui, QtQml, QtQuick
 
 from ..ui.layout import Layout
 from ..ui.ui import Ui
-from ..ui import Button
-import cell._ui as UiObj
+# import cell.gui as UiObj
+from cell import gui
 
 
 style = {
@@ -151,11 +151,11 @@ class Handler(QtCore.QObject):
                 if obj_value:
 
                     if obj_value.property('qmlType') == 'Button':
-                        element = UiObj.Button(obj_value)
+                        element = gui.Button(obj_value)
                     elif obj_value.property('qmlType') == 'Label':
-                        element = UiObj.Label(obj_value)
+                        element = gui.Label(obj_value)
                     elif obj_value.property('qmlType') == 'ScrollBox':
-                        element = UiObj.ScrollBox(obj_value)
+                        element = gui.ScrollBox(obj_value)
                         self.__build_attrs(element)
                     else:
                         element = None
