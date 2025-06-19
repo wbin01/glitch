@@ -40,5 +40,6 @@ class Controller(Handler):
 
 
 if __name__ == '__main__':
-    app = Application(View, Controller)
+    app = Application(View())
+    app.handler = Controller(app.gui, app.ui)
     app.exec()

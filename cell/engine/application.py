@@ -6,7 +6,6 @@ from PySide6 import QtCore, QtGui, QtQml, QtQuick
 
 from ..ui.layout import Layout
 from ..ui.ui import Ui
-# import cell.gui as UiObj
 from cell import gui
 
 
@@ -110,25 +109,19 @@ class Handler(QtCore.QObject):
     """..."""
     buttonClicked = QtCore.Signal()
 
-    def __init__(self, gui: QtQuick.QQuickWindow, ui: Ui) -> None:
+    def __init__(
+            self, gui: QtQuick.QQuickWindow = None, ui: Ui = None) -> None:
         """..."""
         super().__init__()
-        if not isinstance(gui, QtCore.QObject):
-            raise TypeError('Waiting for a root QML QObject')
-        
         self.__gui = gui
         self.__ui = ui
-
-        self.__gui.windowStateChanged.connect(self.__gui_state_changed)
         self.__main_rect = self.__gui.findChild(QtCore.QObject, 'mainRect')
-
         self.__childrens = self.__main_rect.findChildren(
             QtCore.QObject, options=QtCore.Qt.FindChildrenRecursively)
 
-        self.ui = {}
+        self.__gui.windowStateChanged.connect(self.__gui_state_changed)
         self.__build_state_style()
         self.__build_attrs(self.__ui)
-        # self.ui = self.__ui
 
     def __build_state_style(self) -> None:
         for child in self.__childrens:
@@ -161,12 +154,6 @@ class Handler(QtCore.QObject):
                         element = None
                     
                     setattr(self, attr, element)
-                    # self.ui[attr] = element
-                    # setattr(self.__ui_elements, attr, element)
-
-                    # if obj_value.property('qmlType') == 'ScrollBox':
-                    #     # element = UiObj.ScrollBox(obj_value)
-                    #     self.__build_attrs(obj_value)
 
     @QtCore.Slot()
     def __gui_state_changed(self, state: QtCore.Qt.WindowState) -> None:
@@ -231,25 +218,25 @@ class Handler(QtCore.QObject):
 
 class Application(object):
     """..."""
-    def __init__(self, ui: Ui) -> None:
+    def __init__(self, ui: Ui = None, handler: Handler = None) -> None:
         """..."""
-        self.__ui = ui
-        self.__handler = None
+        self.__ui = ui()
 
         self.__qml_code = None
-        self.__load_ui_iter = 0
-        self.__load_ui(self.__ui)
+        self.__qml_code_iterator = 0
+        self.__write_qml_code(self.__ui)
 
         self.__qt_gui_application = QtGui.QGuiApplication(sys.argv)
-        self.engine = QtQml.QQmlApplicationEngine()
-        self.engine.load(
+        self.__engine = QtQml.QQmlApplicationEngine()
+        self.__engine.load(
             pathlib.Path(__file__).parent.parent /'static'/'qml'/'main.qml')
-
-        if not self.engine.rootObjects():
+        if not self.__engine.rootObjects():
             sys.exit(-1)
 
-        self.__gui = self.engine.rootObjects()[0]
+        self.__gui = self.__engine.rootObjects()[0]
         self.__main_rect = self.__gui.findChild(QtCore.QObject, 'mainRect')
+
+        self.__handler = handler(self.__gui, self.__ui)
 
     @property
     def handler(self) -> None:
@@ -259,34 +246,19 @@ class Application(object):
     @handler.setter
     def handler(self, handler: Handler) -> None:
         self.__handler = handler
-
-    @property
-    def ui(self) -> None:
-        """..."""
-        return self.__ui
-
-    @ui.setter
-    def ui(self, ui) -> None:
-        self.__ui = ui
-
-    @property
-    def gui(self) -> QtQuick.QQuickWindow:
-        """..."""
-        return self.__gui
-
-    @gui.setter
-    def gui(self, gui: QtQuick.QQuickWindow) -> None:
-        self.__gui = gui
+        self.__handler.gui = self.__gui
+        self.__handler.ui = self.__ui
+        self.__handler.start_connections()
 
     def exec(self) -> None:
         """..."""
         event_filter = GuiEventFilter(self.__main_rect)
         self.__gui.installEventFilter(event_filter)
 
-        self.engine.rootContext().setContextProperty('logic', self.__handler)
+        self.__engine.rootContext().setContextProperty('logic', self.__handler)
         sys.exit(self.__qt_gui_application.exec())
 
-    def __load_ui(self, layout) -> None:
+    def __write_qml_code(self, layout) -> None:
         # button_press.object_id = "button_press"
         for attr, value in layout.__dict__.items():
             if not attr.startswith('_'):
@@ -301,15 +273,15 @@ class Application(object):
         end = '\n// **closing_key**'
         layout.qml, ui_close = layout.qml.split(end)
         for element in layout.added_objects:
-            tab = ' ' * 12 if self.__load_ui_iter == 0 else '    '
+            tab = ' ' * 12 if self.__qml_code_iterator == 0 else '    '
 
             elm_close = None
             if end in element.qml:
                 elm_close = element.qml.split(end)[1]
 
             if isinstance(element, Layout):
-                self.__load_ui_iter += 1
-                self.__load_ui(element)
+                self.__qml_code_iterator += 1
+                self.__write_qml_code(element)
 
             layout.qml += '\n'.join(
                 [tab + x if x else ''
