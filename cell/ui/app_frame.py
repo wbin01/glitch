@@ -187,10 +187,10 @@ Window {
 
 """
 
-class Ui(Layout):
+class AppFrame(Layout):
     """..."""
     def __init__(self, *args, **kwargs) -> None:
         """..."""
-        super().__init__('Ui', *args, **kwargs)
-        self.object_id = 'ui'
+        super().__init__('AppFrame', *args, **kwargs)
+        self.object_id = 'appFrame'
         self.qml = object_code

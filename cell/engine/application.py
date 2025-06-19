@@ -5,7 +5,7 @@ import pathlib
 from PySide6 import QtCore, QtGui, QtQml, QtQuick
 
 from ..ui.layout import Layout
-from ..ui.ui import Ui
+from ..ui.app_frame import AppFrame
 from cell import gui
 
 
@@ -110,7 +110,7 @@ class Handler(QtCore.QObject):
     buttonClicked = QtCore.Signal()
 
     def __init__(
-            self, gui: QtQuick.QQuickWindow = None, ui: Ui = None) -> None:
+            self, gui: QtQuick.QQuickWindow = None, ui: AppFrame = None) -> None:
         """..."""
         super().__init__()
         self.__gui = gui
@@ -218,7 +218,7 @@ class Handler(QtCore.QObject):
 
 class Application(object):
     """..."""
-    def __init__(self, ui: Ui = None, handler: Handler = None) -> None:
+    def __init__(self, ui: AppFrame = None, handler: Handler = None) -> None:
         """..."""
         self.__ui = ui()
 

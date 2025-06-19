@@ -2,7 +2,7 @@
 from .layout import Layout
 
 
-class Ui(Layout):
+class AppFrame(Layout):
     """..."""
     def __init__(self, *args, **kwargs) -> None:
         """..."""

@@ -1,9 +1,9 @@
 #/usr/bin/env python3
 from cell.engine import Application, Handler
-from cell.ui import Ui, Button, Label, ScrollBox
+from cell.ui import AppFrame, Button, Label, ScrollBox
 
 
-class View(Ui):
+class View(AppFrame):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 
