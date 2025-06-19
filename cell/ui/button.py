@@ -31,6 +31,8 @@ class Button(Element):
         self.text = self.__text
         self.icon = icon
 
+        self.callables = {}
+
     @property
     def text(self) -> str:
         """..."""
@@ -55,3 +57,6 @@ class Button(Element):
             f'\n    iconSource: "{self.__icon}"',
             f'\n    iconSource: "{icon}"')
         self.__icon = icon
+
+    def connect(self, func: callable) -> None:
+        self.callables['clicked'] = func

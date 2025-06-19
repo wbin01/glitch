@@ -139,21 +139,30 @@ class Handler(QtCore.QObject):
 
     def __build_attrs(self, layout) -> None: 
         for attr, value in layout.__dict__.items():
-            if not attr.startswith('_'):
-                obj_value = self.__gui.findChild(QtCore.QObject, attr)
-                if obj_value:
+            if attr.startswith('_'):
+                continue
 
-                    if obj_value.property('qmlType') == 'Button':
-                        element = gui.Button(obj_value)
-                    elif obj_value.property('qmlType') == 'Label':
-                        element = gui.Label(obj_value)
-                    elif obj_value.property('qmlType') == 'ScrollBox':
-                        element = gui.ScrollBox(obj_value)
-                        self.__build_attrs(element)
-                    else:
-                        element = None
-                    
-                    setattr(self, attr, element)
+            obj_value = self.__gui.findChild(QtCore.QObject, attr)
+            if not obj_value:
+                continue
+
+            if obj_value.property('qmlType') == 'Button':
+                gui_element = gui.Button(obj_value)
+            elif obj_value.property('qmlType') == 'Label':
+                gui_element = gui.Label(obj_value)
+            elif obj_value.property('qmlType') == 'ScrollBox':
+                gui_element = gui.ScrollBox(obj_value)
+                self.__build_attrs(gui_element)
+            else:
+                gui_element = None
+
+            ui_element = getattr(layout, attr)
+            if hasattr(ui_element, 'callables'):
+                if 'clicked' in ui_element.callables:
+                    gui_element.connect(ui_element.callables['clicked'])
+
+            setattr(layout, attr, gui_element)
+            setattr(self, attr, gui_element)
 
     @QtCore.Slot()
     def __gui_state_changed(self, state: QtCore.Qt.WindowState) -> None:
@@ -218,18 +227,19 @@ class Handler(QtCore.QObject):
 
 class Application(object):
     """..."""
-    def __init__(self, ui: AppFrame = None, handler: Handler = None) -> None:
+    def __init__(self, ui: AppFrame = AppFrame, handler: Handler = Handler) -> None:
         """..."""
         self.__ui = ui()
+        self.__path = pathlib.Path(__file__).parent.parent
 
         self.__qml_code = None
         self.__qml_code_iterator = 0
+        self.__qml_path = self.__path /'static'/'qml'/'main.qml'
         self.__write_qml_code(self.__ui)
 
         self.__qt_gui_application = QtGui.QGuiApplication(sys.argv)
         self.__engine = QtQml.QQmlApplicationEngine()
-        self.__engine.load(
-            pathlib.Path(__file__).parent.parent /'static'/'qml'/'main.qml')
+        self.__engine.load(self.__qml_path)
         if not self.__engine.rootObjects():
             sys.exit(-1)
 
@@ -259,15 +269,12 @@ class Application(object):
         sys.exit(self.__qt_gui_application.exec())
 
     def __write_qml_code(self, layout) -> None:
-        # button_press.object_id = "button_press"
         for attr, value in layout.__dict__.items():
             if not attr.startswith('_'):
                 getattr(layout, attr).object_id = attr
 
         self.__load_ui_build_qml(layout)
-
-        qml = pathlib.Path(__file__).parent.parent /'static'/'qml'/'main.qml'
-        qml.write_text(self.__qml_code)
+        self.__qml_path.write_text(self.__qml_code)
 
     def __load_ui_build_qml(self, layout) -> None:
         end = '\n// **closing_key**'
