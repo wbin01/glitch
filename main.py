@@ -8,6 +8,7 @@ class View(AppFrame):
         super().__init__(*args, **kwargs)
 
         self.label = self.add(Label('Hello'))
+        self.label.margins = None, None, None, 10
         self.button = self.add(Button('Button', 'document-save'))
         self.button.connect(self.on_btn)
         self.button_m = self.add(Button('Button 00', 'document-save'))
@@ -15,11 +16,13 @@ class View(AppFrame):
         self.scroll = self.add(ScrollBox())
         for item in range(5):
             btn = self.scroll.add(Button(f'Button {item}', 'document-save'))
+            btn.connect(self.on_btn)
             setattr(self, f'button_{item}', btn)
 
         self.scroll.add(Label('Olá'))
 
     def on_btn(self):
+        print(self.label.margins)
         self.label.text = 'HELLO'
 
 

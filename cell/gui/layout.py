@@ -9,6 +9,7 @@ class Layout(object):
         """..."""
         self.__obj = qt_quick_item
         self.object_id = '_' + str(id(self))
+        self.__qml = ''
 
     @property
     def object_id(self) -> str:
@@ -28,3 +29,12 @@ class Layout(object):
     @_obj.setter
     def _obj(self, obj: str) -> None:
         self.__obj = obj
+
+    @property
+    def qml(self) -> str:
+        """..."""
+        return self.__qml
+
+    @qml.setter
+    def qml(self, qml: str) -> None:
+        self.__qml = qml

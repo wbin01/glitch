@@ -1,6 +1,16 @@
 #/usr/bin/env python3
 
 
+qml_code = """
+ColumnLayout {
+    id: columnLayout
+    objectName: "columnLayout"
+            
+// **closing_key**
+}
+"""
+
+
 class Layout(object):
     """..."""
     pass
@@ -16,7 +26,8 @@ class Layout(Layout):
     def __init__(self, *args, **kwargs) -> None:
         """..."""
         self.__id = '_' + str(id(self))
-        self.__qml = self.__id
+        # self.__qml = self.__id
+        self.__qml = qml_code
         self.__added_objects = []
 
     @property

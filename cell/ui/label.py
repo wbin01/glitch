@@ -19,10 +19,18 @@ class Label(Element):
             '\n    property string qmlType: "Label"  // <className>'
             f'\n    text: "{self.__text}"'
             '\n    color: "#fff"'
+            '\n    property int topMargin: 0'
+            '\n    property int rightMargin: 0'
+            '\n    property int bottomMargin: 0'
+            '\n    property int leftMargin: 0'
+            '\n    Layout.topMargin: topMargin'
+            '\n    Layout.rightMargin: rightMargin'
+            '\n    Layout.bottomMargin: bottomMargin'
+            '\n    Layout.leftMargin: leftMargin'
             '\n}  // <suffix_id>\n')
 
         self.object_id = '_' + str(id(self))
-        self.class_name = 'Label'
+        self._element_name = 'Label'
         self.text = self.__text
 
     @property

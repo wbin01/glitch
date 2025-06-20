@@ -9,6 +9,8 @@ class Element(object):
         """..."""
         self.__obj = qt_quick_item
         self.object_id = '_' + str(id(self))
+        self.__element_name = 'Element'
+        self.__qml = ''
 
     @property
     def margins(self) -> tuple:
@@ -71,6 +73,24 @@ class Element(object):
     def object_id(self, object_id: str) -> None:
         self._obj.setProperty('id', object_id)
         self._obj.setProperty('objectName', object_id)
+
+    @property
+    def qml(self) -> str:
+        """..."""
+        return self.__qml
+
+    @qml.setter
+    def qml(self, qml: str) -> None:
+        self.__qml = qml
+
+    @property
+    def _element_name(self) -> str:
+        """..."""
+        return self.__element_name
+
+    @_element_name.setter
+    def _element_name(self, element_name: str) -> None:
+        self.__element_name = element_name
 
     @property
     def _obj(self) -> str:

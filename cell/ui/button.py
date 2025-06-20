@@ -24,10 +24,18 @@ class Button(Element):
             '\n    property string qmlType: "Button"  // <className>'
             f'\n    text: "{self.__text}"'
             f'\n    iconSource: "{self.__icon}"'
+            '\n    property int topMargin: 0'
+            '\n    property int rightMargin: 0'
+            '\n    property int bottomMargin: 0'
+            '\n    property int leftMargin: 0'
+            '\n    Layout.topMargin: topMargin'
+            '\n    Layout.rightMargin: rightMargin'
+            '\n    Layout.bottomMargin: bottomMargin'
+            '\n    Layout.leftMargin: leftMargin'
             '\n}  // <suffix_id>\n')
 
         self.object_id = '_' + str(id(self))
-        self.class_name = 'Button'
+        self._element_name = 'Button'
         self.text = self.__text
         self.icon = icon
 
