@@ -16,24 +16,24 @@ class Element(object):
     def margins(self) -> tuple:
         """Sets the `Button` margins.
 
+        A tuple with the 4 margin values. The values are in clockwise
+        order: top, right, bottom and left respectively.
+
         Get:
             (5, 10, 5, 10)
 
         Set:
-            Missing value, only from left to right.
+            It is not mandatory to pass all the values, the last value will be 
+            used to fill in the missing ones:
 
-            self.my_button.margins = 5
-            self.my_button.margins = 5, 10
-            self.my_button.margins = 5, 10, 5
-            self.my_button.margins = 5, 10, 5, 10
-            
-            If a value is missing on the left, fill it with `None`.
-            `None` records the value already present in that position.
+            `margins = 5` is equivalent to `margins = 5, 5, 5, 5`
+            `margins = 5, 10` is equivalent to `margins = 5, 10, 10, 10`
 
-            self.my_button.margins = None, 10, None, 10
-            self.my_button.margins = 5, None, None, 5
-            self.my_button.margins = None, None, 5
-            self.my_button.margins = None, None, None, 5
+            Use `None` for a value to be automatic. `None` indicates that the 
+            value is the same as before. Example:
+
+                # Change only the vertical margins (top and bottom)
+                `margins = 10, None, 10, None`
         """
         return (
             self._obj.property('topMargin'),
@@ -43,21 +43,26 @@ class Element(object):
 
     @margins.setter
     def margins(self, margins: tuple) -> None:
+        if isinstance(margins, str):
+            if not margins.isdigit():
+                return
+            margins = int(magins)
+
         prev_margins = self.margins
 
-        if isinstance(margins, int) or isinstance(margins, str):
-            top, right, bottom, left = (margins,) + prev_margins[1:]
+        if isinstance(margins, int):
+            top, right, bottom, left = margins, margins, margins, margins
         elif len(margins) == 2:
-            top, right, bottom, left = margins + prev_margins[2:]
+            top, right, bottom, left = margins + (margins[1], margins[1])
         elif len(margins) == 3:
-            top, right, bottom, left = margins + (prev_margins[-1],)
+            top, right, bottom, left = margins + (margins[2],)
         else:
             top, right, bottom, left = margins[:4]
 
-        top = prev_margins[0] if not top else top
-        right = prev_margins[1] if not right else right
-        bottom = prev_margins[2] if not bottom else bottom
-        left = prev_margins[3] if not left else left
+        top = prev_margins[0] if top is None else top
+        right = prev_margins[1] if right is None else right
+        bottom = prev_margins[2] if bottom is None else bottom
+        left = prev_margins[3] if left is None else left
 
         self._obj.setProperty('topMargin', top)
         self._obj.setProperty('rightMargin', right)

@@ -9,20 +9,24 @@ class View(AppFrame):
 
         self.label = self.add(Label('Hello'))
         self.label.margins = None, None, None, 10
+
         self.button = self.add(Button('Button', 'document-save'))
+        self.button.margins = 5, None, None, None
+        print(self.button.margins)
         self.button.connect(self.on_btn)
+
         self.button_m = self.add(Button('Button 00', 'document-save'))
 
         self.scroll = self.add(ScrollBox())
         for item in range(5):
             btn = self.scroll.add(Button(f'Button {item}', 'document-save'))
+            btn.margins = 5, 5, 5, 5
             btn.connect(self.on_btn)
             setattr(self, f'button_{item}', btn)
 
         self.scroll.add(Label('Olá'))
 
     def on_btn(self):
-        print(self.label.margins)
         self.label.text = 'HELLO'
 
 
@@ -31,6 +35,8 @@ class Controller(Handler):
         super().__init__(*args, **kwargs)
         self.num = 0
         self.button.connect(self.on_button)
+        self.button.margins = None, 10, None, None
+        print(self.button.margins)
         self.button_m.connect(self.on_button)
 
         for item in range(5):
@@ -47,5 +53,5 @@ class Controller(Handler):
 
 
 if __name__ == '__main__':
-    app = Application(View)
+    app = Application(View, Controller)
     app.exec()
