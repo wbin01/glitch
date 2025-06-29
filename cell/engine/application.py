@@ -126,8 +126,8 @@ class Handler(QtCore.QObject):
     def __build_state_style(self) -> None:
         for child in self.__childrens:
             if child.property('qmlType') == 'Button':
-                button = self.__gui.findChild(
-                    QtCore.QObject, child.objectName())
+                # button = self.__gui.findChild(
+                #     QtCore.QObject, child.objectName())
 
                 child.clicked.connect(self.__button_clicked)
                 child.hoveredChanged.connect(
@@ -227,9 +227,11 @@ class Handler(QtCore.QObject):
 
 class Application(object):
     """..."""
-    def __init__(self, ui: AppFrame = AppFrame, handler: Handler = Handler) -> None:
+    def __init__(
+            self, app_frame: AppFrame = AppFrame, handler: Handler = Handler
+            ) -> None:
         """..."""
-        self.__ui = ui()
+        self.__ui = app_frame()
         self.__path = pathlib.Path(__file__).parent.parent
 
         self.__qml_code = None
@@ -249,16 +251,22 @@ class Application(object):
         self.__handler = handler(self.__gui, self.__ui)
 
     @property
-    def handler(self) -> None:
-        """..."""
+    def app_frame(self) -> AppFrame:
         return self.__handler
 
-    @handler.setter
-    def handler(self, handler: Handler) -> None:
-        self.__handler = handler
-        self.__handler.gui = self.__gui
-        self.__handler.ui = self.__ui
-        self.__handler.start_connections()
+
+    @app_frame.setter
+    def app_frame(self, app_frame: AppFrame) -> None:
+        pass
+
+    @property
+    def handlers(self) -> Handler:
+        """..."""
+        return self.__ui
+
+    @handlers.setter
+    def handlers(self, handler: Handler) -> None:
+        pass
 
     def exec(self) -> None:
         """..."""

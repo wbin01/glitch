@@ -9,7 +9,7 @@ class Element(object):
         """..."""
         self.__obj = qt_quick_item
         self.object_id = '_' + str(id(self))
-        self.__element_name = 'Element'
+        self.__element_type = 'Element'
         self.__qml = ''
 
     @property
@@ -89,13 +89,13 @@ class Element(object):
         self.__qml = qml
 
     @property
-    def _element_name(self) -> str:
+    def _element_type(self) -> str:
         """..."""
-        return self.__element_name
+        return self.__element_type
 
-    @_element_name.setter
-    def _element_name(self, element_name: str) -> None:
-        self.__element_name = element_name
+    @_element_type.setter
+    def _element_type(self, element_type: str) -> None:
+        self.__element_type = element_type
 
     @property
     def _obj(self) -> str:

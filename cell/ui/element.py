@@ -30,11 +30,11 @@ class Element(object):
         """..."""
         self.__qml = qml_code
         self.__id = '_' + str(id(self))
-        self.__element_name = 'Element'
+        self.__element_type = 'Element'
         self.__obj = self
 
         self.object_id = self.__id
-        self._element_name = self.__element_name
+        self._element_type = self.__element_type
 
     @property
     def margins(self) -> tuple:
@@ -141,23 +141,23 @@ class Element(object):
         self.__qml = qml
 
     @property
-    def _element_name(self) -> str:
+    def _element_type(self) -> str:
         """..."""
-        return self.__element_name
+        return self.__element_type
 
-    @_element_name.setter
-    def _element_name(self, element_name: str) -> None:
+    @_element_type.setter
+    def _element_type(self, element_type: str) -> None:
         qml_lines = []
         for line in self.__qml.split('\n'):
             if line.strip().endswith('// <className>'):
                 qml_lines.append(
-                    f'    property string qmlType: "{element_name}"  '
+                    f'    property string qmlType: "{element_type}"  '
                     '// <className>')
             else:
                 qml_lines.append(line)
 
         self.__qml = '\n'.join(qml_lines)
-        self.__element_name = element_name
+        self.__element_type = element_type
 
     @property
     def _obj(self) -> str:
