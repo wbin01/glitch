@@ -22,5 +22,14 @@ class Button(Element):
     def text(self, text: str) -> None:
         self._obj.setProperty('text', text)
 
+    @property
+    def icon(self) -> str:
+        """..."""
+        return self.__icon
+
+    @icon.setter
+    def icon(self, name: str) -> None:
+        self._obj.setProperty('icon', name)
+
     def connect(self, func: callable) -> None:
         self._obj.clicked.connect(func)

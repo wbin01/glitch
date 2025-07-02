@@ -1,20 +1,20 @@
-# test_main.py
-import unittest
+#/usr/bin/env python3
+import os
 import sys
+import unittest
+
 from PySide6.QtWidgets import QApplication
 # from PySide6.QtQml import QQmlApplicationEngine
 # from PySide6.QtQuick import QQuickWindow
 from PySide6.QtTest import QTest
 from PySide6.QtCore import Qt
 
-#/usr/bin/env python3
-import sys
-import os
 sys.path.insert(
     0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from cell.engine import Application, Handler
 from cell.ui import AppFrame, Button, Label, ScrollBox
+
 
 class App(AppFrame):
     def __init__(self, *args, **kwargs) -> None:
@@ -30,11 +30,7 @@ class TestQMLButton(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        # cls.app = QApplication.instance()
         cls.application = Application(App)
-        if cls.application is None:
-            cls.application = Application(App)
-
         cls.app = cls.application.app_frame
         cls.handler = cls.application.handlers
 
