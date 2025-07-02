@@ -31,8 +31,7 @@ class TestQMLButton(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.application = Application(App)
-        cls.app = cls.application.app_frame
-        cls.handler = cls.application.handlers
+        cls.app = cls.application.app_frame()
 
     def test_button(self):
         self.assertIsNotNone(self.app.button.text)
@@ -40,6 +39,6 @@ class TestQMLButton(unittest.TestCase):
     def test_button_text(self):
         self.assertEqual(self.app.button.text, 'Button')
         # QTest.mouseClick(self.app.button._obj, Qt.LeftButton)
-        self.handler.on_button()
+        self.app.on_button()
         self.assertEqual(self.app.button.text, 'Clicked')
 

@@ -110,7 +110,8 @@ class Handler(QtCore.QObject):
     buttonClicked = QtCore.Signal()
 
     def __init__(
-            self, gui: QtQuick.QQuickWindow = None, ui: AppFrame = None) -> None:
+            self, gui: QtQuick.QQuickWindow = None, ui: AppFrame = None
+            ) -> None:
         """..."""
         super().__init__()
         self.__gui = gui
@@ -250,23 +251,9 @@ class Application(object):
 
         self.__handler = handler(self.__gui, self.__ui)
 
-    @property
-    def app_frame(self) -> AppFrame:
-        return self.__handler
-
-
-    @app_frame.setter
-    def app_frame(self, app_frame: AppFrame) -> None:
-        pass
-
-    @property
-    def handlers(self) -> Handler:
+    def app_frame(self) -> Handler:
         """..."""
         return self.__ui
-
-    @handlers.setter
-    def handlers(self, handler: Handler) -> None:
-        pass
 
     def exec(self) -> None:
         """..."""
