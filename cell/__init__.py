@@ -1,3 +1,3 @@
 #/usr/bin/env python3
 from .ui import AppFrame
-from .engine import Application, Handler
+from .core import Application, Handler

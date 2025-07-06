@@ -12,7 +12,7 @@ from PySide6.QtCore import Qt
 sys.path.insert(
     0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from cell.engine import Application, Handler
+from cell.core import Application, Handler
 from cell.ui import AppFrame, Button, Label, ScrollBox
 
 
@@ -41,4 +41,3 @@ class TestQMLButton(unittest.TestCase):
         # QTest.mouseClick(self.app.button._obj, Qt.LeftButton)
         self.app.on_button()
         self.assertEqual(self.app.button.text, 'Clicked')
-

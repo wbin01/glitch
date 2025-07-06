@@ -1,5 +1,5 @@
 #/usr/bin/env python3
-from cell.engine import Application, Handler
+from cell.core import Application, Handler
 from cell.ui import AppFrame, Button, Label, ScrollBox
 
 
@@ -30,7 +30,7 @@ class View(AppFrame):
         self.label.text = 'HELLO'
 
 
-class Controller(Handler):
+class Control(Handler):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self.num = 0
@@ -53,5 +53,5 @@ class Controller(Handler):
 
 
 if __name__ == '__main__':
-    app = Application(View, Controller)
+    app = Application(View, Control)
     app.exec()
