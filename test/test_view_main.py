@@ -13,10 +13,10 @@ sys.path.insert(
     0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from cell.core import Application, Handler
-from cell.ui import AppFrame, Button, Label, ScrollBox
+from cell.ui import MainFrame, Button, Label, ScrollBox
 
 
-class App(AppFrame):
+class App(MainFrame):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self.button = self.add(Button('Button', 'document-save'))
