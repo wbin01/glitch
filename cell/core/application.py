@@ -138,7 +138,7 @@ class Handler(QtCore.QObject):
                 child.released.connect(
                     lambda child=child: self.__button_hover(child))
 
-    def __build_attrs(self, layout) -> None: 
+    def __build_attrs(self, layout) -> None:
         for attr, value in layout.__dict__.items():
             if attr.startswith('_'):
                 continue

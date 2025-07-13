@@ -2,6 +2,7 @@
 import pathlib
 
 from .element import Element
+from ..enum.event import Event
 
 
 class Button(Element):
@@ -40,6 +41,7 @@ class Button(Element):
         self.icon = icon
 
         self.callables = {}
+        self.callbacks = {}
 
     @property
     def text(self) -> str:
@@ -66,5 +68,7 @@ class Button(Element):
             f'\n    iconSource: "{icon}"')
         self.__icon = icon
 
-    def connect(self, func: callable) -> None:
-        self.callables['clicked'] = func
+    def connect(
+            self, method: callable, event: Event = Event.MOUSE_PRESS) -> None:
+        """..."""
+        self.callbacks[event] = method

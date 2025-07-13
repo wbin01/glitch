@@ -2,6 +2,7 @@
 from PySide6 import QtCore
 
 from .element import Element
+from ..enum.event import Event
 
 
 class Button(Element):
@@ -31,5 +32,8 @@ class Button(Element):
     def icon(self, name: str) -> None:
         self._obj.setProperty('icon', name)
 
-    def connect(self, func: callable) -> None:
-        self._obj.clicked.connect(func)
+    def connect(
+            self, method: callable, event: Event = Event.MOUSE_PRESS) -> None:
+        """..."""
+        if event == Event.MOUSE_PRESS:
+            self._obj.clicked.connect(method)

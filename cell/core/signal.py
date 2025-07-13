@@ -2,7 +2,7 @@
 from PySide6 import QtCore
 
 
-class CoreSignal(QtCore.QObject):
+class BaseSignal(QtCore.QObject):
     """Event Signals.
 
     Signals are connections to events. When an event such as a mouse click 
@@ -50,7 +50,7 @@ class CoreSignal(QtCore.QObject):
         self.__signal.emit()
 
     def __str__(self) -> str:
-        return f'<CoreSignal: {id(self)}>'
+        return f'<BaseSignal: {id(self)}>'
 
 
 
@@ -73,7 +73,7 @@ class Signal(object):
 
         When a signal is emitted, it performs the connected function.
         """
-        self.__signal = CoreSignal()
+        self.__signal = BaseSignal()
         self.__callback = None
 
     @property

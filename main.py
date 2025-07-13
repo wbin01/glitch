@@ -1,6 +1,7 @@
 #/usr/bin/env python3
 from cell.core import Application, Handler
-from cell.ui import MainFrame, Button, Label, ScrollBox
+from cell.enum import Event
+from cell.ui import Button, Label, MainFrame, ScrollBox
 
 
 class View(MainFrame):
@@ -12,7 +13,6 @@ class View(MainFrame):
 
         self.button = self.add(Button('Button', 'document-save'))
         self.button.margins = 5, None, None, None
-        print(self.button.margins)
         self.button.connect(self.on_btn)
 
         self.button_m = self.add(Button('Button 00', 'document-save'))
@@ -36,7 +36,6 @@ class Control(Handler):
         self.num = 0
         self.button.connect(self.on_button)
         self.button.margins = None, 10, None, None
-        print(self.button.margins)
         self.button_m.connect(self.on_button)
 
         for item in range(5):
