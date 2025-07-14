@@ -7,6 +7,7 @@ from PySide6 import QtCore, QtGui, QtQml, QtQuick
 from ..ui.layout import Layout
 from ..ui.main_frame import MainFrame
 from cell import gui
+from ..enum.event import Event
 
 
 style = {
@@ -158,9 +159,10 @@ class Handler(QtCore.QObject):
                 gui_element = None
 
             ui_element = getattr(layout, attr)
-            if hasattr(ui_element, 'callables'):
-                if 'clicked' in ui_element.callables:
-                    gui_element.connect(ui_element.callables['clicked'])
+            if hasattr(ui_element, 'callbacks'):
+                if Event.MOUSE_PRESS in ui_element.callbacks:
+                    gui_element.connect(
+                        ui_element.callbacks[Event.MOUSE_PRESS])
 
             setattr(layout, attr, gui_element)
             setattr(self, attr, gui_element)
