@@ -5,8 +5,6 @@ import pathlib
 from PySide6 import QtCore, QtGui, QtQml, QtQuick
 
 from .handler import Handler
-from .. import gui
-from ..enum.event import Event
 from ..ui.layout import Layout
 from ..ui.main_frame import MainFrame
 
@@ -33,6 +31,11 @@ class AppEventFilter(QtCore.QObject):
         return super().eventFilter(obj, event)
 
     def __state_style(self, state: str = '') -> None:
+        # MainFrame state colors
+        # Label state colors
+        # Button state colors
+
+    # MainFrame state colors
         self.__main_rect.setProperty(
             'color',
             self.__style[f'[MainFrame{state}]']['background_color'])
@@ -40,12 +43,14 @@ class AppEventFilter(QtCore.QObject):
             'borderColor',
             self.__style[f'[MainFrame{state}]']['border_color'])
 
+    # Label state colors
         for child in self.__childrens:
             # child.metaObject().className()
             if child.property('qmlType') == 'Label':
                 child.setProperty(
                     'color', self.__style[f'[Label{state}]']['font_color'])
 
+    # Button state colors
             if child.property('qmlType') == 'Button':
                 child.findChild(
                     QtCore.QObject, 'buttonBackground').setProperty(
@@ -79,7 +84,7 @@ class Application(object):
         self.__qml_code = None
         self.__qml_code_iterator = 0
         self.__qml_path = self.__path /'static'/'qml'/'main.qml'
-        self.__write_qml_code(self.__ui)
+        self.__write_qml(self.__ui)
 
         self.__qt_gui_application = QtGui.QGuiApplication(sys.argv)
         self.__engine = QtQml.QQmlApplicationEngine()
@@ -104,15 +109,17 @@ class Application(object):
         self.__engine.rootContext().setContextProperty('logic', self.__handler)
         sys.exit(self.__qt_gui_application.exec())
 
-    def __write_qml_code(self, layout) -> None:
+    def __write_qml(self, layout) -> None:
+        # Iterate attributes
+        # Parse QML
+        # Save/Write QML
+
+    # Iterate attributes
         for attr, value in layout.__dict__.items():
             if not attr.startswith('_'):
                 getattr(layout, attr).object_id = attr
 
-        self.__load_ui_build_qml(layout)
-        self.__qml_path.write_text(self.__qml_code)
-
-    def __load_ui_build_qml(self, layout) -> None:
+    # Parse QML
         end = '\n// **closing_key**'
         layout.qml, ui_close = layout.qml.split(end)
         for element in layout.added_objects:
@@ -124,7 +131,7 @@ class Application(object):
 
             if isinstance(element, Layout):
                 self.__qml_code_iterator += 1
-                self.__write_qml_code(element)
+                self.__write_qml(element)
 
             layout.qml += '\n'.join(
                 [tab + x if x else ''
@@ -134,3 +141,6 @@ class Application(object):
                 layout.qml += elm_close.replace('\n', '\n' + tab)
 
         self.__qml_code = layout.qml + ui_close
+
+    # Save/Write QML
+        self.__qml_path.write_text(self.__qml_code)
