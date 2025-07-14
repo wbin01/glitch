@@ -1,0 +1,135 @@
+#/usr/bin/env python3
+from PySide6 import QtCore, QtQuick
+
+from .. import gui
+from ..enum.event import Event
+from ..ui.main_frame import MainFrame
+
+
+class Handler(QtCore.QObject):
+    """..."""
+    buttonClicked = QtCore.Signal()
+
+    def __init__(
+            self, gui: QtQuick.QQuickWindow = None, ui: MainFrame = None
+            ) -> None:
+        """..."""
+        super().__init__()
+        self.__gui = gui
+        self.__ui = ui
+        self.__main_rect = self.__gui.findChild(QtCore.QObject, 'mainRect')
+        self.__childrens = self.__main_rect.findChildren(
+            QtCore.QObject, options=QtCore.Qt.FindChildrenRecursively)
+
+        self.__gui.windowStateChanged.connect(self.__gui_state_changed)
+        self.__build_state_style()
+        self.__build_attrs(self.__ui)
+
+    def __build_state_style(self) -> None:
+        for child in self.__childrens:
+            if child.property('qmlType') == 'Button':
+                # button = self.__gui.findChild(
+                #     QtCore.QObject, child.objectName())
+
+                child.clicked.connect(self.__button_clicked)
+                child.hoveredChanged.connect(
+                    lambda child=child: self.__button_hover(child))
+                child.pressed.connect(
+                    lambda child=child: self.__button_pressed(child))
+                child.released.connect(
+                    lambda child=child: self.__button_hover(child))
+
+    def __build_attrs(self, layout) -> None:
+        for attr, value in layout.__dict__.items():
+            if attr.startswith('_'):
+                continue
+
+            obj_value = self.__gui.findChild(QtCore.QObject, attr)
+            if not obj_value:
+                continue
+
+            if obj_value.property('qmlType') == 'Button':
+                gui_element = gui.Button(obj_value)
+            elif obj_value.property('qmlType') == 'Label':
+                gui_element = gui.Label(obj_value)
+            elif obj_value.property('qmlType') == 'ScrollBox':
+                gui_element = gui.ScrollBox(obj_value)
+                self.__build_attrs(gui_element)
+            else:
+                gui_element = None
+
+            ui_element = getattr(layout, attr)
+            if hasattr(ui_element, 'callbacks'):
+                if Event.MOUSE_PRESS in ui_element.callbacks:
+                    gui_element.connect(
+                        ui_element.callbacks[Event.MOUSE_PRESS])
+
+            setattr(layout, attr, gui_element)
+            setattr(self, attr, gui_element)
+
+    @QtCore.Slot()
+    def __gui_state_changed(self, state: QtCore.Qt.WindowState) -> None:
+        if self.__main_rect:
+            if (state & QtCore.Qt.WindowFullScreen
+                    or state & QtCore.Qt.WindowMaximized):
+                self.__main_rect.setProperty('radius', 0)
+                self.__main_rect.setProperty('borderWidth', 0)
+                self.__main_rect.setProperty('margins', 0)
+            else:  # WindowNoState
+                self.__main_rect.setProperty(
+                    'radius',
+                    self.__ui.style['[MainFrame]']['border_radius'])
+                self.__main_rect.setProperty('borderWidth', 1)
+                self.__main_rect.setProperty('margins', 1)
+
+    @QtCore.Slot()
+    def __button_clicked(self) -> None:
+        if self.__main_rect.property('isActive'):
+            self.buttonClicked.emit()
+
+    @QtCore.Slot()
+    def __button_pressed(self, button: QtQuick.QQuickItem) -> None:
+        if self.__main_rect.property('isActive'):
+            button.findChild(QtCore.QObject, 'buttonBackground').setProperty(
+                'color',
+                self.__ui.style['[Button:clicked]']['background_color'])
+            button.findChild(QtCore.QObject, 'buttonBackground').setProperty(
+                'borderColor',
+                self.__ui.style['[Button:clicked]']['border_color'])
+
+            button_text = button.findChild(QtCore.QObject, 'text')
+            button_text.setProperty(
+                'color',
+                self.__ui.style['[Button:clicked]']['font_color'])
+
+    @QtCore.Slot()
+    def __button_hover(self, button: QtQuick.QQuickItem) -> None:
+        is_active = self.__main_rect.property('isActive')
+
+        if button.property('hovered'):
+            state = ':hover' if is_active else ':inactive'
+        else:
+            state = '' if is_active else ':inactive'
+
+        button.findChild(QtCore.QObject, 'buttonBackground').setProperty(
+            'color',
+            self.__ui.style[f'[Button{state}]']['background_color'])
+        button.findChild(QtCore.QObject, 'buttonBackground').setProperty(
+            'borderColor',
+            self.__ui.style[f'[Button{state}]']['border_color'])
+
+        button_text = button.findChild(QtCore.QObject, 'text')
+        button_text.setProperty(
+            'color',
+            self.__ui.style[f'[Button{state}]']['font_color'])
+
+    @QtCore.Slot()
+    def start_move(self) -> None:
+        """..."""
+        self.__gui.startSystemMove()
+
+    @QtCore.Slot(int)
+    def start_resize(self, edge: int) -> None:
+        """..."""
+        edge = QtCore.Qt.Edge(edge)
+        self.__gui.startSystemResize(edge)

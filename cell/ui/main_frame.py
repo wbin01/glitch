@@ -1,5 +1,6 @@
 #/usr/bin/env python3
 from .layout import Layout
+from ..platform.style import Style
 
 
 object_code = """
@@ -194,3 +195,8 @@ class MainFrame(Layout):
         super().__init__('AppFrame', *args, **kwargs)
         self.object_id = 'appFrame'
         self.qml = object_code
+        self.__style = Style().style
+
+    @property
+    def style(self) -> dict:
+        return self.__style
