@@ -31,11 +31,8 @@ class AppEventFilter(QtCore.QObject):
         return super().eventFilter(obj, event)
 
     def __state_style(self, state: str = '') -> None:
+        # TODO: automate state style
         # MainFrame state colors
-        # Label state colors
-        # Button state colors
-
-    # MainFrame state colors
         self.__main_rect.setProperty(
             'color',
             self.__style[f'[MainFrame{state}]']['background_color'])
@@ -43,21 +40,21 @@ class AppEventFilter(QtCore.QObject):
             'borderColor',
             self.__style[f'[MainFrame{state}]']['border_color'])
 
-    # Label state colors
+        # Label state colors
         for child in self.__childrens:
             # child.metaObject().className()
             if child.property('qmlType') == 'Label':
                 child.setProperty(
                     'color', self.__style[f'[Label{state}]']['font_color'])
 
-    # Button state colors
+        # Button state colors
             if child.property('qmlType') == 'Button':
                 child.findChild(
-                    QtCore.QObject, 'buttonBackground').setProperty(
-                    'color',
+                    QtCore.QObject, 'background').setProperty(
+                    'backgroundColor',
                     self.__style[f'[Button{state}]']['background_color'])
                 child.findChild(
-                    QtCore.QObject, 'buttonBackground').setProperty(
+                    QtCore.QObject, 'background').setProperty(
                     'borderColor',
                     self.__style[f'[Button{state}]']['border_color'])
 
@@ -110,24 +107,20 @@ class Application(object):
         sys.exit(self.__qt_gui_application.exec())
 
     def __write_qml(self, layout) -> None:
-        # Iterate attributes
-        # Parse QML
-        # Save/Write QML
-
-    # Iterate attributes
+        # object_id as variable name
         for attr, value in layout.__dict__.items():
             if not attr.startswith('_'):
                 getattr(layout, attr).object_id = attr
 
-    # Parse QML
+        # Parse QML
         end = '\n// **closing_key**'
         layout.qml, ui_close = layout.qml.split(end)
         for element in layout.added_objects:
             tab = ' ' * 12 if self.__qml_code_iterator == 0 else '    '
 
-            elm_close = None
+            element_close = None
             if end in element.qml:
-                elm_close = element.qml.split(end)[1]
+                element_close = element.qml.split(end)[1]
 
             if isinstance(element, Layout):
                 self.__qml_code_iterator += 1
@@ -137,10 +130,8 @@ class Application(object):
                 [tab + x if x else ''
                 for x in element.qml.split(end)[0].split('\n')])
 
-            if elm_close:
-                layout.qml += elm_close.replace('\n', '\n' + tab)
+            if element_close:
+                layout.qml += element_close.replace('\n', '\n' + tab)
 
         self.__qml_code = layout.qml + ui_close
-
-    # Save/Write QML
         self.__qml_path.write_text(self.__qml_code)

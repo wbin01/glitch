@@ -8,7 +8,6 @@ from ..ui.main_frame import MainFrame
 
 class Handler(QtCore.QObject):
     """..."""
-    buttonClicked = QtCore.Signal()
 
     def __init__(
             self, gui: QtQuick.QQuickWindow = None, ui: MainFrame = None
@@ -31,13 +30,13 @@ class Handler(QtCore.QObject):
                 # button = self.__gui.findChild(
                 #     QtCore.QObject, child.objectName())
 
-                child.clicked.connect(self.__button_clicked)
+                child.clicked.connect(self.__element_clicked)
                 child.hoveredChanged.connect(
-                    lambda child=child: self.__button_hover(child))
+                    lambda child=child: self.__element_hover(child))
                 child.pressed.connect(
-                    lambda child=child: self.__button_pressed(child))
+                    lambda child=child: self.__element_pressed(child))
                 child.released.connect(
-                    lambda child=child: self.__button_hover(child))
+                    lambda child=child: self.__element_hover(child))
 
     def __build_attrs(self, layout) -> None:
         for attr, value in layout.__dict__.items():
@@ -83,45 +82,51 @@ class Handler(QtCore.QObject):
                 self.__main_rect.setProperty('margins', 1)
 
     @QtCore.Slot()
-    def __button_clicked(self) -> None:
-        if self.__main_rect.property('isActive'):
-            self.buttonClicked.emit()
+    def __element_clicked(self) -> None:
+        if not self.__main_rect.property('isActive'):
+            return
 
     @QtCore.Slot()
-    def __button_pressed(self, button: QtQuick.QQuickItem) -> None:
-        if self.__main_rect.property('isActive'):
-            button.findChild(QtCore.QObject, 'buttonBackground').setProperty(
-                'color',
-                self.__ui.style['[Button:clicked]']['background_color'])
-            button.findChild(QtCore.QObject, 'buttonBackground').setProperty(
-                'borderColor',
-                self.__ui.style['[Button:clicked]']['border_color'])
+    def __element_pressed(self, element: QtQuick.QQuickItem) -> None:
+        name = f'[{element.property('qmlType')}:clicked]'
 
-            button_text = button.findChild(QtCore.QObject, 'text')
-            button_text.setProperty(
-                'color',
-                self.__ui.style['[Button:clicked]']['font_color'])
+        if not self.__main_rect.property('isActive'):
+            return
+
+        base_element = element.findChild(QtCore.QObject, 'background')
+        if base_element:
+            base_element.setProperty(
+                'backgroundColor', self.__ui.style[name]['background_color'])
+            base_element.setProperty(
+                'borderColor', self.__ui.style[name]['border_color'])
+
+        base_element = element.findChild(QtCore.QObject, 'text')
+        if base_element:
+            base_element.setProperty(
+                'backgroundColor', self.__ui.style[name]['font_color'])
 
     @QtCore.Slot()
-    def __button_hover(self, button: QtQuick.QQuickItem) -> None:
+    def __element_hover(self, element: QtQuick.QQuickItem) -> None:
         is_active = self.__main_rect.property('isActive')
 
-        if button.property('hovered'):
+        if element.property('hovered'):
             state = ':hover' if is_active else ':inactive'
         else:
             state = '' if is_active else ':inactive'
 
-        button.findChild(QtCore.QObject, 'buttonBackground').setProperty(
-            'color',
-            self.__ui.style[f'[Button{state}]']['background_color'])
-        button.findChild(QtCore.QObject, 'buttonBackground').setProperty(
-            'borderColor',
-            self.__ui.style[f'[Button{state}]']['border_color'])
+        name = f'[{element.property('qmlType')}{state}]'
 
-        button_text = button.findChild(QtCore.QObject, 'text')
-        button_text.setProperty(
-            'color',
-            self.__ui.style[f'[Button{state}]']['font_color'])
+        base_element = element.findChild(QtCore.QObject, 'background')
+        if base_element:
+            base_element.setProperty(
+                'backgroundColor', self.__ui.style[name]['background_color'])
+            base_element.setProperty(
+                'borderColor', self.__ui.style[name]['border_color'])
+
+        base_element = element.findChild(QtCore.QObject, 'text')
+        if base_element:
+            base_element.setProperty(
+                'color', self.__ui.style[name]['font_color'])
 
     @QtCore.Slot()
     def start_move(self) -> None:

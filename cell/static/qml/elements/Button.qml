@@ -56,9 +56,11 @@ Button {
     }
 
     background: Rectangle {
-        id: buttonBackground
-        objectName: "buttonBackground"
-        color: "#444"
+        id: background
+        objectName: "background"
+
+        property color backgroundColor: "#444"
+        color: background.backgroundColor
 
         property color borderColor: "#444"
         border.color: background.borderColor
