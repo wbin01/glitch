@@ -31,6 +31,8 @@ class Handler(QtCore.QObject):
             'background': {
                 'backgroundColor': 'background_color',
                 'borderColor': 'border_color'},
+            'icon': {
+                'opacity': 'icon_opacity'},
             }
         self.__build_state_style()
         self.__build_attrs(self.__ui)
@@ -80,6 +82,7 @@ class Handler(QtCore.QObject):
 
     @QtCore.Slot()
     def __gui_state_changed(self, state: QtCore.Qt.WindowState) -> None:
+        # Fullscreen borders
         if self.__main_rect:
             if (state & QtCore.Qt.WindowFullScreen
                     or state & QtCore.Qt.WindowMaximized):
@@ -100,6 +103,7 @@ class Handler(QtCore.QObject):
 
     @QtCore.Slot()
     def __element_pressed(self, element: QtQuick.QQuickItem) -> None:
+        # Elements pressed state colors
         name = f'[{element.property('qmlType')}:clicked]'
 
         if not self.__main_rect.property('isActive'):
@@ -119,6 +123,7 @@ class Handler(QtCore.QObject):
 
     @QtCore.Slot()
     def __element_hover(self, element: QtQuick.QQuickItem) -> None:
+        # Elements hover state colors
         is_active = self.__main_rect.property('isActive')
 
         if element.property('hovered'):

@@ -31,7 +31,6 @@ class AppEventFilter(QtCore.QObject):
         return super().eventFilter(obj, event)
 
     def __state_style(self, state: str = '') -> None:
-        # TODO: automate state style
         # MainFrame state colors
         self.__main_rect.setProperty(
             'color',
@@ -40,33 +39,36 @@ class AppEventFilter(QtCore.QObject):
             'borderColor',
             self.__style[f'[MainFrame{state}]']['border_color'])
 
-        # Label state colors
-        for child in self.__childrens:
-            # child.metaObject().className()
-            if child.property('qmlType') == 'Label':
-                child.setProperty(
-                    'color', self.__style[f'[Label{state}]']['font_color'])
+        # Elements state colors
+        element_properties = {
+            'color': 'font_color',
+            'backgroundColor': 'background_color',
+            'borderColor': 'border_color',
+            'text': {
+                'color': 'font_color'},
+            'background': {
+                'backgroundColor': 'background_color',
+                'borderColor': 'border_color'},
+            'icon': {
+                'opacity': 'icon_opacity'},
+            }
 
-        # Button state colors
-            if child.property('qmlType') == 'Button':
-                child.findChild(
-                    QtCore.QObject, 'background').setProperty(
-                    'backgroundColor',
-                    self.__style[f'[Button{state}]']['background_color'])
-                child.findChild(
-                    QtCore.QObject, 'background').setProperty(
-                    'borderColor',
-                    self.__style[f'[Button{state}]']['border_color'])
+        for element in self.__childrens:  # element.metaObject().className()
+            if element.property('qmlType') not in ['Button', 'Label']:
+                continue
 
-                child_icon = child.findChild(QtCore.QObject, 'icon')
-                child_icon.setProperty(
-                    'opacity',
-                    self.__style[f'[Button{state}]']['icon_opacity'])
-
-                child_text = child.findChild(QtCore.QObject, 'text')
-                child_text.setProperty(
-                    'color',
-                    self.__style[f'[Button{state}]']['font_color'])
+            name = f'[{element.property('qmlType')}{state}]'
+            for key, value in element_properties.items():
+                if isinstance(value, str):
+                    if element.property(key):
+                        element.setProperty(key, self.__style[name][value])
+                else:
+                    base_element = element.findChild(QtCore.QObject, key)
+                    if base_element:
+                        for key_, value_ in value.items():
+                            if base_element.property(key_):
+                                base_element.setProperty(
+                                    key_, self.__style[name][value_])
 
 
 class Application(object):
