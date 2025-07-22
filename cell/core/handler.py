@@ -21,6 +21,17 @@ class Handler(QtCore.QObject):
             QtCore.QObject, options=QtCore.Qt.FindChildrenRecursively)
 
         self.__gui.windowStateChanged.connect(self.__gui_state_changed)
+
+        self.__element_properties = {
+            'color': 'font_color',
+            'backgroundColor': 'background_color',
+            'borderColor': 'border_color',
+            'text': {
+                'color': 'font_color'},
+            'background': {
+                'backgroundColor': 'background_color',
+                'borderColor': 'border_color'},
+            }
         self.__build_state_style()
         self.__build_attrs(self.__ui)
 
@@ -94,18 +105,7 @@ class Handler(QtCore.QObject):
         if not self.__main_rect.property('isActive'):
             return
 
-        element_properties = {
-            'color': 'font_color',
-            'backgroundColor': 'background_color',
-            'borderColor': 'border_color',
-            'text': {
-                'color': 'font_color'},
-            'background': {
-                'backgroundColor': 'background_color',
-                'borderColor': 'border_color'},
-            }
-
-        for key, value in element_properties.items():
+        for key, value in self.__element_properties.items():
             if isinstance(value, str):
                 if element.property(key):
                     element.setProperty(key, self.__ui.style[name][value])
@@ -127,18 +127,17 @@ class Handler(QtCore.QObject):
             state = '' if is_active else ':inactive'
 
         name = f'[{element.property('qmlType')}{state}]'
-
-        base_element = element.findChild(QtCore.QObject, 'background')
-        if base_element:
-            base_element.setProperty(
-                'backgroundColor', self.__ui.style[name]['background_color'])
-            base_element.setProperty(
-                'borderColor', self.__ui.style[name]['border_color'])
-
-        base_element = element.findChild(QtCore.QObject, 'text')
-        if base_element:
-            base_element.setProperty(
-                'color', self.__ui.style[name]['font_color'])
+        for key, value in self.__element_properties.items():
+            if isinstance(value, str):
+                if element.property(key):
+                    element.setProperty(key, self.__ui.style[name][value])
+            else:
+                base_element = element.findChild(QtCore.QObject, key)
+                if base_element:
+                    for key_, value_ in value.items():
+                        if base_element.property(key_):
+                            base_element.setProperty(
+                                key_, self.__ui.style[name][value_])
 
     @QtCore.Slot()
     def start_move(self) -> None:
