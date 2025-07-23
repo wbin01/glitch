@@ -5,6 +5,7 @@ import pathlib
 from PySide6 import QtCore, QtGui, QtQml, QtQuick
 
 from .handler import Handler
+from .tools import change_element_style_state
 from ..ui.layout import Layout
 from ..ui.main_frame import MainFrame
 
@@ -39,36 +40,8 @@ class AppEventFilter(QtCore.QObject):
             'borderColor',
             self.__style[f'[MainFrame{state}]']['border_color'])
 
-        # Elements state colors
-        element_properties = {
-            'color': 'font_color',
-            'backgroundColor': 'background_color',
-            'borderColor': 'border_color',
-            'text': {
-                'color': 'font_color'},
-            'background': {
-                'backgroundColor': 'background_color',
-                'borderColor': 'border_color'},
-            'icon': {
-                'opacity': 'icon_opacity'},
-            }
-
         for element in self.__childrens:  # element.metaObject().className()
-            if element.property('qmlType') not in ['Button', 'Label']:
-                continue
-
-            name = f'[{element.property('qmlType')}{state}]'
-            for key, value in element_properties.items():
-                if isinstance(value, str):
-                    if element.property(key):
-                        element.setProperty(key, self.__style[name][value])
-                else:
-                    base_element = element.findChild(QtCore.QObject, key)
-                    if base_element:
-                        for key_, value_ in value.items():
-                            if base_element.property(key_):
-                                base_element.setProperty(
-                                    key_, self.__style[name][value_])
+            change_element_style_state(element, state, self.__style)
 
 
 class Application(object):

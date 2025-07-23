@@ -1,6 +1,7 @@
 #/usr/bin/env python3
 from PySide6 import QtCore, QtQuick
 
+from .tools import change_element_style_state
 from .. import gui
 from ..enum.event import Event
 from ..ui.main_frame import MainFrame
@@ -104,22 +105,10 @@ class Handler(QtCore.QObject):
     @QtCore.Slot()
     def __element_pressed(self, element: QtQuick.QQuickItem) -> None:
         # Elements pressed state colors
-        name = f'[{element.property('qmlType')}:clicked]'
-
         if not self.__main_rect.property('isActive'):
             return
 
-        for key, value in self.__element_properties.items():
-            if isinstance(value, str):
-                if element.property(key):
-                    element.setProperty(key, self.__ui.style[name][value])
-            else:
-                base_element = element.findChild(QtCore.QObject, key)
-                if base_element:
-                    for key_, value_ in value.items():
-                        if base_element.property(key_):
-                            base_element.setProperty(
-                                key_, self.__ui.style[name][value_])
+        change_element_style_state(element, ':clicked', self.__ui.style)
 
     @QtCore.Slot()
     def __element_hover(self, element: QtQuick.QQuickItem) -> None:
@@ -131,18 +120,7 @@ class Handler(QtCore.QObject):
         else:
             state = '' if is_active else ':inactive'
 
-        name = f'[{element.property('qmlType')}{state}]'
-        for key, value in self.__element_properties.items():
-            if isinstance(value, str):
-                if element.property(key):
-                    element.setProperty(key, self.__ui.style[name][value])
-            else:
-                base_element = element.findChild(QtCore.QObject, key)
-                if base_element:
-                    for key_, value_ in value.items():
-                        if base_element.property(key_):
-                            base_element.setProperty(
-                                key_, self.__ui.style[name][value_])
+        change_element_style_state(element, state, self.__ui.style)
 
     @QtCore.Slot()
     def start_move(self) -> None:
