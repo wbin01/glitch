@@ -1,10 +1,20 @@
 #/usr/bin/env python3
+from ..enum.orientation import Orientation
 
 
-qml_code = """
+layout = """
 ColumnLayout {
     id: columnLayout
     objectName: "columnLayout"
+            
+// **closing_key**
+}
+"""
+
+row = """
+RowLayout {
+    id: rowLayout
+    objectName: "rowLayout"
             
 // **closing_key**
 }
@@ -23,11 +33,13 @@ class Element(object):
 
 class Layout(Layout):
     """..."""
-    def __init__(self, *args, **kwargs) -> None:
+    def __init__(
+            self, orientation: Orientation = Orientation.VERTICAL,
+            *args, **kwargs) -> None:
         """..."""
         self.__id = '_' + str(id(self))
         # self.__qml = self.__id
-        self.__qml = qml_code
+        self.__qml = layout if orientation == Orientation.VERTICAL else row
         self.__added_objects = []
 
     @property

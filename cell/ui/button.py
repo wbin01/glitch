@@ -40,7 +40,6 @@ class Button(Element):
         self.text = self.__text
         self.icon = icon
 
-        self.callables = {}
         self.callbacks = {}
 
     @property

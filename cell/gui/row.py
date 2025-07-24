@@ -2,7 +2,7 @@
 from .layout import Layout
 
 
-class ScrollBox(Layout):
+class Row(Layout):
     """..."""
     def __init__(self, *args, **kwargs) -> None:
         """..."""

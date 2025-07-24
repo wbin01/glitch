@@ -32,7 +32,7 @@ ScrollView {
 # scroll_view.setProperty("Layout.minimumHeight", 200)
 # scroll_view.setProperty("Layout.maximumHeight", 200)
 
-class ScrollBox(Layout):
+class Scroll(Layout):
     """..."""
     def __init__(self, *args, **kwargs) -> None:
         """..."""

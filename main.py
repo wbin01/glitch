@@ -1,7 +1,7 @@
 #/usr/bin/env python3
 from cell.core import Application, Handler
-from cell.enum import Event
-from cell.ui import Button, Label, MainFrame, ScrollBox
+from cell.enum import Event, Orientation
+from cell.ui import Button, Column, Label, MainFrame, Row, Scroll
 
 
 class View(MainFrame):
@@ -17,7 +17,7 @@ class View(MainFrame):
 
         self.button_m = self.add(Button('Button 00', 'document-save'))
 
-        self.scroll = self.add(ScrollBox())
+        self.scroll = self.add(Scroll())
         for item in range(5):
             btn = self.scroll.add(Button(f'Button {item}', 'document-save'))
             btn.margins = 5, 5, 5, 5
@@ -25,6 +25,14 @@ class View(MainFrame):
             setattr(self, f'button_{item}', btn)
 
         self.scroll.add(Label('Olá'))
+
+        self.row = self.add(Row())
+        self.row.add(Button('Button 1', 'document-save'))
+        self.row.add(Button('Button 2', 'document-save'))
+
+        self.column = self.add(Column())
+        self.column.add(Button('Button 1', 'document-save'))
+        self.column.add(Button('Button 2', 'document-save'))
 
     def on_btn(self):
         self.label.text = 'HELLO'

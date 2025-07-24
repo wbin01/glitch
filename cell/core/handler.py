@@ -54,8 +54,8 @@ class Handler(QtCore.QObject):
 
     def __build_attrs(self, layout) -> None:
         elements = {
-            'Button': gui.Button, 'Label': gui.Label,
-            'ScrollBox': gui.ScrollBox,
+            'Button': gui.Button, 'Column': gui.Column, 'Label': gui.Label,
+            'Row': gui.Row, 'Scroll': gui.Scroll,
             }
 
         for attr, value in layout.__dict__.items():
