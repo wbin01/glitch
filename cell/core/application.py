@@ -8,7 +8,7 @@ from .handler import Handler
 from .tools import change_element_style_state
 from ..ui.layout import Layout
 from ..ui.main_frame import MainFrame
-
+from ..ui.element import Element
 
 class AppEventFilter(QtCore.QObject):
     """..."""
@@ -47,7 +47,8 @@ class AppEventFilter(QtCore.QObject):
 class Application(object):
     """..."""
     def __init__(
-            self, main_frame: MainFrame = MainFrame, handler: Handler = Handler
+            self, main_frame: MainFrame = MainFrame
+            # handler: Handler = Handler
             ) -> None:
         """..."""
         self.__ui = main_frame()
@@ -67,7 +68,8 @@ class Application(object):
         self.__gui = self.__engine.rootObjects()[0]
         self.__main_rect = self.__gui.findChild(QtCore.QObject, 'mainRect')
 
-        self.__handler = handler(self.__gui, self.__ui)
+        # self.__handler = handler(self.__gui, self.__ui)
+        self.__handler = Handler(self.__gui, self.__ui)
 
     def main_frame(self) -> Handler:
         """..."""
@@ -85,7 +87,10 @@ class Application(object):
         # object_id as variable name
         for attr, value in layout.__dict__.items():
             if not attr.startswith('_'):
-                getattr(layout, attr).object_id = attr
+                gui_attr = getattr(layout, attr)
+                if isinstance(gui_attr, Element):
+                    # getattr(layout, attr).object_id = attr
+                    gui_attr.object_id = attr
 
         # Parse QML
         end = '\n// **closing_key**'

@@ -59,8 +59,13 @@ class Handler(QtCore.QObject):
             }
 
         for attr, value in layout.__dict__.items():
-            if attr.startswith('_'):
+            main_attr = None
+            if attr.startswith('_') and '__' in attr:
+                # print('-:', attr)
                 continue
+            else:
+                # print(' :', attr)
+                pass
 
             obj_value = self.__gui.findChild(QtCore.QObject, attr)
             if not obj_value:
@@ -79,7 +84,12 @@ class Handler(QtCore.QObject):
                         ui_element.callbacks[Event.MOUSE_PRESS])
 
             setattr(layout, attr, gui_element)
-            setattr(self, attr, gui_element)
+            # setattr(self, attr, gui_element)
+
+        # print(type(layout))
+        if isinstance(layout, MainFrame):
+            # layout._obj = gui.MainFrame(self.__main_rect)
+            layout._obj = self.__main_rect
 
     @QtCore.Slot()
     def __gui_state_changed(self, state: QtCore.Qt.WindowState) -> None:

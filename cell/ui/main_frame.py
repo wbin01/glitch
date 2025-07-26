@@ -14,8 +14,9 @@ import "elements"
 Window {
     id: window
     visible: true
+    height: _height
+    property int _height: 200
     width: 200
-    height: 200
     minimumWidth: 200
     minimumHeight: 200
     title: qsTr("App Mínimo")
@@ -197,6 +198,35 @@ class MainFrame(Layout):
         self.qml = object_code
         self.__style = Style().style
 
+        self.__height = 200
+        self.__width = 200
+
     @property
     def style(self) -> dict:
+        """..."""
         return self.__style
+
+    @style.setter
+    def style(self, style: dict) -> None:
+        self.__style = style
+
+    @property
+    def height(self) -> int:
+        """..."""
+        # if self._obj:
+        #     return self._obj.property('_height')
+        return self.__height
+
+    @height.setter
+    def height(self, height: int) -> None:
+        if self._obj:
+            self._obj.setProperty('_height', height)
+            # self._obj.height = height
+            self.__height = height
+            return
+        
+        qml_height = f'_height: {self.__height}'
+        self.__height = height
+        new_qml_height = f'_height: {self.__height}'
+
+        self.qml = self.qml.replace(qml_height, new_qml_height)
