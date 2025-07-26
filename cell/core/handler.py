@@ -22,6 +22,7 @@ class Handler(QtCore.QObject):
             QtCore.QObject, options=QtCore.Qt.FindChildrenRecursively)
 
         self.__gui.windowStateChanged.connect(self.__gui_state_changed)
+        self.__initial_state()
 
         self.__element_properties = {
             'color': 'font_color',
@@ -61,11 +62,7 @@ class Handler(QtCore.QObject):
         for attr, value in layout.__dict__.items():
             main_attr = None
             if attr.startswith('_') and '__' in attr:
-                # print('-:', attr)
                 continue
-            else:
-                # print(' :', attr)
-                pass
 
             obj_value = self.__gui.findChild(QtCore.QObject, attr)
             if not obj_value:
@@ -84,28 +81,38 @@ class Handler(QtCore.QObject):
                         ui_element.callbacks[Event.MOUSE_PRESS])
 
             setattr(layout, attr, gui_element)
-            # setattr(self, attr, gui_element)
 
-        # print(type(layout))
         if isinstance(layout, MainFrame):
-            # layout._obj = gui.MainFrame(self.__main_rect)
-            layout._obj = self.__main_rect
+            layout._obj = self.__gui
 
     @QtCore.Slot()
-    def __gui_state_changed(self, state: QtCore.Qt.WindowState) -> None:
+    def __gui_state_changed(
+            self, state: QtCore.Qt.WindowState) -> None:
         # Fullscreen borders
         if self.__main_rect:
-            if (state & QtCore.Qt.WindowFullScreen
-                    or state & QtCore.Qt.WindowMaximized):
+            if (state == QtCore.Qt.WindowFullScreen
+                    or state == QtCore.Qt.WindowMaximized):
                 self.__main_rect.setProperty('radius', 0)
                 self.__main_rect.setProperty('borderWidth', 0)
                 self.__main_rect.setProperty('margins', 0)
             else:  # WindowNoState
                 self.__main_rect.setProperty(
-                    'radius',
-                    self.__ui.style['[MainFrame]']['border_radius'])
+                    'radius', self.__ui.style['[MainFrame]']['border_radius'])
                 self.__main_rect.setProperty('borderWidth', 1)
                 self.__main_rect.setProperty('margins', 1)
+
+    @QtCore.Slot()
+    def __initial_state(self):
+        if self.__ui.maximized:
+            self.__main_rect.setProperty('radius', 0)
+            self.__main_rect.setProperty('borderWidth', 0)
+            self.__main_rect.setProperty('margins', 0)
+        else:
+            self.__main_rect.setProperty(
+                'radius', self.__ui.style['[MainFrame]']['border_radius'])
+            self.__main_rect.setProperty('borderWidth', 1)
+            self.__main_rect.setProperty('margins', 1)
+
 
     @QtCore.Slot()
     def __element_clicked(self) -> None:

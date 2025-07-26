@@ -38,15 +38,19 @@ class View(MainFrame):
         self.column.add(Button('Button 1', 'document-save'))
         self.column.add(Button('Button 2', 'document-save'))
 
+        self.maximized = True
+
     def on_button(self):
         self.num += 1
         self.label.text = f'Button press: {self.num}'
-        print('H antes:', self.height)
+        # print('H antes:', self.height)
         self.height = 500
-        print('H depois:', self.height)
+        # print('H depois:', self.height)
+        # self.maximized = True
 
     def on_num_button(self, num):
         self.label.text = f'Button press: {num}'
+        self.maximized = False
 
 
 if __name__ == '__main__':

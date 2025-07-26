@@ -14,6 +14,7 @@ import "elements"
 Window {
     id: window
     visible: true
+    visibility: Window.Windowed
     height: _height
     property int _height: 200
     width: 200
@@ -200,6 +201,8 @@ class MainFrame(Layout):
 
         self.__height = 200
         self.__width = 200
+        self.__maximized = False
+        self.__visibility = 'Window.Windowed'
 
     @property
     def style(self) -> dict:
@@ -213,15 +216,12 @@ class MainFrame(Layout):
     @property
     def height(self) -> int:
         """..."""
-        # if self._obj:
-        #     return self._obj.property('_height')
         return self.__height
 
     @height.setter
     def height(self, height: int) -> None:
         if self._obj:
             self._obj.setProperty('_height', height)
-            # self._obj.height = height
             self.__height = height
             return
         
@@ -230,3 +230,26 @@ class MainFrame(Layout):
         new_qml_height = f'_height: {self.__height}'
 
         self.qml = self.qml.replace(qml_height, new_qml_height)
+
+    @property
+    def maximized(self) -> bool:
+        """..."""
+        return self.__maximized
+
+    @maximized.setter
+    def maximized(self, maximized: bool) -> None:
+        if self._obj:
+            if maximized:
+                self._obj.showMaximized()
+            else:
+                self._obj.showNormal()
+            self.__maximized = maximized
+            return
+
+        qml = f'visibility: {self.__visibility}'
+        self.__visibility = (
+            'Window.Maximized' if maximized else 'Window.Windowed')
+        new_qml = f'visibility: {self.__visibility}'
+
+        self.qml = self.qml.replace(qml, new_qml)
+        self.__maximized = maximized
