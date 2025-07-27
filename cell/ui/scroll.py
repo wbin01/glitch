@@ -32,10 +32,13 @@ ScrollView {
 # scroll_view.setProperty("Layout.minimumHeight", 200)
 # scroll_view.setProperty("Layout.maximumHeight", 200)
 
+
 class Scroll(Layout):
-    """..."""
+    """Scrollable column layout object.
+
+    It is a type like `Column` object, but scrollable.
+    """
     def __init__(self, *args, **kwargs) -> None:
-        """..."""
-        super().__init__('ScrollBox', *args, **kwargs)
+        super().__init__(*args, **kwargs)
         self._qml = object_code
         self.id = 'scrollBox'
