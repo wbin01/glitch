@@ -55,7 +55,7 @@ class Handler(QtCore.QObject):
 
     def __build_attrs(self, layout) -> None:
         elements = {
-            'Button': gui.Button, 'Column': gui.Column, 'Label': gui.Label,
+            'Button': None, 'Column': gui.Column, 'Label': gui.Label,
             'Row': gui.Row, 'Scroll': gui.Scroll,
             }
 
@@ -70,21 +70,39 @@ class Handler(QtCore.QObject):
 
             element_name = obj_value.property('qmlType')
             if element_name in elements:
-                gui_element = elements[element_name](obj_value)
+                if element_name == 'Button':
+                    print(454545454545)
+                    getattr(layout, attr)._obj = obj_value
+
+                    self.ui_element = getattr(layout, attr)
+                    if hasattr(self.ui_element, 'callbacks'):
+                        if Event.MOUSE_PRESS in self.ui_element.callbacks:
+                            self.ui_element.connect(
+                                self.ui_element.callbacks[Event.MOUSE_PRESS],
+                                Event.MOUSE_PRESS)
+                        elif Event.MOUSE_HOVER in self.ui_element.callbacks:
+                            self.ui_element.connect(
+                                self.ui_element.callbacks[Event.MOUSE_HOVER],
+                                Event.MOUSE_HOVER)
+                    
+                else:
+                    print(element_name)
+                    gui_element = elements[element_name](obj_value)
             else:
                 gui_element = None
 
             ui_element = getattr(layout, attr)
             if hasattr(ui_element, 'callbacks'):
-                if Event.MOUSE_PRESS in ui_element.callbacks:
-                    gui_element.connect(
-                        ui_element.callbacks[Event.MOUSE_PRESS])
-                elif Event.MOUSE_HOVER in ui_element.callbacks:
-                    gui_element.connect(
-                        ui_element.callbacks[Event.MOUSE_HOVER],
-                        Event.MOUSE_HOVER)
-
-            setattr(layout, attr, gui_element)
+                if element_name != 'Button':
+                    if Event.MOUSE_PRESS in ui_element.callbacks:
+                        gui_element.connect(
+                            ui_element.callbacks[Event.MOUSE_PRESS])
+                    elif Event.MOUSE_HOVER in ui_element.callbacks:
+                        gui_element.connect(
+                            ui_element.callbacks[Event.MOUSE_HOVER],
+                            Event.MOUSE_HOVER)
+            if element_name != 'Button':
+                setattr(layout, attr, gui_element)
 
         if isinstance(layout, MainFrame):
             layout._obj = self.__gui

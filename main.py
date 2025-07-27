@@ -20,13 +20,14 @@ class View(MainFrame):
 
         self.button_m = self.add(Button('Button 00', 'document-save'))
         self.button_m.connect(self.on_button)
+        self.button_m
 
         self.scroll = self.add(Scroll())
         for item in range(5):
             btn = self.scroll.add(Button(f'Button {item}', 'document-save'))
             btn.margins = 5, 5, 5, 5
             btn.connect(
-                lambda item=item: self.on_num_button(item), Event.MOUSE_HOVER)
+                lambda item=item, btn=btn: self.on_num_button(item, btn), Event.MOUSE_HOVER)
             setattr(self, f'button_{item}', btn)
 
         self.scroll.add(Label('Olá'))
@@ -43,7 +44,7 @@ class View(MainFrame):
         self.num += 1
         self.label.text = f'Button press: {self.num}'
 
-    def on_num_button(self, num):
+    def on_num_button(self, num, btn):
         if getattr(self, f'button_{num}').hover():
             self.label.text = f'Button press: {num}'
             self.maximized = False

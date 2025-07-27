@@ -31,7 +31,7 @@ class Element(object):
         self.__qml = qml_code
         self.__id = '_' + str(id(self))
         self.__element_type = 'Element'
-        self.__obj = self
+        self.__obj = None
 
         self.object_id = self.__id
         self._element_type = self.__element_type

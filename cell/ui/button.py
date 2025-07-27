@@ -45,10 +45,16 @@ class Button(Element):
     @property
     def icon(self) -> str:
         """..."""
+        if self._obj:
+            return self.__icon
         return self.__icon
 
     @icon.setter
     def icon(self, name: str) -> None:
+        if self._obj:
+            self._obj.setProperty('icon', name)
+            return
+        
         icon = self.__path/'static'/'icons'/f'{name}.svg'
         self.qml = self.qml.replace(
             f'\n    iconSource: "{self.__icon}"',
@@ -58,10 +64,16 @@ class Button(Element):
     @property
     def text(self) -> str:
         """..."""
+        if self._obj:
+            return self._obj.property('text')
         return self.__text
 
     @text.setter
     def text(self, text: str) -> None:
+        if self._obj:
+            self._obj.setProperty('text', text)
+            return
+        
         self.qml = self.qml.replace(
             f'\n    text: "{self.__text}"',
             f'\n    text: "{text}"')
@@ -70,7 +82,17 @@ class Button(Element):
     def connect(
             self, method: callable, event: Event = Event.MOUSE_PRESS) -> None:
         """..."""
+        if self._obj:
+            if event == Event.MOUSE_PRESS:
+                self._obj.clicked.connect(method)
+            elif event == Event.MOUSE_HOVER:
+                self._obj.hoveredChanged.connect(method)
+            return
+
         self.callbacks[event] = method
 
     def hover(self) -> bool:
+        if self._obj:
+            return self._obj.property('hovered')
+
         return False
