@@ -196,7 +196,7 @@ class MainFrame(Layout):
         """..."""
         super().__init__('AppFrame', *args, **kwargs)
         self.object_id = 'appFrame'
-        self.qml = object_code
+        self._qml = object_code
         self.__style = Style().style
 
         self.__height = 200
@@ -229,7 +229,7 @@ class MainFrame(Layout):
         self.__height = height
         new_qml_height = f'_height: {self.__height}'
 
-        self.qml = self.qml.replace(qml_height, new_qml_height)
+        self._qml = self._qml.replace(qml_height, new_qml_height)
 
     @property
     def maximized(self) -> bool:
@@ -251,5 +251,5 @@ class MainFrame(Layout):
             'Window.Maximized' if maximized else 'Window.Windowed')
         new_qml = f'visibility: {self.__visibility}'
 
-        self.qml = self.qml.replace(qml, new_qml)
+        self._qml = self._qml.replace(qml, new_qml)
         self.__maximized = maximized

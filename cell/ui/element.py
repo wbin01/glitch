@@ -132,15 +132,6 @@ class Element(object):
         self.__id = id
 
     @property
-    def qml(self) -> str:
-        """..."""
-        return self.__qml
-
-    @qml.setter
-    def qml(self, qml: str) -> None:
-        self.__qml = qml
-
-    @property
     def _element_type(self) -> str:
         """..."""
         return self.__element_type
@@ -167,3 +158,12 @@ class Element(object):
     @_obj.setter
     def _obj(self, obj: str) -> None:
         self.__obj = obj
+
+    @property
+    def _qml(self) -> str:
+        """..."""
+        return self.__qml
+
+    @_qml.setter
+    def _qml(self, qml: str) -> None:
+        self.__qml = qml

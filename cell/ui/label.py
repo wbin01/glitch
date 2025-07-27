@@ -12,7 +12,7 @@ class Label(Element):
         self.__text = text
 
         # Set
-        self.qml = (
+        self._qml = (
             '\nLabel {'
             '\n    id: label  // <id>'
             '\n    objectName: "label"  // <objectName>'
@@ -43,7 +43,7 @@ class Label(Element):
         if self._obj:
             self._obj.setProperty('text', text)
         else:
-            self.qml = self.qml.replace(
+            self._qml = self._qml.replace(
                 f'\n    text: "{self.__text}"',
                 f'\n    text: "{text}"')
         

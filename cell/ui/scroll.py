@@ -37,5 +37,5 @@ class Scroll(Layout):
     def __init__(self, *args, **kwargs) -> None:
         """..."""
         super().__init__('ScrollBox', *args, **kwargs)
-        self.qml = object_code
+        self._qml = object_code
         self.id = 'scrollBox'

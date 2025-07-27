@@ -18,7 +18,7 @@ class Button(Element):
         self.__icon = self.__path/'static'/'icons'/f'{icon}.svg'
 
         # Set
-        self.qml = (
+        self._qml = (
             '\nButton {'
             '\n    id: button  // <id>'
             '\n    objectName: "button"  // <objectName>'
@@ -56,7 +56,7 @@ class Button(Element):
             return
         
         icon = self.__path/'static'/'icons'/f'{name}.svg'
-        self.qml = self.qml.replace(
+        self._qml = self._qml.replace(
             f'\n    iconSource: "{self.__icon}"',
             f'\n    iconSource: "{icon}"')
         self.__icon = icon
@@ -74,7 +74,7 @@ class Button(Element):
             self._obj.setProperty('text', text)
             return
         
-        self.qml = self.qml.replace(
+        self._qml = self._qml.replace(
             f'\n    text: "{self.__text}"',
             f'\n    text: "{text}"')
         self.__text = text

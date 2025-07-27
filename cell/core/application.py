@@ -89,29 +89,28 @@ class Application(object):
             if not attr.startswith('_'):
                 gui_attr = getattr(layout, attr)
                 if isinstance(gui_attr, Element):
-                    # getattr(layout, attr).object_id = attr
                     gui_attr.id = attr
 
         # Parse QML
         end = '\n// **closing_key**'
-        layout.qml, ui_close = layout.qml.split(end)
+        layout._qml, ui_close = layout._qml.split(end)
         for element in layout.added_objects:
             tab = ' ' * 12 if self.__qml_code_iterator == 0 else '    '
 
             element_close = None
-            if end in element.qml:
-                element_close = element.qml.split(end)[1]
+            if end in element._qml:
+                element_close = element._qml.split(end)[1]
 
             if isinstance(element, Layout):
                 self.__qml_code_iterator += 1
                 self.__write_qml(element)
 
-            layout.qml += '\n'.join(
+            layout._qml += '\n'.join(
                 [tab + x if x else ''
-                for x in element.qml.split(end)[0].split('\n')])
+                for x in element._qml.split(end)[0].split('\n')])
 
             if element_close:
-                layout.qml += element_close.replace('\n', '\n' + tab)
+                layout._qml += element_close.replace('\n', '\n' + tab)
 
-        self.__qml_code = layout.qml + ui_close
+        self.__qml_code = layout._qml + ui_close
         self.__qml_path.write_text(self.__qml_code)
