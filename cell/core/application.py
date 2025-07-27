@@ -90,7 +90,7 @@ class Application(object):
                 gui_attr = getattr(layout, attr)
                 if isinstance(gui_attr, Element):
                     # getattr(layout, attr).object_id = attr
-                    gui_attr.object_id = attr
+                    gui_attr.id = attr
 
         # Parse QML
         end = '\n// **closing_key**'

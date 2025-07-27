@@ -35,7 +35,7 @@ class Button(Element):
             '\n    Layout.leftMargin: leftMargin'
             '\n}  // <suffix_id>\n')
 
-        self.object_id = '_' + str(id(self))
+        self.id = '_' + str(id(self))
         self._element_name = 'Button'
         self.text = self.__text
         self.icon = icon

@@ -22,45 +22,54 @@ RowLayout {
 
 
 class Layout(object):
-    """..."""
+    """Layout object.
+
+    Organizes elements in stacks like a column or side by side like a row.
+    """
     pass
 
 
 class Element(object):
-    """..."""
     pass
 
 
 class Layout(Layout):
-    """..."""
+    """Layout object.
+
+    Organizes elements in stacks like a column or side by side like a row.
+    """
     def __init__(
             self, orientation: Orientation = Orientation.VERTICAL,
             *args, **kwargs) -> None:
-        """..."""
+        """The init receives a Orientation Enum.
+
+        `Orientation.VERTICAL` is the default.
+
+        :param orientation: Orientation.VERTICAL or Orientation.HORIZONTAL.
+        """
         self.__id = '_' + str(id(self))
-        # self.__qml = self.__id
         self.__qml = layout if orientation == Orientation.VERTICAL else row
         self.__added_objects = []
         self.__obj = None
 
     @property
-    def object_id(self) -> str:
-        """..."""
+    def id(self) -> str:
+        """Layout identifier."""
         if self._obj:
             return self._obj.property('id')
         return self.__id
 
-    @object_id.setter
-    def object_id(self, object_id: str) -> None:
+    @id.setter
+    def id(self, id: str) -> None:
         if self._obj:
-            self._obj.setProperty('id', object_id)
-            self._obj.setProperty('objectName', object_id)
+            self._obj.setProperty('id', id)
+            self._obj.setProperty('objectName', id)
         else:
             self.__qml = self.__qml.replace(
-                f'id: {self.__id}', f'id: {object_id}').replace(
-                f'objectName: "{self.__id}"', f'objectName: "{object_id}"')
+                f'id: {self.__id}', f'id: {id}').replace(
+                f'objectName: "{self.__id}"', f'objectName: "{id}"')
 
-        self.__id = object_id
+        self.__id = id
 
     @property
     def qml(self) -> str:
@@ -91,7 +100,10 @@ class Layout(Layout):
 
     def add(self, obj) -> Layout | Element:
         """..."""
-        # TODO: _obj add
+        if self._obj:
+            obj._obj.setParentItem(self)
+        else:
+            setattr(self, obj.id, obj)
+
         self.__added_objects.append(obj)
-        setattr(self, obj.object_id, obj)
         return obj
