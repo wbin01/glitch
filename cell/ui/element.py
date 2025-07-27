@@ -25,7 +25,11 @@ Item {
 
 
 class Element(object):
-    """..."""
+    """A visual element object.
+
+    Elements are visual and interactive application items such as buttons and 
+    text.
+    """
     def __init__(self, *args, **kwargs) -> None:
         """..."""
         self.__qml = qml_code

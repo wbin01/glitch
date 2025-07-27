@@ -30,6 +30,11 @@ class Layout(object):
 
 
 class Element(object):
+    """A visual element object.
+
+    Elements are visual and interactive application items such as buttons and 
+    text.
+    """
     pass
 
 
@@ -73,7 +78,10 @@ class Layout(Layout):
 
     @property
     def _obj(self) -> str:
-        """..."""
+        """Qt Object.
+
+        Internal object manipulated by the wrapper class.
+        """
         return self.__obj
 
     @_obj.setter
@@ -82,15 +90,23 @@ class Layout(Layout):
 
     @property
     def _qml(self) -> str:
-        """..."""
+        """Qml code.
+
+        Internal Qml handled by the wrapper class.
+        """
         return self.__qml
 
     @_qml.setter
     def _qml(self, qml: str) -> None:
         self.__qml = qml
 
-    def add(self, obj) -> Layout | Element:
-        """..."""
+    def add(self, obj: Layout | Element) -> Layout | Element:
+        """Add items.
+
+    Adds items such as Elements and Layouts to this Layout.
+    
+    :param obj: Element or Layout object type
+    """
         if self._obj:
             obj._obj.setParentItem(self)
         else:
