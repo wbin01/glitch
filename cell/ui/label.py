@@ -40,7 +40,11 @@ class Label(Element):
 
     @text.setter
     def text(self, text: str) -> None:
-        self.qml = self.qml.replace(
-            f'\n    text: "{self.__text}"',
-            f'\n    text: "{text}"')
+        if self._obj:
+            self._obj.setProperty('text', text)
+        else:
+            self.qml = self.qml.replace(
+                f'\n    text: "{self.__text}"',
+                f'\n    text: "{text}"')
+        
         self.__text = text

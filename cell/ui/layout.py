@@ -46,13 +46,20 @@ class Layout(Layout):
     @property
     def object_id(self) -> str:
         """..."""
+        if self._obj:
+            return self._obj.property('id')
         return self.__id
 
     @object_id.setter
     def object_id(self, object_id: str) -> None:
-        self.__qml = self.__qml.replace(
-            f'id: {self.__id}', f'id: {object_id}').replace(
-            f'objectName: "{self.__id}"', f'objectName: "{object_id}"')
+        if self._obj:
+            self._obj.setProperty('id', object_id)
+            self._obj.setProperty('objectName', object_id)
+        else:
+            self.__qml = self.__qml.replace(
+                f'id: {self.__id}', f'id: {object_id}').replace(
+                f'objectName: "{self.__id}"', f'objectName: "{object_id}"')
+
         self.__id = object_id
 
     @property
@@ -84,6 +91,7 @@ class Layout(Layout):
 
     def add(self, obj) -> Layout | Element:
         """..."""
+        # TODO: _obj add
         self.__added_objects.append(obj)
         setattr(self, obj.object_id, obj)
         return obj

@@ -2,8 +2,9 @@
 from PySide6 import QtCore, QtQuick
 
 from .tools import change_element_style_state
-from .. import gui
 from ..enum.event import Event
+from ..ui.element import Element
+from ..ui.layout import Layout
 from ..ui.main_frame import MainFrame
 
 
@@ -24,18 +25,6 @@ class Handler(QtCore.QObject):
         self.__gui.windowStateChanged.connect(self.__gui_state_changed)
         self.__initial_state()
 
-        self.__element_properties = {
-            'color': 'font_color',
-            'backgroundColor': 'background_color',
-            'borderColor': 'border_color',
-            'text': {
-                'color': 'font_color'},
-            'background': {
-                'backgroundColor': 'background_color',
-                'borderColor': 'border_color'},
-            'icon': {
-                'opacity': 'icon_opacity'},
-            }
         self.__build_state_style()
         self.__build_attrs(self.__ui)
 
@@ -54,70 +43,40 @@ class Handler(QtCore.QObject):
                     lambda child=child: self.__element_hover(child))
 
     def __build_attrs(self, layout) -> None:
-        elements = {
-            'Button': None, 'Column': gui.Column, 'Label': gui.Label,
-            'Row': gui.Row, 'Scroll': gui.Scroll,
-            }
-
         for attr, value in layout.__dict__.items():
-            main_attr = None
             if attr.startswith('_') and '__' in attr:
                 continue
 
+            element = getattr(layout, attr)
             obj_value = self.__gui.findChild(QtCore.QObject, attr)
             if not obj_value:
                 continue
+            element._obj = obj_value
 
-            element_name = obj_value.property('qmlType')
-            if element_name in elements:
-                if element_name == 'Button':
-                    print(454545454545)
-                    getattr(layout, attr)._obj = obj_value
-
-                    self.ui_element = getattr(layout, attr)
-                    if hasattr(self.ui_element, 'callbacks'):
-                        if Event.MOUSE_PRESS in self.ui_element.callbacks:
-                            self.ui_element.connect(
-                                self.ui_element.callbacks[Event.MOUSE_PRESS],
-                                Event.MOUSE_PRESS)
-                        elif Event.MOUSE_HOVER in self.ui_element.callbacks:
-                            self.ui_element.connect(
-                                self.ui_element.callbacks[Event.MOUSE_HOVER],
-                                Event.MOUSE_HOVER)
-                    
-                else:
-                    print(element_name)
-                    gui_element = elements[element_name](obj_value)
-            else:
-                gui_element = None
-
-            ui_element = getattr(layout, attr)
-            if hasattr(ui_element, 'callbacks'):
-                if element_name != 'Button':
-                    if Event.MOUSE_PRESS in ui_element.callbacks:
-                        gui_element.connect(
-                            ui_element.callbacks[Event.MOUSE_PRESS])
-                    elif Event.MOUSE_HOVER in ui_element.callbacks:
-                        gui_element.connect(
-                            ui_element.callbacks[Event.MOUSE_HOVER],
+            if (isinstance(element, Layout) or isinstance(element, Element)
+                    and not isinstance(element, MainFrame)):
+                if hasattr(element, 'callbacks'):
+                    if Event.MOUSE_PRESS in element.callbacks:
+                        element.connect(
+                            element.callbacks[Event.MOUSE_PRESS],
+                            Event.MOUSE_PRESS)
+                    elif Event.MOUSE_HOVER in element.callbacks:
+                        element.connect(
+                            element.callbacks[Event.MOUSE_HOVER],
                             Event.MOUSE_HOVER)
-            if element_name != 'Button':
-                setattr(layout, attr, gui_element)
 
         if isinstance(layout, MainFrame):
             layout._obj = self.__gui
 
     @QtCore.Slot()
-    def __gui_state_changed(
-            self, state: QtCore.Qt.WindowState) -> None:
-        # Fullscreen borders
+    def __gui_state_changed(self, state: QtCore.Qt.WindowState) -> None:
         if self.__main_rect:
             if (state == QtCore.Qt.WindowFullScreen
                     or state == QtCore.Qt.WindowMaximized):
                 self.__main_rect.setProperty('radius', 0)
                 self.__main_rect.setProperty('borderWidth', 0)
                 self.__main_rect.setProperty('margins', 0)
-            else:  # WindowNoState
+            else:  # QtCore.Qt.WindowNoState
                 self.__main_rect.setProperty(
                     'radius', self.__ui.style['[MainFrame]']['border_radius'])
                 self.__main_rect.setProperty('borderWidth', 1)
