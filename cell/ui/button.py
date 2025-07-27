@@ -6,10 +6,13 @@ from ..enum.event import Event
 
 
 class Button(Element):
-    """..."""
+    """Button Element"""
     def __init__(
             self, text: str = '', icon: str = '', *args, **kwargs) -> None:
-        """..."""
+        """
+        :param text: Button text string.
+        :param icon: Icon name or path string.
+        """
         super().__init__(*args, **kwargs)
         self.__path = pathlib.Path(__file__).parent.parent
 
@@ -44,7 +47,7 @@ class Button(Element):
 
     @property
     def icon(self) -> str:
-        """..."""
+        """Icon name or path string."""
         if self._obj:
             return self.__icon
         return self.__icon
@@ -63,7 +66,7 @@ class Button(Element):
 
     @property
     def text(self) -> str:
-        """..."""
+        """Button text string."""
         if self._obj:
             return self._obj.property('text')
         return self.__text
@@ -81,7 +84,15 @@ class Button(Element):
 
     def connect(
             self, method: callable, event: Event = Event.MOUSE_PRESS) -> None:
-        """..."""
+        """Connect the button to a method.
+
+        Pass a method to be executed when interacting with the button.
+        Alternatively, use an event like `Event.MOUSE_HOVER` or 
+        `Event.MOUSE_WHEEL` to configure when the button will use the method.
+
+        :param method: method to be executed when interacting with the button.
+        :param event: Enum like `Event.MOUSE_HOVER` or `Event.MOUSE_WHEEL`
+        """
         if self._obj:
             if event == Event.MOUSE_PRESS:
                 self._obj.clicked.connect(method)
@@ -91,7 +102,11 @@ class Button(Element):
 
         self.callbacks[event] = method
 
-    def hover(self) -> bool:
+    def is_mouse_hover(self) -> bool:
+        """If the mouse is hovering over this button.
+
+        Returns `True` if the mouse is hovering, otherwise it returns `False`.
+        """
         if self._obj:
             return self._obj.property('hovered')
 

@@ -47,7 +47,7 @@ class View(MainFrame):
         self.label.text = f'Button press: {self.num}'
 
     def on_num_button(self, num, btn):
-        if getattr(self, f'button_{num}').hover():
+        if getattr(self, f'button_{num}').is_mouse_hover():
             self.label.text = f'Button press: {num}'
             self.maximized = False
 

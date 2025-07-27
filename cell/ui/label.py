@@ -3,10 +3,12 @@ from .element import Element
 
 
 class Label(Element):
-    """..."""
+    """Label Element"""
     def __init__(
             self, text: str = '', *args, **kwargs) -> None:
-        """..."""
+        """
+        :param text: Label text string.
+        """
         super().__init__(*args, **kwargs)
         # Args
         self.__text = text
@@ -35,7 +37,7 @@ class Label(Element):
 
     @property
     def text(self) -> str:
-        """..."""
+        """Label text string."""
         return self.__text
 
     @text.setter

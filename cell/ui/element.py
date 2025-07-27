@@ -60,8 +60,11 @@ class Element(object):
             Use `None` for a value to be automatic. `None` indicates that the 
             value is the same as before. Example:
 
-                # Change only the vertical margins (top and bottom)
-                `margins = 10, None, 10, None`
+                # Change vertical margins (top and bottom)
+                `element.margins = 10, None, 10, None`
+
+                # Change horizontal margins (right and left)
+                `element.margins = None, 5, None, 5`
         """
         margins = {
             'topMargin': 0, 'rightMargin': 0,
@@ -115,7 +118,7 @@ class Element(object):
 
     @property
     def id(self) -> str:
-        """..."""
+        """Element identifier."""
         return self.__id
 
     @id.setter
@@ -137,7 +140,7 @@ class Element(object):
 
     @property
     def _element_type(self) -> str:
-        """..."""
+        """Element type name."""
         return self.__element_type
 
     @_element_type.setter
@@ -156,7 +159,10 @@ class Element(object):
 
     @property
     def _obj(self) -> str:
-        """..."""
+        """Qt Object.
+
+        Internal object manipulated by the wrapper class.
+        """
         return self.__obj
 
     @_obj.setter
@@ -165,7 +171,10 @@ class Element(object):
 
     @property
     def _qml(self) -> str:
-        """..."""
+        """Qml code.
+
+        Internal Qml handled by the wrapper class.
+        """
         return self.__qml
 
     @_qml.setter
