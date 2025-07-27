@@ -49,7 +49,7 @@ class Layout(Layout):
         """
         self.__id = '_' + str(id(self))
         self.__qml = layout if orientation == Orientation.VERTICAL else row
-        self.__added_objects = []
+        self.__items = []
         self.__obj = None
 
     @property
@@ -72,13 +72,13 @@ class Layout(Layout):
         self.__id = id
 
     @property
-    def added_objects(self) -> list:
+    def items(self) -> list:
         """..."""
-        return self.__added_objects
+        return self.__items
 
-    @added_objects.setter
-    def added_objects(self, added_objects: list) -> None:
-        self.__added_objects = added_objects
+    @items.setter
+    def items(self, items: list) -> None:
+        self.__items = items
 
     @property
     def _obj(self) -> str:
@@ -105,5 +105,5 @@ class Layout(Layout):
         else:
             setattr(self, obj.id, obj)
 
-        self.__added_objects.append(obj)
+        self.__items.append(obj)
         return obj
