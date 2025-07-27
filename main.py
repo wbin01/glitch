@@ -40,6 +40,8 @@ class View(MainFrame):
         self.column.add(Button('Button 1', 'document-save'))
         self.column.add(Button('Button 2', 'document-save'))
 
+        # self.maximized = True
+
     def on_button(self):
         self.num += 1
         self.label.text = f'Button press: {self.num}'
