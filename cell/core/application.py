@@ -94,7 +94,7 @@ class Application(object):
         # Parse QML
         end = '\n// **closing_key**'
         layout._qml, ui_close = layout._qml.split(end)
-        for element in layout.items:
+        for element in layout.items():
             tab = ' ' * 12 if self.__qml_code_iterator == 0 else '    '
 
             element_close = None

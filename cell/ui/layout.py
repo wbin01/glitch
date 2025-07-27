@@ -72,15 +72,6 @@ class Layout(Layout):
         self.__id = id
 
     @property
-    def items(self) -> list:
-        """..."""
-        return self.__items
-
-    @items.setter
-    def items(self, items: list) -> None:
-        self.__items = items
-
-    @property
     def _obj(self) -> str:
         """..."""
         return self.__obj
@@ -107,3 +98,10 @@ class Layout(Layout):
 
         self.__items.append(obj)
         return obj
+
+    def items(self) -> list:
+        """Items added to the Layout.
+
+        List that includes Elements and other Layouts.
+        """
+        return self.__items
