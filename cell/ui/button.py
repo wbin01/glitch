@@ -43,18 +43,6 @@ class Button(Element):
         self.callbacks = {}
 
     @property
-    def text(self) -> str:
-        """..."""
-        return self.__text
-
-    @text.setter
-    def text(self, text: str) -> None:
-        self.qml = self.qml.replace(
-            f'\n    text: "{self.__text}"',
-            f'\n    text: "{text}"')
-        self.__text = text
-
-    @property
     def icon(self) -> str:
         """..."""
         return self.__icon
@@ -67,7 +55,22 @@ class Button(Element):
             f'\n    iconSource: "{icon}"')
         self.__icon = icon
 
+    @property
+    def text(self) -> str:
+        """..."""
+        return self.__text
+
+    @text.setter
+    def text(self, text: str) -> None:
+        self.qml = self.qml.replace(
+            f'\n    text: "{self.__text}"',
+            f'\n    text: "{text}"')
+        self.__text = text
+
     def connect(
             self, method: callable, event: Event = Event.MOUSE_PRESS) -> None:
         """..."""
         self.callbacks[event] = method
+
+    def hover(self) -> bool:
+        return False

@@ -15,15 +15,6 @@ class Button(Element):
         # iconSource
 
     @property
-    def text(self) -> str:
-        """..."""
-        return self._obj.property('text')
-
-    @text.setter
-    def text(self, text: str) -> None:
-        self._obj.setProperty('text', text)
-
-    @property
     def icon(self) -> str:
         """..."""
         return self.__icon
@@ -32,8 +23,22 @@ class Button(Element):
     def icon(self, name: str) -> None:
         self._obj.setProperty('icon', name)
 
+    @property
+    def text(self) -> str:
+        """..."""
+        return self._obj.property('text')
+
+    @text.setter
+    def text(self, text: str) -> None:
+        self._obj.setProperty('text', text)
+
     def connect(
             self, method: callable, event: Event = Event.MOUSE_PRESS) -> None:
         """..."""
         if event == Event.MOUSE_PRESS:
             self._obj.clicked.connect(method)
+        elif event == Event.MOUSE_HOVER:
+            self._obj.hoveredChanged.connect(method)
+
+    def hover(self) -> bool:
+        return self._obj.property('hovered')

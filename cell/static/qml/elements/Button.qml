@@ -27,6 +27,7 @@ Button {
     Layout.rightMargin: rightMargin
     Layout.bottomMargin: bottomMargin
     Layout.leftMargin: leftMargin
+    hoverEnabled: true
 
     contentItem: Item {
         anchors.fill: parent

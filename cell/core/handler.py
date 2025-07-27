@@ -79,6 +79,10 @@ class Handler(QtCore.QObject):
                 if Event.MOUSE_PRESS in ui_element.callbacks:
                     gui_element.connect(
                         ui_element.callbacks[Event.MOUSE_PRESS])
+                elif Event.MOUSE_HOVER in ui_element.callbacks:
+                    gui_element.connect(
+                        ui_element.callbacks[Event.MOUSE_HOVER],
+                        Event.MOUSE_HOVER)
 
             setattr(layout, attr, gui_element)
 
