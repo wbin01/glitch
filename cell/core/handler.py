@@ -3,8 +3,7 @@ from PySide6 import QtCore, QtQuick
 
 from .tools import change_element_style_state
 from ..enum.event import Event
-from ..ui.element import Element
-from ..ui.layout import Layout
+from ..ui.base import Element, Frame, Layout
 from ..ui.main_frame import MainFrame
 
 
@@ -74,7 +73,7 @@ class Handler(QtCore.QObject):
             element._obj = obj_value
 
             if (isinstance(element, Layout) or isinstance(element, Element)
-                    and not isinstance(element, MainFrame)):
+                    and not isinstance(element, Frame)):
                 if hasattr(element, 'callbacks'):
                     if Event.MOUSE_PRESS in element.callbacks:
                         element.connect(
@@ -85,7 +84,7 @@ class Handler(QtCore.QObject):
                             element.callbacks[Event.MOUSE_HOVER],
                             Event.MOUSE_HOVER)
 
-        if isinstance(layout, MainFrame):
+        if isinstance(layout, Frame):
             layout._obj = self.__gui
 
     def __state_style(self) -> None:

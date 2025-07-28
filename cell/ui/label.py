@@ -1,5 +1,5 @@
 #/usr/bin/env python3
-from .element import Element
+from .base import Element
 
 
 class Label(Element):

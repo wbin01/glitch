@@ -1,9 +1,8 @@
 #/usr/bin/env python3
-from .layout import Layout
-from ..platform.style import Style
+from .base import Frame
 
 
-object_code = """
+qml = """
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
@@ -190,46 +189,15 @@ Window {
 
 """
 
-class MainFrame(Layout):
+class MainFrame(Frame):
     """..."""
     def __init__(self, *args, **kwargs) -> None:
         """..."""
-        super().__init__('AppFrame', *args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.object_id = 'appFrame'
-        self._qml = object_code
-        self.__style = Style().style
-
-        self.__height = 200
-        self.__width = 200
+        self._qml = qml
         self.__maximized = False
         self.__visibility = 'Window.Windowed'
-
-    @property
-    def style(self) -> dict:
-        """..."""
-        return self.__style
-
-    @style.setter
-    def style(self, style: dict) -> None:
-        self.__style = style
-
-    @property
-    def height(self) -> int:
-        """..."""
-        return self.__height
-
-    @height.setter
-    def height(self, height: int) -> None:
-        if self._obj:
-            self._obj.setProperty('_height', height)
-            self.__height = height
-            return
-        
-        qml_height = f'_height: {self.__height}'
-        self.__height = height
-        new_qml_height = f'_height: {self.__height}'
-
-        self._qml = self._qml.replace(qml_height, new_qml_height)
 
     @property
     def maximized(self) -> bool:
@@ -238,18 +206,17 @@ class MainFrame(Layout):
 
     @maximized.setter
     def maximized(self, maximized: bool) -> None:
+        visibility = 'Window.Maximized' if maximized else 'Window.Windowed'
+
         if self._obj:
             if maximized:
                 self._obj.showMaximized()
             else:
                 self._obj.showNormal()
-            self.__maximized = maximized
-            return
+        else:
+            self._qml = self._qml.replace(
+                f'visibility: {self.__visibility}',
+                f'visibility: {visibility}')
 
-        qml = f'visibility: {self.__visibility}'
-        self.__visibility = (
-            'Window.Maximized' if maximized else 'Window.Windowed')
-        new_qml = f'visibility: {self.__visibility}'
-
-        self._qml = self._qml.replace(qml, new_qml)
+        self.__visibility = visibility
         self.__maximized = maximized

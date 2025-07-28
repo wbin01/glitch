@@ -1,5 +1,5 @@
 #/usr/bin/env python3
-from .layout import Layout
+from .base import Layout
 
 object_code = """
 // ScrollBox

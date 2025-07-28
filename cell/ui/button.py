@@ -1,7 +1,7 @@
 #/usr/bin/env python3
 import pathlib
 
-from .element import Element
+from .base import Element
 from ..enum.event import Event
 
 

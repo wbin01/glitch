@@ -1,6 +1,6 @@
 #/usr/bin/env python3
-from cell.core import Application, Handler
-from cell.enum import Event, Orientation
+from cell.core import Application
+from cell.enum import Event
 from cell.ui import Button, Column, Label, MainFrame, Row, Scroll
 
 
@@ -9,7 +9,7 @@ class View(MainFrame):
         super().__init__(*args, **kwargs)
         self.num = 0
 
-        self.height = 400
+        # self.height = 400
 
         self.label = self.add(Label('Hello'))
         self.label.margins = None, None, None, 10
@@ -27,7 +27,8 @@ class View(MainFrame):
             btn = self.scroll.add(Button(f'Button {item}', 'document-save'))
             btn.margins = 5, 5, 5, 5
             btn.connect(
-                lambda item=item, btn=btn: self.on_num_button(item, btn), Event.MOUSE_HOVER)
+                lambda item=item, btn=btn: self.on_num_button(item, btn),
+                Event.MOUSE_HOVER)
             setattr(self, f'button_{item}', btn)
 
         self.scroll.add(Label('Olá'))
@@ -45,11 +46,12 @@ class View(MainFrame):
     def on_button(self):
         self.num += 1
         self.label.text = f'Button press: {self.num}'
-
+        self.height = 400
+        
     def on_num_button(self, num, btn):
         if getattr(self, f'button_{num}').is_mouse_hover():
             self.label.text = f'Button press: {num}'
-            self.maximized = False
+            # self.maximized = False
 
 
 if __name__ == '__main__':
