@@ -22,38 +22,39 @@ class Element(object):
 
 layout = """
 ColumnLayout {
-    id: columnLayout
-    objectName: "columnLayout"
-            
+    id: columnLayout  // <id>
+    objectName: "columnLayout"  // <objectName>
+    property string qmlType: "ColumnLayout"  // <className>
+    
 // **closing_key**
-}
+} // <suffix_id>
 """
+
 row = """
 RowLayout {
-    id: rowLayout
-    objectName: "rowLayout"
-            
+    id: rowLayout  // <id>
+    objectName: "rowLayout"  // <objectName>
+    property string qmlType: "RowLayout"  // <className>
+    
 // **closing_key**
-}
+} // <suffix_id>
 """
 
 
 class Layout(UI):
-    """Layout object.
+    """A visual element object.
 
-    Organizes elements in stacks like a column or side by side like a row.
+    Elements are visual and interactive application items such as buttons and 
+    text.
     """
     def __init__(
             self, orientation: Orientation = Orientation.VERTICAL,
             *args, **kwargs) -> None:
-        """The init receives a Orientation Enum.
-
-        `Orientation.VERTICAL` is the default.
-
-        :param orientation: Orientation.VERTICAL or Orientation.HORIZONTAL.
-        """
+        """..."""
         super().__init__(*args, **kwargs)
         self._qml = layout if orientation == Orientation.VERTICAL else row
+        self.id = '_' + str(id(self))
+        self._element_type = 'Layout'
         self.__items = []
 
     def add(self, obj: Layout | Element) -> Layout | Element:

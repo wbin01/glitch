@@ -1,30 +1,8 @@
 #/usr/bin/env python3
+from .ui import UI
 
 
-qml_code = """
-Item {
-    id: element  // <id>
-    objectName: "element"  // <objectName>
-    property string qmlType: "Item"  // <className>
-    property int alignment: Qt.AlignHCenter
-    Layout.alignment: alignment
-    property bool fillWidth: true
-    property bool fillHeight: false
-    property int topMargin: 0
-    property int rightMargin: 0
-    property int bottomMargin: 0
-    property int leftMargin: 0
-    Layout.fillWidth: fillWidth
-    Layout.fillHeight: fillHeight
-    Layout.topMargin: topMargin
-    Layout.rightMargin: rightMargin
-    Layout.bottomMargin: bottomMargin
-    Layout.leftMargin: leftMargin
-} // <suffix_id>
-"""
-
-
-class Element(object):
+class Element(UI):
     """A visual element object.
 
     Elements are visual and interactive application items such as buttons and 
@@ -32,13 +10,9 @@ class Element(object):
     """
     def __init__(self, *args, **kwargs) -> None:
         """..."""
-        self.__qml = qml_code
-        self.__id = '_' + str(id(self))
-        self.__element_type = 'Element'
-        self.__obj = None
-
-        self.id = self.__id
-        self._element_type = self.__element_type
+        super().__init__(*args, **kwargs)
+        self.id = '_' + str(id(self))
+        self._element_type = 'Element'
 
     @property
     def margins(self) -> tuple:
@@ -70,7 +44,7 @@ class Element(object):
             'topMargin': 0, 'rightMargin': 0,
             'bottomMargin': 0, 'leftMargin': 0}
 
-        for line in self.__qml.split('\n'):
+        for line in self._qml.split('\n'):
             for margin in margins:
                 if 'property int ' + margin in line:
                     margins[margin] = int(line.split(':')[-1].strip())
@@ -103,7 +77,7 @@ class Element(object):
         left = prev_margins[3] if left is None else left
 
         qml = []
-        for line in self.__qml.split('\n'):
+        for line in self._qml.split('\n'):
             if 'property int topMargin:' in line:
                 qml.append(f'property int topMargin: {top}')
             elif 'property int rightMargin:' in line:
@@ -114,69 +88,4 @@ class Element(object):
                 qml.append(f'property int leftMargin: {left}')
             else:
                 qml.append(line)
-        self.__qml = '\n'.join(qml)
-
-    @property
-    def id(self) -> str:
-        """Element identifier."""
-        return self.__id
-
-    @id.setter
-    def id(self, id: str) -> None:
-        qml_lines = []
-        for line in self.__qml.split('\n'):
-            if line.strip().endswith('// <id>'):
-                qml_lines.append(f'    id: {id}  // <id>')
-
-            elif line.strip().endswith('// <objectName>'):
-                qml_lines.append(
-                    f'    objectName: "{id}"  // <objectName>')
-
-            else:
-                qml_lines.append(line)
-
-        self.__qml = '\n'.join(qml_lines).replace('<suffix_id>', id)
-        self.__id = id
-
-    @property
-    def _element_type(self) -> str:
-        """Element type name."""
-        return self.__element_type
-
-    @_element_type.setter
-    def _element_type(self, element_type: str) -> None:
-        qml_lines = []
-        for line in self.__qml.split('\n'):
-            if line.strip().endswith('// <className>'):
-                qml_lines.append(
-                    f'    property string qmlType: "{element_type}"  '
-                    '// <className>')
-            else:
-                qml_lines.append(line)
-
-        self.__qml = '\n'.join(qml_lines)
-        self.__element_type = element_type
-
-    @property
-    def _obj(self) -> str:
-        """Qt Object.
-
-        Internal object manipulated by the wrapper class.
-        """
-        return self.__obj
-
-    @_obj.setter
-    def _obj(self, obj: str) -> None:
-        self.__obj = obj
-
-    @property
-    def _qml(self) -> str:
-        """Qml code.
-
-        Internal Qml handled by the wrapper class.
-        """
-        return self.__qml
-
-    @_qml.setter
-    def _qml(self, qml: str) -> None:
-        self.__qml = qml
+        self._qml = '\n'.join(qml)

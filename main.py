@@ -1,7 +1,18 @@
 #/usr/bin/env python3
 from cell.core import Application
 from cell.enum import Event
-from cell.ui import Button, Column, Label, MainFrame, Row, Scroll
+from cell.ui.element import Button, Label
+from cell.ui.frame import MainFrame
+from cell.ui.layout import Column, Row, Scroll
+from cell.ui.base import Layout, UI
+
+
+class ColumnX(UI):
+    def __init__(self, *args, **kwargs) -> None:
+        super().__init__(*args, **kwargs)
+        # self.id = 'ustomButton'
+        # self.custom_btn = self.add(Button('Custom Button', 'document-save'))
+        # self.custom_lbl = self.add(Label('Custom Label'))
 
 
 class View(MainFrame):
@@ -42,12 +53,15 @@ class View(MainFrame):
         self.column.add(Button('Button 2', 'document-save'))
 
         # self.maximized = True
+        self.rr = self.add(Row())
+        self.cc = self.add(Column())
+        self.cx = self.add(ColumnX())
 
     def on_button(self):
         self.num += 1
         self.label.text = f'Button press: {self.num}'
         self.height = 400
-        
+
     def on_num_button(self, num, btn):
         if getattr(self, f'button_{num}').is_mouse_hover():
             self.label.text = f'Button press: {num}'

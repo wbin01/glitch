@@ -1,43 +1,88 @@
 #/usr/bin/env python3
 
-qml = """
+
+qml_code = """
 Item {
-    id: rowLayout
-    objectName: "rowLayout"
-            
-// **closing_key**
-}
+    id: item  // <id>
+    objectName: "item"  // <objectName>
+    property string qmlType: "Item"  // <className>
+    property int alignment: Qt.AlignHCenter
+    Layout.alignment: alignment
+    property bool fillWidth: true
+    property bool fillHeight: false
+    property int topMargin: 0
+    property int rightMargin: 0
+    property int bottomMargin: 0
+    property int leftMargin: 0
+    Layout.fillWidth: fillWidth
+    Layout.fillHeight: fillHeight
+    Layout.topMargin: topMargin
+    Layout.rightMargin: rightMargin
+    Layout.bottomMargin: bottomMargin
+    Layout.leftMargin: leftMargin
+} // <suffix_id>
 """
 
 
 class UI(object):
-    """Base UI object."""
+    """A visual element object.
+
+    Elements are visual and interactive application items such as buttons and 
+    text.
+    """
     def __init__(self, *args, **kwargs) -> None:
+        """..."""
+        self.__qml = qml_code
         self.__id = '_' + str(id(self))
-        self.__qml = qml
+        self.__element_type = 'Item'
         self.__obj = None
+
+        self.id = self.__id
+        self._element_type = self.__element_type
 
     @property
     def id(self) -> str:
-        """Layout identifier."""
-        if self._obj:
-            return self._obj.property('id')
+        """Element identifier."""
         return self.__id
 
     @id.setter
     def id(self, id: str) -> None:
-        if self._obj:
-            self._obj.setProperty('id', id)
-            self._obj.setProperty('objectName', id)
-        else:
-            self.__qml = self.__qml.replace(
-                f'id: {self.__id}', f'id: {id}').replace(
-                f'objectName: "{self.__id}"', f'objectName: "{id}"')
+        qml_lines = []
+        for line in self.__qml.split('\n'):
+            if line.strip().endswith('// <id>'):
+                qml_lines.append(f'    id: {id}  // <id>')
 
+            elif line.strip().endswith('// <objectName>'):
+                qml_lines.append(
+                    f'    objectName: "{id}"  // <objectName>')
+
+            else:
+                qml_lines.append(line)
+
+        self.__qml = '\n'.join(qml_lines).replace('<suffix_id>', id)
         self.__id = id
 
     @property
-    def _obj(self):
+    def _element_type(self) -> str:
+        """Element type name."""
+        return self.__element_type
+
+    @_element_type.setter
+    def _element_type(self, element_type: str) -> None:
+        qml_lines = []
+        for line in self.__qml.split('\n'):
+            if line.strip().endswith('// <className>'):
+                qml_lines.append(
+                    f'    property string qmlType: "{element_type}"  '
+                    '// <className>')
+            else:
+                qml_lines.append(line)
+
+        self.__qml = '\n'.join(qml_lines)
+        self.__element_type = element_type
+
+    @property
+    def _obj(self) -> str:
         """Qt Object.
 
         Internal object manipulated by the wrapper class.
@@ -45,7 +90,7 @@ class UI(object):
         return self.__obj
 
     @_obj.setter
-    def _obj(self, obj) -> None:
+    def _obj(self, obj: str) -> None:
         self.__obj = obj
 
     @property
