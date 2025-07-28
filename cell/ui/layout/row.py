@@ -1,6 +1,6 @@
 #/usr/bin/env python3
-from .base import Layout
-from ..enum.orientation import Orientation
+from ..base import Layout
+from ...enum.orientation import Orientation
 
 
 class Row(Layout):

@@ -4,7 +4,7 @@ from PySide6 import QtCore, QtQuick
 from .tools import change_element_style_state
 from ..enum.event import Event
 from ..ui.base import Element, Frame, Layout
-from ..ui.main_frame import MainFrame
+from ..ui.frame import MainFrame
 
 
 class Handler(QtCore.QObject):

@@ -7,7 +7,7 @@ from PySide6 import QtCore, QtGui, QtQml, QtQuick
 from .handler import Handler
 from .tools import change_element_style_state
 from ..ui.base import Element, Layout
-from ..ui.main_frame import MainFrame
+from ..ui.frame import MainFrame
 
 
 class AppEventFilter(QtCore.QObject):

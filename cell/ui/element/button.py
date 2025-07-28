@@ -1,8 +1,8 @@
 #/usr/bin/env python3
 import pathlib
 
-from .base import Element
-from ..enum.event import Event
+from ..base import Element
+from ...enum.event import Event
 
 
 class Button(Element):
@@ -14,7 +14,7 @@ class Button(Element):
         :param icon: Icon name or path string.
         """
         super().__init__(*args, **kwargs)
-        self.__path = pathlib.Path(__file__).parent.parent
+        self.__path = pathlib.Path(__file__).parent.parent.parent
 
         # Args
         self.__text = text

@@ -1,5 +1,5 @@
 #/usr/bin/env python3
-from .base import Layout
+from ..base import Layout
 
 
 class Column(Layout):
