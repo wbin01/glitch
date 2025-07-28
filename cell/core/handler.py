@@ -72,8 +72,10 @@ class Handler(QtCore.QObject):
                 continue
             element._obj = obj_value
 
-            if (isinstance(element, Layout) or isinstance(element, Element)
-                    and not isinstance(element, Frame)):
+            if isinstance(element, Layout):
+                self.__integrate_graphic_elements(element)
+            
+            elif isinstance(element, Element):
                 if hasattr(element, 'callbacks'):
                     if Event.MOUSE_PRESS in element.callbacks:
                         element.connect(

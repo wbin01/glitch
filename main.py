@@ -4,15 +4,20 @@ from cell.enum import Event
 from cell.ui.element import Button, Label
 from cell.ui.frame import MainFrame
 from cell.ui.layout import Column, Row, Scroll
-from cell.ui.base import Layout, UI
 
 
-class ColumnX(UI):
+class CustomX(Row):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
-        # self.id = 'ustomButton'
-        # self.custom_btn = self.add(Button('Custom Button', 'document-save'))
-        # self.custom_lbl = self.add(Label('Custom Label'))
+        self._element_type = 'CustomX'
+
+        self.custom_btn = self.add(Button('Custom Button', 'document-save'))
+        self.custom_btn.connect(self.xx)
+
+        self.custom_lbl = self.add(Label('Custom Label'))
+
+    def xx(self):
+        self.custom_lbl.text = 'Ala kkkk'
 
 
 class View(MainFrame):
@@ -53,9 +58,8 @@ class View(MainFrame):
         self.column.add(Button('Button 2', 'document-save'))
 
         # self.maximized = True
-        self.rr = self.add(Row())
-        self.cc = self.add(Column())
-        self.cx = self.add(ColumnX())
+        self.cx = self.add(CustomX())
+
 
     def on_button(self):
         self.num += 1
