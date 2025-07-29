@@ -25,6 +25,7 @@ ColumnLayout {
     id: columnLayout  // <id>
     objectName: "columnLayout"  // <objectName>
     property string qmlType: "ColumnLayout"  // <className>
+    spacing: 6
     
 // **closing_key**
 } // <suffix_id>
@@ -35,7 +36,8 @@ RowLayout {
     id: rowLayout  // <id>
     objectName: "rowLayout"  // <objectName>
     property string qmlType: "RowLayout"  // <className>
-    
+    spacing: 6
+
 // **closing_key**
 } // <suffix_id>
 """
@@ -55,7 +57,24 @@ class Layout(UI):
         self._qml = layout if orientation == Orientation.VERTICAL else row
         self.id = '_' + str(id(self))
         self._element_type = 'Layout'
+
+        self.__spacing = 6
         self.__items = []
+
+    @property
+    def spacing(self) -> int:
+        """..."""
+        return self.__spacing
+
+    @spacing.setter
+    def spacing(self, spacing: int) -> None:
+        if self._obj:
+            self._obj.setProperty('spacing', spacing)
+        else:
+            self._qml = self._qml.replace(
+                f'spacing: {self.__spacing}', f'spacing: {spacing}')
+
+        self.__spacing = spacing
 
     def add(self, obj: Layout | Element) -> Layout | Element:
         """Add items.

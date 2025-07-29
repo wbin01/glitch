@@ -21,7 +21,7 @@ ScrollView {
         // width: parent.width
         // Layout.fillWidth: true
         width: parent.width
-        spacing: 10
+        spacing: 6
 
 // **closing_key**
     }

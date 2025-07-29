@@ -102,15 +102,18 @@ class Handler(QtCore.QObject):
             self.__main_rect.setProperty('margins', 1)
 
         for child in self.__elements:
-            if hasattr(child, 'callbacks'):
-                # button = self.__gui.findChild(
-                #     QtCore.QObject, child.objectName())
-
+            if not child.property('qmlType'):
+                continue
+            
+            if getattr(child, 'clicked', None):
                 child.clicked.connect(self.__element_clicked)
+            if getattr(child, 'hoveredChanged', None):
                 child.hoveredChanged.connect(
                     lambda child=child: self.__element_hover(child))
+            if getattr(child, 'pressed', None):
                 child.pressed.connect(
                     lambda child=child: self.__element_pressed(child))
+            if getattr(child, 'released', None):
                 child.released.connect(
                     lambda child=child: self.__element_hover(child))
 
