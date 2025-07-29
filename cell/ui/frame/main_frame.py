@@ -1,6 +1,6 @@
 #/usr/bin/env python3
 from ..base import Frame
-
+from ...enum import FrameState
 
 qml = """
 import QtQuick
@@ -196,27 +196,43 @@ class MainFrame(Frame):
         super().__init__(*args, **kwargs)
         self.object_id = 'appFrame'
         self._qml = qml
-        self.__maximized = False
+
+        self.__frame_state = FrameState.FRAME
         self.__visibility = 'Window.Windowed'
 
     @property
-    def maximized(self) -> bool:
+    def frame_state(self) -> FrameState:
         """..."""
-        return self.__maximized
+        return self.__frame_state
 
-    @maximized.setter
-    def maximized(self, maximized: bool) -> None:
-        visibility = 'Window.Maximized' if maximized else 'Window.Windowed'
+    @frame_state.setter
+    def frame_state(self, frame_state: FrameState = FrameState.FRAME) -> None:
+        # Window.Hidden               0
+        # Window.AutomaticVisibility  1     system default (normally Windowed)
+        # Window.Windowed             2
+        # Window.Minimized            3
+        # Window.Maximized            4
+        # Window.FullScreen           5
+
+        frame_state_value = {
+            0: 'Window.Hidden', 1: 'Window.AutomaticVisibility',
+            2: 'Window.Windowed', 3: 'Window.Minimized',
+            4: 'Window.Maximized', 5: 'Window.FullScreen'}
+        visibility = frame_state_value[frame_state.value]
 
         if self._obj:
-            if maximized:
-                self._obj.showMaximized()
-            else:
+            if frame_state.value == 2:
                 self._obj.showNormal()
+            elif frame_state.value == 4:
+                self._obj.showMaximized()
+            elif frame_state.value == 3:
+                self._obj.showMinimized()
+            elif frame_state.value == 5:
+                self._obj.showFullScreen()
         else:
             self._qml = self._qml.replace(
                 f'visibility: {self.__visibility}',
                 f'visibility: {visibility}')
 
         self.__visibility = visibility
-        self.__maximized = maximized
+        self.__frame_state = frame_state

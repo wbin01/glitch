@@ -2,7 +2,7 @@
 from PySide6 import QtCore, QtQuick
 
 from .tools import change_element_style_state
-from ..enum.event import Event
+from ..enum import Event, FrameState
 from ..ui.base import Element, Frame, Layout
 from ..ui.frame import MainFrame
 
@@ -91,7 +91,7 @@ class Handler(QtCore.QObject):
 
     def __state_style(self) -> None:
         # Style of the elements and the Frame in each state.
-        if self.__ui.maximized:
+        if self.__ui.frame_state == FrameState.MAXIMIZED:
             self.__main_rect.setProperty('radius', 0)
             self.__main_rect.setProperty('borderWidth', 0)
             self.__main_rect.setProperty('margins', 0)

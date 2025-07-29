@@ -1,6 +1,6 @@
 #/usr/bin/env python3
 from .ui import UI
-from ...enum.orientation import Orientation
+from ...enum import Orientation
 
 
 class Layout(object):

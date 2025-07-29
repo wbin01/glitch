@@ -1,6 +1,6 @@
 #/usr/bin/env python3
 from cell.core import Application
-from cell.enum import Event
+from cell.enum import Event, FrameState
 from cell.ui.element import Button, Label
 from cell.ui.frame import MainFrame
 from cell.ui.layout import Column, Row, Scroll
@@ -18,7 +18,7 @@ class CustomElement(Row):
 
     def change_label(self):
         self.num += 1
-        self.custom_lbl.text = f'New Label {self.num}' 
+        self.custom_lbl.text = f'New Label {self.num}'
 
 
 class View(MainFrame):
@@ -57,7 +57,7 @@ class View(MainFrame):
         self.column.add(Button('Button 1', 'document-save'))
         self.column.add(Button('Button 2', 'document-save'))
 
-        self.maximized = True
+        self.frame_state = FrameState.FULL_SCREEN
 
     def on_button(self):
         self.num += 1
@@ -66,9 +66,7 @@ class View(MainFrame):
     def on_num_button(self, num, btn):
         if getattr(self, f'button_{num}').is_mouse_hover():
             self.label.text = f'Button press: {num}'
-
-            if self.maximized:
-                self.maximized = False
+            self.frame_state = FrameState.FRAME
 
 
 if __name__ == '__main__':
