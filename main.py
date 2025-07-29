@@ -24,9 +24,12 @@ class CustomElement(Row):
 class View(MainFrame):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
-        self.num = 0
-        self.height = 400
+        # Set
+        # self.frame_state = FrameState.FULL_SCREEN
+        self.height = 500
+        self.width = 500
 
+        # Elements
         self.label = self.add(Label('Hello'))
         self.label.margins = None, None, None, 10
 
@@ -57,7 +60,8 @@ class View(MainFrame):
         self.column.add(Button('Button 1', 'document-save'))
         self.column.add(Button('Button 2', 'document-save'))
 
-        self.frame_state = FrameState.FULL_SCREEN
+        # Flags
+        self.num = 0
 
     def on_button(self):
         self.num += 1

@@ -2,54 +2,9 @@
 from ..base import Frame
 from ...enum import FrameState
 
+
 qml = """
-import QtQuick
-import QtQuick.Controls
-import QtQuick.Layouts
-
-import "elements"
-
-
-Window {
-    id: window
-    visible: true
-    visibility: Window.Windowed
-    height: _height
-    property int _height: 200
-    width: 200
-    minimumWidth: 200
-    minimumHeight: 200
-    title: qsTr("App Mínimo")
-    color: "transparent"
-    flags: Qt.FramelessWindowHint
-
-    Rectangle {
-        id: outerBorder
-        objectName: "outerBorder"
-        anchors.fill: parent
-        color: "transparent"
-        border.color: "#44000000"
-        border.width: 1
-        radius: 11
-        z: 0
-    }
-
-    Rectangle {
-        id: mainRect
-        objectName: "mainRect"
-        anchors.fill: parent
-        anchors.margins: margins
-        radius: 10
-        color: "#333"
-        border.color: borderColor
-        border.width: borderWidth
-        z: 1
-
-        property color borderColor: "#444"
-        property bool isActive: true
-        property int borderWidth: 1
-        property int margins: 1
-
+// MainFrame
         // Drag area
         Rectangle {
             id: dragArea
@@ -168,25 +123,7 @@ Window {
             hoverEnabled: true
             onPressed: logic.start_resize(Qt.RightEdge)
         }
-
-        ColumnLayout {
-            id: mainColumnLayout
-            objectName: "mainColumnLayout"
-            anchors.fill: parent
-            // anchors.top: parent.top
-            anchors.margins: 6
-            spacing: 6
-            clip: true
-            // Layout.fillHeight: false
-            Layout.alignment: Qt.AlignTop
-            Layout.fillWidth: true
-
-// **closing_key**
-
-        }
-    }
-}
-
+// MainFrame
 """
 
 class MainFrame(Frame):
@@ -194,8 +131,11 @@ class MainFrame(Frame):
     def __init__(self, *args, **kwargs) -> None:
         """..."""
         super().__init__(*args, **kwargs)
-        self.object_id = 'appFrame'
-        self._qml = qml
+        qml_init, qml_end = self._qml.split('// MainFrame')
+        self._qml = qml_init + qml + qml_end
+
+        self.id = 'mainFrame'
+        self._element_type = 'MainFrame'
 
         self.__frame_state = FrameState.FRAME
         self.__visibility = 'Window.Windowed'

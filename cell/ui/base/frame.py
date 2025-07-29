@@ -23,27 +23,65 @@ class Element(object):
 
 qml = """
 import QtQuick
-import QtQuick.Window
+import QtQuick.Controls
+import QtQuick.Layouts
+
+import "elements"
+
 
 Window {
-    id: contextWindow
-    width: 200
-    height: _height
-    property int _height: 50
+    id: window  // <id>
+    objectName: "window"  // <objectName>
+    property string qmlType: "Window"  // <className>
+
+    // id: window
     visible: true
-    flags: Qt.Popup
-    color: "white"
+    visibility: Window.Windowed
+    
+    height: _height
+    property int _height: 200
+    
+    width: _width
+    property int _width: 200
+
+    minimumWidth: 200
+    minimumHeight: 200
+    title: qsTr("Cell")
+    color: "transparent"
+    flags: Qt.FramelessWindowHint
+
     Rectangle {
+        id: outerBorder
+        objectName: "outerBorder"
         anchors.fill: parent
-        border.color: "black"
-        Text {
-            anchors.centerIn: parent
-            text: "Frame"
-        }
+        color: "transparent"
+        border.color: "#44000000"
+        border.width: 1
+        radius: 11
+        z: 0
+    }
+
+    Rectangle {
+        id: mainRect
+        objectName: "mainRect"
+        anchors.fill: parent
+        anchors.margins: margins
+        radius: 10
+        color: "#333"
+        border.color: borderColor
+        border.width: borderWidth
+        z: 1
+
+        property color borderColor: "#444"
+        property bool isActive: true
+        property int borderWidth: 1
+        property int margins: 1
+
+// MainFrame
 
         ColumnLayout {
-            id: columnLayout
-            objectName: "columnLayout"
+            id: mainColumnLayout
+            objectName: "mainColumnLayout"
             anchors.fill: parent
             // anchors.top: parent.top
             anchors.margins: 6
@@ -60,6 +98,7 @@ Window {
 }
 
 """
+
 class Frame(UI):
     """Layout object.
 
@@ -105,6 +144,22 @@ class Frame(UI):
     @style.setter
     def style(self, style: dict) -> None:
         self.__style = style
+
+    @property
+    def width(self) -> int:
+        """..."""
+        return self.__width
+
+    @width.setter
+    def width(self, width: int) -> None:
+        if self._obj:
+            self._obj.setProperty('_width', width)
+        else:
+            self._qml = self._qml.replace(
+                f'_width: {self.__width}',
+                f'_width: {width}')
+
+        self.__width = width
 
     def add(self, obj: Layout | Element) -> Layout | Element:
         """Add items.
