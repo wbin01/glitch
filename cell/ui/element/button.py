@@ -43,7 +43,7 @@ class Button(Element):
         self.text = self.__text
         self.icon = icon
 
-        self.callbacks = {}
+        self.__callbacks = {}
 
     @property
     def icon(self) -> str:
@@ -82,6 +82,10 @@ class Button(Element):
             f'\n    text: "{text}"')
         self.__text = text
 
+    def callbacks(self) -> callable:
+        """..."""
+        return self.__callbacks
+
     def connect(
             self, method: callable, event: Event = Event.MOUSE_PRESS) -> None:
         """Connect the button to a method.
@@ -100,7 +104,7 @@ class Button(Element):
                 self._obj.hoveredChanged.connect(method)
             return
 
-        self.callbacks[event] = method
+        self.__callbacks[event] = method
 
     def is_mouse_hover(self) -> bool:
         """If the mouse is hovering over this button.

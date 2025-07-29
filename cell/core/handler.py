@@ -77,14 +77,14 @@ class Handler(QtCore.QObject):
             
             elif isinstance(element, Element):
                 if hasattr(element, 'callbacks'):
-                    if Event.MOUSE_PRESS in element.callbacks:
+                    callbacks = element.callbacks()
+
+                    if Event.MOUSE_PRESS in callbacks:
                         element.connect(
-                            element.callbacks[Event.MOUSE_PRESS],
-                            Event.MOUSE_PRESS)
-                    elif Event.MOUSE_HOVER in element.callbacks:
+                            callbacks[Event.MOUSE_PRESS], Event.MOUSE_PRESS)
+                    elif Event.MOUSE_HOVER in callbacks:
                         element.connect(
-                            element.callbacks[Event.MOUSE_HOVER],
-                            Event.MOUSE_HOVER)
+                            callbacks[Event.MOUSE_HOVER], Event.MOUSE_HOVER)
 
         if isinstance(layout, Frame):
             layout._obj = self.__gui
@@ -102,7 +102,7 @@ class Handler(QtCore.QObject):
             self.__main_rect.setProperty('margins', 1)
 
         for child in self.__elements:
-            if child.property('qmlType') in ['Button']:
+            if hasattr(child, 'callbacks'):
                 # button = self.__gui.findChild(
                 #     QtCore.QObject, child.objectName())
 
