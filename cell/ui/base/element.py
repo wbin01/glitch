@@ -11,7 +11,6 @@ class Element(UI):
     def __init__(self, *args, **kwargs) -> None:
         """..."""
         super().__init__(*args, **kwargs)
-        self.id = '_' + str(id(self))
         self._element_type = 'Element'
 
         self.__margins = 0, 0, 0, 0
@@ -71,18 +70,17 @@ class Element(UI):
             self._obj.setProperty('bottomMargin', bottom)
             self._obj.setProperty('leftMargin', left)
         else:
-            qml = []
-            for line in self._qml.split('\n'):
-                if 'property int topMargin:' in line:
-                    qml.append(f'property int topMargin: {top}')
-                elif 'property int rightMargin:' in line:
-                    qml.append(f'property int rightMargin: {right}')
-                elif 'property int bottomMargin:' in line:
-                    qml.append(f'property int bottomMargin: {bottom}')
-                elif 'property int leftMargin:' in line:
-                    qml.append(f'property int leftMargin: {left}')
-                else:
-                    qml.append(line)
-            self._qml = '\n'.join(qml)
+            self._qml = self._qml.replace(
+                f'property int topMargin: {self.__margins[0]}',
+                f'property int topMargin: {top}')
+            self._qml = self._qml.replace(
+                f'property int rightMargin: {self.__margins[1]}',
+                f'property int rightMargin: {right}')
+            self._qml = self._qml.replace(
+                f'property int bottomMargin: {self.__margins[2]}',
+                f'property int bottomMargin: {bottom}')
+            self._qml = self._qml.replace(
+                f'property int leftMargin: {self.__margins[3]}',
+                f'property int leftMargin: {left}')
 
         self.__margins = top, left, bottom, right

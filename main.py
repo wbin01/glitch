@@ -43,6 +43,7 @@ class View(MainFrame):
         self.button_m
 
         self.scroll = self.add(Scroll())
+        self.scroll.margins = 10
         for item in range(5):
             btn = self.scroll.add(Button(f'Button {item}', 'document-save'))
             btn.connect(
@@ -57,6 +58,7 @@ class View(MainFrame):
         self.row.add(Button('Button 2', 'document-save'))
 
         self.column = self.add(Column())
+        self.column.margins = 50
         self.column.add(Button('Button 1', 'document-save'))
         self.column.add(Button('Button 2', 'document-save'))
 
@@ -67,7 +69,9 @@ class View(MainFrame):
         self.num += 1
         self.label.text = f'Button press: {self.num}'
         # self.scroll.spacing = 20
-        # self.label.margins = None, None, None, 0
+        self.label.margins = None, None, None, 0
+        self.scroll.margins = 0
+        self.column.margins = 0
         # self.spacing = 6
 
     def on_num_button(self, num, btn):

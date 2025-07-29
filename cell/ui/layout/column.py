@@ -9,3 +9,4 @@ class Column(Layout):
     """
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
+        self._element_type = 'Column'

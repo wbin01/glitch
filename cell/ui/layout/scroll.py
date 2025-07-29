@@ -4,10 +4,23 @@ from ..base import Layout
 object_code = """
 // ScrollBox
 ScrollView {
+    id: scroll  // <id>
+    objectName: "scroll"  // <objectName>
+    property string qmlType: "Scroll"  // <className>
+
     Layout.fillWidth: true
     Layout.fillHeight: true
     clip: true
     contentWidth: availableWidth
+
+    Layout.topMargin: topMargin
+    Layout.rightMargin: rightMargin
+    Layout.bottomMargin: bottomMargin
+    Layout.leftMargin: leftMargin
+    property int topMargin: 0
+    property int rightMargin: 0
+    property int bottomMargin: 0
+    property int leftMargin: 0
 
     background: Rectangle {
         color: "#22000000"
@@ -15,12 +28,15 @@ ScrollView {
     }
 
     ColumnLayout {
-        id: scrollBox
-        objectName: "scrollBox"
-        property string qmlType: "ScrollBox"
+        id: scrollColumnLayout
+        objectName: "scrollColumnLayout"
+
         // width: parent.width
         // Layout.fillWidth: true
         width: parent.width
+
+        
+        
         spacing: 6
 
 // **closing_key**
@@ -41,4 +57,4 @@ class Scroll(Layout):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self._qml = object_code
-        self.id = 'scrollBox'
+        self._element_type = 'Scroll'

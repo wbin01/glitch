@@ -133,8 +133,6 @@ class MainFrame(Frame):
         super().__init__(*args, **kwargs)
         qml_init, qml_end = self._qml.split('// MainFrame')
         self._qml = qml_init + qml + qml_end
-
-        self.id = 'mainFrame'
         self._element_type = 'MainFrame'
 
         self.__frame_state = FrameState.FRAME
@@ -147,13 +145,7 @@ class MainFrame(Frame):
 
     @frame_state.setter
     def frame_state(self, frame_state: FrameState = FrameState.FRAME) -> None:
-        # Window.Hidden               0
         # Window.AutomaticVisibility  1     system default (normally Windowed)
-        # Window.Windowed             2
-        # Window.Minimized            3
-        # Window.Maximized            4
-        # Window.FullScreen           5
-
         frame_state_value = {
             0: 'Window.Hidden', 1: 'Window.AutomaticVisibility',
             2: 'Window.Windowed', 3: 'Window.Minimized',

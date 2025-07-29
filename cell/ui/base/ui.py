@@ -6,16 +6,19 @@ Item {
     id: item  // <id>
     objectName: "item"  // <objectName>
     property string qmlType: "Item"  // <className>
+
     property int alignment: Qt.AlignHCenter
     Layout.alignment: alignment
+
     property bool fillWidth: true
     property bool fillHeight: false
+    Layout.fillWidth: fillWidth
+    Layout.fillHeight: fillHeight
+
     property int topMargin: 0
     property int rightMargin: 0
     property int bottomMargin: 0
     property int leftMargin: 0
-    Layout.fillWidth: fillWidth
-    Layout.fillHeight: fillHeight
     Layout.topMargin: topMargin
     Layout.rightMargin: rightMargin
     Layout.bottomMargin: bottomMargin
@@ -59,7 +62,7 @@ class UI(object):
             else:
                 qml_lines.append(line)
 
-        self.__qml = '\n'.join(qml_lines).replace('<suffix_id>', id)
+        self.__qml = '\n'.join(qml_lines)  # .replace('<suffix_id>', id)
         self.__id = id
 
     @property
