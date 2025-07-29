@@ -26,6 +26,7 @@ class View(MainFrame):
         super().__init__(*args, **kwargs)
         # Set
         # self.frame_state = FrameState.FULL_SCREEN
+        # self.spacing = 0
         self.height = 400
         self.width = 400
 
@@ -65,8 +66,9 @@ class View(MainFrame):
     def on_button(self):
         self.num += 1
         self.label.text = f'Button press: {self.num}'
-        self.scroll.spacing = 20
-        self.label.margins = None, None, None, 0
+        # self.scroll.spacing = 20
+        # self.label.margins = None, None, None, 0
+        # self.spacing = 6
 
     def on_num_button(self, num, btn):
         if getattr(self, f'button_{num}').is_mouse_hover():

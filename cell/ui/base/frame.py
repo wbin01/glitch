@@ -1,4 +1,6 @@
 #/usr/bin/env python3
+from PySide6 import QtCore
+
 from .ui import UI
 from ...enum.orientation import Orientation
 from ...platform.style import Style
@@ -115,8 +117,11 @@ class Frame(UI):
         """
         super().__init__(*args, **kwargs)
         self._qml = qml
+
         self.__height = 200
         self.__width = 200
+        self.__spacing = 6
+
         self.__style = Style().style
         self.__items = []
 
@@ -135,6 +140,23 @@ class Frame(UI):
                 f'_height: {height}')
 
         self.__height = height
+
+    @property
+    def spacing(self) -> int:
+        """..."""
+        return self.__spacing
+
+    @spacing.setter
+    def spacing(self, spacing: int) -> None:
+        if self._obj:
+            self._obj.findChild(
+                QtCore.QObject, 'mainColumnLayout').setProperty(
+                    'spacing', spacing)
+        else:
+            self._qml = self._qml.replace(
+                f'spacing: {self.__spacing}', f'spacing: {spacing}')
+
+        self.__spacing = spacing
 
     @property
     def style(self) -> dict:
