@@ -6,26 +6,26 @@ from cell.ui.frame import MainFrame
 from cell.ui.layout import Column, Row, Scroll
 
 
-class CustomX(Row):
+class CustomElement(Row):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
-        self._element_type = 'CustomX'
+        self.custom_btn = self.add(Button('Button', 'document-save'))
+        self.custom_btn.margins = 5, 5, 5, 5
+        self.custom_btn.connect(self.change_label)
 
-        self.custom_btn = self.add(Button('Custom Button', 'document-save'))
-        self.custom_btn.connect(self.xx)
+        self.custom_lbl, self.num = self.add(Label('Label')), 0
+        self.custom_lbl.margins = 5, 5, 5, 5
 
-        self.custom_lbl = self.add(Label('Custom Label'))
-
-    def xx(self):
-        self.custom_lbl.text = 'Ala kkkk'
+    def change_label(self):
+        self.num += 1
+        self.custom_lbl.text = f'New Label {self.num}' 
 
 
 class View(MainFrame):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self.num = 0
-
-        # self.height = 400
+        self.height = 400
 
         self.label = self.add(Label('Hello'))
         self.label.margins = None, None, None, 10
@@ -47,7 +47,7 @@ class View(MainFrame):
                 Event.MOUSE_HOVER)
             setattr(self, f'button_{item}', btn)
 
-        self.scroll.add(Label('Olá'))
+        self.ce = self.scroll.add(CustomElement())
 
         self.row = self.add(Row())
         self.row.add(Button('Button 1', 'document-save'))
@@ -57,19 +57,18 @@ class View(MainFrame):
         self.column.add(Button('Button 1', 'document-save'))
         self.column.add(Button('Button 2', 'document-save'))
 
-        # self.maximized = True
-        self.cx = self.add(CustomX())
-
+        self.maximized = True
 
     def on_button(self):
         self.num += 1
         self.label.text = f'Button press: {self.num}'
-        self.height = 400
 
     def on_num_button(self, num, btn):
         if getattr(self, f'button_{num}').is_mouse_hover():
             self.label.text = f'Button press: {num}'
-            # self.maximized = False
+
+            if self.maximized:
+                self.maximized = False
 
 
 if __name__ == '__main__':
