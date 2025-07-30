@@ -1,5 +1,5 @@
 #/usr/bin/env python3
-from cell.core import Application
+from cell.core import Application, Signal
 from cell.enum import Event, FrameState, FrameHint
 from cell.ui.element import Button, Label
 from cell.ui.frame import MainFrame, Frame
@@ -7,6 +7,7 @@ from cell.ui.layout import Column, Row, Scroll
 
 
 class CustomElement(Row):
+    button_clicked_signal = Signal()
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self.custom_btn = self.add(Button('Button', 'document-save'))
@@ -17,6 +18,7 @@ class CustomElement(Row):
         # self.custom_lbl.margins = 5, 5, 5, 5
 
     def change_label(self):
+        self.button_clicked_signal.emit()
         self.num += 1
         self.custom_lbl.text = f'New Label {self.num}'
 
@@ -55,6 +57,7 @@ class View(MainFrame):
             setattr(self, f'button_{item}', btn)
 
         self.ce = self.scroll_col.add(CustomElement())
+        self.ce.button_clicked_signal.connect(self.custom_element_clicked)
 
         self.row = self.add(Row())
         self.row.add(Button('Button 1', 'document-save'))
@@ -66,6 +69,11 @@ class View(MainFrame):
 
         # Flags
         self.num = 0
+        self.custom_num = 0
+
+    def custom_element_clicked(self):
+        self.custom_num += 1
+        self.label.text = f'Custom Element Button clicked {self.custom_num}'
 
     def on_button(self):
         self.num += 1
