@@ -2,6 +2,10 @@
 
 
 class Style(object):
+    """Application style.
+    
+    Manages style information according to the platform.
+    """
     def __init__(self):
         self.style = {
             '[Platform]': {
@@ -49,4 +53,4 @@ class Style(object):
                 },
             }
     def __str__(self):
-        return f'<Style: {id(self)}>'
+        return "<class 'Style'>"

@@ -8,4 +8,4 @@ class Orientation(Enum):
     HORIZONTAL = 1
 
     def __str__(self):
-        return f'<Orientation: {id(self)}>'
+        return "<class 'Orientation'>"

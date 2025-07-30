@@ -21,4 +21,4 @@ class Align(Enum):
     V_CENTER = QtCore.Qt.AlignVCenter
     
     def __str__(self):
-        return f'<Align: {id(self)}>'
+        return "<class 'Align'>"

@@ -3,9 +3,10 @@
 
 qml_code = """
 Item {
-    id: item  // <id>
-    objectName: "item"  // <objectName>
-    property string qmlType: "Item"  // <className>
+    id: ui  // <id>
+    objectName: "ui"  // <objectName>
+    property string qmlType: "UI"  // <className>
+    property string baseClass: "UI"  // <baseClass>
 
     property int alignment: Qt.AlignHCenter
     Layout.alignment: alignment
@@ -36,7 +37,6 @@ class UI(object):
     text.
     """
     def __init__(self, *args, **kwargs) -> None:
-        """..."""
         self.__qml = qml_code
         self.__id = '_' + str(id(self))
         self.__element_type = 'UI'
@@ -109,4 +109,4 @@ class UI(object):
         self.__qml = qml
 
     def __str__(self):
-        return f'<UI: {id(self)}>'
+        return "<class 'UI'>"

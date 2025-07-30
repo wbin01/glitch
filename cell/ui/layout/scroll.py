@@ -7,6 +7,7 @@ ScrollView {
     id: scroll  // <id>
     objectName: "scroll"  // <objectName>
     property string qmlType: "Scroll"  // <className>
+    property string baseClass: "Layout"  // <baseClass>
 
     Layout.fillWidth: true
     Layout.fillHeight: true
@@ -60,4 +61,4 @@ class Scroll(Layout):
         self._element_type = 'Scroll'
 
     def __str__(self):
-        return f'<Scroll: {id(self)}>'
+        return "<class 'Scroll'>"

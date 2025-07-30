@@ -31,4 +31,4 @@ class Event(Enum):
     TITLE = 'TITLE'
 
     def __str__(self):
-        return f'<Event: {id(self)}>'
+        return "<class 'Event'>"

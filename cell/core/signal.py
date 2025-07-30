@@ -12,8 +12,7 @@ class BaseSignal(QtCore.QObject):
     __signal = QtCore.Signal()
 
     def __init__(self, value: any = None, *args, **kwargs) -> None:
-        """Class constructor.
-
+        """
         :param value: Object of any type. 
             Use when you need to pass and retrieve a value.
         """
@@ -50,34 +49,32 @@ class BaseSignal(QtCore.QObject):
         self.__signal.emit()
 
     def __str__(self) -> str:
-        return f'<BaseSignal: {id(self)}>'
-
+        return "<class 'BaseSignal'>"
 
 
 class Signal(object):
-    """Signal object."""
+    """Signal object.
+
+    Signals an event:
+
+        MyObj:
+            obj_signal = Signal()
+
+            def obj_call(self):
+                obj_signal.emit()
+
+
+        my_obj = MyObj()
+        my_obj.obj_signal.connect(lamba: print('Signal has been emitted'))
+
+    When a signal is emitted, it performs the connected function.
+    """
     def __init__(self):
-        """Class constructor.
-
-        Signals an event:
-
-            MyObj:
-                obj_signal = Signal()
-
-                def obj_call(self):
-                    obj_signal.emit()
-
-
-            my_obj = MyObj()
-            my_obj.obj_signal.connect(lamba: print('Signal has been emitted'))
-
-        When a signal is emitted, it performs the connected function.
-        """
         self.__signal = BaseSignal()
         self.__callback = None
 
-    @property
-    def _callback(self) -> callable:
+    def callback(self) -> callable:
+        """The callback sent."""
         return self.__callback
 
     @property
@@ -130,4 +127,4 @@ class Signal(object):
         self.__signal.send()
 
     def __str__(self) -> str:
-        return f'<Signal: {id(self)}>'
+        return "<class 'Signal'>"

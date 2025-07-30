@@ -43,8 +43,8 @@ class View(MainFrame):
         self.button_m.connect(self.on_button)
         self.button_m
 
-        scroll = self.add(Scroll())
-        self.scroll_col = scroll.add(Column())
+        self.scroll = self.add(Scroll())
+        self.scroll_col = self.scroll.add(Column())
         self.scroll_col.margins = 10
 
         for item in range(5):

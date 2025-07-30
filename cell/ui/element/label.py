@@ -19,6 +19,7 @@ class Label(Element):
             '\n    id: label  // <id>'
             '\n    objectName: "label"  // <objectName>'
             '\n    property string qmlType: "Label"  // <className>'
+            '\n    property string baseClass: "Element"  // <baseClass>'
             f'\n    text: "{self.__text}"'
             '\n    color: "#fff"'
             '\n    property int topMargin: 0'
@@ -51,4 +52,4 @@ class Label(Element):
         self.__text = text
 
     def __str__(self):
-        return f'<Label: {id(self)}>'
+        return "<class 'Label'>"

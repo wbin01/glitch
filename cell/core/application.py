@@ -6,22 +6,31 @@ from PySide6 import QtCore, QtGui, QtQml, QtQuick
 
 from .handler import Handler
 from .tools import change_element_style_state
-from ..ui.base import Element, Layout
-from ..ui.frame import MainFrame
+from ..ui.base import Element, Frame, Layout
 
 
 class AppEventFilter(QtCore.QObject):
-    """..."""
+    """Application event filter.
+
+    Filters the Frame state and adapts the elements.
+    """
     def __init__(self, main_rect: QtQuick.QQuickItem, style: dict) -> None:
-        """..."""
+        """
+        :param main_rect: The main Rectangle inside the Qml-Window.
+        :param_style: The Frame and Element style dic.
+        """
         super().__init__()
         self.__main_rect = main_rect
-        self.__childrens = self.__main_rect.findChildren(
-            QtCore.QObject, options=QtCore.Qt.FindChildrenRecursively)
         self.__style = style
-
+        self.__elements = self.__main_rect.findChildren(
+            QtCore.QObject, options=QtCore.Qt.FindChildrenRecursively)
+    
     def eventFilter(self, obj: QtCore.QObject, event: QtCore.QEvent) -> bool:
-        """..."""
+        """Adapts the style of the elements.
+
+        Filters the active state of the Frame and changes the style of all 
+        elements accordingly.
+        """
         if event.type() == QtCore.QEvent.WindowActivate:
             self.__main_rect.setProperty('isActive', 'true')
             self.__state_style()
@@ -40,21 +49,23 @@ class AppEventFilter(QtCore.QObject):
             'borderColor',
             self.__style[f'[MainFrame{state}]']['border_color'])
 
-        for element in self.__childrens:  # element.metaObject().className()
+        for element in self.__elements:  # element.metaObject().className()
             change_element_style_state(element, state, self.__style)
 
     def __str__(self):
-        return f'<AppEventFilter: {id(self)}>'
+        return "<class 'AppEventFilter'>"
 
 
 class Application(object):
-    """..."""
-    def __init__(
-            self, main_frame: MainFrame = MainFrame
-            # handler: Handler = Handler
-            ) -> None:
-        """..."""
-        self.__ui = main_frame()
+    """Manages the application.
+
+    Handles the processes necessary for the application to function properly.
+    """
+    def __init__(self, frame: Frame = Frame) -> None:
+        """
+        :param frame: The Application Frame.
+        """
+        self.__ui = frame()
         self.__path = pathlib.Path(__file__).parent.parent
 
         self.__qml_code = None
@@ -70,16 +81,20 @@ class Application(object):
 
         self.__gui = self.__engine.rootObjects()[0]
         self.__main_rect = self.__gui.findChild(QtCore.QObject, 'mainRect')
-
-        # self.__handler = handler(self.__gui, self.__ui)
         self.__handler = Handler(self.__gui, self.__ui)
 
-    def main_frame(self) -> Handler:
-        """..."""
+    def frame(self) -> Frame:
+        """The Application Frame.
+        
+        The Frame class passed to the constructor of this class.
+        """
         return self.__ui
 
     def exec(self) -> None:
-        """..."""
+        """Run the application.
+
+        Manages the processes to start the Application Frame and execute it.
+        """
         event_filter = AppEventFilter(self.__main_rect, self.__ui.style)
         self.__gui.installEventFilter(event_filter)
 
@@ -119,4 +134,4 @@ class Application(object):
         self.__qml_path.write_text(self.__qml_code)
 
     def __str__(self):
-        return f'<Application: {id(self)}>'
+        return "<class 'Application'>"

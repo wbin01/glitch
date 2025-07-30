@@ -13,7 +13,7 @@ class Layout(object):
     Organizes elements in stacks like a column or side by side like a row.
     """
     def __str__(self):
-        return f'<Layout: {id(self)}>'
+        return "<class 'Layout'>"
 
 
 class Element(object):
@@ -23,7 +23,7 @@ class Element(object):
     text.
     """
     def __str__(self):
-        return f'<Element: {id(self)}>'
+        return "<class 'Element'>"
 
 
 qml = """
@@ -38,6 +38,7 @@ Window {
     id: window  // <id>
     objectName: "window"  // <objectName>
     property string qmlType: "Window"  // <className>
+    property string baseClass: "Frame"  // <baseClass>
 
     // id: window
     visible: true
@@ -105,19 +106,12 @@ Window {
 """
 
 class Frame(UI):
-    """Layout object.
+    """The Application Frame.
 
-    Organizes elements in stacks like a column or side by side like a row.
+    The frame where the application and its visual elements are built. This is 
+    commonly called the "Window".
     """
-    def __init__(
-            self, orientation: Orientation = Orientation.VERTICAL,
-            *args, **kwargs) -> None:
-        """The init receives a Orientation Enum.
-
-        `Orientation.VERTICAL` is the default.
-
-        :param orientation: Orientation.VERTICAL or Orientation.HORIZONTAL.
-        """
+    def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self._qml = qml
 
@@ -170,7 +164,7 @@ class Frame(UI):
 
     @property
     def height(self) -> int:
-        """..."""
+        """Frame Height."""
         return self.__height
 
     @height.setter
@@ -186,7 +180,11 @@ class Frame(UI):
 
     @property
     def spacing(self) -> int:
-        """..."""
+        """Spacing Between Elements.
+
+        The Frame contains a vertical Layout as a Column type, which manages 
+        the position and spacing between Elements.
+        """
         return self.__spacing
 
     @spacing.setter
@@ -203,7 +201,11 @@ class Frame(UI):
 
     @property
     def style(self) -> dict:
-        """..."""
+        """Application style.
+
+        A dictionary with color and style information for each visual element 
+        in the application.
+        """
         return self.__style
 
     @style.setter
@@ -212,7 +214,7 @@ class Frame(UI):
 
     @property
     def width(self) -> int:
-        """..."""
+        """Frame Width."""
         return self.__width
 
     @width.setter
@@ -249,4 +251,4 @@ class Frame(UI):
         return self.__items
 
     def __str__(self):
-        return f'<Frame: {id(self)}>'
+        return "<class 'Frame'>"

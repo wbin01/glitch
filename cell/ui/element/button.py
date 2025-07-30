@@ -26,6 +26,7 @@ class Button(Element):
             '\n    id: button  // <id>'
             '\n    objectName: "button"  // <objectName>'
             '\n    property string qmlType: "Button"  // <className>'
+            '\n    property string baseClass: "Element"  // <baseClass>'
             f'\n    text: "{self.__text}"'
             f'\n    iconSource: "{self.__icon}"'
             '\n    property int topMargin: 0'
@@ -82,8 +83,12 @@ class Button(Element):
             f'\n    text: "{text}"')
         self.__text = text
 
-    def callbacks(self) -> callable:
-        """..."""
+    def callbacks(self) -> dict:
+        """The functions used in the `connect` method.
+
+        The `connect` method organizes the received functions into a 
+        dictionary organized by the type of event they are associated with.
+        """
         return self.__callbacks
 
     def connect(
@@ -117,4 +122,4 @@ class Button(Element):
         return False
 
     def __str__(self):
-        return f'<Button: {id(self)}>'
+        return "<class 'Button'>"

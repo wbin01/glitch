@@ -34,4 +34,4 @@ class FrameHint(Enum):
     # Qt.WindowMinimizeButtonHint, Qt.WindowMaximizeButtonHint
 
     def __str__(self):
-        return f'<FrameHint: {id(self)}>'
+        return "<class 'FrameHint'>"

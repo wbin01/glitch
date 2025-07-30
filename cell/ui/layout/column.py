@@ -12,4 +12,4 @@ class Column(Layout):
         self._element_type = 'Column'
 
     def __str__(self):
-        return f'<Column: {id(self)}>'
+        return "<class 'Column'>"

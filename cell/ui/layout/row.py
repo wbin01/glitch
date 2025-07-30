@@ -15,4 +15,4 @@ class Row(Layout):
         self._element_type = 'Row'
 
     def __str__(self):
-        return f'<Row: {id(self)}>'
+        return "<class 'Row'>"

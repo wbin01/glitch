@@ -11,7 +11,7 @@ class Layout(object):
     Organizes elements in stacks like a column or side by side like a row.
     """
     def __str__(self):
-        return f'<Layout: {id(self)}>'
+        return "<class 'Layout'>"
 
 
 class Element(object):
@@ -21,7 +21,7 @@ class Element(object):
     text.
     """
     def __str__(self):
-        return f'<Element: {id(self)}>'
+        return "<class 'Element'>"
 
 
 layout = """
@@ -29,6 +29,7 @@ ColumnLayout {
     id: column  // <id>
     objectName: "column"  // <objectName>
     property string qmlType: "Column"  // <className>
+    property string baseClass: "Layout"  // <baseClass>
     
     property int topMargin: 0
     property int rightMargin: 0
@@ -50,6 +51,7 @@ RowLayout {
     id: row  // <id>
     objectName: "row"  // <objectName>
     property string qmlType: "Row"  // <className>
+    property string baseClass: "Layout"  // <baseClass>
 
     property int topMargin: 0
     property int rightMargin: 0
@@ -76,7 +78,9 @@ class Layout(UI):
     def __init__(
             self, orientation: Orientation = Orientation.VERTICAL,
             *args, **kwargs) -> None:
-        """..."""
+        """
+        :param orientation: Layout orientation, VERTICAL or HORIZONTAL.
+        """
         super().__init__(*args, **kwargs)
         self._qml = layout if orientation == Orientation.VERTICAL else row
         self.id = '_' + str(id(self))
@@ -158,7 +162,7 @@ class Layout(UI):
 
     @property
     def spacing(self) -> int:
-        """..."""
+        """Spacing Between Elements."""
         return self.__spacing
 
     @spacing.setter
@@ -194,4 +198,4 @@ class Layout(UI):
         return self.__items
 
     def __str__(self):
-        return f'<Layout: {id(self)}>'
+        return "<class 'Layout'>"

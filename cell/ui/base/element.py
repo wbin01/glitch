@@ -3,6 +3,7 @@ from .ui import UI
 
 
 qml = """
+    property string baseClass: "Element"  // <baseClass>
     height: 30
     width: 100
     // <property>
@@ -16,9 +17,7 @@ class Element(UI):
     text.
     """
     def __init__(self, *args, **kwargs) -> None:
-        """..."""
         super().__init__(*args, **kwargs)
-
         self._qml = self._qml.replace('\n    // <property>', qml)
         self._element_type = 'Element'
 
@@ -95,4 +94,4 @@ class Element(UI):
         self.__margins = top, left, bottom, right
 
     def __str__(self):
-        return f'<Element: {id(self)}>'
+        return "<class 'Element'>"

@@ -127,7 +127,11 @@ qml = """
 """
 
 class MainFrame(Frame):
-    """..."""
+    """The main Frame of the application.
+
+    The frame where the application and its visual elements are built. This is 
+    commonly called the "Window".
+    """
     def __init__(self, *args, **kwargs) -> None:
         """..."""
         super().__init__(*args, **kwargs)
@@ -140,7 +144,11 @@ class MainFrame(Frame):
 
     @property
     def frame_state(self) -> FrameState:
-        """..."""
+        """The state of the Frame.
+
+        A `FrameState` enum indicating whether the Frame is maximized, 
+        minimized, full screen, in a normal frame or  hidden.
+        """
         return self.__frame_state
 
     @frame_state.setter
@@ -170,4 +178,4 @@ class MainFrame(Frame):
         self.__frame_state = frame_state
 
     def __str__(self):
-        return f'<MainFrame: {id(self)}>'
+        return "<class 'MainFrame'>"

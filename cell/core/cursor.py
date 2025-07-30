@@ -4,9 +4,12 @@ from __feature__ import snake_case
 
 
 class Cursor(object):
-    """Mouse cursor position."""
+    """Mouse cursor position.
+
+    Captures the x and y coordinate information of the mouse cursor over the 
+    application.
+    """
     def __init__(self) -> None:
-        """Class constructor."""
         self.__cursor = QtGui.QCursor()
         self.__position = self.__cursor.pos()
 
@@ -23,4 +26,4 @@ class Cursor(object):
         return self.__cursor.pos().y()
 
     def __str__(self):
-        return f'<Cursor: {id(self)}>'
+        return "<class 'Cursor'>"

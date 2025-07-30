@@ -151,4 +151,4 @@ class Handler(QtCore.QObject):
         self.__gui.startSystemResize(edge)
 
     def __str__(self):
-        return f'<Handler: {id(self)}>'
+        return "<class 'Handler'>"

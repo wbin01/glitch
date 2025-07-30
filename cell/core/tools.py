@@ -3,7 +3,12 @@ from PySide6 import QtCore
 
 
 def change_element_style_state(element, state, style):
-    if element.property('qmlType') not in ['Button', 'Label']:
+    """Adapts the Element's style based on the Frame's state.
+
+    Iterates through the Element's properties and applies a style 
+    corresponding to the Frame's current state.
+    """
+    if element.property('baseClass') != 'Element':
         return
 
     element_properties = {

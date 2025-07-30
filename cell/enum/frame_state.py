@@ -12,4 +12,4 @@ class FrameState(Enum):
     FULL_SCREEN = 5
 
     def __str__(self):
-        return f'<FrameState: {id(self)}>'
+        return "<class 'FrameState'>"
