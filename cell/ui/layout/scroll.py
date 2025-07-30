@@ -58,3 +58,6 @@ class Scroll(Layout):
         super().__init__(*args, **kwargs)
         self._qml = object_code
         self._element_type = 'Scroll'
+
+    def __str__(self):
+        return f'<Scroll: {id(self)}>'

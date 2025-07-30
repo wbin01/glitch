@@ -49,3 +49,6 @@ class Label(Element):
                 f'\n    text: "{text}"')
         
         self.__text = text
+
+    def __str__(self):
+        return f'<Label: {id(self)}>'

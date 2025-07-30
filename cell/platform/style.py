@@ -48,3 +48,5 @@ class Style(object):
                 'border_radius': 10,
                 },
             }
+    def __str__(self):
+        return f'<Style: {id(self)}>'

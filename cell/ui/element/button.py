@@ -115,3 +115,6 @@ class Button(Element):
             return self._obj.property('hovered')
 
         return False
+
+    def __str__(self):
+        return f'<Button: {id(self)}>'

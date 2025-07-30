@@ -70,4 +70,4 @@ Button {
         radius: 6
     }
 
-}  // <suffix_id>
+}

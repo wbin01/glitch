@@ -5,7 +5,7 @@ from .core.signal import Signal
 
 from .enum.align import Align
 from .enum.event import Event
-from .enum.flag import Flag
+from .enum.frame_hint import FrameHint
 from .enum.orientation import Orientation
 
 from .ui.base import Element, Frame, UI

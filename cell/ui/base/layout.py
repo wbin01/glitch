@@ -10,7 +10,8 @@ class Layout(object):
 
     Organizes elements in stacks like a column or side by side like a row.
     """
-    pass
+    def __str__(self):
+        return f'<Layout: {id(self)}>'
 
 
 class Element(object):
@@ -19,7 +20,8 @@ class Element(object):
     Elements are visual and interactive application items such as buttons and 
     text.
     """
-    pass
+    def __str__(self):
+        return f'<Element: {id(self)}>'
 
 
 layout = """
@@ -190,3 +192,6 @@ class Layout(UI):
         List that includes Elements and other Layouts.
         """
         return self.__items
+
+    def __str__(self):
+        return f'<Layout: {id(self)}>'

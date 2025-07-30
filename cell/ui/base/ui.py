@@ -23,7 +23,9 @@ Item {
     Layout.rightMargin: rightMargin
     Layout.bottomMargin: bottomMargin
     Layout.leftMargin: leftMargin
-} // <suffix_id>
+
+    // <property>
+}
 """
 
 
@@ -37,7 +39,7 @@ class UI(object):
         """..."""
         self.__qml = qml_code
         self.__id = '_' + str(id(self))
-        self.__element_type = 'Item'
+        self.__element_type = 'UI'
         self.__obj = None
 
         self.id = self.__id
@@ -54,11 +56,9 @@ class UI(object):
         for line in self.__qml.split('\n'):
             if line.strip().endswith('// <id>'):
                 qml_lines.append(f'    id: {id}  // <id>')
-
             elif line.strip().endswith('// <objectName>'):
                 qml_lines.append(
                     f'    objectName: "{id}"  // <objectName>')
-
             else:
                 qml_lines.append(line)
 
@@ -107,3 +107,6 @@ class UI(object):
     @_qml.setter
     def _qml(self, qml: str) -> None:
         self.__qml = qml
+
+    def __str__(self):
+        return f'<UI: {id(self)}>'

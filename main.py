@@ -1,6 +1,6 @@
 #/usr/bin/env python3
 from cell.core import Application
-from cell.enum import Event, FrameState
+from cell.enum import Event, FrameState, FrameHint
 from cell.ui.element import Button, Label
 from cell.ui.frame import MainFrame
 from cell.ui.layout import Column, Row, Scroll
@@ -27,6 +27,7 @@ class View(MainFrame):
         # Set
         # self.frame_state = FrameState.FULL_SCREEN
         # self.spacing = 0
+
         self.height = 400
         self.width = 400
 
@@ -42,23 +43,24 @@ class View(MainFrame):
         self.button_m.connect(self.on_button)
         self.button_m
 
-        self.scroll = self.add(Scroll())
-        self.scroll.margins = 10
+        scroll = self.add(Scroll())
+        self.scroll_col = scroll.add(Column())
+        self.scroll_col.margins = 10
+
         for item in range(5):
-            btn = self.scroll.add(Button(f'Button {item}', 'document-save'))
+            btn = self.scroll_col.add(Button(f'Button {item}', 'document-save'))
             btn.connect(
                 lambda item=item, btn=btn: self.on_num_button(item, btn),
                 Event.MOUSE_HOVER)
             setattr(self, f'button_{item}', btn)
 
-        self.ce = self.scroll.add(CustomElement())
+        self.ce = self.scroll_col.add(CustomElement())
 
         self.row = self.add(Row())
         self.row.add(Button('Button 1', 'document-save'))
         self.row.add(Button('Button 2', 'document-save'))
 
         self.column = self.add(Column())
-        self.column.margins = 50
         self.column.add(Button('Button 1', 'document-save'))
         self.column.add(Button('Button 2', 'document-save'))
 
@@ -68,16 +70,12 @@ class View(MainFrame):
     def on_button(self):
         self.num += 1
         self.label.text = f'Button press: {self.num}'
-        # self.scroll.spacing = 20
         self.label.margins = None, None, None, 0
-        self.scroll.margins = 0
-        self.column.margins = 0
-        # self.spacing = 6
 
     def on_num_button(self, num, btn):
         if getattr(self, f'button_{num}').is_mouse_hover():
             self.label.text = f'Button press: {num}'
-            self.frame_state = FrameState.FRAME
+            # self.frame_state = FrameState.FRAME
 
 
 if __name__ == '__main__':

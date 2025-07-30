@@ -168,3 +168,6 @@ class MainFrame(Frame):
 
         self.__visibility = visibility
         self.__frame_state = frame_state
+
+    def __str__(self):
+        return f'<MainFrame: {id(self)}>'

@@ -43,6 +43,9 @@ class AppEventFilter(QtCore.QObject):
         for element in self.__childrens:  # element.metaObject().className()
             change_element_style_state(element, state, self.__style)
 
+    def __str__(self):
+        return f'<AppEventFilter: {id(self)}>'
+
 
 class Application(object):
     """..."""
@@ -114,3 +117,6 @@ class Application(object):
 
         self.__qml_code = layout._qml + ui_close
         self.__qml_path.write_text(self.__qml_code)
+
+    def __str__(self):
+        return f'<Application: {id(self)}>'

@@ -2,7 +2,8 @@
 from PySide6 import QtCore
 
 from .ui import UI
-from ...enum.orientation import Orientation
+from ...enum import Orientation
+from ...enum import FrameHint
 from ...platform.style import Style
 
 
@@ -11,7 +12,8 @@ class Layout(object):
 
     Organizes elements in stacks like a column or side by side like a row.
     """
-    pass
+    def __str__(self):
+        return f'<Layout: {id(self)}>'
 
 
 class Element(object):
@@ -20,7 +22,8 @@ class Element(object):
     Elements are visual and interactive application items such as buttons and 
     text.
     """
-    pass
+    def __str__(self):
+        return f'<Element: {id(self)}>'
 
 
 qml = """
@@ -122,8 +125,48 @@ class Frame(UI):
         self.__width = 200
         self.__spacing = 6
 
+        self.__frame_hint = FrameHint.FRAME
         self.__style = Style().style
         self.__items = []
+
+    @property
+    def frame_hint(self) -> FrameHint:
+        """Frame behavior hint.
+
+        FrameHint.BOTTOM → Always behind.
+        FrameHint.FRAME → Normal behavior.
+        FrameHint.POPUP → Popup Frame (does not appear in the taskbar).
+        FrameHint.TOOL → Tool-like Frame (does not appear in the taskbar).
+        FrameHint.TOP → Always on top.
+
+        Use `FrameHint.TOOL` and `FrameHint.POPUP` inside a method to activate 
+        them only when the window is ready; this will avoid styling issues.
+
+        Use the `name` property to know which `FrameHint` it is.
+        
+        >>> self.frame_hint = FrameHint.FRAME
+        >>> print(self.frame_hint.name)
+        FRAME
+        """
+        return self.__frame_hint
+
+    @frame_hint.setter
+    def frame_hint(self, frame_hint: FrameHint) -> None:
+        hints = {
+            'BOTTOM': 'Qt.FramelessWindowHint | Qt.WindowStaysOnBottomHint',
+            'FRAME': 'Qt.FramelessWindowHint',
+            'POPUP': 'Qt.FramelessWindowHint | Qt.Popup',
+            'TOOL': 'Qt.FramelessWindowHint | Qt.Tool',
+            'TOP': 'Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint'}
+
+        if self._obj:
+            self._obj.setProperty('flags', int(frame_hint.value))
+        else:
+            self._qml = self._qml.replace(
+                f'flags: {hints[self.__frame_hint.name]}',
+                f'flags: {hints[frame_hint.name]}')
+
+        self.__frame_hint = frame_hint
 
     @property
     def height(self) -> int:
@@ -204,3 +247,6 @@ class Frame(UI):
         List that includes Elements and other Layouts.
         """
         return self.__items
+
+    def __str__(self):
+        return f'<Frame: {id(self)}>'

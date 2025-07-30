@@ -2,6 +2,13 @@
 from .ui import UI
 
 
+qml = """
+    height: 30
+    width: 100
+    // <property>
+"""
+
+
 class Element(UI):
     """A visual element object.
 
@@ -11,6 +18,8 @@ class Element(UI):
     def __init__(self, *args, **kwargs) -> None:
         """..."""
         super().__init__(*args, **kwargs)
+
+        self._qml = self._qml.replace('\n    // <property>', qml)
         self._element_type = 'Element'
 
         self.__margins = 0, 0, 0, 0
@@ -84,3 +93,6 @@ class Element(UI):
                 f'property int leftMargin: {left}')
 
         self.__margins = top, left, bottom, right
+
+    def __str__(self):
+        return f'<Element: {id(self)}>'

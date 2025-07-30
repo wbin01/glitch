@@ -13,3 +13,6 @@ class Row(Layout):
             *args, **kwargs) -> None:
         super().__init__(orientation=orientation, *args, **kwargs)
         self._element_type = 'Row'
+
+    def __str__(self):
+        return f'<Row: {id(self)}>'
