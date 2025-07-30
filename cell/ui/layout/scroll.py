@@ -2,7 +2,6 @@
 from ..base import Layout
 
 object_code = """
-// ScrollBox
 ScrollView {
     id: scroll  // <id>
     objectName: "scroll"  // <objectName>
@@ -35,15 +34,12 @@ ScrollView {
         // width: parent.width
         // Layout.fillWidth: true
         width: parent.width
-
-        
-        
         spacing: 6
 
 // **closing_key**
     }
 
-}  // ScrollBox id: scrollBox
+}
 """
 # Python set 
 # scroll_view.setProperty("Layout.minimumHeight", 200)

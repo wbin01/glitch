@@ -2,7 +2,7 @@
 from cell.core import Application
 from cell.enum import Event, FrameState, FrameHint
 from cell.ui.element import Button, Label
-from cell.ui.frame import MainFrame
+from cell.ui.frame import MainFrame, Frame
 from cell.ui.layout import Column, Row, Scroll
 
 

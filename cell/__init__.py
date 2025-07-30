@@ -8,7 +8,7 @@ from .enum.event import Event
 from .enum.frame_hint import FrameHint
 from .enum.orientation import Orientation
 
-from .ui.base import Element, Frame, UI
+# from .ui.base import Element, Frame, UI
 from .ui.layout import Column, Row, Scroll
 from .ui.element import Button, Label
-from .ui.frame import MainFrame
+from .ui.frame import MainFrame, Frame
