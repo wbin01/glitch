@@ -1,4 +1,4 @@
-#/usr/bin/env python3
+#!/usr/bin/env python3
 from ..base import Frame
 
 
@@ -10,7 +10,7 @@ qml = """
             objectName: "dragArea"
             // width: parent.width
             // width: parent.width - 20
-            height: 40
+            height: 20
             anchors {
                 top: parent.top
                 left: parent.left

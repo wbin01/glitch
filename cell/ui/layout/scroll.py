@@ -1,7 +1,8 @@
-#/usr/bin/env python3
+#!/usr/bin/env python3
 from ..base import Layout
 
-object_code = """
+
+qml = """
 ScrollView {
     id: scroll  // <id>
     objectName: "scroll"  // <objectName>
@@ -28,8 +29,8 @@ ScrollView {
     }
 
     ColumnLayout {
-        id: scrollColumnLayout
-        objectName: "scrollColumnLayout"
+        id: scrollColumn
+        objectName: "scrollColumn"
 
         // width: parent.width
         // Layout.fillWidth: true
@@ -53,7 +54,7 @@ class Scroll(Layout):
     """
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
-        self._qml = object_code
+        self._qml = qml
         self._element_type = 'Scroll'
 
     def __str__(self):

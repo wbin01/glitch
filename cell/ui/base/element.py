@@ -1,4 +1,4 @@
-#/usr/bin/env python3
+#!/usr/bin/env python3
 from .ui import UI
 
 
@@ -56,7 +56,7 @@ class Element(UI):
         if isinstance(margins, str):
             if not margins.isdigit():
                 return
-            margins = int(magins)
+            margins = int(margins)
 
         if isinstance(margins, int):
             top, right, bottom, left = margins, margins, margins, margins

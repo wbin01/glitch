@@ -11,6 +11,7 @@ Button {
     id: button  // <id>
     objectName: "button"  // <objectName>
     property string qmlType: "Button"  // <className>
+    property string baseClass: "Button"  // <baseClass>
     property color borderColor: "#555"
     property color backgroundColor: "#444"
     property alias iconSource: icon.source

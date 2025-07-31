@@ -1,5 +1,7 @@
-#/usr/bin/env python3
+#!/usr/bin/env python3
 import pathlib
+
+from xdg import IconTheme
 
 from ..base import Element
 from ...enum.event import Event
@@ -8,17 +10,18 @@ from ...enum.event import Event
 class Button(Element):
     """Button Element"""
     def __init__(
-            self, text: str = '', icon: str = '', *args, **kwargs) -> None:
+            self, text: str = '', icon: str = None, *args, **kwargs) -> None:
         """
         :param text: Button text string.
         :param icon: Icon name or path string.
         """
         super().__init__(*args, **kwargs)
         self.__path = pathlib.Path(__file__).parent.parent.parent
+        self.__icon_path = self.__path / 'static' / 'icons' / 'linux'
 
         # Args
         self.__text = text
-        self.__icon = self.__path/'static'/'icons'/f'{icon}.svg'
+        self.__icon = self.__set_icon_path(icon)
 
         # Set
         self._qml = (
@@ -28,7 +31,7 @@ class Button(Element):
             '\n    property string qmlType: "Button"  // <className>'
             '\n    property string baseClass: "Element"  // <baseClass>'
             f'\n    text: "{self.__text}"'
-            f'\n    iconSource: "{self.__icon}"'
+            f'\n    iconSource: {self.__icon}'
             '\n    property int topMargin: 0'
             '\n    property int rightMargin: 0'
             '\n    property int bottomMargin: 0'
@@ -49,8 +52,6 @@ class Button(Element):
     @property
     def icon(self) -> str:
         """Icon name or path string."""
-        if self._obj:
-            return self.__icon
         return self.__icon
 
     @icon.setter
@@ -120,6 +121,68 @@ class Button(Element):
             return self._obj.property('hovered')
 
         return False
+
+    def __set_icon_path(self, icon_name: str | None) -> str | None:
+        if not icon_name:
+            return '""'
+
+        elif '/' in icon_name:
+            if not pathlib.Path(icon_name).exists():
+                return '""'
+            return f'"{icon_name}"'
+
+        else:
+            icon_path = IconTheme.getIconPath(
+                iconname=icon_name,
+                size=16,
+                theme='breeze-dark',
+                extensions=['png', 'svg', 'xpm'])
+
+            if icon_path:
+                return f'"{icon_path}"'
+
+            icon = icon_name + '.svg'
+            path = self.__icon_path / icon
+            return f'"{path}"' if path.exists() else '""'
+                # impl callback
+        """
+        IconTheme.getIconPath(
+            iconname=self.__icon_name,
+            size=22,
+            theme='breeze-dark',
+            extensions=['png', 'svg', 'xpm']
+
+        from PySide6.QtGui import QIcon
+        icon = QIcon.fromTheme("document-save")
+        
+        ----
+        Self linux impl
+        
+        ICON PATH
+            User:
+                Gtk
+                /home/user/.icons/icon-theme/22x22/actions/icon-name.svg
+                Qt
+                /home/user/.icons/icon-theme/actions/22/icon-name.svg
+            
+            Gtk
+            /usr/share/icons/icon-theme/22x22/actions/icon-name.svg
+            Qt
+            /usr/share/icons/icon-theme/actions/22/icon-name.svg
+            
+            Default sys
+            /usr/share/icons/hicolor/22x22/actions/icon-name.png
+            Default lib
+            self.__icon_path / document-save.svg
+
+        ROADMAP
+            loop paths:
+                check for: Gtk Qt icon-name icon-theme.png .svg
+            else:
+                or: Default sys
+                or: Default lib
+                or: callback-icon-path
+        """
 
     def __str__(self):
         return "<class 'Button'>"

@@ -1,4 +1,4 @@
-#/usr/bin/env python3
+#!/usr/bin/env python3
 from PySide6 import QtCore
 
 from .ui import UI
@@ -123,7 +123,7 @@ class Layout(UI):
         if isinstance(margins, str):
             if not margins.isdigit():
                 return
-            margins = int(magins)
+            margins = int(margins)
 
         if isinstance(margins, int):
             top, right, bottom, left = margins, margins, margins, margins

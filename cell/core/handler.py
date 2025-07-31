@@ -1,4 +1,4 @@
-#/usr/bin/env python3
+#!/usr/bin/env python3
 from PySide6 import QtCore, QtQuick
 
 from .tools import change_element_style_state

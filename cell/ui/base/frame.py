@@ -1,4 +1,4 @@
-#/usr/bin/env python3
+#!/usr/bin/env python3
 from PySide6 import QtCore
 
 from .ui import UI
