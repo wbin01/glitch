@@ -46,7 +46,6 @@ class View(MainFrame):
 
         self.button_m = self.add(Button('Button 00', 'document-save'))
         self.button_m.connect(self.on_button)
-        self.button_m
 
         self.scroll = self.add(Scroll())
         self.scroll_col = self.scroll.add(Column())
