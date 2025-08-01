@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 
-class Style(object):
+class PlatformStyle(object):
     """Application style.
     
     Manages style information according to the platform.

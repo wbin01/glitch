@@ -3,8 +3,10 @@ import os
 import sys
 from pathlib import Path
 
-from .ini_parse import IniParse
-
+try:
+    from .ini_parse import IniParse
+except:
+    from ini_parse import IniParse
 
 class PlatformIcons(object):
     def __init__(self, desktop_environment: str):

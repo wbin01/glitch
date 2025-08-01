@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
+import pathlib
 import sys
 
+from platform_icons import PlatformIcons
+from platform_selection import PlatformSelection
 
 # https://specifications.freedesktop.org/icon-naming-spec/latest/#names
 icon_naming_spec = """
@@ -109,38 +112,50 @@ zoom-out
 """
 
 
-class CollectIconsTool(object):
+class IconCollectionTool(object):
     def __init__(self):
+        self.__size = sys.argv[1] if len(sys.argv) > 1 else '16'
         self.__icon_names = icon_naming_spec.split('\n')
-        self.__platform = sys.argv[1] if len(sys.argv) > 1 else None
+        self.__os_de = PlatformSelection()
+        self.__os_icon = PlatformIcons(self.__os_de.desktop_environment)
 
     def collect(self) -> None:
-        if not self.__platform:
-            print(
-                'Send a platform name, like:\n    '
-                'plasma, cinnamon, gnome, windows-7, windows-10, windows-11\n'
-                'Ex:\n    python collect_icons_tool.py plasma')
-            return
+        size = f'{self.__size}x{self.__size}'
+        if self.__os_de.operational_system == 'linux':
+            # Gtk:     /usr/share/icons/icon-theme/22x22/actions/icon-name.svg
+            # Qt:      /usr/share/icons/icon-theme/actions/22/icon-name.svg
+            # Default: /usr/share/icons/hicolor/22x22/actions/icon-name.png
+            if self.__os_de.desktop_environment == 'plasma':
+                path = f'/usr/share/icons/icon-theme/actions/{self.__size}'
+            elif self.__os_de.desktop_environment == ['gnome', 'cinnamon']:
+                # TODO: Gnome is scaled
+                
+                path = f'/usr/share/icons/icon-theme/{size}/actions'
+            else:
+                path = f'/usr/share/icons/hicolor/{size}/actions'
 
-        # Gtk:     /usr/share/icons/icon-theme/22x22/actions/icon-name.svg
-        # Qt:      /usr/share/icons/icon-theme/actions/22/icon-name.svg
-        # Default: /usr/share/icons/hicolor/22x22/actions/icon-name.png
-        if self.__platform == 'plasma':
-            path = '/usr/share/icons/icon-theme/actions/22'
-        elif self.__platform in ['cinnamon', 'gnome']:  # TODO: Gnome is scaled
-            path = '/usr/share/icons/icon-theme/22x22/actions'
-        elif self.__platform in ['windows-7', 'windows-10', 'windows-11']:
-            pass
-        elif self.__platform == 'linux':
-            path = '/usr/share/icons/hicolor/22x22/actions'
+        # elif 'windows' in self.__os_de.operational_system:
+        #     pass
+        # elif self.__os_de.operational_system == 'mac':
+        #     pass
+        # elif self.__os_de.operational_system == 'bsd':
+        #     pass
         else:
             path = None
 
-        if path:
+        if not path:
+            return
+        
+        icons_path = pathlib.Path(
+            path.replace('icon-theme', self.__os_icon.icon_theme()))
+
+        if icons_path.exists():
             for name in self.__icon_names:
                 print(name)
 
+        print('Collected from:', icons_path)
+
 
 if __name__ == '__main__':
-    collect_icons = CollectIconsTool()
+    collect_icons = IconCollectionTool()
     collect_icons.collect()

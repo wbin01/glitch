@@ -5,7 +5,7 @@ from xdg import IconTheme
 
 from ..base import Element
 from ...enum.event import Event
-from ...platform import PlatformSelection, PlatformIcons
+from ...os_integ import PlatformSelection, PlatformIcons
 
 
 class Button(Element):

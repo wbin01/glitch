@@ -5,7 +5,7 @@ from .ui import UI
 from ...enum import Orientation
 from ...enum import FrameHint
 from ...enum import FrameState
-from ...platform.style import Style
+from ...os_integ.platform_style import PlatformStyle
 
 
 class Layout(object):
@@ -231,7 +231,7 @@ class Frame(UI):
         self.__frame_hint = FrameHint.FRAME
         self.__frame_state = FrameState.FRAME
         self.__items = []
-        self.__style = Style().style
+        self.__style = PlatformStyle().style
         self.__visibility = 'Window.Windowed'
 
     @property
