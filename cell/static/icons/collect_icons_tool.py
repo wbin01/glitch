@@ -112,27 +112,33 @@ zoom-out
 class CollectIconsTool(object):
     def __init__(self):
         self.__icon_names = icon_naming_spec.split('\n')
+        self.__platform = sys.argv[1] if len(sys.argv) > 1 else None
 
     def collect(self) -> None:
-        if len(sys.argv) == 1:
+        if not self.__platform:
             print(
                 'Send a platform name, like:\n    '
                 'plasma, cinnamon, gnome, windows-7, windows-10, windows-11\n'
                 'Ex:\n    python collect_icons_tool.py plasma')
+            return
 
-        elif sys.argv[1] == 'plasma':
+        # Gtk:     /usr/share/icons/icon-theme/22x22/actions/icon-name.svg
+        # Qt:      /usr/share/icons/icon-theme/actions/22/icon-name.svg
+        # Default: /usr/share/icons/hicolor/22x22/actions/icon-name.png
+        if self.__platform == 'plasma':
+            path = '/usr/share/icons/icon-theme/actions/22'
+        elif self.__platform in ['cinnamon', 'gnome']:  # TODO: Gnome is scaled
+            path = '/usr/share/icons/icon-theme/22x22/actions'
+        elif self.__platform in ['windows-7', 'windows-10', 'windows-11']:
+            pass
+        elif self.__platform == 'linux':
+            path = '/usr/share/icons/hicolor/22x22/actions'
+        else:
+            path = None
+
+        if path:
             for name in self.__icon_names:
                 print(name)
-        else:
-            pass
-
-            #Gtk
-            # /usr/share/icons/icon-theme/22x22/actions/icon-name.svg
-            # Qt
-            # /usr/share/icons/icon-theme/actions/22/icon-name.svg
-            
-            # Default sys
-            # /usr/share/icons/hicolor/22x22/actions/icon-name.png
 
 
 if __name__ == '__main__':
