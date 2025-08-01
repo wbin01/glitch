@@ -5,7 +5,7 @@ import pathlib
 from PySide6 import QtCore, QtGui, QtQml, QtQuick
 
 from .handler import Handler
-from .tools import change_element_style_state
+from .application_shares import change_element_style_state
 from ..ui.base import Element, Frame, Layout
 
 

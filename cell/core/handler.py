@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from PySide6 import QtCore, QtQuick
 
-from .tools import change_element_style_state
+from .application_shares import change_element_style_state
 from ..enum import Event, FrameState
 from ..ui.base import Element, Frame, Layout
 from ..ui.frame import MainFrame
