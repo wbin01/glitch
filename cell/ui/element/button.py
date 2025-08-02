@@ -186,5 +186,5 @@ class Button(Element):
                 or: callback-icon-path
         """
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "<class 'Button'>"

@@ -25,5 +25,5 @@ class Cursor(object):
         """Y mouse cursor position."""
         return self.__cursor.pos().y()
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "<class 'Cursor'>"

@@ -5,7 +5,7 @@ from cell.enum import Event, FrameState, FrameHint
 
 # from cell.ui import MainFrame, Frame, Column, Row, Scroll, Button, Label
 from cell.ui.element import Button, Label
-from cell.ui.frame import MainFrame, Frame
+from cell.ui.frame import MainFrame, Frame, Context
 from cell.ui.layout import Column, Row, Scroll
 
 

@@ -30,5 +30,5 @@ class Event(Enum):
     STYLE_ID = 'STYLE_ID'
     TITLE = 'TITLE'
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "<class 'Event'>"

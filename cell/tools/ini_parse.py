@@ -138,4 +138,4 @@ class IniParse(object):
         return [n1, n2, n3, n4]
 
     def __str__(self) -> str:
-        return f'<IniParse: {self.__url_basename}>'
+        return f"<class 'IconCollector({self.__url_basename})'>"

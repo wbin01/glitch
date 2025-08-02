@@ -14,5 +14,5 @@ class Row(Layout):
         super().__init__(orientation=orientation, *args, **kwargs)
         self._element_type = 'Row'
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "<class 'Row'>"

@@ -93,5 +93,5 @@ class Element(UI):
 
         self.__margins = top, left, bottom, right
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "<class 'Element'>"

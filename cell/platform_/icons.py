@@ -51,6 +51,9 @@ class Icons(object):
             self.__gtk_icon_theme = gtk_icons if gtk_icons else None
             return self.__gtk_icon_theme
 
+    def __str__(self) -> str:
+        return "<class 'Icons'>"
+
 
 if __name__ == '__main__':
     icons = PlatformIcons('plasma')

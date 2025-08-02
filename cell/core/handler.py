@@ -152,5 +152,5 @@ class Handler(QtCore.QObject):
         edge = QtCore.Qt.Edge(edge)
         self.__gui.startSystemResize(edge)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "<class 'Handler'>"

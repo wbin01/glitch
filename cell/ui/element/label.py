@@ -51,5 +51,5 @@ class Label(Element):
         
         self.__text = text
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "<class 'Label'>"

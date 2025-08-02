@@ -204,6 +204,9 @@ class IconCollector(object):
         print('\n\nCollected from:', icons_path)
         sys.exit(0)
 
+    def __str__(self) -> str:
+        return "<class 'IconCollector'>"
+
 
 if __name__ == '__main__':
     # dark = ''  # '-dark'

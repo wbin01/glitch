@@ -90,3 +90,6 @@ class OSDesk(object):
 
         elif os.name == 'nt' and platform.system() == 'Windows':
             return 'windows'
+
+    def __str__(self) -> str:
+        return "<class 'OSDesk'>"

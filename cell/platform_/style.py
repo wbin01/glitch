@@ -8,9 +8,6 @@ class Style(object):
     """
     def __init__(self):
         self.style = {
-            '[Platform]': {
-                'accent_color': '#3c8cbd',
-                },
             '[Button]': {
                 'background_color': '#333',
                 'border_color': '#444',
@@ -61,6 +58,10 @@ class Style(object):
                 'border_color': '#333',
                 'border_radius': 10,
                 },
+            '[Platform]': {
+                'accent_color': '#3c8cbd',
+                },
             }
-    def __str__(self):
+    
+    def __str__(self) -> str:
         return "<class 'Style'>"

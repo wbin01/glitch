@@ -11,5 +11,5 @@ class FrameState(Enum):
     MINIMIZED = 3
     FULL_SCREEN = 5
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "<class 'FrameState'>"

@@ -11,7 +11,7 @@ class Layout(object):
 
     Organizes elements in stacks like a column or side by side like a row.
     """
-    def __str__(self):
+    def __str__(self) -> str:
         return "<class 'Layout'>"
 
 
@@ -21,7 +21,7 @@ class Element(object):
     Elements are visual and interactive application items such as buttons and 
     text.
     """
-    def __str__(self):
+    def __str__(self) -> str:
         return "<class 'Element'>"
 
 
@@ -395,5 +395,5 @@ class Frame(UI):
         """
         return self.__items
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "<class 'Frame'>"

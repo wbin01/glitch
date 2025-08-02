@@ -11,5 +11,5 @@ class Column(Layout):
         super().__init__(*args, **kwargs)
         self._element_type = 'Column'
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "<class 'Column'>"

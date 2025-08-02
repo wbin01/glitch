@@ -108,5 +108,5 @@ class UI(object):
     def _qml(self, qml: str) -> None:
         self.__qml = qml
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "<class 'UI'>"

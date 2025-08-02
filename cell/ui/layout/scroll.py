@@ -57,5 +57,5 @@ class Scroll(Layout):
         self._qml = qml
         self._element_type = 'Scroll'
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "<class 'Scroll'>"
