@@ -14,12 +14,16 @@ class AppEventFilter(QtCore.QObject):
 
     Filters the Frame state and adapts the elements.
     """
-    def __init__(self, main_rect: QtQuick.QQuickItem, style: dict) -> None:
+    def __init__(
+            self, ui: QtQuick.QQuickWindow,
+            main_rect: QtQuick.QQuickItem,
+            style: dict) -> None:
         """
         :param main_rect: The main Rectangle inside the Qml-Window.
         :param_style: The Frame and Element style dic.
         """
         super().__init__()
+        self.__ui = ui
         self.__main_rect = main_rect
         self.__style = style
         self.__elements = self.__main_rect.findChildren(
@@ -42,12 +46,13 @@ class AppEventFilter(QtCore.QObject):
 
     def __state_style(self, state: str = '') -> None:
         # MainFrame state colors
+        frame = f'[{self.__ui._element_type}{state}]'
         self.__main_rect.setProperty(
             'color',
-            self.__style[f'[MainFrame{state}]']['background_color'])
+            self.__style[frame]['background_color'])
         self.__main_rect.setProperty(
             'borderColor',
-            self.__style[f'[MainFrame{state}]']['border_color'])
+            self.__style[frame]['border_color'])
 
         for element in self.__elements:  # element.metaObject().className()
             change_element_style_state(element, state, self.__style)
@@ -95,7 +100,8 @@ class Application(object):
 
         Manages the processes to start the Application Frame and execute it.
         """
-        event_filter = AppEventFilter(self.__main_rect, self.__ui.style)
+        event_filter = AppEventFilter(
+            self.__ui, self.__main_rect, self.__ui.style)
         self.__gui.installEventFilter(event_filter)
 
         self.__engine.rootContext().setContextProperty('logic', self.__handler)

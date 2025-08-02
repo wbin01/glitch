@@ -3,7 +3,7 @@ from PySide6 import QtCore
 
 from .ui import UI
 from ...enum import Orientation, FrameHint, FrameState
-from ...env import Style
+from ...platform_ import Style
 
 
 class Layout(object):
@@ -34,12 +34,11 @@ import "elements"
 
 
 Window {
-    id: window  // <id>
-    objectName: "window"  // <objectName>
+    id: frame  // <id>
+    objectName: "frame"  // <objectName>
     property string qmlType: "Window"  // <className>
     property string baseClass: "Frame"  // <baseClass>
 
-    // id: window
     visible: true
     visibility: Window.Windowed
     
@@ -221,6 +220,8 @@ class Frame(UI):
         if resizable:
             qml_init, qml_end = qml.split('\n// Resize corners')
             self._qml = qml_init + qml_edges + qml_end
+
+        self._element_type = 'Frame'
 
         self.__height = 200
         self.__width = 200

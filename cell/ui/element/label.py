@@ -32,7 +32,7 @@ class Label(Element):
             '\n    Layout.leftMargin: leftMargin'
             '\n}  // <suffix_id>\n')
 
-        self._element_name = 'Label'
+        self._element_type = 'Label'
         self.text = self.__text
 
     @property

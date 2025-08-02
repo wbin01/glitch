@@ -91,13 +91,14 @@ class Handler(QtCore.QObject):
 
     def __state_style(self) -> None:
         # Style of the elements and the Frame in each state.
+        frame = f'[{self.__ui._element_type}]'
         if self.__ui.frame_state == FrameState.MAXIMIZED:
             self.__main_rect.setProperty('radius', 0)
             self.__main_rect.setProperty('borderWidth', 0)
             self.__main_rect.setProperty('margins', 0)
         else:
             self.__main_rect.setProperty(
-                'radius', self.__ui.style['[MainFrame]']['border_radius'])
+                'radius', self.__ui.style[frame]['border_radius'])
             self.__main_rect.setProperty('borderWidth', 1)
             self.__main_rect.setProperty('margins', 1)
 
@@ -121,6 +122,7 @@ class Handler(QtCore.QObject):
     def __state_changed(self, state: QtCore.Qt.WindowState) -> None:
         # Frame style in full-screen or normal-screen states.
         if self.__main_rect:
+            frame = f'[{self.__ui._element_type}]'
             if (state == QtCore.Qt.WindowFullScreen
                     or state == QtCore.Qt.WindowMaximized):
                 self.__main_rect.setProperty('radius', 0)
@@ -128,7 +130,7 @@ class Handler(QtCore.QObject):
                 self.__main_rect.setProperty('margins', 0)
             else:  # QtCore.Qt.WindowNoState
                 self.__main_rect.setProperty(
-                    'radius', self.__ui.style['[MainFrame]']['border_radius'])
+                    'radius', self.__ui.style[frame]['border_radius'])
                 self.__main_rect.setProperty('borderWidth', 1)
                 self.__main_rect.setProperty('margins', 1)
 
