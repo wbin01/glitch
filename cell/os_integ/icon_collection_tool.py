@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 import pathlib
+import shutil
 import sys
 
-from platform_icons import PlatformIcons
-from platform_selection import PlatformSelection
 
 # https://specifications.freedesktop.org/icon-naming-spec/latest/#names
 icon_naming_spec = """
@@ -113,21 +112,35 @@ zoom-out
 
 
 class IconCollectionTool(object):
-    def __init__(self):
-        self.__size = sys.argv[1] if len(sys.argv) > 1 else '16'
-        self.__icon_names = icon_naming_spec.split('\n')
-        self.__os_de = PlatformSelection()
-        self.__os_icon = PlatformIcons(self.__os_de.desktop_environment)
+    def __init__(
+            self, os: str, de: str,
+            icon_theme: str, size: str, extension: str, path_copy: str
+            ) -> None:
+        
+        self.__os = os
+        self.__de = de
+        self.__icon_theme = icon_theme
+        self.__size = size
+        self.__path_to_copy = pathlib.Path(path_copy)
+        self.__extension = extension
+
+        self.__icon_naming_spec = icon_naming_spec.split('\n')
 
     def collect(self) -> None:
+        if not self.__path_to_copy.exists():
+            # Create if non exists
+            # self.__path_to_copy.mkdir(parents=True, exist_ok=True)
+            print('Path to copy not exists!')
+            sys.exit(1)
+
         size = f'{self.__size}x{self.__size}'
-        if self.__os_de.operational_system == 'linux':
+        if self.__os == 'linux':
             # Gtk:     /usr/share/icons/icon-theme/22x22/actions/icon-name.svg
             # Qt:      /usr/share/icons/icon-theme/actions/22/icon-name.svg
             # Default: /usr/share/icons/hicolor/22x22/actions/icon-name.png
-            if self.__os_de.desktop_environment == 'plasma':
+            if self.__de == 'plasma':
                 path = f'/usr/share/icons/icon-theme/actions/{self.__size}'
-            elif self.__os_de.desktop_environment == ['gnome', 'cinnamon']:
+            elif self.__de == ['gnome', 'cinnamon']:
                 # TODO: Gnome is scaled
                 
                 path = f'/usr/share/icons/icon-theme/{size}/actions'
@@ -144,18 +157,72 @@ class IconCollectionTool(object):
             path = None
 
         if not path:
-            return
+            print("Error! Icon path is 'None'")
+            sys.exit(1)
         
         icons_path = pathlib.Path(
-            path.replace('icon-theme', self.__os_icon.icon_theme()))
+            path.replace('icon-theme', self.__icon_theme))
 
-        if icons_path.exists():
-            for name in self.__icon_names:
-                print(name)
+        if not icons_path.exists():
+            print(f'Error! Icon path not found: {icons_path}')
+            sys.exit(1)
 
-        print('Collected from:', icons_path)
+        founds = []
+        for icon in icons_path.iterdir():
+            if not icon.is_file():
+                continue
+
+            if icon.suffix != self.__extension:
+                print(f'Error! The extensions are "{icon.suffix}"')
+                sys.exit(1)
+
+            if icon.stem in self.__icon_naming_spec:
+                founds.append(icon.stem)
+                shutil.copy2(icon, self.__path_to_copy / icon.name)
+
+            # item         ->  /home/user/docs/file.txt
+            # item.parent  ->  /home/user/docs
+            # item.name    ->  file.txt
+            # item.stem    ->  file
+            # item.suffix  ->  .txt
+
+        not_founds = []
+        for icon_name in self.__icon_naming_spec:
+            if icon_name and icon_name not in founds:
+                not_founds.append(icon_name)
+                print('Not found:  ', icon_name)
+        
+        if founds:
+            print(f'\nFounds {len(founds)} icons! ', end='')
+        if not_founds:
+            print(f'Not found {len(not_founds)}', end='')
+
+            with open(self.__path_to_copy / '0_not_found.txt', 'w') as no_file:
+                for not_found_file in not_founds:
+                    no_file.write(f'{not_found_file}\n')
+        
+        print('\n\nCollected from:', icons_path)
+        sys.exit(0)
 
 
 if __name__ == '__main__':
-    collect_icons = IconCollectionTool()
+    dark = ''  # '-dark'
+    os = 'linux'
+    de = 'plasma'
+    icon_theme = f'breeze{dark}'
+    size = '16'
+    extension = '.svg'
+    path_to_copy = pathlib.Path(
+        __file__).parent.parent/'static'/'icons'/f'linux{dark}'
+
+    print('OS:           ', os)
+    print('DE:           ', de)
+    print('Icon theme:   ', icon_theme)
+    print('Size:         ', size)
+    print('Extension:    ', extension)
+    print('Path to copy: ', path_to_copy)
+    print()
+
+    collect_icons = IconCollectionTool(
+        os, de, icon_theme, size, extension, path_to_copy)
     collect_icons.collect()
