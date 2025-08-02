@@ -43,7 +43,7 @@ ColumnLayout {
     spacing: 6
     
 // **closing_key**
-} // <suffix_id>
+}
 """
 
 row = """
@@ -65,7 +65,7 @@ RowLayout {
     spacing: 6
 
 // **closing_key**
-} // <suffix_id>
+}
 """
 
 

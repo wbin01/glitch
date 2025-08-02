@@ -2,7 +2,7 @@
 from PySide6 import QtCore
 
 from .ui import UI
-from ...enum import Orientation, FrameHint, FrameState
+from ...enum import Event, FrameHint, FrameState, Orientation
 from ...platform_ import Style
 
 
@@ -53,6 +53,12 @@ Window {
     title: qsTr("Cell")
     color: "transparent"
     flags: Qt.FramelessWindowHint
+
+    MouseArea {
+        anchors.fill: parent
+        acceptedButtons: Qt.RightButton
+        onPressed: logic.connections()
+    }
 
     Rectangle {
         id: outerBorder
@@ -232,6 +238,28 @@ class Frame(UI):
         self.__items = []
         self.__style = Style().style
         self.__visibility = 'Window.Windowed'
+        self.__callbacks = {}
+
+    def callbacks(self) -> dict:
+        """The functions used in the `connect` method.
+
+        The `connect` method organizes the received functions into a 
+        dictionary organized by the type of event they are associated with.
+        """
+        return self.__callbacks
+
+    def connect(
+            self, method: callable, event: Event = Event.MOUSE_PRESS) -> None:
+        """Connect the button to a method.
+
+        Pass a method to be executed when interacting with the button.
+        Alternatively, use an event like `Event.MOUSE_HOVER` or 
+        `Event.MOUSE_WHEEL` to configure when the button will use the method.
+
+        :param method: method to be executed when interacting with the button.
+        :param event: Enum like `Event.MOUSE_HOVER` or `Event.MOUSE_WHEEL`
+        """
+        self.__callbacks[event] = method
 
     @property
     def frame_hint(self) -> FrameHint:
@@ -382,6 +410,7 @@ class Frame(UI):
         """
         if self._obj:
             obj._obj.setParentItem(self)
+            # obj._obj.setParentItem(self._obj)
         else:
             setattr(self, obj.id, obj)
 

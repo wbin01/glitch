@@ -26,6 +26,7 @@ class Handler(QtCore.QObject):
         super().__init__()
         self.__gui = gui
         self.__ui = ui
+        
         self.__main_rect = self.__gui.findChild(QtCore.QObject, 'mainRect')
         self.__elements = self.__main_rect.findChildren(
             QtCore.QObject, options=QtCore.Qt.FindChildrenRecursively)
@@ -33,6 +34,32 @@ class Handler(QtCore.QObject):
         self.__gui.windowStateChanged.connect(self.__state_changed)
         self.__state_style()
         self.__integrate_graphic_elements(self.__ui)
+
+    @QtCore.Slot()
+    def connections(self):
+        """..."""
+
+        """
+        Qt.LeftButton
+        Qt.RightButton
+        Qt.MiddleButton – scroll
+        Qt.BackButton – botão "Voltar" do mouse
+        Qt.ForwardButton – botão "Avançar" do mouse
+        Qt.TaskButton – botão adicional (geralmente botão de aplicativo)
+        Qt.ExtraButton1 at Qt.ExtraButton24 – Extras (para mouses avançados)
+        Qt.AllButtons
+
+        Left and right click:
+            acceptedButtons: Qt.LeftButton | Qt.RightButton
+
+        Any buttons:
+            acceptedButtons: Qt.AllButtons
+
+        Only middle:
+            acceptedButtons: Qt.MiddleButton
+        """
+        if Event.MOUSE_RIGHT_PRESS in self.__ui.callbacks():
+            self.__ui.callbacks()[Event.MOUSE_RIGHT_PRESS]()
 
     @QtCore.Slot()
     def __element_clicked(self) -> None:

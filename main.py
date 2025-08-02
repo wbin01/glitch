@@ -5,8 +5,8 @@ from cell.enum import Event, FrameState, FrameHint
 
 # from cell.ui import MainFrame, Frame, Column, Row, Scroll, Button, Label
 from cell.ui.element import Button, Label
-from cell.ui.frame import MainFrame, Frame, Context
-from cell.ui.layout import Column, Row, Scroll
+from cell.ui.frame import MainFrame, Frame
+from cell.ui.layout import Column, Context, Row, Scroll
 
 
 class CustomElement(Row):
@@ -23,13 +23,16 @@ class CustomElement(Row):
         self.custom_label.text = f'CustomElement clicked: {self.num}'
 
 
-class View(Frame):
+class View(MainFrame):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         # Set
+        self.context = self.add(Context())
+        self.context_button = self.context.add(Button('Hello'))
+        self.connect(lambda: self.context.open(), Event.MOUSE_RIGHT_PRESS)
+
         # self.frame_state = FrameState.FULL_SCREEN
         # self.spacing = 0
-
         self.height = 400
         self.width = 400
 
@@ -73,6 +76,7 @@ class View(Frame):
         self.num += 1
         self.label.text = f'Button press: {self.num}'
         self.label.margins = None, None, None, 0
+        self.context.open()
 
     def on_scroll_buttons(self, num):
         if getattr(self, f'button_{num}').is_mouse_hover():
