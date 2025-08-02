@@ -180,11 +180,11 @@ class IconCollectionTool(object):
                 founds.append(icon.stem)
                 shutil.copy2(icon, self.__path_to_copy / icon.name)
 
-            # item         ->  /home/user/docs/file.txt
-            # item.parent  ->  /home/user/docs
-            # item.name    ->  file.txt
-            # item.stem    ->  file
-            # item.suffix  ->  .txt
+                # item         ->  /home/user/docs/file.txt
+                # item.parent  ->  /home/user/docs
+                # item.name    ->  file.txt
+                # item.stem    ->  file
+                # item.suffix  ->  .txt
 
         not_founds = []
         for icon_name in self.__icon_naming_spec:
@@ -206,23 +206,24 @@ class IconCollectionTool(object):
 
 
 if __name__ == '__main__':
-    dark = ''  # '-dark'
-    os = 'linux'
-    de = 'plasma'
-    icon_theme = f'breeze{dark}'
-    size = '16'
-    extension = '.svg'
-    path_to_copy = pathlib.Path(
-        __file__).parent.parent/'static'/'icons'/f'linux{dark}'
+    # dark = ''  # '-dark'
+    # os = 'linux'
+    # de = 'plasma'
+    # icon_theme = f'breeze{dark}'
+    # size = '16'
+    # extension = '.svg'
+    # path_to_copy = pathlib.Path(
+    #     __file__).parent.parent / 'static' / 'icons' / f'linux{dark}'
 
-    print('OS:           ', os)
-    print('DE:           ', de)
-    print('Icon theme:   ', icon_theme)
-    print('Size:         ', size)
-    print('Extension:    ', extension)
-    print('Path to copy: ', path_to_copy)
-    print()
+    # print('OS:           ', os)
+    # print('DE:           ', de)
+    # print('Icon theme:   ', icon_theme)
+    # print('Size:         ', size)
+    # print('Extension:    ', extension)
+    # print('Path to copy: ', path_to_copy)
+    # print()
 
-    collect_icons = IconCollectionTool(
-        os, de, icon_theme, size, extension, path_to_copy)
-    collect_icons.collect()
+    # collect_icons = IconCollectionTool(
+    #     os, de, icon_theme, size, extension, path_to_copy)
+    # collect_icons.collect()
+    pass
