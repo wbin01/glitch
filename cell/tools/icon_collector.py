@@ -111,7 +111,7 @@ zoom-out
 """
 
 
-class IconCollectionTool(object):
+class IconCollector(object):
     def __init__(
             self, os: str, de: str,
             icon_theme: str, size: str, extension: str, path_copy: str
@@ -223,7 +223,7 @@ if __name__ == '__main__':
     # print('Path to copy: ', path_to_copy)
     # print()
 
-    # collect_icons = IconCollectionTool(
+    # collect_icons = IconCollector(
     #     os, de, icon_theme, size, extension, path_to_copy)
     # collect_icons.collect()
     pass

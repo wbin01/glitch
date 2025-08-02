@@ -5,7 +5,7 @@ from xdg import IconTheme
 
 from ..base import Element
 from ...enum.event import Event
-from ...os_integ import PlatformSelection, PlatformIcons
+from ...env import Desktop, Icons
 
 
 class Button(Element):
@@ -19,8 +19,7 @@ class Button(Element):
         super().__init__(*args, **kwargs)
         self.__path = pathlib.Path(__file__).parent.parent.parent
         self.__icon_path = self.__path / 'static' / 'icons' / 'linux'
-        self.__platform_icons = PlatformIcons(
-            PlatformSelection().desktop_environment)
+        self.__platform_icons = Icons(Desktop().desktop_environment)
 
         # Args
         self.__text = text
