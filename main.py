@@ -28,7 +28,9 @@ class View(MainFrame):
         super().__init__(*args, **kwargs)
         # Set
         self.context = self.add(Context())
-        self.context_button = self.context.add(Button('Hello'))
+        self.context_column = self.context.add(Column())
+        self.context_column.margins = 10
+        self.context_button = self.context_column.add(Button('Hello'))
         self.connect(lambda: self.context.open(), Event.MOUSE_RIGHT_PRESS)
 
         # self.frame_state = FrameState.FULL_SCREEN

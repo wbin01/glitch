@@ -56,13 +56,15 @@ Drawer {
     property string baseClass: "Frame"  // <baseClass>
 
     edge: Qt.LeftEdge
-    width: parent.width * 0.6
+    width: parent.width * 0.4
     height: parent.height
 
     background: Rectangle {
-        color: "#1e1e1e"
-        radius: 0
-        border.color: "#666"
+        anchors.fill: parent
+        anchors.margins: 2
+        color: "#EF1A1A1A"
+        radius: 10
+        border.color: "#EF1A1A1A"
         border.width: 1
     }
 
