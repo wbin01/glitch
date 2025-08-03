@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
 from .column import Column
-from .context import Context
+from .panel import Panel
 from .row import Row
 from .scroll import Scroll

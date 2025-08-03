@@ -6,7 +6,7 @@ from cell.enum import Event, FrameState, FrameHint
 # from cell.ui import MainFrame, Frame, Column, Row, Scroll, Button, Label
 from cell.ui.element import Button, Label
 from cell.ui.frame import MainFrame, Frame
-from cell.ui.layout import Column, Context, Row, Scroll
+from cell.ui.layout import Column, Panel, Row, Scroll
 
 
 class CustomElement(Row):
@@ -27,7 +27,7 @@ class View(MainFrame):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         # Set
-        self.context = self.add(Context())
+        self.context = self.add(Panel())
         self.context_column = self.context.add(Column())
         self.context_column.margins = 10
         self.context_button = self.context_column.add(Button('Hello'))
