@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from PySide6 import QtCore
 
-from ..ui import UI
+from .ui import UI
 from ...enum import Event, FrameHint, FrameState, Orientation
 from ...platform_ import Style
 
@@ -24,8 +24,505 @@ class Element(object):
     def __str__(self) -> str:
         return "<class 'Element'>"
 
+"""
+    property color backgroundColor: "#222"
+    property color borderColor: "#222"
+    property int borderWidth: 1
+
+    background: Rectangle {
+        color: "#00000000"
+        radius: 0
+        border.color: "#00000000"
+        border.width: 1
+        clip: true
+    }
+
+    Canvas {
+        id: canvas
+        objectName: "canvas"
+        anchors.fill: parent
+
+        // Connections {
+        //     target: panel
+        //     function onBackgroundColorChanged() { canv.requestPaint() }
+        //     function onBorderColorChanged() { canv.requestPaint() }
+        //     function onBorderWidthChanged() { canv.requestPaint() }
+        // }
+
+        onPaint: {
+            var ctx = getContext("2d");
+            ctx.clearRect(0, 0, width, height);
+
+            var radiusTopLeft = 10;
+            var radiusTopRight = 0;
+            var radiusBottomRight = 0;
+            var radiusBottomLeft = 10;
+
+            ctx.beginPath();
+            ctx.moveTo(radiusTopLeft, 0);
+            ctx.lineTo(width - radiusTopRight, 0);
+            ctx.arcTo(width, 0, width, radiusTopRight, radiusTopRight);
+            ctx.lineTo(width, height - radiusBottomRight);
+            ctx.arcTo(width, height, width - radiusBottomRight, height, radiusBottomRight);
+            ctx.lineTo(radiusBottomLeft, height);
+            ctx.arcTo(0, height, 0, height - radiusBottomLeft, radiusBottomLeft);
+            ctx.lineTo(0, radiusTopLeft);
+            ctx.arcTo(0, 0, radiusTopLeft, 0, radiusTopLeft);
+            ctx.closePath();
+
+            // Background color
+            ctx.fillStyle = panel.backgroundColor;
+            ctx.fill();
+
+            // Border coloe
+            ctx.strokeStyle = panel.borderColor;
+            ctx.lineWidth = panel.borderWidth;
+            ctx.stroke();
+        }
+    }
+"""
 
 qml = """
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import QtQuick.Shapes
+
+import "elements"
+
+
+Window {
+    id: frame  // <id>
+    objectName: "frame"  // <objectName>
+    property string qmlType: "Window"  // <className>
+    property string baseClass: "Frame"  // <baseClass>
+
+    visible: true
+    visibility: Window.Windowed
+    
+    height: _height
+    property int _height: 200
+    
+    width: _width
+    property int _width: 200
+
+    minimumWidth: 200
+    minimumHeight: 200
+    title: qsTr("Cell")
+    color: backgroundColor
+    flags: Qt.FramelessWindowHint
+
+    property color backgroundColor: "transparent"
+    // property color borderColor: "#444"
+    // property color outLineColor: "#44000000"
+    // property int borderWidth: 1
+
+    MouseArea {
+        anchors.fill: parent
+        acceptedButtons: Qt.RightButton
+        onPressed: logic.connections()
+    }
+
+    // Rectangle {
+    //     id: outerBorder
+    //     objectName: "outerBorder"
+    //     anchors.fill: parent
+    //     color: frame.backgroundColor // "transparent"
+    //     border.color: frame.outLineColor // "#44000000"
+    //     border.width: 1
+    //     radius: 11
+    //     z: 0
+    // }
+
+    Rectangle {
+        id: mainRect
+        objectName: "mainRect"
+        anchors.fill: parent
+        // anchors.margins: margins
+        radius: 10
+        // color: backgroundColor
+        // border.color: borderColor
+        // border.width: borderWidth
+        z: 1
+
+        // property color backgroundColor: "#333"
+        // property color borderColor: "#444"
+        // property bool isActive: true
+        // property int borderWidth: 1
+        // property int margins: 1
+
+        Canvas {
+            id: canv
+            anchors.fill: parent
+
+            property color fillColor: "#EF005500"
+            property color innerBorderColor: "#00FF00"
+            property color outerBorderColor: "#0000FF"
+            property int innerBorderWidth: 1
+            property int outerBorderWidth: 1
+            property int borderSpacing: 1    // separação entre as bordas
+
+            // Raio separado por canto
+            property int radiusTopLeft: 10
+            property int radiusTopRight: 10
+            property int radiusBottomRight: 0
+            property int radiusBottomLeft: 0
+
+            onPaint: {
+                var ctx = getContext("2d");
+                ctx.clearRect(0, 0, width, height);
+
+                // Função para desenhar retângulo arredondado com raios individuais
+                function roundedRect(x, y, w, h, rtl, rtr, rbr, rbl) {
+                    ctx.beginPath();
+                    ctx.moveTo(x + rtl, y);
+                    ctx.lineTo(x + w - rtr, y);
+                    ctx.arcTo(x + w, y, x + w, y + rtr, rtr);
+                    ctx.lineTo(x + w, y + h - rbr);
+                    ctx.arcTo(x + w, y + h, x + w - rbr, y + h, rbr);
+                    ctx.lineTo(x + rbl, y + h);
+                    ctx.arcTo(x, y + h, x, y + h - rbl, rbl);
+                    ctx.lineTo(x, y + rtl);
+                    ctx.arcTo(x, y, x + rtl, y, rtl);
+                    ctx.closePath();
+                }
+
+                // --- Fundo ---
+                roundedRect(0, 0, width, height,
+                            radiusTopLeft, radiusTopRight,
+                            radiusBottomRight, radiusBottomLeft);
+                ctx.fillStyle = fillColor;
+                ctx.fill();
+
+                // --- Borda externa ---
+                roundedRect(0, 0, width, height,
+                            radiusTopLeft, radiusTopRight,
+                            radiusBottomRight, radiusBottomLeft);
+                ctx.strokeStyle = outerBorderColor;
+                ctx.lineWidth = outerBorderWidth;
+                ctx.stroke();
+
+                // --- Borda interna ---
+                var inset = borderSpacing + innerBorderWidth / 2;
+                roundedRect(
+                    inset, inset,
+                    width - inset * 2,
+                    height - inset * 2,
+                    Math.max(0, radiusTopLeft - inset),
+                    Math.max(0, radiusTopRight - inset),
+                    Math.max(0, radiusBottomRight - inset),
+                    Math.max(0, radiusBottomLeft - inset)
+                );
+                ctx.strokeStyle = innerBorderColor;
+                ctx.lineWidth = innerBorderWidth;
+                ctx.stroke();
+            }
+        }
+
+
+// MainFrame
+
+// Resize corners
+
+        ColumnLayout {
+            id: mainColumnLayout
+            objectName: "mainColumnLayout"
+            anchors.fill: parent
+            // anchors.top: parent.top
+            anchors.margins: 6
+            spacing: 6
+            clip: true
+            // Layout.fillHeight: false
+            Layout.alignment: Qt.AlignTop
+            Layout.fillWidth: true
+
+// **closing_key**
+
+        }
+    }
+}
+
+"""
+
+qml_bkp3 = """
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import QtQuick.Shapes
+
+import "elements"
+
+
+Window {
+    id: frame  // <id>
+    objectName: "frame"  // <objectName>
+    property string qmlType: "Window"  // <className>
+    property string baseClass: "Frame"  // <baseClass>
+
+    visible: true
+    visibility: Window.Windowed
+    
+    height: _height
+    property int _height: 200
+    
+    width: _width
+    property int _width: 200
+
+    minimumWidth: 200
+    minimumHeight: 200
+    title: qsTr("Cell")
+    color: backgroundColor
+    flags: Qt.FramelessWindowHint
+
+    property color backgroundColor: "transparent"
+    // property color borderColor: "#444"
+    // property color outLineColor: "#44000000"
+    // property int borderWidth: 1
+
+    MouseArea {
+        anchors.fill: parent
+        acceptedButtons: Qt.RightButton
+        onPressed: logic.connections()
+    }
+
+    // Rectangle {
+    //     id: outerBorder
+    //     objectName: "outerBorder"
+    //     anchors.fill: parent
+    //     color: frame.backgroundColor // "transparent"
+    //     border.color: frame.outLineColor // "#44000000"
+    //     border.width: 1
+    //     radius: 11
+    //     z: 0
+    // }
+
+    Rectangle {
+        id: mainRect
+        objectName: "mainRect"
+        anchors.fill: parent
+        // anchors.margins: margins
+        radius: 10
+        // color: backgroundColor
+        // border.color: borderColor
+        // border.width: borderWidth
+        z: 1
+
+        // property color backgroundColor: "#333"
+        // property color borderColor: "#444"
+        // property bool isActive: true
+        // property int borderWidth: 1
+        // property int margins: 1
+
+
+        Canvas {
+            id: canvas
+            anchors.fill: parent
+
+            property color fillColor: "#EF222222"
+            property color innerBorderColor: "#00FF00"
+            property color outerBorderColor: "#0000FF"
+            property int innerBorderWidth: 2
+            property int outerBorderWidth: 2
+
+            onPaint: {
+                var ctx = getContext("2d");
+                ctx.clearRect(0, 0, width, height);
+
+                var radiusTopLeft = 10;
+                var radiusTopRight = 10;
+                var radiusBottomRight = 0;
+                var radiusBottomLeft = 0;
+
+                ctx.beginPath();
+                ctx.moveTo(radiusTopLeft, 0);
+                ctx.lineTo(width - radiusTopRight, 0);
+                ctx.arcTo(width, 0, width, radiusTopRight, radiusTopRight);
+                ctx.lineTo(width, height - radiusBottomRight);
+                ctx.arcTo(width, height, width - radiusBottomRight, height, radiusBottomRight);
+                ctx.lineTo(radiusBottomLeft, height);
+                ctx.arcTo(0, height, 0, height - radiusBottomLeft, radiusBottomLeft);
+                ctx.lineTo(0, radiusTopLeft);
+                ctx.arcTo(0, 0, radiusTopLeft, 0, radiusTopLeft);
+                ctx.closePath();
+
+                // --- PREENCHIMENTO ---
+                ctx.fillStyle = fillColor;
+                ctx.fill();
+
+                // --- BORDA EXTERNA ---
+                ctx.strokeStyle = outerBorderColor;
+                ctx.lineWidth = outerBorderWidth;
+                ctx.stroke();
+
+                // --- BORDA INTERNA ---
+                ctx.save();
+                ctx.clip(); // impede que a borda interna vaze para fora
+                ctx.strokeStyle = innerBorderColor;
+                ctx.lineWidth = innerBorderWidth * 2; // dobra para compensar o recorte
+                ctx.stroke();
+                ctx.restore();
+            }
+        }
+
+
+
+// MainFrame
+
+// Resize corners
+
+        ColumnLayout {
+            id: mainColumnLayout
+            objectName: "mainColumnLayout"
+            anchors.fill: parent
+            // anchors.top: parent.top
+            anchors.margins: 6
+            spacing: 6
+            clip: true
+            // Layout.fillHeight: false
+            Layout.alignment: Qt.AlignTop
+            Layout.fillWidth: true
+
+// **closing_key**
+
+        }
+    }
+}
+
+"""
+
+qml_bkp2 = """
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import QtQuick.Shapes
+
+import "elements"
+
+
+Window {
+    id: frame  // <id>
+    objectName: "frame"  // <objectName>
+    property string qmlType: "Window"  // <className>
+    property string baseClass: "Frame"  // <baseClass>
+
+    visible: true
+    visibility: Window.Windowed
+    
+    height: _height
+    property int _height: 200
+    
+    width: _width
+    property int _width: 200
+
+    minimumWidth: 200
+    minimumHeight: 200
+    title: qsTr("Cell")
+    color: "transparent"
+    flags: Qt.FramelessWindowHint
+
+    property color backgroundColor: "transparent"
+    property color borderColor: "#444"
+    property color outLineColor: "#44000000"
+    property int borderWidth: 1
+
+    MouseArea {
+        anchors.fill: parent
+        acceptedButtons: Qt.RightButton
+        onPressed: logic.connections()
+    }
+
+    Rectangle {
+        id: outerBorder
+        objectName: "outerBorder"
+        anchors.fill: parent
+        color: frame.backgroundColor // "transparent"
+        border.color: frame.outLineColor // "#44000000"
+        border.width: 1
+        radius: 11
+        z: 0
+    }
+
+    Rectangle {
+        id: mainRect
+        objectName: "mainRect"
+        anchors.fill: parent
+        anchors.margins: margins
+        radius: 10
+        color: backgroundColor
+        border.color: borderColor
+        border.width: borderWidth
+        z: 1
+
+        property color backgroundColor: "#333"
+        property color borderColor: "#444"
+        property bool isActive: true
+        property int borderWidth: 1
+        property int margins: 1
+
+
+        Canvas {
+            id: canvas
+            objectName: "canvas"
+            anchors.fill: parent
+
+            onPaint: {
+                var ctx = getContext("2d");
+                ctx.clearRect(0, 0, width, height);
+
+                var radiusTopLeft = 10;
+                var radiusTopRight = 0;
+                var radiusBottomRight = 0;
+                var radiusBottomLeft = 10;
+
+                ctx.beginPath();
+                ctx.moveTo(radiusTopLeft, 0);
+                ctx.lineTo(width - radiusTopRight, 0);
+                ctx.arcTo(width, 0, width, radiusTopRight, radiusTopRight);
+                ctx.lineTo(width, height - radiusBottomRight);
+                ctx.arcTo(width, height, width - radiusBottomRight, height, radiusBottomRight);
+                ctx.lineTo(radiusBottomLeft, height);
+                ctx.arcTo(0, height, 0, height - radiusBottomLeft, radiusBottomLeft);
+                ctx.lineTo(0, radiusTopLeft);
+                ctx.arcTo(0, 0, radiusTopLeft, 0, radiusTopLeft);
+                ctx.closePath();
+
+                // Background color
+                ctx.fillStyle = frame.backgroundColor;
+                ctx.fill();
+
+                // Border coloe
+                ctx.strokeStyle = mainRect.borderColor;
+                ctx.lineWidth = mainRect.borderWidth;
+                ctx.stroke();
+            }
+        }
+
+
+// MainFrame
+
+// Resize corners
+
+        ColumnLayout {
+            id: mainColumnLayout
+            objectName: "mainColumnLayout"
+            anchors.fill: parent
+            // anchors.top: parent.top
+            anchors.margins: 6
+            spacing: 6
+            clip: true
+            // Layout.fillHeight: false
+            Layout.alignment: Qt.AlignTop
+            Layout.fillWidth: true
+
+// **closing_key**
+
+        }
+    }
+}
+
+"""
+
+qml_bkp = """
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts

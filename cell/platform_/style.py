@@ -49,13 +49,13 @@ class Style(object):
                 'font_color': '#666',
                 },
             '[MainFrame]': {
-                'background_color': '#2A2A2A',  # Alt 282828
-                'border_color': '#383838',
+                'background_color': '#00000000', # '#2A2A2A',  # Alt 282828
+                'border_color': '#00000000',  # '#383838',
                 'border_radius': 10,
                 },
             '[MainFrame:inactive]': {
-                'background_color': '#222',
-                'border_color': '#333',
+                'background_color': '#00000000', #222',
+                'border_color': '#00000000', # '#333',
                 'border_radius': 10,
                 },
             '[Panel]': {
@@ -64,8 +64,8 @@ class Style(object):
                 'border_radius': 10,
                 },
             '[Panel:inactive]': {
-                'background_color': '#EFFF2222',
-                'border_color': '#22FF22',
+                'background_color': '#EF202020',
+                'border_color': '#202020',
                 'border_radius': 10,
                 },
             '[Platform]': {

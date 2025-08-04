@@ -8,7 +8,7 @@ def change_element_style_state(element, state, style):
     Iterates through the Element's properties and applies a style 
     corresponding to the Frame's current state.
     """
-    use_canvas = element.property('qmlType') in ['Panel']
+    use_canvas = element.property('qmlType') in ['Panel', 'MainFrame', 'Frame']
     if (element.property('baseClass') != 'Element' and not use_canvas):
         return
 
