@@ -8,12 +8,9 @@ def change_element_style_state(element, state, style):
     Iterates through the Element's properties and applies a style 
     corresponding to the Frame's current state.
     """
-    context = element.property('qmlType')
-    if element.property('baseClass') != 'Element' and context != 'Panel':
+    use_canvas = element.property('qmlType') in ['Panel']
+    if (element.property('baseClass') != 'Element' and not use_canvas):
         return
-
-    if context == 'Panel':
-        print('Panel')
 
     element_properties = {
         'color': 'font_color',
@@ -40,3 +37,7 @@ def change_element_style_state(element, state, style):
                     if base_element.property(key_) and value_ in style[name]:
                         base_element.setProperty(
                             key_, style[name][value_])
+
+    if use_canvas:
+        base_element = element.findChild(QtCore.QObject, 'canvas')
+        base_element.requestPaint()

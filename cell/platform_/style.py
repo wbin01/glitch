@@ -63,6 +63,11 @@ class Style(object):
                 'border_color': '#222222',
                 'border_radius': 10,
                 },
+            '[Panel:inactive]': {
+                'background_color': '#EFFF2222',
+                'border_color': '#22FF22',
+                'border_radius': 10,
+                },
             '[Platform]': {
                 'accent_color': '#3c8cbd',
                 },

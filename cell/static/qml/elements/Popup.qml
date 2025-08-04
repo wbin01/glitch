@@ -33,9 +33,17 @@ Popup {
     }
 
     Canvas {
-        id: canv
-
+        id: canvas
+        objectName: "canvas"
         anchors.fill: parent
+
+        // Connections {
+        //     target: panel
+        //     function onBackgroundColorChanged() { canv.requestPaint() }
+        //     function onBorderColorChanged() { canv.requestPaint() }
+        //     function onBorderWidthChanged() { canv.requestPaint() }
+        // }
+
         onPaint: {
             var ctx = getContext("2d");
             ctx.clearRect(0, 0, width, height);
