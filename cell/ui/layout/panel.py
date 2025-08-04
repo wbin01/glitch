@@ -12,8 +12,8 @@ Popup {
     property string baseClass: "Frame"  // <baseClass>
 
     width: 250
-    height: parent.height + 10 // - 40
-    x: - 5 // metade do padding da janela // parent.width - width // - 20
+    height: parent.height + 10
+    x: - 5
     y: - 5
     modal: false
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
@@ -26,7 +26,6 @@ Popup {
         border.width: 1
         clip: true
     }
-    Behavior on x { NumberAnimation { duration: 250; easing.type: Easing.OutQuad } }
 
     ColumnLayout {
         id: column  // <id>
@@ -55,10 +54,10 @@ Popup {
 
 qml_drawer = """
 Drawer {
-    id: context  // <id>
-    objectName: "context"  // <objectName>
-    property string qmlType: "Context"  // <className>
-    property string baseClass: "Frame"  // <baseClass>
+    id: panel  // <id>
+    objectName: "panel"  // <objectName>
+    property string qmlType: "Panel"  // <className>
+    property string baseClass: "Layout"  // <baseClass>
 
     edge: Qt.LeftEdge
     width: parent.width * 0.4
@@ -101,22 +100,25 @@ Drawer {
 
 qml = """
 Popup {
-    id: context  // <id>
-    objectName: "context"  // <objectName>
-    property string qmlType: "Context"  // <className>
+    id: panel  // <id>
+    objectName: "panel"  // <objectName>
+    property string qmlType: "Panel"  // <className>
     property string baseClass: "Layout"  // <baseClass>
 
     padding: 0
     width: 250
-    height: parent.height + 10 // + 10 do padding da janela
-    // x: - 5 // - metade do padding da janela
-    x: - 5
+    height: parent.height + 10 // Frame padding
+    x: - 5 // Half of the Frame padding
     y: - 5
     modal: false
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
     clip: true
 
     transformOrigin: Item.Left
+
+    property color backgroundColor: "#55f80000"
+    property color borderColor: "#00f"
+    property int borderWidth: 1
 
     background: Rectangle {
         color: "#00000000"
@@ -128,6 +130,7 @@ Popup {
 
     Canvas {
         id: canv
+
         anchors.fill: parent
         onPaint: {
             var ctx = getContext("2d");
@@ -150,16 +153,48 @@ Popup {
             ctx.arcTo(0, 0, radiusTopLeft, 0, radiusTopLeft);
             ctx.closePath();
 
-            ctx.fillStyle = "#EF1A1A1A";
+            // Background color
+            ctx.fillStyle = panel.backgroundColor;
             ctx.fill();
+
+            // Border coloe
+            ctx.strokeStyle = panel.borderColor;
+            ctx.lineWidth = panel.borderWidth;
+            ctx.stroke();
         }
     }
 
     ColumnLayout {
-        id: column  // <id>
-        objectName: "column"  // <objectName>
-        property string qmlType: "Column"  // <className>
-        property string baseClass: "Layout"  // <baseClass>
+        id: column
+        
+        property int topMargin: 0
+        property int rightMargin: 0
+        property int bottomMargin: 0
+        property int leftMargin: 0
+        Layout.topMargin: topMargin
+        Layout.rightMargin: rightMargin
+        Layout.bottomMargin: bottomMargin
+        Layout.leftMargin: leftMargin
+        
+        spacing: 6
+
+        anchors.fill: parent
+        // anchors.margins: 6
+
+// **closing_key**
+    }
+}
+"""
+
+qml = """
+Popup {
+    id: panel  // <id>
+    objectName: "panel"  // <objectName>
+    property string qmlType: "Panel"  // <className>
+    property string baseClass: "Layout"  // <baseClass>
+
+    ColumnLayout {
+        id: column
         
         property int topMargin: 0
         property int rightMargin: 0
@@ -188,11 +223,14 @@ class Panel(Layout):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self._qml = qml
+
+        self.id = '_' + str(id(self))
         self._element_type = 'Panel'
 
         self.__show_anim = QtCore.QParallelAnimationGroup()
         # self.__hide_anim = QtCore.QParallelAnimationGroup()
-        self.__open_state = {'visible': False}
+        self.__is_open = False
+        self.__connect_close = False
 
     def close(self) -> None:
         """Closes the Panel.
@@ -200,7 +238,7 @@ class Panel(Layout):
         Makes the Panel invisible.
         """
         self._obj.close()
-        self.__open_state['visible'] = False
+        self.__is_open = False
 
     def open(self) -> None:
         """Open and display the Panel.
@@ -208,21 +246,23 @@ class Panel(Layout):
         By default, the Panel is not visible; this "open()" method is used 
         to display it.
         """
-        if not self._obj or self._obj.property('visible'):
+        if not self._obj: # or self._obj.property('visible'):
             return
+
+        if not self.__connect_close:
+            self._obj.closed.connect(self.close)
+            self.__connect_close = True
 
         slide_in = QtCore.QPropertyAnimation(self._obj, b"x")
         slide_in.setDuration(300)
         slide_in.setStartValue(-250)
         slide_in.setEndValue(-5)
         slide_in.setEasingCurve(QtCore.QEasingCurve.OutCubic)
-
         fade_in = QtCore.QPropertyAnimation(self._obj, b"opacity")
         fade_in.setDuration(300)
         fade_in.setStartValue(0)
         fade_in.setEndValue(1)
         fade_in.setEasingCurve(QtCore.QEasingCurve.OutCubic)
-
         self.__show_anim.addAnimation(slide_in)
         self.__show_anim.addAnimation(fade_in)
 
@@ -239,18 +279,16 @@ class Panel(Layout):
         # self.__hide_anim.addAnimation(slide_out)
         # self.__hide_anim.addAnimation(fade_out)
 
-        self._obj.closed.connect(lambda: self.close())
-
-        if not self.__open_state['visible']:
+        if not self.__is_open:
+            self.__is_open = True
             self._obj.open()
             self.__show_anim.start()
-            self.__open_state['visible'] = True
-        else:
-            self._obj.close()
+
             # self.__hide_anim.finished.disconnect(on_done)
             # self.__hide_anim.finished.connect(on_done)
             # self.__hide_anim.start()
 
+        # Hack
         self._obj.open()
         self.__show_anim.start()
 

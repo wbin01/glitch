@@ -32,6 +32,7 @@ class Label(Element):
             '\n    Layout.leftMargin: leftMargin'
             '\n}  // <suffix_id>\n')
 
+        # self.id = '_' + str(id(self))
         self._element_type = 'Label'
         self.text = self.__text
 

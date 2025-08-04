@@ -51,19 +51,19 @@ class UI(object):
         return self.__id
 
     @id.setter
-    def id(self, id: str) -> None:
+    def id(self, id_: int) -> None:
         qml_lines = []
         for line in self.__qml.split('\n'):
             if line.strip().endswith('// <id>'):
-                qml_lines.append(f'    id: {id}  // <id>')
+                qml_lines.append(f'    id: {id_}  // <id>')
             elif line.strip().endswith('// <objectName>'):
                 qml_lines.append(
-                    f'    objectName: "{id}"  // <objectName>')
+                    f'    objectName: "{id_}"  // <objectName>')
             else:
                 qml_lines.append(line)
 
-        self.__qml = '\n'.join(qml_lines)  # .replace('<suffix_id>', id)
-        self.__id = id
+        self.__qml = '\n'.join(qml_lines)  # .replace('<suffix_id>', id_)
+        self.__id = id_
 
     @property
     def _element_type(self) -> str:

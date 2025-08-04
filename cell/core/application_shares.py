@@ -8,8 +8,12 @@ def change_element_style_state(element, state, style):
     Iterates through the Element's properties and applies a style 
     corresponding to the Frame's current state.
     """
-    if element.property('baseClass') != 'Element':
+    context = element.property('qmlType')
+    if element.property('baseClass') != 'Element' and context != 'Panel':
         return
+
+    if context == 'Panel':
+        print('Panel')
 
     element_properties = {
         'color': 'font_color',
@@ -27,12 +31,12 @@ def change_element_style_state(element, state, style):
     name = f'[{element.property('qmlType')}{state}]'
     for key, value in element_properties.items():
         if isinstance(value, str):
-            if element.property(key):
+            if element.property(key) and value in style[name]:
                 element.setProperty(key, style[name][value])
         else:
             base_element = element.findChild(QtCore.QObject, key)
             if base_element:
                 for key_, value_ in value.items():
-                    if base_element.property(key_):
+                    if base_element.property(key_) and value_ in style[name]:
                         base_element.setProperty(
                             key_, style[name][value_])
