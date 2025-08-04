@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from PySide6 import QtCore
 
-from .ui import UI
+from ..ui import UI
 from ...enum import Orientation
 
 

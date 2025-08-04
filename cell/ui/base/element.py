@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from .ui import UI
+from ..ui import UI
 
 
 qml = """
