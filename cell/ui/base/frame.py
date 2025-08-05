@@ -97,11 +97,6 @@ Window {
             property int outerBorderWidth: mainRect.outLineWidth
             property int borderSpacing: 1
 
-            // property int radiusTopLeft: 10
-            // property int radiusTopRight: 10
-            // property int radiusBottomRight: 10
-            // property int radiusBottomLeft: 10
-
             onPaint: {
                 var ctx = getContext("2d");
                 ctx.clearRect(0, 0, width, height);
@@ -307,111 +302,6 @@ class Frame(UI):
         self.__radius = 10, 10, 10, 10
 
     @property
-    def radius(self) -> tuple:
-        """Sets the Frame radius.
-
-        A tuple with the 4 radius values. The values are order: top-left, 
-        top-right, bottom-right and bottom-left respectively:
-
-            (10, 10, 10, 10)
-
-        It is not mandatory to pass all the values, the last value will be 
-        used to fill in the missing ones:
-
-        `radius = 5` is equivalent to `radius = 5, 5, 5, 5`
-        `radius = 5, 10` is equivalent to `radius = 5, 10, 10, 10`
-
-        Use `None` for a value to be automatic. `None` indicates that the 
-        value is the same as before. Example:
-
-            # Change top-left and bottom-right
-            `element.radius = 10, None, 10, None`
-
-            # Change top-right and bottom-left
-            `element.radius = None, 5, None, 5`
-
-        Warning: Only works as initialization (__init__), before the window is 
-        rendered!
-        """
-        return self.__radius
-
-    @radius.setter
-    def radius(self, radius: tuple) -> None:
-        if isinstance(radius, str):
-            if not radius.isdigit():
-                return
-            radius = int(radius)
-
-        if isinstance(radius, int):
-            top_l, top_r, bottom_r, bottom_l = radius, radius, radius, radius
-        elif len(radius) == 2:
-            top_l, top_r, bottom_r, bottom_l = radius + (radius[1], radius[1])
-        elif len(radius) == 3:
-            top_l, top_r, bottom_r, bottom_l = radius + (radius[2],)
-        else:
-            top_l, top_r, bottom_r, bottom_l = radius[:4]
-
-        top_l = self.__radius[0] if top_l is None else top_l
-        top_r = self.__radius[1] if top_r is None else top_r
-        bottom_r = self.__radius[2] if bottom_r is None else bottom_r
-        bottom_l = self.__radius[3] if bottom_l is None else bottom_l
-
-        if self._obj:
-            # The code works, but is not desirable and has been disabled!
-            return
-
-            self._obj.setProperty('radiusTopLeft', top_l)
-            self._obj.setProperty('radiusTopRight', top_r)
-            self._obj.setProperty('radiusBottomRight', bottom_r)
-            self._obj.setProperty('radiusBottomLeft', bottom_l)
-
-            # TODO: Move to Application().processEvents()  works the right way
-            self._obj.findChild(QtCore.QObject, 'canvas').requestPaint()
-            frame = self.frame_state
-            self.frame_state = (FrameState.MAXIMIZED
-                if frame.name != 'MAXIMIZED' else FrameState.FULL_SCREEN)
-            def _frame_state_(frame):
-                self.frame_state = frame
-            QtCore.QTimer.singleShot(300, lambda: _frame_state_(frame))
-            
-        else:
-            self._qml = self._qml.replace(
-                f'property int radiusTopLeft: {self.__radius[0]}',
-                f'property int radiusTopLeft: {top_l}')
-            self._qml = self._qml.replace(
-                f'property int radiusTopRight: {self.__radius[1]}',
-                f'property int radiusTopRight: {top_r}')
-            self._qml = self._qml.replace(
-                f'property int radiusBottomRight: {self.__radius[2]}',
-                f'property int radiusBottomRight: {bottom_r}')
-            self._qml = self._qml.replace(
-                f'property int radiusBottomLeft: {self.__radius[3]}',
-                f'property int radiusBottomLeft: {bottom_l}')
-
-        self.__radius = top_l, top_r, bottom_r, bottom_l
-
-    def callbacks(self) -> dict:
-        """The functions used in the `connect` method.
-
-        The `connect` method organizes the received functions into a 
-        dictionary organized by the type of event they are associated with.
-        """
-        return self.__callbacks
-
-    def connect(
-            self, method: callable, event: Event = Event.MOUSE_PRESS) -> None:
-        """Connect the button to a method.
-
-        Pass a method to be executed when interacting with the button.
-        Alternatively, use an event like `Event.MOUSE_HOVER` or 
-        `Event.MOUSE_WHEEL` to configure when the button will use the method.
-
-        :param method: method to be executed when interacting with the button.
-        :param event: Enum like `Event.MOUSE_HOVER` or `Event.MOUSE_WHEEL`
-        """
-        self.__callbacks[event] = method
-
-    @property
     def frame_hint(self) -> FrameHint:
         """Frame behavior hint.
 
@@ -502,6 +392,90 @@ class Frame(UI):
         self.__height = height
 
     @property
+    def radius(self) -> tuple:
+        """Sets the Frame radius.
+
+        A tuple with the 4 radius values. The values are order: top-left, 
+        top-right, bottom-right and bottom-left respectively:
+
+            (10, 10, 10, 10)
+
+        It is not mandatory to pass all the values, the last value will be 
+        used to fill in the missing ones:
+
+        `radius = 5` is equivalent to `radius = 5, 5, 5, 5`
+        `radius = 5, 10` is equivalent to `radius = 5, 10, 10, 10`
+
+        Use `None` for a value to be automatic. `None` indicates that the 
+        value is the same as before. Example:
+
+            # Change top-left and bottom-right
+            `element.radius = 10, None, 10, None`
+
+            # Change top-right and bottom-left
+            `element.radius = None, 5, None, 5`
+
+        Warning: Only works as initialization (__init__), before the window is 
+        rendered!
+        """
+        return self.__radius
+
+    @radius.setter
+    def radius(self, radius: tuple) -> None:
+        if isinstance(radius, str):
+            if not radius.isdigit():
+                return
+            radius = int(radius)
+
+        if isinstance(radius, int):
+            top_l, top_r, bottom_r, bottom_l = radius, radius, radius, radius
+        elif len(radius) == 2:
+            top_l, top_r, bottom_r, bottom_l = radius + (radius[1], radius[1])
+        elif len(radius) == 3:
+            top_l, top_r, bottom_r, bottom_l = radius + (radius[2],)
+        else:
+            top_l, top_r, bottom_r, bottom_l = radius[:4]
+
+        top_l = self.__radius[0] if top_l is None else top_l
+        top_r = self.__radius[1] if top_r is None else top_r
+        bottom_r = self.__radius[2] if bottom_r is None else bottom_r
+        bottom_l = self.__radius[3] if bottom_l is None else bottom_l
+
+        if self._obj:
+            # The code works, but is not desirable and has been disabled!
+            return
+
+            self._obj.setProperty('radiusTopLeft', top_l)
+            self._obj.setProperty('radiusTopRight', top_r)
+            self._obj.setProperty('radiusBottomRight', bottom_r)
+            self._obj.setProperty('radiusBottomLeft', bottom_l)
+
+            # TODO: Move to Application().processEvents()  works the right way
+            self._obj.findChild(QtCore.QObject, 'canvas').requestPaint()
+            frame = self.frame_state
+            self.frame_state = (FrameState.MAXIMIZED
+                if frame.name != 'MAXIMIZED' else FrameState.FULL_SCREEN)
+            def _frame_state_(frame):
+                self.frame_state = frame
+            QtCore.QTimer.singleShot(300, lambda: _frame_state_(frame))
+            
+        else:
+            self._qml = self._qml.replace(
+                f'property int radiusTopLeft: {self.__radius[0]}',
+                f'property int radiusTopLeft: {top_l}')
+            self._qml = self._qml.replace(
+                f'property int radiusTopRight: {self.__radius[1]}',
+                f'property int radiusTopRight: {top_r}')
+            self._qml = self._qml.replace(
+                f'property int radiusBottomRight: {self.__radius[2]}',
+                f'property int radiusBottomRight: {bottom_r}')
+            self._qml = self._qml.replace(
+                f'property int radiusBottomLeft: {self.__radius[3]}',
+                f'property int radiusBottomLeft: {bottom_l}')
+
+        self.__radius = top_l, top_r, bottom_r, bottom_l
+
+    @property
     def spacing(self) -> int:
         """Spacing Between Elements.
 
@@ -566,6 +540,27 @@ class Frame(UI):
 
         self.__items.append(obj)
         return obj
+
+    def callbacks(self) -> dict:
+        """The functions used in the `connect` method.
+
+        The `connect` method organizes the received functions into a 
+        dictionary organized by the type of event they are associated with.
+        """
+        return self.__callbacks
+
+    def connect(
+            self, method: callable, event: Event = Event.MOUSE_PRESS) -> None:
+        """Connect the button to a method.
+
+        Pass a method to be executed when interacting with the button.
+        Alternatively, use an event like `Event.MOUSE_HOVER` or 
+        `Event.MOUSE_WHEEL` to configure when the button will use the method.
+
+        :param method: method to be executed when interacting with the button.
+        :param event: Enum like `Event.MOUSE_HOVER` or `Event.MOUSE_WHEEL`
+        """
+        self.__callbacks[event] = method
 
     def items(self) -> list:
         """Items added to the Layout.

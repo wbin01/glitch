@@ -27,7 +27,10 @@ class View(MainFrame):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         # Set
+        self.radius = 10, 10, 0
         self.context = self.add(Panel())
+        self.context.radius = self.radius[0], 0, 0, self.radius[3]
+        
         self.context_column = self.context.add(Column())
         self.context_column.margins = 10
         self.context_button = self.context_column.add(Button('Hello'))
@@ -37,7 +40,7 @@ class View(MainFrame):
         # self.spacing = 0
         self.height = 400
         self.width = 400
-
+        
         # Elements
         self.label = self.add(Label('Hello'))
         self.label.margins = None, None, None, 100
@@ -73,7 +76,6 @@ class View(MainFrame):
     def on_custom_clicked(self):
         self.custom_num += 1
         self.label.text = f'Custom Element Button clicked {self.custom_num}'
-        self.radius = 10, 10, 0, 0
 
     def on_button(self):
         self.num += 1
