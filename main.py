@@ -33,7 +33,7 @@ class View(MainFrame):
         self.context_button = self.context_column.add(Button('Hello'))
         self.connect(lambda: self.context.open(), Event.MOUSE_RIGHT_PRESS)
 
-        # self.frame_state = FrameState.MAXIMIZED  # FrameState.FULL_SCREEN
+        self.frame_state = FrameState.MAXIMIZED  # FrameState.FULL_SCREEN
         # self.spacing = 0
         self.height = 400
         self.width = 400

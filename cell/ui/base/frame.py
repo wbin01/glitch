@@ -161,7 +161,7 @@ Window {
         property bool isActive: true
 
         property color backgroundColor: "#99880000"
-        property color borderColor: "#F00"
+        property color borderColor: "#880000"
         property color outLineColor: "#44000000"
         property int borderWidth: 1
         property int outLineWidth: 1
@@ -208,7 +208,7 @@ Window {
                 }
 
                 // --- Background ---
-                roundedRect(0, 0, width, height,
+                roundedRect(1, 1, width - 2, height - 2,
                             mainRect.radiusTopLeft, mainRect.radiusTopRight,
                             mainRect.radiusBottomRight, mainRect.radiusBottomLeft);
                 ctx.fillStyle = fillColor;

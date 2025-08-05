@@ -32,7 +32,7 @@ class Handler(QtCore.QObject):
             QtCore.QObject, options=QtCore.Qt.FindChildrenRecursively)
 
         self.__gui.windowStateChanged.connect(self.__state_changed)
-        self.__state_style()
+        self.__init_state_style()
         self.__integrate_graphic_elements(self.__ui)
 
     @QtCore.Slot()
@@ -116,30 +116,15 @@ class Handler(QtCore.QObject):
         if isinstance(layout, Frame):
             layout._obj = self.__gui
 
-    def __state_style(self) -> None:
+    @QtCore.Slot()
+    def __init_state_style(self) -> None:
         # Style of the elements and the Frame in each state.
-        frame = f'[{self.__ui._element_type}]'
-        if (self.__ui.frame_state == FrameState.MAXIMIZED or
-                self.__ui.frame_state == FrameState.FULL_SCREEN):
-            self.__main_rect.setProperty('radiusTopLeft', 0)
-            self.__main_rect.setProperty('radiusTopRight', 0)
-            self.__main_rect.setProperty('radiusBottomRight', 0)
-            self.__main_rect.setProperty('radiusBottomLeft', 0)
-            self.__main_rect.setProperty('borderWidth', 0)
-            # self.__main_rect.setProperty('margins', 0)
+        if (self.__ui.frame_state.name == 'MAXIMIZED' or
+                self.__ui.frame_state.name == 'FULL_SCREEN'):
+            QtCore.QTimer.singleShot(
+                300, lambda: self.__state_changed(QtCore.Qt.WindowFullScreen))
         else:
-            self.__main_rect.setProperty(
-                'radiusTopLeft', self.__ui.radius[0])
-            self.__main_rect.setProperty(
-                'radiusTopRight', self.__ui.radius[1])
-            self.__main_rect.setProperty(
-                'radiusBottomRight', self.__ui.radius[2])
-            self.__main_rect.setProperty(
-                'radiusBottomLeft', self.__ui.radius[3])
-            self.__main_rect.setProperty('borderWidth', 1)
-            # self.__main_rect.setProperty('margins', 1)
-
-        self.__main_rect.findChild(QtCore.QObject, 'canvas').requestPaint()
+            self.__state_changed()
 
         for child in self.__elements:
             if not child.property('qmlType'):
@@ -169,7 +154,15 @@ class Handler(QtCore.QObject):
                 self.__main_rect.setProperty('radiusBottomRight', 0)
                 self.__main_rect.setProperty('radiusBottomLeft', 0)
                 self.__main_rect.setProperty('borderWidth', 0)
-                # self.__main_rect.setProperty('margins', 0)
+                
+                self.__main_rect.setProperty('borderWidth', 0)
+                self.__main_rect.setProperty('outLineWidth', 0)
+                self.__main_rect.setProperty('outLineColor',
+                    self.__ui.style[frame]['background_color'])
+                self.__main_rect.setProperty('borderColor',
+                    self.__ui.style[frame]['background_color'])
+                self.__main_rect.setProperty('color',
+                    self.__ui.style[frame]['background_color'])
             else:  # QtCore.Qt.WindowNoState
                 self.__main_rect.setProperty(
                     'radiusTopLeft', self.__ui.radius[0])
@@ -180,7 +173,13 @@ class Handler(QtCore.QObject):
                 self.__main_rect.setProperty(
                     'radiusBottomLeft', self.__ui.radius[3])
                 self.__main_rect.setProperty('borderWidth', 1)
-                # self.__main_rect.setProperty('margins', 1)
+                
+                self.__main_rect.setProperty('borderWidth', 1)
+                self.__main_rect.setProperty('outLineWidth', 1)
+                self.__main_rect.setProperty('outLineColor', '#44000000')
+                self.__main_rect.setProperty('borderColor',
+                    self.__ui.style[frame]['border_color'])
+                self.__main_rect.setProperty('color', "#00000000")
 
             self.__main_rect.findChild(QtCore.QObject, 'canvas').requestPaint()
 
