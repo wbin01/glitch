@@ -8,6 +8,26 @@ from ...enum.event import Event
 from ...platform_ import OSDesk, Icons
 
 
+qml = """
+Button {
+    id: button  // <id>
+    objectName: "button"  // <objectName>
+    property string qmlType: "Button"  // <className>
+    property string baseClass: "Element"  // <baseClass>
+    text: "<text>"
+    iconSource: <icon>
+    property int topMargin: 0
+    property int rightMargin: 0
+    property int bottomMargin: 0
+    property int leftMargin: 0
+    Layout.topMargin: topMargin
+    Layout.rightMargin: rightMargin
+    Layout.bottomMargin: bottomMargin
+    Layout.leftMargin: leftMargin
+}
+"""
+
+
 class Button(Element):
     """Button Element"""
     def __init__(
@@ -26,25 +46,9 @@ class Button(Element):
         self.__icon = self.__set_icon_path(icon)
 
         # Set
-        self._qml = (
-            '\nButton {'
-            '\n    id: button  // <id>'
-            '\n    objectName: "button"  // <objectName>'
-            '\n    property string qmlType: "Button"  // <className>'
-            '\n    property string baseClass: "Element"  // <baseClass>'
-            f'\n    text: "{self.__text}"'
-            f'\n    iconSource: {self.__icon}'
-            '\n    property int topMargin: 0'
-            '\n    property int rightMargin: 0'
-            '\n    property int bottomMargin: 0'
-            '\n    property int leftMargin: 0'
-            '\n    Layout.topMargin: topMargin'
-            '\n    Layout.rightMargin: rightMargin'
-            '\n    Layout.bottomMargin: bottomMargin'
-            '\n    Layout.leftMargin: leftMargin'
-            '\n}  // <suffix_id>\n')
-
-        self.id = '_' + str(id(self))
+        self._qml = qml.replace(
+            '<text>', self.__text).replace('<icon>', self.__icon)
+        self.id = f'_{id(self)}'
         self._element_name = 'Button'
         self.text = self.__text
         self.icon = icon

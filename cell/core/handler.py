@@ -124,7 +124,7 @@ class Handler(QtCore.QObject):
             QtCore.QTimer.singleShot(
                 300, lambda: self.__state_changed(QtCore.Qt.WindowFullScreen))
         else:
-            self.__state_changed()
+            self.__state_changed(QtCore.Qt.WindowNoState)
 
         for child in self.__elements:
             if not child.property('qmlType'):

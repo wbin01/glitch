@@ -25,92 +25,6 @@ class Element(object):
         return "<class 'Element'>"
 
 
-qml_bkp = """
-import QtQuick
-import QtQuick.Controls
-import QtQuick.Layouts
-import QtQuick.Shapes
-
-import "elements"
-
-
-Window {
-    id: frame  // <id>
-    objectName: "frame"  // <objectName>
-    property string qmlType: "Window"  // <className>
-    property string baseClass: "Frame"  // <baseClass>
-
-    visible: true
-    visibility: Window.Windowed
-    
-    height: _height
-    property int _height: 200
-    
-    width: _width
-    property int _width: 200
-
-    minimumWidth: 200
-    minimumHeight: 200
-    title: qsTr("Cell")
-    color: "transparent"
-    flags: Qt.FramelessWindowHint
-
-    MouseArea {
-        anchors.fill: parent
-        acceptedButtons: Qt.RightButton
-        onPressed: logic.connections()
-    }
-
-    Rectangle {
-        id: outerBorder
-        objectName: "outerBorder"
-        anchors.fill: parent
-        color: "transparent"
-        border.color: "#44000000"
-        border.width: 1
-        radius: 11
-        z: 0
-    }
-
-    Rectangle {
-        id: mainRect
-        objectName: "mainRect"
-        anchors.fill: parent
-        anchors.margins: margins
-        radius: 10
-        color: "#333"
-        border.color: borderColor
-        border.width: borderWidth
-        z: 1
-
-        property color borderColor: "#444"
-        property bool isActive: true
-        property int borderWidth: 1
-        property int margins: 1
-
-// MainFrame
-
-// Resize corners
-
-        ColumnLayout {
-            id: mainColumnLayout
-            objectName: "mainColumnLayout"
-            anchors.fill: parent
-            // anchors.top: parent.top
-            anchors.margins: 6
-            spacing: 6
-            clip: true
-            // Layout.fillHeight: false
-            Layout.alignment: Qt.AlignTop
-            Layout.fillWidth: true
-
-// **closing_key**
-
-        }
-    }
-}
-"""
-
 qml = """
 import QtQuick
 import QtQuick.Controls
@@ -397,26 +311,27 @@ class Frame(UI):
         """Sets the Frame radius.
 
         A tuple with the 4 radius values. The values are order: top-left, 
-        top-right, bottom-right and bottom-left respectively.
+        top-right, bottom-right and bottom-left respectively:
 
-        Get:
             (10, 10, 10, 10)
 
-        Set:
-            It is not mandatory to pass all the values, the last value will be 
-            used to fill in the missing ones:
+        It is not mandatory to pass all the values, the last value will be 
+        used to fill in the missing ones:
 
-            `radius = 5` is equivalent to `radius = 5, 5, 5, 5`
-            `radius = 5, 10` is equivalent to `radius = 5, 10, 10, 10`
+        `radius = 5` is equivalent to `radius = 5, 5, 5, 5`
+        `radius = 5, 10` is equivalent to `radius = 5, 10, 10, 10`
 
-            Use `None` for a value to be automatic. `None` indicates that the 
-            value is the same as before. Example:
+        Use `None` for a value to be automatic. `None` indicates that the 
+        value is the same as before. Example:
 
-                # Change top-left and bottom-right
-                `element.radius = 10, None, 10, None`
+            # Change top-left and bottom-right
+            `element.radius = 10, None, 10, None`
 
-                # Change top-right and bottom-left
-                `element.radius = None, 5, None, 5`
+            # Change top-right and bottom-left
+            `element.radius = None, 5, None, 5`
+
+        Warning: Only works as initialization (__init__), before the window is 
+        rendered!
         """
         return self.__radius
 
@@ -442,10 +357,23 @@ class Frame(UI):
         bottom_l = self.__radius[3] if bottom_l is None else bottom_l
 
         if self._obj:
+            # The code works, but is not desirable and has been disabled!
+            return
+
             self._obj.setProperty('radiusTopLeft', top_l)
             self._obj.setProperty('radiusTopRight', top_r)
             self._obj.setProperty('radiusBottomRight', bottom_r)
             self._obj.setProperty('radiusBottomLeft', bottom_l)
+
+            # TODO: Move to Application().processEvents()  works the right way
+            self._obj.findChild(QtCore.QObject, 'canvas').requestPaint()
+            frame = self.frame_state
+            self.frame_state = (FrameState.MAXIMIZED
+                if frame.name != 'MAXIMIZED' else FrameState.FULL_SCREEN)
+            def _frame_state_(frame):
+                self.frame_state = frame
+            QtCore.QTimer.singleShot(300, lambda: _frame_state_(frame))
+            
         else:
             self._qml = self._qml.replace(
                 f'property int radiusTopLeft: {self.__radius[0]}',

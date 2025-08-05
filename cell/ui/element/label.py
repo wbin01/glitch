@@ -2,6 +2,26 @@
 from ..base import Element
 
 
+qml = """
+Label {
+    id: label  // <id>
+    objectName: "label"  // <objectName>
+    property string qmlType: "Label"  // <className>
+    property string baseClass: "Element"  // <baseClass>
+    text: "<text>"
+    color: "#fff"
+    property int topMargin: 0
+    property int rightMargin: 0
+    property int bottomMargin: 0
+    property int leftMargin: 0
+    Layout.topMargin: topMargin
+    Layout.rightMargin: rightMargin
+    Layout.bottomMargin: bottomMargin
+    Layout.leftMargin: leftMargin
+}
+"""
+
+
 class Label(Element):
     """Label Element"""
     def __init__(
@@ -14,25 +34,8 @@ class Label(Element):
         self.__text = text
 
         # Set
-        self._qml = (
-            '\nLabel {'
-            '\n    id: label  // <id>'
-            '\n    objectName: "label"  // <objectName>'
-            '\n    property string qmlType: "Label"  // <className>'
-            '\n    property string baseClass: "Element"  // <baseClass>'
-            f'\n    text: "{self.__text}"'
-            '\n    color: "#fff"'
-            '\n    property int topMargin: 0'
-            '\n    property int rightMargin: 0'
-            '\n    property int bottomMargin: 0'
-            '\n    property int leftMargin: 0'
-            '\n    Layout.topMargin: topMargin'
-            '\n    Layout.rightMargin: rightMargin'
-            '\n    Layout.bottomMargin: bottomMargin'
-            '\n    Layout.leftMargin: leftMargin'
-            '\n}  // <suffix_id>\n')
-
-        # self.id = '_' + str(id(self))
+        self._qml = qml.replace('<text>', self.__text)
+        self.id = f'_{id(self)}'
         self._element_type = 'Label'
         self.text = self.__text
 
