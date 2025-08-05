@@ -48,11 +48,12 @@ class AppEventFilter(QtCore.QObject):
         # MainFrame state colors
         frame = f'[{self.__ui._element_type}{state}]'
         self.__main_rect.setProperty(
-            'color',
+            'backgroundColor', # 'color',
             self.__style[frame]['background_color'])
         self.__main_rect.setProperty(
             'borderColor',
             self.__style[frame]['border_color'])
+        self.__main_rect.findChild(QtCore.QObject, 'canvas').requestPaint()
 
         for element in self.__elements:  # element.metaObject().className()
             change_element_style_state(element, state, self.__style)

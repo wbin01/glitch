@@ -9,11 +9,11 @@ Popup {
     property string qmlType: "Panel"  // <className>
     property string baseClass: "Layout"  // <baseClass>
 
-    padding: 0
+    padding: 1 // Frame border
     width: 250
-    height: parent.height + 10 // Frame padding
-    x: - 5 // Half of the Frame padding
-    y: - 5
+    height: parent.height + 9 // Frame padding (10) - Popup padding (1) = 9
+    x: 0
+    y: - 4  // Half of the Frame padding - outer border
     modal: false
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
     clip: true
