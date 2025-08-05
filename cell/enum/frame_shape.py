@@ -2,7 +2,7 @@
 from enum import Enum
 
 
-class FrameState(Enum):
+class FrameShape(Enum):
     """Frame state enumeration."""
     # HIDDEN = 0 
     # AUTO = 1 
@@ -12,4 +12,4 @@ class FrameState(Enum):
     FULL_SCREEN = 5
 
     def __str__(self) -> str:
-        return "<class 'FrameState'>"
+        return "<class 'FrameShape'>"

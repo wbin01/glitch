@@ -2,7 +2,7 @@
 from PySide6 import QtCore
 
 from .ui import UI
-from ...enum import Event, FrameHint, FrameState, Orientation
+from ...enum import Event, FrameHint, FrameShape, Orientation
 from ...platform_ import Style
 
 
@@ -294,7 +294,7 @@ class Frame(UI):
         self.__spacing = 6
 
         self.__frame_hint = FrameHint.FRAME
-        self.__frame_state = FrameState.FRAME
+        self.__frame_state = FrameShape.FRAME
         self.__items = []
         self.__style = Style().style
         self.__visibility = 'Window.Windowed'
@@ -341,16 +341,16 @@ class Frame(UI):
         self.__frame_hint = frame_hint
 
     @property
-    def frame_state(self) -> FrameState:
+    def frame_state(self) -> FrameShape:
         """The state of the Frame.
 
-        A `FrameState` enum indicating whether the Frame is maximized, 
+        A `FrameShape` enum indicating whether the Frame is maximized, 
         minimized, full screen, in a normal frame or  hidden.
         """
         return self.__frame_state
 
     @frame_state.setter
-    def frame_state(self, frame_state: FrameState = FrameState.FRAME) -> None:
+    def frame_state(self, frame_state: FrameShape = FrameShape.FRAME) -> None:
         # Window.AutomaticVisibility  1     system default (normally Windowed)
         frame_state_value = {
             0: 'Window.Hidden', 1: 'Window.AutomaticVisibility',
@@ -415,8 +415,8 @@ class Frame(UI):
             # Change top-right and bottom-left
             `element.radius = None, 5, None, 5`
 
-        Warning: Only works as initialization (__init__), before the window is 
-        rendered!
+        Note! Only works as initialization (__init__), before the window is 
+        rendered.
         """
         return self.__radius
 
@@ -453,8 +453,8 @@ class Frame(UI):
             # TODO: Move to Application().processEvents()  works the right way
             self._obj.findChild(QtCore.QObject, 'canvas').requestPaint()
             frame = self.frame_state
-            self.frame_state = (FrameState.MAXIMIZED
-                if frame.name != 'MAXIMIZED' else FrameState.FULL_SCREEN)
+            self.frame_state = (FrameShape.MAXIMIZED
+                if frame.name != 'MAXIMIZED' else FrameShape.FULL_SCREEN)
             def _frame_state_(frame):
                 self.frame_state = frame
             QtCore.QTimer.singleShot(300, lambda: _frame_state_(frame))

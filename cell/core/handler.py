@@ -2,7 +2,7 @@
 from PySide6 import QtCore, QtQuick
 
 from .application_shares import change_element_style_state
-from ..enum import Event, FrameState
+from ..enum import Event
 from ..ui.base import Element, Frame, Layout
 from ..ui.frame import MainFrame
 

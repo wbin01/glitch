@@ -243,12 +243,15 @@ class Panel(Layout):
             `element.radius = None, 5, None, 5`
 
         Match the Frame corners for greater precision:
-        
+
             # Align.LEFT is default
             self.my_panel.radius = self.radius[0], 0, 0, self.radius[3]
 
-        Warning: Only works as initialization (__init__), before the window is 
-        rendered!
+            # Align.RIGHT
+            self.my_panel.radius = 0, self.radius[1], self.radius[2], 0
+
+        Note! Only works as initialization (__init__), before the window is 
+        rendered.
         """
         return self.__radius
 
@@ -320,24 +323,27 @@ class Panel(Layout):
 
         By default, the Panel is not visible; this "open()" method is used 
         to display it.
+
+        Note! Does not work at initialization (__init__), before the window is 
+        rendered. Use it in a method.
         """
         if not self._obj: # or self._obj.property('visible'):
+            # TODO: Init open
             return
 
         if not self.__connect_close:
             self._obj.closed.connect(self.close)
             self.__connect_close = True
 
-        # main_rect = self._obj.findChild(QtCore.QObject, 'mainRect')
         parent_w = self._obj.property('parentWidth')
         parent_h = self._obj.property('parentHeight')
-        width = self._obj.property('width')
+        size = self._obj.property('width')
 
         start_value = - self._obj.property('width')  # default is -250
         end_value = - 5  # Frame padding half | 10
         if self.__align.name == 'RIGHT':
             start_value = parent_w
-            end_value = parent_w - width - 5
+            end_value = parent_w - size - 5
 
         slide_in = QtCore.QPropertyAnimation(self._obj, b"x")
         slide_in.setDuration(300)

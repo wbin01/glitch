@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # from cell import *
 from cell.core import Application, Signal
-from cell.enum import Align, Event, FrameState, FrameHint
+from cell.enum import Align, Event, FrameShape, FrameHint
 
 # from cell.ui import MainFrame, Frame, Column, Row, Scroll, Button, Label
 from cell.ui.element import Button, Label
@@ -27,23 +27,26 @@ class View(MainFrame):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         # Set
-        self.radius = 10, 10, 0
-        self.context = self.add(Panel(Align.RIGHT))
-        # self.context.align = Align.BOTTOM
-        self.context.radius = self.radius[0], 0, 0, self.radius[3]
-        
-        self.context_column = self.context.add(Column())
-        self.context_column.margins = 10
-        self.context_button = self.context_column.add(Button('Hello'))
-        self.connect(lambda: self.context.open(), Event.MOUSE_RIGHT_PRESS)
+        # self.radius = 10, 10, 0
+        self.panel_side = 'left'
+        self.panel_l = self.add(Panel())
+        # self.panel_l.radius = self.radius[0], 0, 0, self.radius[3]
 
-        # self.frame_state = FrameState.MAXIMIZED  # FrameState.FULL_SCREEN
+        self.panel = self.add(Panel(Align.RIGHT))
+        self.panel.radius = 0, self.radius[1], self.radius[2], 0
+        
+        self.panel_column = self.panel.add(Column())
+        self.panel_column.margins = 10
+        self.panel_button = self.panel_column.add(Button('Hello'))
+        self.connect(lambda: self.panel.open(), Event.MOUSE_RIGHT_PRESS)
+
+        # self.frame_state = FrameShape.MAXIMIZED  # FrameShape.FULL_SCREEN
         # self.spacing = 0
         self.height = 400
         self.width = 400
         
         # Elements
-        self.label = self.add(Label('Hello'))
+        self.label = self.add(Label('Panel slides from left'))
         self.label.margins = None, None, None, 100
 
         self.button = self.add(Button('Button', 'document-save'))
@@ -76,18 +79,27 @@ class View(MainFrame):
 
     def on_custom_clicked(self):
         self.custom_num += 1
-        self.label.text = f'Custom Element Button clicked {self.custom_num}'
+
+        if self.panel_side == 'right':
+            self.panel_side = 'left'
+            self.label.text = 'Panel slides from left'
+        else:
+            self.panel_side = 'right'
+            self.label.text = 'Panel slides from right'
 
     def on_button(self):
         self.num += 1
         self.label.text = f'Button press: {self.num}'
         self.label.margins = None, None, None, 0
-        self.context.open()
+        if self.panel_side == 'right':
+            self.panel.open()
+        else:
+            self.panel_l.open()
 
     def on_scroll_buttons(self, num):
         if getattr(self, f'button_{num}').is_mouse_hover():
             self.label.text = f'Button press: {num}'
-            # self.frame_state = FrameState.FRAME
+            # self.frame_state = FrameShape.FRAME
 
 
 if __name__ == '__main__':
