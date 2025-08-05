@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # from cell import *
 from cell.core import Application, Signal
-from cell.enum import Event, FrameState, FrameHint
+from cell.enum import Align, Event, FrameState, FrameHint
 
 # from cell.ui import MainFrame, Frame, Column, Row, Scroll, Button, Label
 from cell.ui.element import Button, Label
@@ -28,7 +28,8 @@ class View(MainFrame):
         super().__init__(*args, **kwargs)
         # Set
         self.radius = 10, 10, 0
-        self.context = self.add(Panel())
+        self.context = self.add(Panel(Align.RIGHT))
+        # self.context.align = Align.BOTTOM
         self.context.radius = self.radius[0], 0, 0, self.radius[3]
         
         self.context_column = self.context.add(Column())

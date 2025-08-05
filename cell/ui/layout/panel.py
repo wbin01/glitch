@@ -2,6 +2,7 @@
 from PySide6 import QtCore
 
 from ..base import Layout
+from ...enum import Align
 
 
 qml = """
@@ -91,6 +92,9 @@ Popup {
 
     transformOrigin: Item.Left
 
+    property int parentHeight: parent.height + 9
+    property int parentWidth: parent.width + 9
+
     property color backgroundColor: "#222"
     property color borderColor: "#222"
     property int borderWidth: 1
@@ -111,15 +115,7 @@ Popup {
     Canvas {
         id: canvas_panel
         objectName: "canvas_panel"
-
         anchors.fill: parent
-
-        // Connections {
-        //     target: panel
-        //     function onBackgroundColorChanged() { canv.requestPaint() }
-        //     function onBorderColorChanged() { canv.requestPaint() }
-        //     function onBorderWidthChanged() { canv.requestPaint() }
-        // }
 
         onPaint: {
             var ctx = getContext("2d");
@@ -174,12 +170,16 @@ class Panel(Layout):
 
     Opens and closes to display content.
     """
-    def __init__(self, *args, **kwargs) -> None:
+    def __init__(self, align: Align = Align.LEFT, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
+        self.__align = align
+        self.__origin = 'Item.Left'
+
         self.id = f'_{id(self)}'
         self._element_type = 'Panel'
         self._qml = qml.replace(
             'canvas_panel', f'canvas{self.id}').replace('panel', self.id)
+        self.align = align
 
         self.__show_anim = QtCore.QParallelAnimationGroup()
         # self.__hide_anim = QtCore.QParallelAnimationGroup()
@@ -187,6 +187,36 @@ class Panel(Layout):
         self.__connect_close = False
 
         self.__radius = 10, 0, 0, 10
+
+    def __get_origin(self) -> str:
+        # transform_origin QML string
+        if self.__align.name == 'RIGHT':
+            return 'Item.Right'
+        # elif self.__align.name.startswith('BOTTOM'):
+        #     return 'Item.Bottom'
+        # elif self.__align.name.startswith('TOP'):
+            return 'Item.Top'
+        return 'Item.Left'
+
+    @property
+    def align(self) -> Align:
+        """The Panel Align alignment.
+
+        Whether the panel slides in from the right or left.
+        Use Align.LEFT or Align.RIGHT to set the panel's direction.
+        """
+        return self.__align
+
+    @align.setter
+    def align(self, align: Align) -> None:
+        self.__align = align
+
+        new_origin = self.__get_origin()
+        self._qml = self._qml.replace(
+            f'transformOrigin: {self.__origin}',
+            f'transformOrigin: {new_origin}')
+
+        self.__origin = new_origin
 
     @property
     def radius(self) -> tuple:
@@ -211,6 +241,11 @@ class Panel(Layout):
 
             # Change top-right and bottom-left
             `element.radius = None, 5, None, 5`
+
+        Match the Frame corners for greater precision:
+        
+            # Align.LEFT is default
+            self.my_panel.radius = self.radius[0], 0, 0, self.radius[3]
 
         Warning: Only works as initialization (__init__), before the window is 
         rendered!
@@ -241,7 +276,7 @@ class Panel(Layout):
         if self._obj:
             # The code works, but is not desirable and has been disabled!
             return
-            
+
             self._obj.setProperty('radiusTopLeft', top_l)
             self._obj.setProperty('radiusTopRight', top_r)
             self._obj.setProperty('radiusBottomRight', bottom_r)
@@ -293,10 +328,21 @@ class Panel(Layout):
             self._obj.closed.connect(self.close)
             self.__connect_close = True
 
+        # main_rect = self._obj.findChild(QtCore.QObject, 'mainRect')
+        parent_w = self._obj.property('parentWidth')
+        parent_h = self._obj.property('parentHeight')
+        width = self._obj.property('width')
+
+        start_value = - self._obj.property('width')  # default is -250
+        end_value = - 5  # Frame padding half | 10
+        if self.__align.name == 'RIGHT':
+            start_value = parent_w
+            end_value = parent_w - width - 5
+
         slide_in = QtCore.QPropertyAnimation(self._obj, b"x")
         slide_in.setDuration(300)
-        slide_in.setStartValue(-250)
-        slide_in.setEndValue(-5)
+        slide_in.setStartValue(start_value)
+        slide_in.setEndValue(end_value)
         slide_in.setEasingCurve(QtCore.QEasingCurve.OutCubic)
         fade_in = QtCore.QPropertyAnimation(self._obj, b"opacity")
         fade_in.setDuration(300)
