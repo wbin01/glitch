@@ -40,7 +40,7 @@ class View(MainFrame):
         self.panel_button = self.panel_column.add(Button('Hello'))
         self.connect(lambda: self.panel.open(), Event.MOUSE_RIGHT_PRESS)
 
-        # self.frame_state = FrameShape.MAXIMIZED  # FrameShape.FULL_SCREEN
+        self.shape = FrameShape.MAXIMIZED  # FrameShape.FULL_SCREEN
         # self.spacing = 0
         self.height = 400
         self.width = 400
@@ -99,7 +99,7 @@ class View(MainFrame):
     def on_scroll_buttons(self, num):
         if getattr(self, f'button_{num}').is_mouse_hover():
             self.label.text = f'Button press: {num}'
-            # self.frame_state = FrameShape.FRAME
+            # self.shape = FrameShape.FRAME
 
 
 if __name__ == '__main__':

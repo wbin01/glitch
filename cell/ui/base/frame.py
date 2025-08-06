@@ -294,7 +294,7 @@ class Frame(UI):
         self.__spacing = 6
 
         self.__frame_hint = FrameHint.FRAME
-        self.__frame_state = FrameShape.FRAME
+        self.__shape = FrameShape.FRAME
         self.__items = []
         self.__style = Style().style
         self.__visibility = 'Window.Windowed'
@@ -341,31 +341,31 @@ class Frame(UI):
         self.__frame_hint = frame_hint
 
     @property
-    def frame_state(self) -> FrameShape:
+    def shape(self) -> FrameShape:
         """The state of the Frame.
 
         A `FrameShape` enum indicating whether the Frame is maximized, 
         minimized, full screen, in a normal frame or  hidden.
         """
-        return self.__frame_state
+        return self.__shape
 
-    @frame_state.setter
-    def frame_state(self, frame_state: FrameShape = FrameShape.FRAME) -> None:
+    @shape.setter
+    def shape(self, shape: FrameShape = FrameShape.FRAME) -> None:
         # Window.AutomaticVisibility  1     system default (normally Windowed)
-        frame_state_value = {
+        shape_value = {
             0: 'Window.Hidden', 1: 'Window.AutomaticVisibility',
             2: 'Window.Windowed', 3: 'Window.Minimized',
             4: 'Window.Maximized', 5: 'Window.FullScreen'}
-        visibility = frame_state_value[frame_state.value]
+        visibility = shape_value[shape.value]
 
         if self._obj:
-            if frame_state.value == 2:
+            if shape.value == 2:
                 self._obj.showNormal()
-            elif frame_state.value == 4:
+            elif shape.value == 4:
                 self._obj.showMaximized()
-            elif frame_state.value == 3:
+            elif shape.value == 3:
                 self._obj.showMinimized()
-            elif frame_state.value == 5:
+            elif shape.value == 5:
                 self._obj.showFullScreen()
         else:
             self._qml = self._qml.replace(
@@ -373,7 +373,7 @@ class Frame(UI):
                 f'visibility: {visibility}')
 
         self.__visibility = visibility
-        self.__frame_state = frame_state
+        self.__shape = shape
 
     @property
     def height(self) -> int:
@@ -452,12 +452,12 @@ class Frame(UI):
 
             # TODO: Move to Application().processEvents()  works the right way
             self._obj.findChild(QtCore.QObject, 'canvas').requestPaint()
-            frame = self.frame_state
-            self.frame_state = (FrameShape.MAXIMIZED
-                if frame.name != 'MAXIMIZED' else FrameShape.FULL_SCREEN)
-            def _frame_state_(frame):
-                self.frame_state = frame
-            QtCore.QTimer.singleShot(300, lambda: _frame_state_(frame))
+            shape = self.shape
+            self.shape = (FrameShape.MAXIMIZED
+                if shape.name != 'MAXIMIZED' else FrameShape.FULL_SCREEN)
+            def _shape_(shape):
+                self.shape = shape
+            QtCore.QTimer.singleShot(300, lambda: _shape_(shape))
             
         else:
             self._qml = self._qml.replace(

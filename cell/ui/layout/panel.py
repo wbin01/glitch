@@ -277,22 +277,13 @@ class Panel(Layout):
         bottom_l = self.__radius[3] if bottom_l is None else bottom_l
 
         if self._obj:
-            # The code works, but is not desirable and has been disabled!
             return
-
+            # TODO: Move to Application().processEvents()  works the right way
             self._obj.setProperty('radiusTopLeft', top_l)
             self._obj.setProperty('radiusTopRight', top_r)
             self._obj.setProperty('radiusBottomRight', bottom_r)
             self._obj.setProperty('radiusBottomLeft', bottom_l)
-
-            # TODO: Move to Application().processEvents()  works the right way
             self._obj.findChild(QtCore.QObject, 'canvas').requestPaint()
-            frame = self.frame_state
-            self.frame_state = (FrameState.MAXIMIZED
-                if frame.name != 'MAXIMIZED' else FrameState.FULL_SCREEN)
-            def _frame_state_(frame):
-                self.frame_state = frame
-            QtCore.QTimer.singleShot(300, lambda: _frame_state_(frame))
             
         else:
             self._qml = self._qml.replace(
@@ -343,7 +334,7 @@ class Panel(Layout):
         end_value = - 5  # Frame padding half | 10
         if self.__align.name == 'RIGHT':
             start_value = parent_w
-            end_value = parent_w - size - 5
+            end_value = parent_w - size - 4
 
         slide_in = QtCore.QPropertyAnimation(self._obj, b"x")
         slide_in.setDuration(300)

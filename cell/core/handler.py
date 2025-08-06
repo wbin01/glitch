@@ -119,8 +119,8 @@ class Handler(QtCore.QObject):
     @QtCore.Slot()
     def __init_state_style(self) -> None:
         # Style of the elements and the Frame in each state.
-        if (self.__ui.frame_state.name == 'MAXIMIZED' or
-                self.__ui.frame_state.name == 'FULL_SCREEN'):
+        if (self.__ui.shape.name == 'MAXIMIZED' or
+                self.__ui.shape.name == 'FULL_SCREEN'):
             QtCore.QTimer.singleShot(
                 300, lambda: self.__state_changed(QtCore.Qt.WindowFullScreen))
         else:
