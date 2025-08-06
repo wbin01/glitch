@@ -28,6 +28,8 @@ class View(MainFrame):
         super().__init__(*args, **kwargs)
         # Set
         # self.radius = 10, 10, 0
+        # self.hint = FrameHint.TOP
+        
         self.panel_side = 'left'
         self.panel_l = self.add(Panel())
         # self.panel_l.radius = self.radius[0], 0, 0, self.radius[3]
@@ -40,7 +42,7 @@ class View(MainFrame):
         self.panel_button = self.panel_column.add(Button('Hello'))
         self.connect(lambda: self.panel.open(), Event.MOUSE_RIGHT_PRESS)
 
-        self.shape = FrameShape.MAXIMIZED  # FrameShape.FULL_SCREEN
+        # self.shape = FrameShape.MAXIMIZED  # FrameShape.FULL_SCREEN
         # self.spacing = 0
         self.height = 400
         self.width = 400

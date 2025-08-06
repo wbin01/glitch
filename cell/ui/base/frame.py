@@ -293,7 +293,7 @@ class Frame(UI):
         self.__width = 200
         self.__spacing = 6
 
-        self.__frame_hint = FrameHint.FRAME
+        self.__hint = FrameHint.FRAME
         self.__shape = FrameShape.FRAME
         self.__items = []
         self.__style = Style().style
@@ -302,7 +302,7 @@ class Frame(UI):
         self.__radius = 10, 10, 10, 10
 
     @property
-    def frame_hint(self) -> FrameHint:
+    def hint(self) -> FrameHint:
         """Frame behavior hint.
 
         FrameHint.BOTTOM → Always behind.
@@ -316,14 +316,17 @@ class Frame(UI):
 
         Use the `name` property to know which `FrameHint` it is.
         
-        >>> self.frame_hint = FrameHint.FRAME
-        >>> print(self.frame_hint.name)
+        >>> self.hint = FrameHint.FRAME
+        >>> print(self.hint.name)
         FRAME
-        """
-        return self.__frame_hint
 
-    @frame_hint.setter
-    def frame_hint(self, frame_hint: FrameHint) -> None:
+        Note! On Linux it doesn't work on the Wayland display server, only on 
+        the Xorg or those based on it.
+        """
+        return self.__hint
+
+    @hint.setter
+    def hint(self, hint: FrameHint) -> None:
         hints = {
             'BOTTOM': 'Qt.FramelessWindowHint | Qt.WindowStaysOnBottomHint',
             'FRAME': 'Qt.FramelessWindowHint',
@@ -332,13 +335,13 @@ class Frame(UI):
             'TOP': 'Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint'}
 
         if self._obj:
-            self._obj.setProperty('flags', int(frame_hint.value))
+            self._obj.setProperty('flags', int(hint.value))
         else:
             self._qml = self._qml.replace(
-                f'flags: {hints[self.__frame_hint.name]}',
-                f'flags: {hints[frame_hint.name]}')
+                f'flags: {hints[self.__hint.name]}',
+                f'flags: {hints[hint.name]}')
 
-        self.__frame_hint = frame_hint
+        self.__hint = hint
 
     @property
     def shape(self) -> FrameShape:
