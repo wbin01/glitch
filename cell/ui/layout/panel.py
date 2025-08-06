@@ -262,8 +262,14 @@ class Panel(Layout):
                 return
             radius = int(radius)
 
+        if not isinstance(radius, int) and not isinstance(radius, tuple):
+            return
+
         if isinstance(radius, int):
             top_l, top_r, bottom_r, bottom_l = radius, radius, radius, radius
+        elif len(radius) == 1:
+            top_l, top_r, bottom_r, bottom_l = (
+                radius[0], radius[0], radius[0], radius[0])
         elif len(radius) == 2:
             top_l, top_r, bottom_r, bottom_l = radius + (radius[1], radius[1])
         elif len(radius) == 3:

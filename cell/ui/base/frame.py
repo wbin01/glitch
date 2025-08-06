@@ -291,6 +291,7 @@ class Frame(UI):
 
         self.__height = 200
         self.__width = 200
+        self.__size = self.__width, self.__height
         self.__spacing = 6
 
         self.__hint = FrameHint.FRAME
@@ -344,57 +345,6 @@ class Frame(UI):
         self.__hint = hint
 
     @property
-    def shape(self) -> FrameShape:
-        """The state of the Frame.
-
-        A `FrameShape` enum indicating whether the Frame is maximized, 
-        minimized, full screen, in a normal frame or  hidden.
-        """
-        return self.__shape
-
-    @shape.setter
-    def shape(self, shape: FrameShape = FrameShape.FRAME) -> None:
-        # Window.AutomaticVisibility  1     system default (normally Windowed)
-        shape_value = {
-            0: 'Window.Hidden', 1: 'Window.AutomaticVisibility',
-            2: 'Window.Windowed', 3: 'Window.Minimized',
-            4: 'Window.Maximized', 5: 'Window.FullScreen'}
-        visibility = shape_value[shape.value]
-
-        if self._obj:
-            if shape.value == 2:
-                self._obj.showNormal()
-            elif shape.value == 4:
-                self._obj.showMaximized()
-            elif shape.value == 3:
-                self._obj.showMinimized()
-            elif shape.value == 5:
-                self._obj.showFullScreen()
-        else:
-            self._qml = self._qml.replace(
-                f'visibility: {self.__visibility}',
-                f'visibility: {visibility}')
-
-        self.__visibility = visibility
-        self.__shape = shape
-
-    @property
-    def height(self) -> int:
-        """Frame Height."""
-        return self.__height
-
-    @height.setter
-    def height(self, height: int) -> None:
-        if self._obj:
-            self._obj.setProperty('_height', height)
-        else:
-            self._qml = self._qml.replace(
-                f'_height: {self.__height}',
-                f'_height: {height}')
-
-        self.__height = height
-
-    @property
     def radius(self) -> tuple:
         """Sets the Frame radius.
 
@@ -430,8 +380,14 @@ class Frame(UI):
                 return
             radius = int(radius)
 
+        if not isinstance(radius, int) and not isinstance(radius, tuple):
+            return
+
         if isinstance(radius, int):
             top_l, top_r, bottom_r, bottom_l = radius, radius, radius, radius
+        elif len(radius) == 1:
+            top_l, top_r, bottom_r, bottom_l = (
+                radius[0], radius[0], radius[0], radius[0])
         elif len(radius) == 2:
             top_l, top_r, bottom_r, bottom_l = radius + (radius[1], radius[1])
         elif len(radius) == 3:
@@ -479,6 +435,78 @@ class Frame(UI):
         self.__radius = top_l, top_r, bottom_r, bottom_l
 
     @property
+    def shape(self) -> FrameShape:
+        """The Frame shape.
+
+        A `FrameShape` enumeration that indicates whether the Frame shape is 
+        maximized, minimized, full screen, or a normal Frame shape.
+        """
+        return self.__shape
+
+    @shape.setter
+    def shape(self, shape: FrameShape = FrameShape.FRAME) -> None:
+        # Window.AutomaticVisibility  1     system default (normally Windowed)
+        shape_value = {
+            0: 'Window.Hidden', 1: 'Window.AutomaticVisibility',
+            2: 'Window.Windowed', 3: 'Window.Minimized',
+            4: 'Window.Maximized', 5: 'Window.FullScreen'}
+        visibility = shape_value[shape.value]
+
+        if self._obj:
+            if shape.value == 2:
+                self._obj.showNormal()
+            elif shape.value == 4:
+                self._obj.showMaximized()
+            elif shape.value == 3:
+                self._obj.showMinimized()
+            elif shape.value == 5:
+                self._obj.showFullScreen()
+        else:
+            self._qml = self._qml.replace(
+                f'visibility: {self.__visibility}',
+                f'visibility: {visibility}')
+
+        self.__visibility = visibility
+        self.__shape = shape
+
+    @property
+    def size(self) -> tuple:
+        """..."""
+        return self.__size
+
+    @size.setter
+    def size(self, size: tuple) -> None:
+        if isinstance(size, str):
+            if not size.isdigit():
+                return
+            size = int(size)
+
+        if not isinstance(size, int) and not isinstance(size, tuple):
+            return
+
+        if isinstance(size, int):
+            width, height = size, size
+        elif len(size) == 1:
+            width, height = size[0], size[0]
+        elif len(size) >= 2:
+            width, height = size[:2]
+
+        width = self.__size[0] if width is None else width
+        height = self.__size[1] if height is None else height
+
+        if self._obj:
+            self._obj.setProperty('_width', width)
+            self._obj.setProperty('_height', height)
+        else:
+            self._qml = self._qml.replace(
+                f'_width: {self.__width}', f'_width: {width}').replace(
+                f'_height: {self.__height}', f'_height: {height}')
+
+        self.__width = width
+        self.__height = height
+        self.__size = width, height
+
+    @property
     def spacing(self) -> int:
         """Spacing Between Elements.
 
@@ -511,22 +539,6 @@ class Frame(UI):
     @style.setter
     def style(self, style: dict) -> None:
         self.__style = style
-
-    @property
-    def width(self) -> int:
-        """Frame Width."""
-        return self.__width
-
-    @width.setter
-    def width(self, width: int) -> None:
-        if self._obj:
-            self._obj.setProperty('_width', width)
-        else:
-            self._qml = self._qml.replace(
-                f'_width: {self.__width}',
-                f'_width: {width}')
-
-        self.__width = width
 
     def add(self, obj: Layout | Element) -> Layout | Element:
         """Add items.

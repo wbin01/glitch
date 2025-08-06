@@ -125,8 +125,14 @@ class Layout(UI):
                 return
             margins = int(margins)
 
+        if not isinstance(margins, int) and not isinstance(margins, tuple):
+            return
+
         if isinstance(margins, int):
             top, right, bottom, left = margins, margins, margins, margins
+        elif len(margins) == 1:
+            top, right, bottom, left = (
+                margins[0], margins[0], margins[0], margins[0])
         elif len(margins) == 2:
             top, right, bottom, left = margins + (margins[1], margins[1])
         elif len(margins) == 3:

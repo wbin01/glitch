@@ -27,12 +27,12 @@ class View(MainFrame):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         # Set
-        # self.radius = 10, 10, 0
+        # self.radius = 30
         # self.hint = FrameHint.TOP
-        
+
         self.panel_side = 'left'
         self.panel_l = self.add(Panel())
-        # self.panel_l.radius = self.radius[0], 0, 0, self.radius[3]
+        self.panel_l.radius = self.radius[0], 0, 0, self.radius[3]
 
         self.panel = self.add(Panel(Align.RIGHT))
         self.panel.radius = 0, self.radius[1], self.radius[2], 0
@@ -44,8 +44,7 @@ class View(MainFrame):
 
         # self.shape = FrameShape.MAXIMIZED  # FrameShape.FULL_SCREEN
         # self.spacing = 0
-        self.height = 400
-        self.width = 400
+        self.size = 400, 400
         
         # Elements
         self.label = self.add(Label('Panel slides from left'))
