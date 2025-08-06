@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+import logging
+
 from PySide6 import QtCore
 
 from .ui import UI
@@ -120,12 +122,10 @@ class Layout(UI):
 
     @margins.setter
     def margins(self, margins: tuple) -> None:
-        if isinstance(margins, str):
-            if not margins.isdigit():
-                return
-            margins = int(margins)
-
         if not isinstance(margins, int) and not isinstance(margins, tuple):
+            logging.error(
+                f'\n  {self._element_type}.margins: Use a tuple of integers '
+                'like (10, 10, 10, 10) or an integer like 10.')
             return
 
         if isinstance(margins, int):

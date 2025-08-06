@@ -44,7 +44,7 @@ class View(MainFrame):
 
         # self.shape = FrameShape.MAXIMIZED  # FrameShape.FULL_SCREEN
         # self.spacing = 0
-        self.size = 400, 400
+        self.size = 400
         
         # Elements
         self.label = self.add(Label('Panel slides from left'))

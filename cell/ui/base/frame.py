@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+import logging
+
 from PySide6 import QtCore
 
 from .ui import UI
@@ -375,12 +377,10 @@ class Frame(UI):
 
     @radius.setter
     def radius(self, radius: tuple) -> None:
-        if isinstance(radius, str):
-            if not radius.isdigit():
-                return
-            radius = int(radius)
-
         if not isinstance(radius, int) and not isinstance(radius, tuple):
+            logging.error(
+                f'\n  {self._element_type}.radius: Use a tuple of integers '
+                'like (10, 10, 10, 10) or an integer like 10.')
             return
 
         if isinstance(radius, int):
@@ -471,17 +471,18 @@ class Frame(UI):
 
     @property
     def size(self) -> tuple:
-        """..."""
+        """Frame width and height.
+
+        Tuple like (500, 500).
+        """
         return self.__size
 
     @size.setter
     def size(self, size: tuple) -> None:
-        if isinstance(size, str):
-            if not size.isdigit():
-                return
-            size = int(size)
-
         if not isinstance(size, int) and not isinstance(size, tuple):
+            logging.error(
+                f'\n  {self._element_type}.size: Use a tuple of integers like '
+                '(600, 400) or an integer like 500.')
             return
 
         if isinstance(size, int):

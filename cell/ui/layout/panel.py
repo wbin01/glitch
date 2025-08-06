@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+import logging
+
 from PySide6 import QtCore
 
 from ..base import Layout
@@ -257,12 +259,10 @@ class Panel(Layout):
 
     @radius.setter
     def radius(self, radius: tuple) -> None:
-        if isinstance(radius, str):
-            if not radius.isdigit():
-                return
-            radius = int(radius)
-
         if not isinstance(radius, int) and not isinstance(radius, tuple):
+            logging.error(
+                f'\n  {self._element_type}.radius: Use a tuple of integers '
+                'like (10, 10, 10, 10) or an integer like 10.')
             return
 
         if isinstance(radius, int):
