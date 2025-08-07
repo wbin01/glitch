@@ -8,33 +8,6 @@ from ...enum.event import Event
 from ...platform_ import OSDesk, Icons
 
 
-qmlbkp = """
-Button {
-    id: button  // <id>
-    objectName: "button"  // <objectName>
-    property string qmlType: "Button"  // <className>
-    property string baseClass: "Element"  // <baseClass>
-    text: "<text>"
-    iconSource: <icon>
-    property int topMargin: 0
-    property int rightMargin: 0
-    property int bottomMargin: 0
-    property int leftMargin: 0
-    Layout.topMargin: topMargin
-    Layout.rightMargin: rightMargin
-    Layout.bottomMargin: bottomMargin
-    Layout.leftMargin: leftMargin
-
-    Layout.fillHeight: false
-    Layout.preferredHeight: _height
-    property int _height: 30
-    
-    Layout.fillWidth: true
-    Layout.preferredWidth: _width
-    property int _width: 100
-}
-"""
-
 header = """
 Button {
     id: button  // <id>
@@ -46,7 +19,6 @@ Button {
 properties = """
     text: "<text>"
     iconSource: <icon>
-    // <property>
 """
 
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # from glitch import *
 from glitch.core import Application, Signal
-from glitch.enum import Align, Event, FrameShape, FrameHint
+from glitch.enum import Align, Event, FrameShape, FrameHint, Size
 
 # from glitch.ui import MainFrame, Frame, Column, Row, Scroll, Button, Label
 from glitch.ui.element import Button, Label
@@ -52,7 +52,11 @@ class View(MainFrame):
 
         self.button = self.add(Button('Button X', 'document-save'))
         self.button.connect(self.on_button)
-        self.button.size = 100, 50
+
+        self.button.size = Size.AUTO, 50
+        self.button.size = 300, Size.AUTO
+        self.button.size = Size.AUTO, Size.AUTO
+        # self.button.size = Size.FILL, Size.AUTO
 
         self.scroll = self.add(Scroll())
         self.scroll_column = self.scroll.add(Column())

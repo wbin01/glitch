@@ -1,34 +1,8 @@
 #!/usr/bin/env python3
 import logging
 
+from ...enum import Size
 from .ui import UI
-
-
-qml = """
-    // property string baseClass: "Element"  // <baseClass>
-    // height: 30
-    // width: 100
-
-    property int topMargin: 0
-    property int rightMargin: 0
-    property int bottomMargin: 0
-    property int leftMargin: 0
-    Layout.topMargin: topMargin
-    Layout.rightMargin: rightMargin
-    Layout.bottomMargin: bottomMargin
-    Layout.leftMargin: leftMargin
-    hoverEnabled: true
-
-    Layout.fillHeight: false
-    Layout.preferredHeight: _height
-    property int _height: 30
-
-    Layout.fillWidth: false
-    Layout.preferredWidth: _width
-    property int _width: 100
-
-    // <property>
-"""
 
 
 class Element(UI):
@@ -39,14 +13,15 @@ class Element(UI):
     """
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
-        # self._qml = self._qml.replace('\n    // <property>', qml)
         self._element_type = 'Element'
-
-        self.__margins = 0, 0, 0, 0
-
+        
+        self.__fill_height = False
+        self.__fill_width = True
         self.__height = 30
         self.__width = 100
         self.__size = self.__width, self.__height
+        
+        self.__margins = 0, 0, 0, 0        
 
     @property
     def margins(self) -> tuple:
@@ -141,26 +116,42 @@ class Element(UI):
         elif len(size) >= 2:
             width, height = size[:2]
 
-        width = self.__size[0] if width is None else width
-        height = self.__size[1] if height is None else height
+        enum_w = width if isinstance(width, Size) else False
+        enum_h = height if isinstance(height, Size) else False
+        width = self.__size[0] if not isinstance(width, int) else width
+        height = self.__size[1] if not isinstance(height, int) else height
 
         if self._obj:
             # self._obj.setProperty('_width', width)
             # self._obj.setProperty('_height', height)
             pass
         else:
-            # Layout.preferredHeight: 30
-            if 'property bool fillWidth: true' in self._qml:
-                self._qml = self._qml.replace(
-                    'property bool fillWidth: true', 'property bool fillWidth: false')
-
-            self._qml = self._qml.replace(
-                f'_width: {self.__width}', f'_width: {width}').replace(
-                f'_height: {self.__height}', f'_height: {height}')
+            self.__set_size(enum_w, 'width', width)
+            self.__set_size(enum_h, 'height', height)
 
         self.__width = width
         self.__height = height
         self.__size = width, height
+
+    def __set_size(
+            self, enum: Size, width_height: 'width', value: int) -> None:
+        fill = 'fillWidth' if width_height == 'width' else 'fillHeight'
+        w_h = f'_{width_height}'
+        new_value = value
+        last_value = self.__width if width_height == 'width' else self.__height
+
+        if enum:
+            if enum.value == 'FILL':
+                self._qml = self._qml.replace(
+                    f'{fill}: false', f'{fill}: true')
+
+            elif f'property bool {fill}: false' in self._qml:
+                self._qml = self._qml.replace(
+                    f'{w_h}: {last_value}', f'{w_h}: {new_value}')
+        else:
+            self._qml = self._qml.replace(
+                f'{fill}: true', f'{fill}: false').replace(
+                    f'{w_h}: {last_value}', f'{w_h}: {new_value}')
 
     def __str__(self) -> str:
         return "<class 'Element'>"
