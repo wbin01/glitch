@@ -1,11 +1,32 @@
 #!/usr/bin/env python3
+import logging
+
 from .ui import UI
 
 
 qml = """
     property string baseClass: "Element"  // <baseClass>
-    height: 30
-    width: 100
+    // height: 30
+    // width: 100
+
+    property int topMargin: 0
+    property int rightMargin: 0
+    property int bottomMargin: 0
+    property int leftMargin: 0
+    Layout.topMargin: topMargin
+    Layout.rightMargin: rightMargin
+    Layout.bottomMargin: bottomMargin
+    Layout.leftMargin: leftMargin
+    hoverEnabled: true
+
+    Layout.fillHeight: false
+    Layout.preferredHeight: _height
+    property int _height: 30
+
+    Layout.fillWidth: false
+    Layout.preferredWidth: _width
+    property int _width: 100
+
     // <property>
 """
 
@@ -22,6 +43,10 @@ class Element(UI):
         self._element_type = 'Element'
 
         self.__margins = 0, 0, 0, 0
+
+        self.__height = 30
+        self.__width = 100
+        self.__size = self.__width, self.__height
 
     @property
     def margins(self) -> tuple:
@@ -92,6 +117,46 @@ class Element(UI):
                 f'property int leftMargin: {left}')
 
         self.__margins = top, left, bottom, right
+
+    @property
+    def size(self) -> tuple:
+        """Frame width and height.
+
+        Tuple like (500, 500).
+        """
+        return self.__size
+
+    @size.setter
+    def size(self, size: tuple) -> None:
+        if not isinstance(size, int) and not isinstance(size, tuple):
+            logging.error(
+                f'\n  {self._element_type}.size: Use a tuple of integers like '
+                '(100, 30) or an integer like 500.')
+            return
+
+        if isinstance(size, int):
+            width, height = size, size
+        elif len(size) == 1:
+            width, height = size[0], size[0]
+        elif len(size) >= 2:
+            width, height = size[:2]
+
+        width = self.__size[0] if width is None else width
+        height = self.__size[1] if height is None else height
+
+        if self._obj:
+            # self._obj.setProperty('_width', width)
+            # self._obj.setProperty('_height', height)
+            pass
+        else:
+            # Layout.preferredHeight: 30
+            self._qml = self._qml.replace(
+                f'_width: {self.__width}', f'_width: {width}').replace(
+                f'_height: {self.__height}', f'_height: {height}')
+
+        self.__width = width
+        self.__height = height
+        self.__size = width, height
 
     def __str__(self) -> str:
         return "<class 'Element'>"

@@ -24,6 +24,14 @@ Button {
     Layout.rightMargin: rightMargin
     Layout.bottomMargin: bottomMargin
     Layout.leftMargin: leftMargin
+
+    Layout.fillHeight: false
+    Layout.preferredHeight: _height
+    property int _height: 30
+    
+    Layout.fillWidth: false
+    Layout.preferredWidth: _width
+    property int _width: 100
 }
 """
 

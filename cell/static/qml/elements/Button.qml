@@ -17,8 +17,6 @@ Button {
     property alias iconSource: icon.source
     property bool isHovered: false
     property bool hasIcon: iconSource !== ""
-    Layout.preferredHeight: 30
-    Layout.fillWidth: true
 
     property int topMargin: 0
     property int rightMargin: 0
@@ -29,6 +27,14 @@ Button {
     Layout.bottomMargin: bottomMargin
     Layout.leftMargin: leftMargin
     hoverEnabled: true
+
+    Layout.fillHeight: false
+    Layout.preferredHeight: _height
+    property int _height: 30
+
+    Layout.fillWidth: true
+    Layout.preferredWidth: _width
+    property int _width: 100
 
     contentItem: Item {
         anchors.fill: parent

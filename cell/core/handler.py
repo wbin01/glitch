@@ -176,7 +176,7 @@ class Handler(QtCore.QObject):
                 
                 self.__main_rect.setProperty('borderWidth', 1)
                 self.__main_rect.setProperty('outLineWidth', 1)
-                self.__main_rect.setProperty('outLineColor', '#44000000')
+                self.__main_rect.setProperty('outLineColor', '#55000000')
                 self.__main_rect.setProperty('borderColor',
                     self.__ui.style[frame]['border_color'])
                 self.__main_rect.setProperty('color', "#00000000")

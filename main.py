@@ -50,8 +50,9 @@ class View(MainFrame):
         self.label = self.add(Label('Panel slides from left'))
         self.label.margins = None, None, None, 100
 
-        self.button = self.add(Button('Button', 'document-save'))
+        self.button = self.add(Button('Button X', 'document-save'))
         self.button.connect(self.on_button)
+        self.button.size = 300, 50
 
         self.scroll = self.add(Scroll())
         self.scroll_column = self.scroll.add(Column())

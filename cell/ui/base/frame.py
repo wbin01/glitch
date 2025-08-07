@@ -92,11 +92,11 @@ Window {
             objectName: "canvas"
             anchors.fill: parent
 
-            property color fillColor: mainRect.backgroundColor
-            property color innerBorderColor: mainRect.borderColor
-            property color outerBorderColor: mainRect.outLineColor
-            property int innerBorderWidth: mainRect.borderWidth
-            property int outerBorderWidth: mainRect.outLineWidth
+            // property color fillColor: mainRect.backgroundColor
+            // property color innerBorderColor: mainRect.borderColor
+            // property color outerBorderColor: mainRect.outLineColor
+            // property int innerBorderWidth: mainRect.borderWidth
+            // property int outerBorderWidth: mainRect.outLineWidth
             property int borderSpacing: 1
 
             onPaint: {
@@ -122,19 +122,19 @@ Window {
                 roundedRect(1, 1, width - 2, height - 2,
                             mainRect.radiusTopLeft, mainRect.radiusTopRight,
                             mainRect.radiusBottomRight, mainRect.radiusBottomLeft);
-                ctx.fillStyle = fillColor;
+                ctx.fillStyle = mainRect.backgroundColor;
                 ctx.fill();
 
                 // --- Outer border ---
                 roundedRect(0, 0, width, height,
                             mainRect.radiusTopLeft + 2, mainRect.radiusTopRight + 2,
                             mainRect.radiusBottomRight + 2, mainRect.radiusBottomLeft + 2);
-                ctx.strokeStyle = outerBorderColor;
-                ctx.lineWidth = outerBorderWidth;
+                ctx.strokeStyle = mainRect.outLineColor;
+                ctx.lineWidth = mainRect.outLineWidth;
                 ctx.stroke();
 
                 // --- Inner border ---
-                var inset = borderSpacing + innerBorderWidth / 2;
+                var inset = borderSpacing + mainRect.borderWidth / 2;
                 roundedRect(
                     inset, inset,
                     width - inset * 2,
@@ -144,8 +144,8 @@ Window {
                     Math.max(0, mainRect.radiusBottomRight - inset),
                     Math.max(0, mainRect.radiusBottomLeft - inset)
                 );
-                ctx.strokeStyle = innerBorderColor;
-                ctx.lineWidth = innerBorderWidth;
+                ctx.strokeStyle = mainRect.borderColor;
+                ctx.lineWidth = mainRect.borderWidth;
                 ctx.stroke();
             }
         }
