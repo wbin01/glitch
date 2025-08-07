@@ -5,7 +5,7 @@ from .ui import UI
 
 
 qml = """
-    property string baseClass: "Element"  // <baseClass>
+    // property string baseClass: "Element"  // <baseClass>
     // height: 30
     // width: 100
 
@@ -39,7 +39,7 @@ class Element(UI):
     """
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
-        self._qml = self._qml.replace('\n    // <property>', qml)
+        # self._qml = self._qml.replace('\n    // <property>', qml)
         self._element_type = 'Element'
 
         self.__margins = 0, 0, 0, 0
@@ -150,6 +150,10 @@ class Element(UI):
             pass
         else:
             # Layout.preferredHeight: 30
+            if 'property bool fillWidth: true' in self._qml:
+                self._qml = self._qml.replace(
+                    'property bool fillWidth: true', 'property bool fillWidth: false')
+
             self._qml = self._qml.replace(
                 f'_width: {self.__width}', f'_width: {width}').replace(
                 f'_height: {self.__height}', f'_height: {height}')

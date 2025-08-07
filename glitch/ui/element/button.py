@@ -8,7 +8,7 @@ from ...enum.event import Event
 from ...platform_ import OSDesk, Icons
 
 
-qml = """
+qmlbkp = """
 Button {
     id: button  // <id>
     objectName: "button"  // <objectName>
@@ -29,10 +29,24 @@ Button {
     Layout.preferredHeight: _height
     property int _height: 30
     
-    Layout.fillWidth: false
+    Layout.fillWidth: true
     Layout.preferredWidth: _width
     property int _width: 100
 }
+"""
+
+header = """
+Button {
+    id: button  // <id>
+    objectName: "button"  // <objectName>
+    property string qmlType: "Button"  // <className>
+    property string baseClass: "Element"  // <baseClass>
+"""
+
+properties = """
+    text: "<text>"
+    iconSource: <icon>
+    // <property>
 """
 
 
@@ -45,6 +59,7 @@ class Button(Element):
         :param icon: Icon name or path string.
         """
         super().__init__(*args, **kwargs)
+        self.__callbacks = {}
         self.__path = pathlib.Path(__file__).parent.parent.parent
         self.__icon_path = self.__path / 'static' / 'icons' / 'linux'
         self.__platform_icons = Icons(OSDesk().desktop_environment)
@@ -53,15 +68,19 @@ class Button(Element):
         self.__text = text
         self.__icon = self.__set_icon_path(icon)
 
-        # Set
-        self._qml = qml.replace(
+        # Set QML
+        qml = properties.replace(
             '<text>', self.__text).replace('<icon>', self.__icon)
+        self._qml = header + self._qml.split('// header')[1]
+        self._qml = self._qml.replace('\n    // <property>', qml)
+
+        # Set ID
         self.id = f'_{id(self)}'
         self._element_name = 'Button'
+
+        # Set args
         self.text = self.__text
         self.icon = icon
-
-        self.__callbacks = {}
 
     @property
     def icon(self) -> str:

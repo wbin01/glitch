@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-# from cell import *
-from cell.core import Application, Signal
-from cell.enum import Align, Event, FrameShape, FrameHint
+# from glitch import *
+from glitch.core import Application, Signal
+from glitch.enum import Align, Event, FrameShape, FrameHint
 
-# from cell.ui import MainFrame, Frame, Column, Row, Scroll, Button, Label
-from cell.ui.element import Button, Label
-from cell.ui.frame import MainFrame, Frame
-from cell.ui.layout import Column, Panel, Row, Scroll
+# from glitch.ui import MainFrame, Frame, Column, Row, Scroll, Button, Label
+from glitch.ui.element import Button, Label
+from glitch.ui.frame import MainFrame, Frame
+from glitch.ui.layout import Column, Panel, Row, Scroll
 
 
 class CustomElement(Row):
@@ -52,7 +52,7 @@ class View(MainFrame):
 
         self.button = self.add(Button('Button X', 'document-save'))
         self.button.connect(self.on_button)
-        self.button.size = 300, 50
+        self.button.size = 100, 50
 
         self.scroll = self.add(Scroll())
         self.scroll_column = self.scroll.add(Column())
