@@ -21,7 +21,7 @@ class Element(UI):
         self.__width = 100
         self.__size = self.__width, self.__height
         
-        self.__margins = 0, 0, 0, 0        
+        self.__margins = 0, 0, 0, 0
 
     @property
     def margins(self) -> tuple:
@@ -30,24 +30,22 @@ class Element(UI):
         A tuple with the 4 margin values. The values are in clockwise
         order: top, right, bottom and left respectively.
 
-        Get:
             (5, 10, 5, 10)
 
-        Set:
-            It is not mandatory to pass all the values, the last value will be 
-            used to fill in the missing ones:
+        It is not mandatory to pass all the values, the last value will be 
+        used to fill in the missing ones:
 
-            `margins = 5` is equivalent to `margins = 5, 5, 5, 5`
-            `margins = 5, 10` is equivalent to `margins = 5, 10, 10, 10`
+        `margins = 5` is equivalent to `margins = 5, 5, 5, 5`
+        `margins = 5, 10` is equivalent to `margins = 5, 10, 10, 10`
 
-            Use `None` for a value to be automatic. `None` indicates that the 
-            value is the same as before. Example:
+        Use `None` for a value to be automatic. `None` indicates that the 
+        value is the same as before. Example:
 
-                # Change vertical margins (top and bottom)
-                `element.margins = 10, None, 10, None`
+            # Change vertical margins (top and bottom)
+            `element.margins = 10, None, 10, None`
 
-                # Change horizontal margins (right and left)
-                `element.margins = None, 5, None, 5`
+            # Change horizontal margins (right and left)
+            `element.margins = None, 5, None, 5`
         """
         return self.__margins
 
@@ -79,17 +77,13 @@ class Element(UI):
             self._obj.setProperty('leftMargin', left)
         else:
             self._qml = self._qml.replace(
-                f'property int topMargin: {self.__margins[0]}',
-                f'property int topMargin: {top}')
+                f'topMargin: {self.__margins[0]}', f'topMargin: {top}')
             self._qml = self._qml.replace(
-                f'property int rightMargin: {self.__margins[1]}',
-                f'property int rightMargin: {right}')
+                f'rightMargin: {self.__margins[1]}', f'rightMargin: {right}')
             self._qml = self._qml.replace(
-                f'property int bottomMargin: {self.__margins[2]}',
-                f'property int bottomMargin: {bottom}')
+                f'bottomMargin: {self.__margins[2]}',f'bottomMargin: {bottom}')
             self._qml = self._qml.replace(
-                f'property int leftMargin: {self.__margins[3]}',
-                f'property int leftMargin: {left}')
+                f'leftMargin: {self.__margins[3]}',f'leftMargin: {left}')
 
         self.__margins = top, left, bottom, right
 
@@ -97,7 +91,21 @@ class Element(UI):
     def size(self) -> tuple:
         """Frame width and height.
 
-        Tuple like (500, 500).
+        Tuple like (100, 30).
+
+        It is not mandatory to pass all the values, the last value will be 
+        used to fill in the missing ones:
+
+        `size = 100` is equivalent to `margins = 100, 100`
+
+        Use `Size.AUTO` enum for a value to be automatic. `Size.AUTO` 
+        indicates that the value is the same as before. Example:
+
+            # Change only the height
+            `size = Size.AUTO, 50
+
+            # Change only the width
+            `size = 100, Size.AUTO
         """
         return self.__size
 
@@ -122,23 +130,33 @@ class Element(UI):
         height = self.__size[1] if not isinstance(height, int) else height
 
         if self._obj:
-            # self._obj.setProperty('_width', width)
-            # self._obj.setProperty('_height', height)
-            pass
+            self.__set_obj_size(enum_w, 'width', width)
+            self.__set_obj_size(enum_h, 'height', height)
         else:
-            self.__set_size(enum_w, 'width', width)
-            self.__set_size(enum_h, 'height', height)
+            self.__set_qml_size(enum_w, 'width', width)
+            self.__set_qml_size(enum_h, 'height', height)
 
         self.__width = width
         self.__height = height
         self.__size = width, height
 
-    def __set_size(
+    def __set_obj_size(
             self, enum: Size, width_height: 'width', value: int) -> None:
         fill = 'fillWidth' if width_height == 'width' else 'fillHeight'
-        w_h = f'_{width_height}'
-        new_value = value
-        last_value = self.__width if width_height == 'width' else self.__height
+        if enum:
+            if enum.value == 'FILL':
+                self._obj.setProperty(fill, True)
+
+            elif not self._obj.property(fill):
+                self._obj.setProperty(width_height, value)
+        else:
+            self._obj.setProperty(fill, False)
+            self._obj.setProperty(width_height, value)
+
+    def __set_qml_size(
+            self, enum: Size, width_height: 'width', value: int) -> None:
+        fill = 'fillWidth' if width_height == 'width' else 'fillHeight'
+        old_value = self.__width if width_height == 'width' else self.__height
 
         if enum:
             if enum.value == 'FILL':
@@ -147,11 +165,11 @@ class Element(UI):
 
             elif f'property bool {fill}: false' in self._qml:
                 self._qml = self._qml.replace(
-                    f'{w_h}: {last_value}', f'{w_h}: {new_value}')
+                    f'{width_height}: {old_value}', f'{width_height}: {value}')
         else:
             self._qml = self._qml.replace(
                 f'{fill}: true', f'{fill}: false').replace(
-                    f'{w_h}: {last_value}', f'{w_h}: {new_value}')
+                    f'{width_height}: {old_value}', f'{width_height}: {value}')
 
     def __str__(self) -> str:
         return "<class 'Element'>"

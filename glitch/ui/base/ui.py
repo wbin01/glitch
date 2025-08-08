@@ -16,6 +16,13 @@ Item {
     property bool fillHeight: false
     Layout.fillWidth: fillWidth
     Layout.fillHeight: fillHeight
+    height: 30
+    width: 100
+    Layout.preferredHeight: height
+    property int _height: 30
+
+    Layout.preferredWidth: width
+    property int _width: 100
 
     property int topMargin: 0
     property int rightMargin: 0
@@ -25,14 +32,6 @@ Item {
     Layout.rightMargin: rightMargin
     Layout.bottomMargin: bottomMargin
     Layout.leftMargin: leftMargin
-
-    // Layout.fillHeight: false
-    Layout.preferredHeight: _height
-    property int _height: 30
-
-    // Layout.fillWidth: false
-    Layout.preferredWidth: _width
-    property int _width: 100
 
     // <property>
 }

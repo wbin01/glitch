@@ -56,7 +56,7 @@ class View(MainFrame):
         self.button.size = Size.AUTO, 50
         self.button.size = 300, Size.AUTO
         self.button.size = Size.AUTO, Size.AUTO
-        # self.button.size = Size.FILL, Size.AUTO
+        self.button.size = Size.FILL, Size.AUTO
 
         self.scroll = self.add(Scroll())
         self.scroll_column = self.scroll.add(Column())
@@ -84,6 +84,7 @@ class View(MainFrame):
         self.custom_num = 0
 
     def on_custom_clicked(self):
+        self.button.size = 300, Size.AUTO
         self.custom_num += 1
 
         if self.panel_side == 'right':

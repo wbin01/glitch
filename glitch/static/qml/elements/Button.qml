@@ -28,14 +28,6 @@ Button {
     Layout.leftMargin: leftMargin
     hoverEnabled: true
 
-    Layout.fillHeight: false
-    Layout.preferredHeight: _height
-    property int _height: 30
-
-    Layout.fillWidth: true
-    Layout.preferredWidth: _width
-    property int _width: 100
-
     contentItem: Item {
         anchors.fill: parent
 
