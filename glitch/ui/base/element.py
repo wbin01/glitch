@@ -38,23 +38,24 @@ class Element(UI):
         `margins = 5` is equivalent to `margins = 5, 5, 5, 5`
         `margins = 5, 10` is equivalent to `margins = 5, 10, 10, 10`
 
-        Use `None` for a value to be automatic. `None` indicates that the 
-        value is the same as before. Example:
+        Any value other than an `int`, such as `None` or `Size.AUTO`, will 
+        be handled automatically, using the old value.
 
             # Change vertical margins (top and bottom)
-            `element.margins = 10, None, 10, None`
+            `margins = 10, None, 10, None`
 
             # Change horizontal margins (right and left)
-            `element.margins = None, 5, None, 5`
+            `margins = Size.AUTO, 5, Size.AUTO, 5`
         """
         return self.__margins
 
     @margins.setter
     def margins(self, margins: tuple) -> None:
-        if isinstance(margins, str):
-            if not margins.isdigit():
-                return
-            margins = int(margins)
+        if not isinstance(margins, int) and not isinstance(margins, tuple):
+            logging.error(
+                f'\n  {self._element_type}.margins: Use a tuple of integers '
+                'like (10, 10, 10, 10) or an integer like 10.')
+            return
 
         if isinstance(margins, int):
             top, right, bottom, left = margins, margins, margins, margins
@@ -65,10 +66,10 @@ class Element(UI):
         else:
             top, right, bottom, left = margins[:4]
 
-        top = self.__margins[0] if top is None else top
-        right = self.__margins[1] if right is None else right
-        bottom = self.__margins[2] if bottom is None else bottom
-        left = self.__margins[3] if left is None else left
+        top = self.__margins[0] if not isinstance(top, int) else top
+        right = self.__margins[1] if not isinstance(right, int) else right
+        bottom = self.__margins[2] if not isinstance(bottom, int) else bottom
+        left = self.__margins[3] if not isinstance(left, int) else left
 
         if self._obj:
             self._obj.setProperty('topMargin', top)
@@ -83,7 +84,7 @@ class Element(UI):
             self._qml = self._qml.replace(
                 f'bottomMargin: {self.__margins[2]}',f'bottomMargin: {bottom}')
             self._qml = self._qml.replace(
-                f'leftMargin: {self.__margins[3]}',f'leftMargin: {left}')
+                f'leftMargin: {self.__margins[3]}', f'leftMargin: {left}')
 
         self.__margins = top, left, bottom, right
 
@@ -98,14 +99,22 @@ class Element(UI):
 
         `size = 100` is equivalent to `margins = 100, 100`
 
-        Use `Size.AUTO` enum for a value to be automatic. `Size.AUTO` 
-        indicates that the value is the same as before. Example:
+        Use `Size.AUTO` enum (or `None`) for a value to be automatic.
+        `Size.AUTO` indicates that the value is the same as before. Example:
 
             # Change only the height
             `size = Size.AUTO, 50
 
             # Change only the width
             `size = 100, Size.AUTO
+
+        Use `Size.FILL` to completely fill the space. Example:
+
+            # Horizontal fill
+            `size = Size.FILL, 30
+
+            # Vertical fill
+            `size = 100, Size.FILL
         """
         return self.__size
 
@@ -123,6 +132,9 @@ class Element(UI):
             width, height = size[0], size[0]
         elif len(size) >= 2:
             width, height = size[:2]
+
+        width = Size.AUTO if width is None else width
+        height = Size.AUTO if height is None else height
 
         enum_w = width if isinstance(width, Size) else False
         enum_h = height if isinstance(height, Size) else False
@@ -144,7 +156,7 @@ class Element(UI):
             self, enum: Size, width_height: 'width', value: int) -> None:
         fill = 'fillWidth' if width_height == 'width' else 'fillHeight'
         if enum:
-            if enum.value == 'FILL':
+            if enum == Size.FILL:
                 self._obj.setProperty(fill, True)
 
             elif not self._obj.property(fill):
@@ -159,9 +171,8 @@ class Element(UI):
         old_value = self.__width if width_height == 'width' else self.__height
 
         if enum:
-            if enum.value == 'FILL':
-                self._qml = self._qml.replace(
-                    f'{fill}: false', f'{fill}: true')
+            if enum == Size.FILL:
+                self._qml = self._qml.replace(f'{fill}: false',f'{fill}: true')
 
             elif f'property bool {fill}: false' in self._qml:
                 self._qml = self._qml.replace(

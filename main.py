@@ -55,7 +55,7 @@ class View(MainFrame):
 
         self.button.size = Size.AUTO, 50
         self.button.size = 300, Size.AUTO
-        self.button.size = Size.AUTO, Size.AUTO
+        self.button.size = Size.AUTO, None
         self.button.size = Size.FILL, Size.AUTO
 
         self.scroll = self.add(Scroll())
@@ -97,7 +97,7 @@ class View(MainFrame):
     def on_button(self):
         self.num += 1
         self.label.text = f'Button press: {self.num}'
-        self.label.margins = None, None, None, 0
+        self.label.margins = Size.AUTO, Size.AUTO, Size.AUTO, 0
         if self.panel_side == 'right':
             self.panel.open()
         else:

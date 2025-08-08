@@ -18,14 +18,6 @@ Button {
     property bool isHovered: false
     property bool hasIcon: iconSource !== ""
 
-    property int topMargin: 0
-    property int rightMargin: 0
-    property int bottomMargin: 0
-    property int leftMargin: 0
-    Layout.topMargin: topMargin
-    Layout.rightMargin: rightMargin
-    Layout.bottomMargin: bottomMargin
-    Layout.leftMargin: leftMargin
     hoverEnabled: true
 
     contentItem: Item {

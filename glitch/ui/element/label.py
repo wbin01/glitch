@@ -2,25 +2,18 @@
 from ..base import Element
 
 
-qml = """
+header = """
 Label {
     id: label  // <id>
     objectName: "label"  // <objectName>
     property string qmlType: "Label"  // <className>
     property string baseClass: "Element"  // <baseClass>
-    text: "<text>"
-    color: "#fff"
-    property int topMargin: 0
-    property int rightMargin: 0
-    property int bottomMargin: 0
-    property int leftMargin: 0
-    Layout.topMargin: topMargin
-    Layout.rightMargin: rightMargin
-    Layout.bottomMargin: bottomMargin
-    Layout.leftMargin: leftMargin
-}
 """
 
+properties = """
+    text: "<text>"
+    color: "#fff"
+"""
 
 class Label(Element):
     """Label Element"""
@@ -34,9 +27,18 @@ class Label(Element):
         self.__text = text
 
         # Set
-        self._qml = qml.replace('<text>', self.__text)
+        # self._qml = qml.replace('<text>', self.__text)
+
+        # Set QML
+        qml = properties.replace('<text>', self.__text)
+        self._qml = header + self._qml.split('// header')[1]
+        self._qml = self._qml.replace('\n    // <property>', qml)
+
+        # Set ID
         self.id = f'_{id(self)}'
         self._element_type = 'Label'
+
+        # Set args
         self.text = self.__text
 
     @property
