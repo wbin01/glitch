@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from ..base import Element
+from ...enum import Size
 
 
 header = """
@@ -13,7 +14,13 @@ Label {
 properties = """
     text: "<text>"
     color: "#fff"
+
+    // Layout.fillWidth: true
+    // Layout.preferredHeight: 80
+    // horizontalAlignment: Text.AlignHCenter
+    // verticalAlignment: Text.AlignVCenter
 """
+
 
 class Label(Element):
     """Label Element"""
@@ -26,9 +33,6 @@ class Label(Element):
         # Args
         self.__text = text
 
-        # Set
-        # self._qml = qml.replace('<text>', self.__text)
-
         # Set QML
         qml = properties.replace('<text>', self.__text)
         self._qml = header + self._qml.split('// header')[1]
@@ -38,8 +42,9 @@ class Label(Element):
         self.id = f'_{id(self)}'
         self._element_type = 'Label'
 
-        # Set args
+        # Properties
         self.text = self.__text
+        self.size = None, 20
 
     @property
     def text(self) -> str:

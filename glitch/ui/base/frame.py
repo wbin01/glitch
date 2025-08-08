@@ -27,7 +27,7 @@ class Element(object):
         return "<class 'Element'>"
 
 
-qml = """
+header = """
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
@@ -41,21 +41,23 @@ Window {
     objectName: "frame"  // <objectName>
     property string qmlType: "Window"  // <className>
     property string baseClass: "Frame"  // <baseClass>
+"""
 
-    visible: true
-    visibility: Window.Windowed
-    
-    height: _height
-    property int _height: 200
-    
-    width: _width
-    property int _width: 200
-
-    minimumWidth: 200
-    minimumHeight: 200
+properties = """
     title: qsTr("Cell")
     color: "transparent"
     flags: Qt.FramelessWindowHint
+
+    property int width_: 300
+    property int height_: 300
+    width: width_
+    height: height_
+
+    minimumWidth: 100
+    minimumHeight: 100
+
+    visible: true
+    visibility: Window.Windowed
 
     MouseArea {
         anchors.fill: parent
@@ -68,16 +70,11 @@ Window {
         objectName: "mainRect"
         anchors.fill: parent
         color: "transparent"
-        // anchors.margins: margins
-        // radius: 10
-        // border.color: borderColor
-        // border.width: borderWidth
-
         z: 1
         property bool isActive: true
 
-        property color backgroundColor: "#99880000"
-        property color borderColor: "#880000"
+        property color backgroundColor: "#222"
+        property color borderColor: "#333"
         property color outLineColor: "#44000000"
         property int borderWidth: 1
         property int outLineWidth: 1
@@ -91,12 +88,6 @@ Window {
             id: canvas
             objectName: "canvas"
             anchors.fill: parent
-
-            // property color fillColor: mainRect.backgroundColor
-            // property color innerBorderColor: mainRect.borderColor
-            // property color outerBorderColor: mainRect.outLineColor
-            // property int innerBorderWidth: mainRect.borderWidth
-            // property int outerBorderWidth: mainRect.outLineWidth
             property int borderSpacing: 1
 
             onPaint: {
@@ -170,10 +161,10 @@ Window {
 
         }
     }
-}
 """
+# } close on UI
 
-qml_edges = """
+edges = """
 // Resize corners
 // Top left - resize NW
         MouseArea {
@@ -284,15 +275,23 @@ class Frame(UI):
     """
     def __init__(self, resizable: bool = False, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
-        self._qml = qml
-        if resizable:
-            qml_init, qml_end = qml.split('\n// Resize corners')
-            self._qml = qml_init + qml_edges + qml_end
+        # Args
+        self.__resizable = resizable
 
+        # Set QML
+        self._qml = header + self._qml.split('// main header')[1]
+        self._qml = self._qml.replace('\n    // <property>', properties)
+        if self.__resizable:
+            qml_init, qml_end = self._qml.split('\n// Resize corners')
+            self._qml = qml_init + edges + qml_end
+
+        # Set ID
+        self.id = f'_{id(self)}'
         self._element_type = 'Frame'
 
-        self.__height = 200
-        self.__width = 200
+        # Properties
+        self.__height = 300
+        self.__width = 300
         self.__size = self.__width, self.__height
         self.__spacing = 6
 
@@ -496,12 +495,12 @@ class Frame(UI):
         height = self.__size[1] if height is None else height
 
         if self._obj:
-            self._obj.setProperty('_width', width)
-            self._obj.setProperty('_height', height)
+            self._obj.setProperty('width_', width)
+            self._obj.setProperty('height_', height)
         else:
             self._qml = self._qml.replace(
-                f'_width: {self.__width}', f'_width: {width}').replace(
-                f'_height: {self.__height}', f'_height: {height}')
+                f'width_: {self.__width}', f'width_: {width}').replace(
+                f'height_: {self.__height}', f'height_: {height}')
 
         self.__width = width
         self.__height = height

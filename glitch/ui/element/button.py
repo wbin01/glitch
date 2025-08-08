@@ -50,7 +50,7 @@ class Button(Element):
         self.id = f'_{id(self)}'
         self._element_name = 'Button'
 
-        # Set args
+        # Properties
         self.text = self.__text
         self.icon = icon
 

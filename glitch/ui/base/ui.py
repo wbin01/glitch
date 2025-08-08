@@ -7,7 +7,11 @@ Item {
     objectName: "ui"  // <objectName>
     property string qmlType: "UI"  // <className>
     property string baseClass: "UI"  // <baseClass>
+
     // header
+
+    height: 30
+    width: 100
 
     property int alignment: Qt.AlignHCenter
     Layout.alignment: alignment
@@ -16,13 +20,9 @@ Item {
     property bool fillHeight: false
     Layout.fillWidth: fillWidth
     Layout.fillHeight: fillHeight
-    height: 30
-    width: 100
-    Layout.preferredHeight: height
-    property int _height: 30
-
+    
     Layout.preferredWidth: width
-    property int _width: 100
+    Layout.preferredHeight: height
 
     property int topMargin: 0
     property int rightMargin: 0
@@ -32,6 +32,8 @@ Item {
     Layout.rightMargin: rightMargin
     Layout.bottomMargin: bottomMargin
     Layout.leftMargin: leftMargin
+
+    // main header
 
     // <property>
 }
