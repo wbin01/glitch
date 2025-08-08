@@ -43,7 +43,7 @@ class Button(Element):
         # Set QML
         qml = properties.replace(
             '<text>', self.__text).replace('<icon>', self.__icon)
-        self._qml = header + self._qml.split('// header')[1]
+        self._qml = header + self._qml.split('// Element header')[1]
         self._qml = self._qml.replace('\n    // <property>', qml)
 
         # Set ID

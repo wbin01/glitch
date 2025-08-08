@@ -8,25 +8,6 @@ from ...enum import Event, FrameHint, FrameShape, Orientation
 from ...platform_ import Style
 
 
-class Layout(object):
-    """Layout object.
-
-    Organizes elements in stacks like a column or side by side like a row.
-    """
-    def __str__(self) -> str:
-        return "<class 'Layout'>"
-
-
-class Element(object):
-    """A visual element object.
-
-    Elements are visual and interactive application items such as buttons and 
-    text.
-    """
-    def __str__(self) -> str:
-        return "<class 'Element'>"
-
-
 header = """
 import QtQuick
 import QtQuick.Controls
@@ -265,6 +246,25 @@ edges = """
 """
 
 
+class Layout(object):
+    """Layout object.
+
+    Organizes elements in stacks like a column or side by side like a row.
+    """
+    def __str__(self) -> str:
+        return "<class 'Layout'>"
+
+
+class Element(object):
+    """A visual element object.
+
+    Elements are visual and interactive application items such as buttons and 
+    text.
+    """
+    def __str__(self) -> str:
+        return "<class 'Element'>"
+
+
 class Frame(UI):
     """An application frame.
 
@@ -279,7 +279,7 @@ class Frame(UI):
         self.__resizable = resizable
 
         # Set QML
-        self._qml = header + self._qml.split('// main header')[1]
+        self._qml = header + self._qml.split('// Frame header')[1]
         self._qml = self._qml.replace('\n    // <property>', properties)
         if self.__resizable:
             qml_init, qml_end = self._qml.split('\n// Resize corners')

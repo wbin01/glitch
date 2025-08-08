@@ -8,7 +8,7 @@ Item {
     property string qmlType: "UI"  // <className>
     property string baseClass: "UI"  // <baseClass>
 
-    // header
+    // Element header
 
     height: 30
     width: 100
@@ -24,6 +24,8 @@ Item {
     Layout.preferredWidth: width
     Layout.preferredHeight: height
 
+    // Layout header
+
     property int topMargin: 0
     property int rightMargin: 0
     property int bottomMargin: 0
@@ -33,7 +35,7 @@ Item {
     Layout.bottomMargin: bottomMargin
     Layout.leftMargin: leftMargin
 
-    // main header
+    // Frame header
 
     // <property>
 }

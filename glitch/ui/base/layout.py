@@ -7,6 +7,30 @@ from .ui import UI
 from ...enum import Orientation
 
 
+column = """
+ColumnLayout {
+    id: column  // <id>
+    objectName: "column"  // <objectName>
+    property string qmlType: "Column"  // <className>
+    property string baseClass: "Layout"  // <baseClass>
+"""
+
+row = """
+RowLayout {
+    id: row  // <id>
+    objectName: "row"  // <objectName>
+    property string qmlType: "Row"  // <className>
+    property string baseClass: "Layout"  // <baseClass>
+"""
+
+properties = """
+    spacing: 6
+
+// **closing_key**
+"""
+# } close on UI
+
+
 class Layout(object):
     """Layout object.
 
@@ -26,51 +50,6 @@ class Element(object):
         return "<class 'Element'>"
 
 
-layout = """
-ColumnLayout {
-    id: column  // <id>
-    objectName: "column"  // <objectName>
-    property string qmlType: "Column"  // <className>
-    property string baseClass: "Layout"  // <baseClass>
-    
-    property int topMargin: 0
-    property int rightMargin: 0
-    property int bottomMargin: 0
-    property int leftMargin: 0
-    Layout.topMargin: topMargin
-    Layout.rightMargin: rightMargin
-    Layout.bottomMargin: bottomMargin
-    Layout.leftMargin: leftMargin
-    
-    spacing: 6
-    
-// **closing_key**
-}
-"""
-
-row = """
-RowLayout {
-    id: row  // <id>
-    objectName: "row"  // <objectName>
-    property string qmlType: "Row"  // <className>
-    property string baseClass: "Layout"  // <baseClass>
-
-    property int topMargin: 0
-    property int rightMargin: 0
-    property int bottomMargin: 0
-    property int leftMargin: 0
-    Layout.topMargin: topMargin
-    Layout.rightMargin: rightMargin
-    Layout.bottomMargin: bottomMargin
-    Layout.leftMargin: leftMargin
-    
-    spacing: 6
-
-// **closing_key**
-}
-"""
-
-
 class Layout(UI):
     """A visual element object.
 
@@ -84,7 +63,12 @@ class Layout(UI):
         :param orientation: Layout orientation, VERTICAL or HORIZONTAL.
         """
         super().__init__(*args, **kwargs)
-        self._qml = layout if orientation == Orientation.VERTICAL else row
+        # Set QML
+        header = column if orientation == Orientation.VERTICAL else row
+        self._qml = header + self._qml.split('// Element header')[1]
+        self._qml = self._qml.replace('\n    // <property>', properties)
+
+        # self._qml = layout_header if orientation == Orientation.VERTICAL else row_header
         self.id = '_' + str(id(self))
         self._element_type = 'Layout'
 
