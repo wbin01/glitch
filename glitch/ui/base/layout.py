@@ -27,7 +27,7 @@ properties = """
     // Layout header
     spacing: 6
 
-// **closing_key**
+// Close
 """
 # } close on UI
 

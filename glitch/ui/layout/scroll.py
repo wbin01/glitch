@@ -37,7 +37,7 @@ ScrollView {
         width: parent.width
         spacing: 6
 
-// **closing_key**
+// Close
     }
 
 }

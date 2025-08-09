@@ -117,7 +117,7 @@ class Application(object):
                     gui_attr.id = attr
 
         # Parse QML
-        end = '\n// **closing_key**'
+        end = '\n// Close'
         layout._qml, ui_close = layout._qml.split(end)
         for element in layout.items():
             tab = ' ' * 12 if self.__qml_code_iterator == 0 else '    '

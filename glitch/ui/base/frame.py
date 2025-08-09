@@ -138,7 +138,7 @@ properties = """
             Layout.alignment: Qt.AlignTop
             Layout.fillWidth: true
 
-// **closing_key**
+// Close
 
         }
     }

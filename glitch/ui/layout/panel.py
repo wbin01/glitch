@@ -92,7 +92,7 @@ Popup {
         anchors.fill: parent
         // anchors.margins: 6
 
-// **closing_key**
+// Close
     }
 }
 """
