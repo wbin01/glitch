@@ -70,7 +70,7 @@ class Layout(UI):
         self._qml = self._qml.replace('\n    // Property', properties)
 
         # self._qml = layout_header if orientation == Orientation.VERTICAL else row_header
-        self.id = '_' + str(id(self))
+        self._id = '_' + str(id(self))
         self._name = 'Layout'
 
         self.__margins = 0, 0, 0, 0
@@ -176,7 +176,7 @@ class Layout(UI):
         if self._obj:
             obj._obj.setParentItem(self)
         else:
-            setattr(self, obj.id, obj)
+            setattr(self, obj._id, obj)
 
         self.__items.append(obj)
         return obj

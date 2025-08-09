@@ -114,7 +114,7 @@ class Application(object):
             if not attr.startswith('_'):
                 gui_attr = getattr(layout, attr)
                 if isinstance(gui_attr, Element):
-                    gui_attr.id = attr
+                    gui_attr._id = attr
 
         # Parse QML
         end = '\n// Close'

@@ -54,16 +54,16 @@ class UI(object):
         self.__name = 'UI'
         self.__obj = None
 
-        self.id = self.__id
+        self._id = self.__id
         self._name = self.__name
 
     @property
-    def id(self) -> str:
+    def _id(self) -> str:
         """Element identifier."""
         return self.__id
 
-    @id.setter
-    def id(self, id_: int) -> None:
+    @_id.setter
+    def _id(self, id_: int) -> None:
         qml_lines = []
         for line in self.__qml.split('\n'):
             if line.strip().endswith('// ID'):

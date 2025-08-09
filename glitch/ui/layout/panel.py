@@ -111,11 +111,11 @@ class Panel(Layout):
 
         # Set QML
         self._qml = qml.replace(
-            'canvas_panel', f'canvas{self.id}').replace('panel', self.id)
+            'canvas_panel', f'canvas{self._id}').replace('panel', self._id)
         self.align = align
 
         # Set ID
-        self.id = f'_{id(self)}'
+        self._id = f'_{id(self)}'
         self._name = 'Panel'
 
         # Properties

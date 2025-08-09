@@ -41,7 +41,7 @@ class Label(Element):
         self._qml = self._qml.replace('\n    // Property', qml)
 
         # Set ID
-        self.id = f'_{id(self)}'
+        self._id = f'_{id(self)}'
         self._name = 'Label'
 
         # Properties

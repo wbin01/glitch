@@ -286,7 +286,7 @@ class Frame(UI):
             self._qml = qml_init + edges + qml_end
 
         # Set ID
-        self.id = f'_{id(self)}'
+        self._id = f'_{id(self)}'
         self._name = 'Frame'
 
         # Properties
@@ -551,7 +551,7 @@ class Frame(UI):
             obj._obj.setParentItem(self)
             # obj._obj.setParentItem(self._obj)
         else:
-            setattr(self, obj.id, obj)
+            setattr(self, obj._id, obj)
 
         self.__items.append(obj)
         return obj
