@@ -18,10 +18,10 @@ import "elements"
 
 
 Window {
-    id: frame  // <id>
-    objectName: "frame"  // <objectName>
-    property string qmlType: "Window"  // <className>
-    property string baseClass: "Frame"  // <baseClass>
+    id: frame  // ID
+    objectName: "frame"  // Object name
+    property string qmlType: "Window"  // Class Name
+    property string baseClass: "Frame"  // Base class name
 """
 
 properties = """
@@ -280,7 +280,7 @@ class Frame(UI):
 
         # Set QML
         self._qml = header + self._qml.split('// Frame header')[1]
-        self._qml = self._qml.replace('\n    // <property>', properties)
+        self._qml = self._qml.replace('\n    // Property', properties)
         if self.__resizable:
             qml_init, qml_end = self._qml.split('\n// Resize corners')
             self._qml = qml_init + edges + qml_end

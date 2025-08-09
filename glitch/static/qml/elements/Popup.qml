@@ -4,8 +4,8 @@ import QtQuick.Layouts
 
 
 Popup {
-    id: panel
-    objectName: "panel"
+    id: panel  // ID
+    objectName: "panel"  // Object name
 
     Canvas {
         id: canvas

@@ -4,10 +4,10 @@ from ..base import Layout
 
 qml = """
 ScrollView {
-    id: scroll  // <id>
-    objectName: "scroll"  // <objectName>
-    property string qmlType: "Scroll"  // <className>
-    property string baseClass: "Layout"  // <baseClass>
+    id: scroll  // ID
+    objectName: "scroll"  // Object name
+    property string qmlType: "Scroll"  // Class Name
+    property string baseClass: "Layout"  // Base class name
 
     Layout.fillWidth: true
     Layout.fillHeight: true

@@ -3,10 +3,10 @@
 
 qml_code = """
 Item {
-    id: ui  // <id>
-    objectName: "ui"  // <objectName>
-    property string qmlType: "UI"  // <className>
-    property string baseClass: "UI"  // <baseClass>
+    id: ui  // ID
+    objectName: "ui"  // Object name
+    property string qmlType: "UI"  // Class Name
+    property string baseClass: "UI"  // Base class name
 
     // Element header
 
@@ -37,7 +37,7 @@ Item {
 
     // Frame header
 
-    // <property>
+    // Property
 }
 """
 
@@ -66,11 +66,11 @@ class UI(object):
     def id(self, id_: int) -> None:
         qml_lines = []
         for line in self.__qml.split('\n'):
-            if line.strip().endswith('// <id>'):
-                qml_lines.append(f'    id: {id_}  // <id>')
-            elif line.strip().endswith('// <objectName>'):
+            if line.strip().endswith('// ID'):
+                qml_lines.append(f'    id: {id_}  // ID')
+            elif line.strip().endswith('// Object name'):
                 qml_lines.append(
-                    f'    objectName: "{id_}"  // <objectName>')
+                    f'    objectName: "{id_}"  // Object name')
             else:
                 qml_lines.append(line)
 
@@ -86,10 +86,10 @@ class UI(object):
     def _element_type(self, element_type: str) -> None:
         qml_lines = []
         for line in self.__qml.split('\n'):
-            if line.strip().endswith('// <className>'):
+            if line.strip().endswith('// Class Name'):
                 qml_lines.append(
                     f'    property string qmlType: "{element_type}"  '
-                    '// <className>')
+                    '// Class Name')
             else:
                 qml_lines.append(line)
 

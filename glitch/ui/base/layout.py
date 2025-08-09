@@ -9,18 +9,18 @@ from ...enum import Orientation
 
 column = """
 ColumnLayout {
-    id: column  // <id>
-    objectName: "column"  // <objectName>
-    property string qmlType: "Column"  // <className>
-    property string baseClass: "Layout"  // <baseClass>
+    id: column  // ID
+    objectName: "column"  // Object name
+    property string qmlType: "Column"  // Class Name
+    property string baseClass: "Layout"  // Base class name
 """
 
 row = """
 RowLayout {
-    id: row  // <id>
-    objectName: "row"  // <objectName>
-    property string qmlType: "Row"  // <className>
-    property string baseClass: "Layout"  // <baseClass>
+    id: row  // ID
+    objectName: "row"  // Object name
+    property string qmlType: "Row"  // Class Name
+    property string baseClass: "Layout"  // Base class name
 """
 
 properties = """
@@ -67,7 +67,7 @@ class Layout(UI):
         # Set QML
         header = column if orientation == Orientation.VERTICAL else row
         self._qml = header + self._qml.split('// Layout header')[1]
-        self._qml = self._qml.replace('\n    // <property>', properties)
+        self._qml = self._qml.replace('\n    // Property', properties)
 
         # self._qml = layout_header if orientation == Orientation.VERTICAL else row_header
         self.id = '_' + str(id(self))

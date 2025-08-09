@@ -10,10 +10,10 @@ from ...platform_ import OSDesk, Icons
 
 header = """
 Button {
-    id: button  // <id>
-    objectName: "button"  // <objectName>
-    property string qmlType: "Button"  // <className>
-    property string baseClass: "Element"  // <baseClass>
+    id: button  // ID
+    objectName: "button"  // Object name
+    property string qmlType: "Button"  // Class Name
+    property string baseClass: "Element"  // Base class name
     
     // Element header
 """
@@ -46,7 +46,7 @@ class Button(Element):
         qml = properties.replace(
             '<text>', self.__text).replace('<icon>', self.__icon)
         self._qml = header + self._qml.split('// Element header')[1]
-        self._qml = self._qml.replace('\n    // <property>', qml)
+        self._qml = self._qml.replace('\n    // Property', qml)
 
         # Set ID
         self.id = f'_{id(self)}'

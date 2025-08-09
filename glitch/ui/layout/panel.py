@@ -9,10 +9,10 @@ from ...enum import Align
 
 qml = """
 Popup {
-    id: panel  // <id>
-    objectName: "panel"  // <objectName>
-    property string qmlType: "Panel"  // <className>
-    property string baseClass: "Layout"  // <baseClass>
+    id: panel  // ID
+    objectName: "panel"  // Object name
+    property string qmlType: "Panel"  // Class Name
+    property string baseClass: "Layout"  // Base class name
 
     padding: 1 // Frame border
     width: 250
@@ -95,100 +95,7 @@ Popup {
 // **closing_key**
     }
 }
-
 """
-
-header = """
-Popup {
-    id: panel  // <id>
-    objectName: "panel"  // <objectName>
-    property string qmlType: "Panel"  // <className>
-    property string baseClass: "Layout"  // <baseClass>
-"""
-
-properties = """
-    padding: 1 // Frame border
-    width: 250
-    // height: parent.height + 9 // Frame padding (10) - Popup padding (1) = 9
-    x: 0
-    y: - 4  // Half of the Frame padding - outer border
-    modal: false
-    closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
-    clip: true
-
-    transformOrigin: Item.Left
-
-    property int parentHeight: parent.height + 9
-    property int parentWidth: parent.width + 9
-
-    property color backgroundColor: "#222"
-    property color borderColor: "#222"
-    property int borderWidth: 1
-
-    property int radiusTopLeft: 10
-    property int radiusTopRight: 0
-    property int radiusBottomRight: 0
-    property int radiusBottomLeft: 10
-
-    background: Rectangle {
-        color: "#00000000"
-        radius: 0
-        border.color: "#00000000"
-        border.width: 1
-        clip: true
-    }
-
-    Canvas {
-        id: canvas_panel
-        objectName: "canvas_panel"
-        anchors.fill: parent
-
-        onPaint: {
-            var ctx = getContext("2d");
-            ctx.clearRect(0, 0, width, height);
-
-            ctx.beginPath();
-            ctx.moveTo(panel.radiusTopLeft, 0);
-            ctx.lineTo(width - panel.radiusTopRight, 0);
-            ctx.arcTo(width, 0, width, panel.radiusTopRight, panel.radiusTopRight);
-            ctx.lineTo(width, height - panel.radiusBottomRight);
-            ctx.arcTo(width, height, width - panel.radiusBottomRight, height, panel.radiusBottomRight);
-            ctx.lineTo(panel.radiusBottomLeft, height);
-            ctx.arcTo(0, height, 0, height - panel.radiusBottomLeft, panel.radiusBottomLeft);
-            ctx.lineTo(0, panel.radiusTopLeft);
-            ctx.arcTo(0, 0, panel.radiusTopLeft, 0, panel.radiusTopLeft);
-            ctx.closePath();
-
-            // Background color
-            ctx.fillStyle = panel.backgroundColor;
-            ctx.fill();
-
-            // Border coloe
-            ctx.strokeStyle = panel.borderColor;
-            ctx.lineWidth = panel.borderWidth;
-            ctx.stroke();
-        }
-    }
-
-    ColumnLayout {
-        property int topMargin: 0
-        property int rightMargin: 0
-        property int bottomMargin: 0
-        property int leftMargin: 0
-        Layout.topMargin: topMargin
-        Layout.rightMargin: rightMargin
-        Layout.bottomMargin: bottomMargin
-        Layout.leftMargin: leftMargin
-        
-        spacing: 6
-
-        anchors.fill: parent
-        // anchors.margins: 6
-
-// **closing_key**
-    }
-"""
-# } close on UI
 
 
 class Panel(Layout):
@@ -198,22 +105,20 @@ class Panel(Layout):
     """
     def __init__(self, align: Align = Align.LEFT, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
+        # Args
         self.__align = align
         self.__origin = 'Item.Left'
 
-        self.id = f'_{id(self)}'
-        self._element_type = 'Panel'
-
-        self._qml = header + self._qml.split('// Layout header')[1]
-        self._qml = self._qml.replace('\n    // <property>', properties)
+        # Set QML
         self._qml = qml.replace(
             'canvas_panel', f'canvas{self.id}').replace('panel', self.id)
         self.align = align
 
-        # self._qml = qml.replace(
-        #     'canvas_panel', f'canvas{self.id}').replace('panel', self.id)
-        # self.align = align
+        # Set ID
+        self.id = f'_{id(self)}'
+        self._element_type = 'Panel'
 
+        # Properties
         self.__show_anim = QtCore.QParallelAnimationGroup()
         # self.__hide_anim = QtCore.QParallelAnimationGroup()
         self.__is_open = False

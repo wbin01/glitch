@@ -5,10 +5,10 @@ from ...enum import Size
 
 header = """
 Label {
-    id: label  // <id>
-    objectName: "label"  // <objectName>
-    property string qmlType: "Label"  // <className>
-    property string baseClass: "Element"  // <baseClass>
+    id: label  // ID
+    objectName: "label"  // Object name
+    property string qmlType: "Label"  // Class Name
+    property string baseClass: "Element"  // Base class name
 
     // Element header
 """
@@ -38,7 +38,7 @@ class Label(Element):
         # Set QML
         qml = properties.replace('<text>', self.__text)
         self._qml = header + self._qml.split('// Element header')[1]
-        self._qml = self._qml.replace('\n    // <property>', qml)
+        self._qml = self._qml.replace('\n    // Property', qml)
 
         # Set ID
         self.id = f'_{id(self)}'
