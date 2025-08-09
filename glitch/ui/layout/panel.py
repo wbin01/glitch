@@ -116,7 +116,7 @@ class Panel(Layout):
 
         # Set ID
         self.id = f'_{id(self)}'
-        self._element_type = 'Panel'
+        self._name = 'Panel'
 
         # Properties
         self.__show_anim = QtCore.QParallelAnimationGroup()
@@ -197,7 +197,7 @@ class Panel(Layout):
     def radius(self, radius: tuple) -> None:
         if not isinstance(radius, int) and not isinstance(radius, tuple):
             logging.error(
-                f'\n  {self._element_type}.radius: Use a tuple of integers '
+                f'\n  {self._name}.radius: Use a tuple of integers '
                 'like (10, 10, 10, 10) or an integer like 10.')
             return
 

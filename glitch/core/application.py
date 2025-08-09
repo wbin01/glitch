@@ -46,7 +46,7 @@ class AppEventFilter(QtCore.QObject):
 
     def __state_style(self, state: str = '') -> None:
         # MainFrame state colors
-        frame = f'[{self.__ui._element_type}{state}]'
+        frame = f'[{self.__ui._name}{state}]'
         self.__main_rect.setProperty(
             'backgroundColor',
             self.__style[frame]['background_color'])

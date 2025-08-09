@@ -50,7 +50,7 @@ class Button(Element):
 
         # Set ID
         self.id = f'_{id(self)}'
-        self._element_name = 'Button'
+        self._name = 'Button'
 
         # Properties
         self.text = self.__text

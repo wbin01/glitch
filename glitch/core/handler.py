@@ -146,7 +146,7 @@ class Handler(QtCore.QObject):
     def __state_changed(self, state: QtCore.Qt.WindowState) -> None:
         # Frame style in full-screen or normal-screen states.
         if self.__main_rect:
-            frame = f'[{self.__ui._element_type}]'
+            frame = f'[{self.__ui._name}]'
             if (state == QtCore.Qt.WindowFullScreen
                     or state == QtCore.Qt.WindowMaximized):
                 self.__main_rect.setProperty('radiusTopLeft', 0)

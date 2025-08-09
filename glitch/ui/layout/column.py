@@ -9,7 +9,7 @@ class Column(Layout):
     """
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
-        self._element_type = 'Column'
+        self._name = 'Column'
 
     def __str__(self) -> str:
         return "<class 'Column'>"

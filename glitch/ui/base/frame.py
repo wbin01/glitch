@@ -287,7 +287,7 @@ class Frame(UI):
 
         # Set ID
         self.id = f'_{id(self)}'
-        self._element_type = 'Frame'
+        self._name = 'Frame'
 
         # Properties
         self.__height = 300
@@ -378,8 +378,8 @@ class Frame(UI):
     def radius(self, radius: tuple) -> None:
         if not isinstance(radius, int) and not isinstance(radius, tuple):
             logging.error(
-                f'\n  {self._element_type}.radius: Use a tuple of integers '
-                'like (10, 10, 10, 10) or an integer like 10.')
+                f'\n  {self._name}.radius: Use a tuple of integers like '
+                '(10, 10, 10, 10) or an integer like 10.')
             return
 
         if isinstance(radius, int):
@@ -480,7 +480,7 @@ class Frame(UI):
     def size(self, size: tuple) -> None:
         if not isinstance(size, int) and not isinstance(size, tuple):
             logging.error(
-                f'\n  {self._element_type}.size: Use a tuple of integers like '
+                f'\n  {self._name}.size: Use a tuple of integers like '
                 '(600, 400) or an integer like 500.')
             return
 

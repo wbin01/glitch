@@ -43,7 +43,7 @@ class MainFrame(Frame):
         qml_init, qml_end = self._qml.split('// MainFrame')
 
         self._qml = qml_init + qml + qml_end
-        self._element_type = 'MainFrame'
+        self._name = 'MainFrame'
 
     def __str__(self) -> str:
         return "<class 'MainFrame'>"

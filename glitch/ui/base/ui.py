@@ -51,11 +51,11 @@ class UI(object):
     def __init__(self, *args, **kwargs) -> None:
         self.__qml = qml_code
         self.__id = '_' + str(id(self))
-        self.__element_type = 'UI'
+        self.__name = 'UI'
         self.__obj = None
 
         self.id = self.__id
-        self._element_type = self.__element_type
+        self._name = self.__name
 
     @property
     def id(self) -> str:
@@ -78,23 +78,22 @@ class UI(object):
         self.__id = id_
 
     @property
-    def _element_type(self) -> str:
+    def _name(self) -> str:
         """Element type name."""
-        return self.__element_type
+        return self.__name
 
-    @_element_type.setter
-    def _element_type(self, element_type: str) -> None:
+    @_name.setter
+    def _name(self, name: str) -> None:
         qml_lines = []
         for line in self.__qml.split('\n'):
             if line.strip().endswith('// Class Name'):
                 qml_lines.append(
-                    f'    property string qmlType: "{element_type}"  '
-                    '// Class Name')
+                    f'    property string qmlType: "{name}"  // Class Name')
             else:
                 qml_lines.append(line)
 
         self.__qml = '\n'.join(qml_lines)
-        self.__element_type = element_type
+        self.__name = name
 
     @property
     def _obj(self) -> str:

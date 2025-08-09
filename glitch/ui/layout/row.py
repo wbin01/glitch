@@ -12,7 +12,7 @@ class Row(Layout):
             self, orientation: Orientation = Orientation.HORIZONTAL,
             *args, **kwargs) -> None:
         super().__init__(orientation=orientation, *args, **kwargs)
-        self._element_type = 'Row'
+        self._name = 'Row'
 
     def __str__(self) -> str:
         return "<class 'Row'>"

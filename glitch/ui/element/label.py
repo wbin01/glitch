@@ -42,7 +42,7 @@ class Label(Element):
 
         # Set ID
         self.id = f'_{id(self)}'
-        self._element_type = 'Label'
+        self._name = 'Label'
 
         # Properties
         self.text = self.__text

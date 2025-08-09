@@ -13,7 +13,7 @@ class Element(UI):
     """
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
-        self._element_type = 'Element'
+        self._name = 'Element'
         
         self.__fill_height = False
         self.__fill_width = True
@@ -53,8 +53,8 @@ class Element(UI):
     def margins(self, margins: tuple) -> None:
         if not isinstance(margins, int) and not isinstance(margins, tuple):
             logging.error(
-                f'\n  {self._element_type}.margins: Use a tuple of integers '
-                'like (10, 10, 10, 10) or an integer like 10.')
+                f'\n  {self._name}.margins: Use a tuple of integers like '
+                '(10, 10, 10, 10) or an integer like 10.')
             return
 
         if isinstance(margins, int):
@@ -122,7 +122,7 @@ class Element(UI):
     def size(self, size: tuple) -> None:
         if not isinstance(size, int) and not isinstance(size, tuple):
             logging.error(
-                f'\n  {self._element_type}.size: Use a tuple of integers like '
+                f'\n  {self._name}.size: Use a tuple of integers like '
                 '(100, 30) or an integer like 500.')
             return
 

@@ -71,7 +71,7 @@ class Layout(UI):
 
         # self._qml = layout_header if orientation == Orientation.VERTICAL else row_header
         self.id = '_' + str(id(self))
-        self._element_type = 'Layout'
+        self._name = 'Layout'
 
         self.__margins = 0, 0, 0, 0
         self.__spacing = 6
@@ -109,8 +109,8 @@ class Layout(UI):
     def margins(self, margins: tuple) -> None:
         if not isinstance(margins, int) and not isinstance(margins, tuple):
             logging.error(
-                f'\n  {self._element_type}.margins: Use a tuple of integers '
-                'like (10, 10, 10, 10) or an integer like 10.')
+                f'\n  {self._name}.margins: Use a tuple of integers like '
+                '(10, 10, 10, 10) or an integer like 10.')
             return
 
         if isinstance(margins, int):
