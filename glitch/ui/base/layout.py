@@ -24,6 +24,7 @@ RowLayout {
 """
 
 properties = """
+    // Layout header
     spacing: 6
 
 // **closing_key**
@@ -65,7 +66,7 @@ class Layout(UI):
         super().__init__(*args, **kwargs)
         # Set QML
         header = column if orientation == Orientation.VERTICAL else row
-        self._qml = header + self._qml.split('// Element header')[1]
+        self._qml = header + self._qml.split('// Layout header')[1]
         self._qml = self._qml.replace('\n    // <property>', properties)
 
         # self._qml = layout_header if orientation == Orientation.VERTICAL else row_header
