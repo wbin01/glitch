@@ -64,15 +64,13 @@ class Layout(UI):
         :param orientation: Layout orientation, VERTICAL or HORIZONTAL.
         """
         super().__init__(*args, **kwargs)
-        # Set QML
+        # QML
         header = column if orientation == Orientation.VERTICAL else row
         self._qml = header + self._qml.split('// Layout header')[1]
         self._qml = self._qml.replace('\n    // Property', properties)
+        self.class_id('Layout')
 
-        # self._qml = layout_header if orientation == Orientation.VERTICAL else row_header
-        self._id = '_' + str(id(self))
-        self._name = 'Layout'
-
+        # Properties
         self.__margins = 0, 0, 0, 0
         self.__spacing = 6
         self.__items = []

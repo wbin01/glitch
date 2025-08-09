@@ -55,7 +55,7 @@ class Scroll(Layout):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self._qml = qml
-        self._name = 'Scroll'
+        self.class_id('Scroll')
 
     def __str__(self) -> str:
         return "<class 'Scroll'>"

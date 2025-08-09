@@ -50,12 +50,8 @@ class UI(object):
     """
     def __init__(self, *args, **kwargs) -> None:
         self.__qml = qml_code
-        self.__id = '_' + str(id(self))
-        self.__name = 'UI'
         self.__obj = None
-
-        self._id = self.__id
-        self._name = self.__name
+        self.class_id('UI')
 
     @property
     def _id(self) -> str:
@@ -69,8 +65,7 @@ class UI(object):
             if line.strip().endswith('// ID'):
                 qml_lines.append(f'    id: {id_}  // ID')
             elif line.strip().endswith('// Object name'):
-                qml_lines.append(
-                    f'    objectName: "{id_}"  // Object name')
+                qml_lines.append(f'    objectName: "{id_}"  // Object name')
             else:
                 qml_lines.append(line)
 
@@ -118,6 +113,12 @@ class UI(object):
     @_qml.setter
     def _qml(self, qml: str) -> None:
         self.__qml = qml
+
+    def class_id(self, name: str) -> None:
+        """..."""
+        self._id = '_' + str(id(self))
+        self._name = name
+
 
     def __str__(self) -> str:
         return "<class 'UI'>"

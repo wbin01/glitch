@@ -109,14 +109,11 @@ class Panel(Layout):
         self.__align = align
         self.__origin = 'Item.Left'
 
-        # Set QML
+        # QML
         self._qml = qml.replace(
             'canvas_panel', f'canvas{self._id}').replace('panel', self._id)
         self.align = align
-
-        # Set ID
-        self._id = f'_{id(self)}'
-        self._name = 'Panel'
+        self.class_id('Panel')
 
         # Properties
         self.__show_anim = QtCore.QParallelAnimationGroup()

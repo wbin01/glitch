@@ -42,15 +42,12 @@ class Button(Element):
         self.__text = text
         self.__icon = self.__set_icon_path(icon)
 
-        # Set QML
+        # QML
         qml = properties.replace(
             '<text>', self.__text).replace('<icon>', self.__icon)
         self._qml = header + self._qml.split('// Element header')[1]
         self._qml = self._qml.replace('\n    // Property', qml)
-
-        # Set ID
-        self._id = f'_{id(self)}'
-        self._name = 'Button'
+        self.class_id('Button')
 
         # Properties
         self.text = self.__text

@@ -35,14 +35,11 @@ class Label(Element):
         # Args
         self.__text = text
 
-        # Set QML
+        # QML
         qml = properties.replace('<text>', self.__text)
         self._qml = header + self._qml.split('// Element header')[1]
         self._qml = self._qml.replace('\n    // Property', qml)
-
-        # Set ID
-        self._id = f'_{id(self)}'
-        self._name = 'Label'
+        self.class_id('Label')
 
         # Properties
         self.text = self.__text

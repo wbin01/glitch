@@ -41,9 +41,8 @@ class MainFrame(Frame):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(resizable=True, *args, **kwargs)
         qml_init, qml_end = self._qml.split('// MainFrame')
-
         self._qml = qml_init + qml + qml_end
-        self._name = 'MainFrame'
+        self.class_id('MainFrame')
 
     def __str__(self) -> str:
         return "<class 'MainFrame'>"

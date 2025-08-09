@@ -9,7 +9,7 @@ class Column(Layout):
     """
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
-        self._name = 'Column'
+        self.class_id('Column')
 
     def __str__(self) -> str:
         return "<class 'Column'>"

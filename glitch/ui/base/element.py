@@ -13,15 +13,14 @@ class Element(UI):
     """
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
-        self._name = 'Element'
-        
         self.__fill_height = False
         self.__fill_width = True
         self.__height = 30
         self.__width = 100
         self.__size = self.__width, self.__height
-        
         self.__margins = 0, 0, 0, 0
+
+        self.class_id('Element')
 
     @property
     def margins(self) -> tuple:
