@@ -2,26 +2,21 @@
 from ..base import Layout
 
 
-qml = """
+header = """
 ScrollView {
     id: scroll  // ID
     objectName: "scroll"  // Object name
     property string qmlType: "Scroll"  // Class Name
     property string baseClass: "Layout"  // Base class name
 
+"""
+
+properties = """
     Layout.fillWidth: true
     Layout.fillHeight: true
+
     clip: true
     contentWidth: availableWidth
-
-    Layout.topMargin: topMargin
-    Layout.rightMargin: rightMargin
-    Layout.bottomMargin: bottomMargin
-    Layout.leftMargin: leftMargin
-    property int topMargin: 0
-    property int rightMargin: 0
-    property int bottomMargin: 0
-    property int leftMargin: 0
 
     background: Rectangle {
         color: "#22000000"
@@ -40,11 +35,8 @@ ScrollView {
 // Close
     }
 
-}
 """
-# Python set 
-# scroll_view.setProperty("Layout.minimumHeight", 200)
-# scroll_view.setProperty("Layout.maximumHeight", 200)
+# } close on UI. Add // Property for inheritance
 
 
 class Scroll(Layout):
@@ -54,7 +46,8 @@ class Scroll(Layout):
     """
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
-        self._qml = qml
+        self._qml = header + self._qml.split('// Layout header')[1].replace(
+            '// Close', '').replace('\n    // Property', properties)
         self.class_id('Scroll')
 
     def __str__(self) -> str:

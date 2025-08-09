@@ -7,13 +7,15 @@ from ..base import Layout
 from ...enum import Align
 
 
-qml = """
+header = """
 Popup {
     id: panel  // ID
     objectName: "panel"  // Object name
     property string qmlType: "Panel"  // Class Name
     property string baseClass: "Layout"  // Base class name
+"""
 
+properties = """
     padding: 1 // Frame border
     width: 250
     height: parent.height + 9 // Frame padding (10) - Popup padding (1) = 9
@@ -94,8 +96,8 @@ Popup {
 
 // Close
     }
-}
 """
+# } close on UI. Add // Property for inheritance
 
 
 class Panel(Layout):
@@ -103,16 +105,18 @@ class Panel(Layout):
 
     Opens and closes to display content.
     """
-    def __init__(self, align: Align = Align.LEFT, *args, **kwargs) -> None:
+    def __init__(
+            self, frame_side: Align = Align.LEFT, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         # Args
-        self.__align = align
+        self.__frame_side = frame_side
         self.__origin = 'Item.Left'
 
         # QML
-        self._qml = qml.replace(
+        self._qml = header + self._qml.split('// Layout header')[1].replace(
+            '// Close', '').replace('\n    // Property', properties).replace(
             'canvas_panel', f'canvas{self._id}').replace('panel', self._id)
-        self.align = align
+        self.frame_side = frame_side
         self.class_id('Panel')
 
         # Properties
@@ -125,26 +129,26 @@ class Panel(Layout):
 
     def __get_origin(self) -> str:
         # transform_origin QML string
-        if self.__align.name == 'RIGHT':
+        if self.__frame_side.name == 'RIGHT':
             return 'Item.Right'
-        # elif self.__align.name.startswith('BOTTOM'):
+        # elif self.__frame_side.name.startswith('BOTTOM'):
         #     return 'Item.Bottom'
-        # elif self.__align.name.startswith('TOP'):
+        # elif self.__frame_side.name.startswith('TOP'):
             return 'Item.Top'
         return 'Item.Left'
 
     @property
-    def align(self) -> Align:
+    def frame_side(self) -> Align:
         """The Panel Align alignment.
 
         Whether the panel slides in from the right or left.
         Use Align.LEFT or Align.RIGHT to set the panel's direction.
         """
-        return self.__align
+        return self.__frame_side
 
-    @align.setter
-    def align(self, align: Align) -> None:
-        self.__align = align
+    @frame_side.setter
+    def frame_side(self, frame_side: Align) -> None:
+        self.__frame_side = frame_side
 
         new_origin = self.__get_origin()
         self._qml = self._qml.replace(
@@ -271,7 +275,7 @@ class Panel(Layout):
 
         start_value = - self._obj.property('width')  # default is -250
         end_value = - 5  # Frame padding half | 10
-        if self.__align.name == 'RIGHT':
+        if self.__frame_side.name == 'RIGHT':
             start_value = parent_w
             end_value = parent_w - size - 4
 

@@ -279,8 +279,8 @@ class Frame(UI):
         self.__resizable = resizable
 
         # QML
-        self._qml = header + self._qml.split('// Frame header')[1]
-        self._qml = self._qml.replace('\n    // Property', properties)
+        self._qml = header + self._qml.split(
+            '// Frame header')[1].replace('\n    // Property', properties)
         if self.__resizable:
             qml_init, qml_end = self._qml.split('\n// Resize corners')
             self._qml = qml_init + edges + qml_end

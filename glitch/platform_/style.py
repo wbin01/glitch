@@ -50,12 +50,12 @@ class Style(object):
                 },
             '[MainFrame]': {
                 'background_color': '#2A2A2A',  # Alt 282828
-                'border_color': '#383838',
+                'border_color': '#333',
                 'border_radius': 10,
                 },
             '[MainFrame:inactive]': {
                 'background_color': '#222',
-                'border_color': '#333',
+                'border_color': '#282828',
                 'border_radius': 10,
                 },
             '[Panel]': {

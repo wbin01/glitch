@@ -27,7 +27,7 @@ class View(MainFrame):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         # Set
-        # self.radius = 30
+        self.radius = 5
         # self.hint = FrameHint.TOP
 
         self.panel_side = 'left'

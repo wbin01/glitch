@@ -2,7 +2,7 @@
 from ..base import Frame
 
 
-qml = """
+properties = """
 // MainFrame
         // Drag area
         Rectangle {
@@ -41,7 +41,7 @@ class MainFrame(Frame):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(resizable=True, *args, **kwargs)
         qml_init, qml_end = self._qml.split('// MainFrame')
-        self._qml = qml_init + qml + qml_end
+        self._qml = qml_init + properties + qml_end
         self.class_id('MainFrame')
 
     def __str__(self) -> str:

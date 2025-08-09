@@ -23,13 +23,22 @@ RowLayout {
     property string baseClass: "Layout"  // Base class name
 """
 
+# Layout goes in Item or Layout
+# so the "Layout.fillWidth" property will be set in the final Layout.
 properties = """
     // Layout header
+
+    // Layout.fillWidth: true
+    // Layout.fillHeight: true
     spacing: 6
+
+    // Property
 
 // Close
 """
 # } close on UI
+# Layout.minimumHeight
+# Layout.maximumHeight
 
 
 class Layout(object):
@@ -66,8 +75,8 @@ class Layout(UI):
         super().__init__(*args, **kwargs)
         # QML
         header = column if orientation == Orientation.VERTICAL else row
-        self._qml = header + self._qml.split('// Layout header')[1]
-        self._qml = self._qml.replace('\n    // Property', properties)
+        self._qml = header + self._qml.split(
+            '// Layout header')[1].replace('\n    // Property', properties)
         self.class_id('Layout')
 
         # Properties
