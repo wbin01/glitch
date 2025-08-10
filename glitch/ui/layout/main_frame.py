@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from ..base import Frame
+from .frame import Frame
 
 
 properties = """

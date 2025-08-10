@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from ..base import Box
+from ..base import Layout
 
 
 header = """
@@ -37,7 +37,7 @@ properties = """
 # } close on UI. Add // Property for inheritance
 
 
-class Scroll(Box):
+class Scroll(Layout):
     """Scrollable column layout object.
 
     It is a type like `Column` object, but scrollable.

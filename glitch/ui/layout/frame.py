@@ -3,7 +3,7 @@ import logging
 
 from PySide6 import QtCore
 
-from .layout import Layout
+from ..base import Layout
 from ...enum import Event, FrameHint, FrameShape, Orientation
 from ...platform_ import Style
 

@@ -3,7 +3,7 @@ import logging
 
 from PySide6 import QtCore
 
-from ..base import Box
+from ..base import Layout
 from ...enum import Align
 
 
@@ -18,17 +18,17 @@ Popup {
 properties = """
     padding: 1 // Frame border
     width: 250
-    height: parent.height + 9 // Frame padding (10) - Popup padding (1) = 9
+    height: parent.height + 10 // Frame padding (10)
     x: 0
-    y: - 4  // Half of the Frame padding - outer border
+    y: - 5  // Half of the Frame padding - outer border
     modal: false
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
     clip: true
 
     transformOrigin: Item.Left
 
-    property int parentHeight: parent.height + 9
-    property int parentWidth: parent.width + 9
+    property int parentHeight: parent.height + 10
+    property int parentWidth: parent.width + 9  // 10 -1 detach from the right
 
     property color backgroundColor: "#222"
     property color borderColor: "#222"
@@ -97,7 +97,7 @@ properties = """
 # } close on UI. Add // Property for inheritance
 
 
-class Panel(Box):
+class Panel(Layout):
     """Panel layout.
 
     Opens and closes to display content.

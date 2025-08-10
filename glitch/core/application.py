@@ -6,7 +6,8 @@ from PySide6 import QtCore, QtGui, QtQml, QtQuick
 
 from .handler import Handler
 from .application_shares import change_element_style_state
-from ..ui.base import Element, Frame, Box
+from ..ui.base import Element, Layout
+from ..ui.layout import Frame
 
 
 class AppEventFilter(QtCore.QObject):
@@ -126,7 +127,7 @@ class Application(object):
             if end in element._qml:
                 element_close = element._qml.split(end)[1]
 
-            if isinstance(element, Box):
+            if isinstance(element, Layout):
                 self.__qml_code_iterator += 1
                 self.__write_qml(element)
 

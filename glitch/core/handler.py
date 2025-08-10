@@ -3,8 +3,8 @@ from PySide6 import QtCore, QtQuick
 
 from .application_shares import change_element_style_state
 from ..enum import Event
-from ..ui.base import Element, Frame, Box
-from ..ui.frame import MainFrame
+from ..ui.base import Element, Layout
+from ..ui.layout import Frame, MainFrame
 
 
 class Handler(QtCore.QObject):
@@ -99,7 +99,7 @@ class Handler(QtCore.QObject):
                 continue
             element._obj = obj_value
 
-            if isinstance(element, Box):
+            if isinstance(element, Layout):
                 self.__integrate_graphic_elements(element)
             
             elif isinstance(element, Element):
