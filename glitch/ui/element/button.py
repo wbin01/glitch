@@ -14,8 +14,6 @@ Button {
     objectName: "button"  // Object name
     property string qmlType: "Button"  // Class Name
     property string baseClass: "Element"  // Base class name
-    
-    // Element header
 """
 
 properties = """

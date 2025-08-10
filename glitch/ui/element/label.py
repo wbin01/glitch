@@ -9,8 +9,6 @@ Label {
     objectName: "label"  // Object name
     property string qmlType: "Label"  // Class Name
     property string baseClass: "Element"  // Base class name
-
-    // Element header
 """
 
 properties = """

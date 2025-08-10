@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from ..base import Layout
+from ..base import Box
 
 
 header = """
@@ -8,7 +8,6 @@ ScrollView {
     objectName: "scroll"  // Object name
     property string qmlType: "Scroll"  // Class Name
     property string baseClass: "Layout"  // Base class name
-
 """
 
 properties = """
@@ -34,12 +33,11 @@ properties = """
 
 // Close
     }
-
 """
 # } close on UI. Add // Property for inheritance
 
 
-class Scroll(Layout):
+class Scroll(Box):
     """Scrollable column layout object.
 
     It is a type like `Column` object, but scrollable.

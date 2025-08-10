@@ -3,7 +3,7 @@ import logging
 
 from PySide6 import QtCore
 
-from .ui import UI
+from .layout import Layout
 from ...enum import Event, FrameHint, FrameShape, Orientation
 from ...platform_ import Style
 
@@ -246,26 +246,7 @@ edges = """
 """
 
 
-class Layout(object):
-    """Layout object.
-
-    Organizes elements in stacks like a column or side by side like a row.
-    """
-    def __str__(self) -> str:
-        return "<class 'Layout'>"
-
-
-class Element(object):
-    """A visual element object.
-
-    Elements are visual and interactive application items such as buttons and 
-    text.
-    """
-    def __str__(self) -> str:
-        return "<class 'Element'>"
-
-
-class Frame(UI):
+class Frame(Layout):
     """An application frame.
 
     A frame where visual elements are inserted. Usually called a "Window".
@@ -280,7 +261,8 @@ class Frame(UI):
 
         # QML
         self._qml = header + self._qml.split(
-            '// Frame header')[1].replace('\n    // Property', properties)
+            '// Frame header')[1].replace(
+            '// Close', '').replace('\n    // Property', properties)
         if self.__resizable:
             qml_init, qml_end = self._qml.split('\n// Resize corners')
             self._qml = qml_init + edges + qml_end
@@ -290,11 +272,11 @@ class Frame(UI):
         self.__height = 300
         self.__width = 300
         self.__size = self.__width, self.__height
-        self.__spacing = 6
+        # self.__spacing = 6
 
         self.__hint = FrameHint.FRAME
         self.__shape = FrameShape.FRAME
-        self.__items = []
+        # self.__items = []
         self.__style = Style().style
         self.__visibility = 'Window.Windowed'
         self.__callbacks = {}
@@ -504,27 +486,6 @@ class Frame(UI):
         self.__size = width, height
 
     @property
-    def spacing(self) -> int:
-        """Spacing Between Elements.
-
-        The Frame contains a vertical Layout as a Column type, which manages 
-        the position and spacing between Elements.
-        """
-        return self.__spacing
-
-    @spacing.setter
-    def spacing(self, spacing: int) -> None:
-        if self._obj:
-            self._obj.findChild(
-                QtCore.QObject, 'mainColumnLayout').setProperty(
-                    'spacing', spacing)
-        else:
-            self._qml = self._qml.replace(
-                f'spacing: {self.__spacing}', f'spacing: {spacing}')
-
-        self.__spacing = spacing
-
-    @property
     def style(self) -> dict:
         """Application style.
 
@@ -536,22 +497,6 @@ class Frame(UI):
     @style.setter
     def style(self, style: dict) -> None:
         self.__style = style
-
-    def add(self, obj: Layout | Element) -> Layout | Element:
-        """Add items.
-
-        Adds items such as Elements and Layouts to this Layout.
-        
-        :param obj: Element or Layout object type
-        """
-        if self._obj:
-            obj._obj.setParentItem(self)
-            # obj._obj.setParentItem(self._obj)
-        else:
-            setattr(self, obj._id, obj)
-
-        self.__items.append(obj)
-        return obj
 
     def callbacks(self) -> dict:
         """The functions used in the `connect` method.
@@ -573,13 +518,6 @@ class Frame(UI):
         :param event: Enum like `Event.MOUSE_HOVER` or `Event.MOUSE_WHEEL`
         """
         self.__callbacks[event] = method
-
-    def items(self) -> list:
-        """Items added to the Layout.
-
-        List that includes Elements and other Layouts.
-        """
-        return self.__items
 
     def __str__(self) -> str:
         return "<class 'Frame'>"

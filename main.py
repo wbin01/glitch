@@ -10,17 +10,50 @@ from glitch.ui.layout import Column, Panel, Row, Scroll
 
 
 class CustomElement(Row):
-    button_clicked_signal = Signal()
+    # Global
+    # button_clicked_signal = Signal()
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
-        self.custom_button = self.add(Button('Button'))
-        self.custom_button.connect(self.change_label)
-        self.custom_label, self.num = self.add(Label('Label')), 0
+        self.button_clicked_signal = Signal()
+        
+        self.__custom_button = self.add(Button('Button X'))
+        self.__custom_button.connect(self.change_label)
+
+        self.__custom_label, self.__num = self.add(Label('Label')), 0
+        self.class_id('CustomElement')
+
+        self.ola = 'Hello'
+
+    @property
+    def custom_button(self) -> Button:
+        return self.__custom_button
 
     def change_label(self):
         self.button_clicked_signal.emit()
-        self.num += 1
-        self.custom_label.text = f'CustomElement clicked: {self.num}'
+        self.__num += 1
+        self.__custom_label.text = f'CustomElement clicked: {self.__num}'
+
+
+class CustomElementX(Row):
+    button_clicked_signal = Signal()
+    def __init__(self, *args, **kwargs) -> None:
+        super().__init__(*args, **kwargs)
+        self.__custom_button = self.add(Button('Button XX'))
+        self.__custom_button.connect(self.change_label)
+
+        self.__custom_label, self.__num = self.add(Label('Label')), 0
+        self.class_id('CustomElement')
+
+        self.ola = 'Hello'
+
+    @property
+    def custom_button(self) -> Button:
+        return self.__custom_button
+
+    def change_label(self):
+        self.button_clicked_signal.emit()
+        self.__num += 1
+        self.__custom_label.text = f'CustomElement clicked: {self.__num}'
 
 
 class View(MainFrame):
@@ -29,6 +62,8 @@ class View(MainFrame):
         # Set
         self.radius = 5
         # self.hint = FrameHint.TOP
+
+        self.ola = 555
 
         self.panel_side = 'left'
         self.panel_l = self.add(Panel())
@@ -68,6 +103,9 @@ class View(MainFrame):
                 lambda num=num: self.on_scroll_buttons(num), Event.MOUSE_HOVER)
             setattr(self, f'button_{num}', button)
 
+        self.custom0 = self.scroll_column.add(CustomElement())
+        self.customx = self.scroll_column.add(CustomElementX())
+
         self.custom = self.scroll_column.add(CustomElement())
         self.custom.button_clicked_signal.connect(self.on_custom_clicked)
 
@@ -93,6 +131,8 @@ class View(MainFrame):
         else:
             self.panel_side = 'right'
             self.label.text = 'Panel slides from right'
+
+        # print(self.custom0.custom_button.text)
 
     def on_button(self):
         self.num += 1

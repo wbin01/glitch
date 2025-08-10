@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-from ..base import Layout
+from ..base import Box
 from ...enum.orientation import Orientation
 
 
-class Row(Layout):
+class Row(Box):
     """Row layout object.
 
     Organizes elements side by side like a row.

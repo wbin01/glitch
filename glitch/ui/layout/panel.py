@@ -3,7 +3,7 @@ import logging
 
 from PySide6 import QtCore
 
-from ..base import Layout
+from ..base import Box
 from ...enum import Align
 
 
@@ -88,11 +88,8 @@ properties = """
         Layout.rightMargin: rightMargin
         Layout.bottomMargin: bottomMargin
         Layout.leftMargin: leftMargin
-        
         spacing: 6
-
         anchors.fill: parent
-        // anchors.margins: 6
 
 // Close
     }
@@ -100,7 +97,7 @@ properties = """
 # } close on UI. Add // Property for inheritance
 
 
-class Panel(Layout):
+class Panel(Box):
     """Panel layout.
 
     Opens and closes to display content.

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-from ..base import Layout
+from ..base import Box
 
 
-class Column(Layout):
+class Column(Box):
     """Column layout object.
 
     Organizes elements in stacks like a column.
