@@ -3,7 +3,7 @@ import os
 import sys
 from pathlib import Path
 
-from ..tools import IniParse
+from ..tools import DesktopFile
 
 
 class Icons(object):
@@ -27,7 +27,7 @@ class Icons(object):
 
             kdeglobals = Path(os.environ['HOME']) / '.config' / 'kdeglobals'
             if kdeglobals.exists():
-                ini = IniParse(kdeglobals)
+                ini = DesktopFile(kdeglobals)
 
                 if not '[Icons]' in ini.content:
                     return None

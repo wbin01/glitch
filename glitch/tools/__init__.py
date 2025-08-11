@@ -2,4 +2,4 @@
 from .cli import output_by_args
 from .color_converter import *
 from .icon_collector import IconCollector
-from .ini_parse import IniParse
+from .desktop_entry_files_parse import DesktopFile, FindDesktopFiles
