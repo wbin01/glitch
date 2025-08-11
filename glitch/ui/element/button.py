@@ -12,7 +12,7 @@ header = """
 Button {
     id: button  // ID
     objectName: "button"  // Object name
-    property string qmlType: "Button"  // Class Name
+    property string className: "Button"  // Class name
     property string baseClass: "Element"  // Base class name
 """
 

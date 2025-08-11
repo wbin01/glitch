@@ -20,8 +20,8 @@ import "elements"
 Window {
     id: frame  // ID
     objectName: "frame"  // Object name
-    property string qmlType: "Window"  // Class Name
-    property string baseClass: "Frame"  // Base class name
+    property string className: "Window"  // Class name
+    property string baseClass: "Layout"  // Base class
 """
 
 properties = """

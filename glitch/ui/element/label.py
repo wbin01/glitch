@@ -7,7 +7,7 @@ header = """
 Label {
     id: label  // ID
     objectName: "label"  // Object name
-    property string qmlType: "Label"  // Class Name
+    property string className: "Label"  // Class name
     property string baseClass: "Element"  // Base class name
 """
 

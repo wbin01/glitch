@@ -6,8 +6,8 @@ header = """
 ScrollView {
     id: scroll  // ID
     objectName: "scroll"  // Object name
-    property string qmlType: "Scroll"  // Class Name
-    property string baseClass: "Layout"  // Base class name
+    property string className: "Scroll"  // Class name
+    property string baseClass: "Layout"  // Base class
 """
 
 properties = """

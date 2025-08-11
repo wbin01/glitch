@@ -127,7 +127,7 @@ class Handler(QtCore.QObject):
             self.__state_changed(QtCore.Qt.WindowNoState)
 
         for child in self.__elements:
-            if not child.property('qmlType'):
+            if not child.property('className'):
                 continue
             
             if getattr(child, 'clicked', None):

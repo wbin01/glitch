@@ -5,8 +5,8 @@ qml_code = """
 Item {
     id: ui  // ID
     objectName: "ui"  // Object name
-    property string qmlType: "UI"  // Class Name
-    property string baseClass: "UI"  // Base class name
+    property string className: "UI"  // Class name
+    property string baseClass: "object"  // Base class name
 
     // Element header
 
@@ -81,9 +81,9 @@ class UI(object):
     def _name(self, name: str) -> None:
         qml_lines = []
         for line in self.__qml.split('\n'):
-            if line.strip().endswith('// Class Name'):
+            if line.strip().endswith('// Class name'):
                 qml_lines.append(
-                    f'    property string qmlType: "{name}"  // Class Name')
+                    f'    property string className: "{name}"  // Class name')
             else:
                 qml_lines.append(line)
 

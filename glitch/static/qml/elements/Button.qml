@@ -10,8 +10,8 @@ import QtQuick.Layouts
 Button {
     id: button  // ID
     objectName: "button"  // Object name
-    property string qmlType: "Button"  // Class Name
-    property string baseClass: "Button"  // Base class name
+    property string className: "Button"  // Class name
+    property string baseClass: "Element"  // Base class
     property color borderColor: "#555"
     property color backgroundColor: "#444"
     property alias iconSource: icon.source

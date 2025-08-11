@@ -8,7 +8,7 @@ def change_element_style_state(element, state, style):
     Iterates through the Element's properties and applies a style 
     corresponding to the Frame's current state.
     """
-    use_canvas = element.property('qmlType') in ['Panel', 'MainFrame', 'Frame']
+    use_canvas = element.property('className') in ['Panel', 'MainFrame', 'Frame']
     if (element.property('baseClass') != 'Element' and not use_canvas):
         return
 
@@ -25,7 +25,7 @@ def change_element_style_state(element, state, style):
             'opacity': 'icon_opacity'},
         }
 
-    name = f'[{element.property('qmlType')}{state}]'
+    name = f'[{element.property('className')}{state}]'
     for key, value in element_properties.items():
         if isinstance(value, str):
             if element.property(key) and value in style[name]:

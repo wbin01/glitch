@@ -11,16 +11,16 @@ column = """
 ColumnLayout {
     id: column  // ID
     objectName: "column"  // Object name
-    property string qmlType: "Column"  // Class Name
-    property string baseClass: "Layout"  // Base class name
+    property string className: "Column"  // Class name
+    property string baseClass: "UI"  // Base class name
 """
 
 row = """
 RowLayout {
     id: row  // ID
     objectName: "row"  // Object name
-    property string qmlType: "Row"  // Class Name
-    property string baseClass: "Layout"  // Base class name
+    property string className: "Row"  // Class name
+    property string baseClass: "UI"  // Base class name
 """
 
 # Layout goes in Item or Layout
