@@ -16,45 +16,47 @@ class AppEventFilter(QtCore.QObject):
     Filters the Frame state and adapts the elements.
     """
     def __init__(
-            self, ui: QtQuick.QQuickWindow,
-            main_rect: QtQuick.QQuickItem,
-            style: dict) -> None:
+            self, ui: Frame, gui: QtQuick.QQuickWindow, style: dict) -> None:
         """
-        :param main_rect: The main Rectangle inside the Qml-Window.
-        :param_style: The Frame and Element style dic.
+        :param ui: The main Frame app instance.
+        :param gui: The graphic Qml-Window instance (QQuickWindow).
+        :param style: The application styles dict.
         """
         super().__init__()
         self.__ui = ui
-        self.__main_rect = main_rect
+        self.__gui = gui.findChild(QtCore.QObject, 'mainRect')
         self.__style = style
-        self.__elements = self.__main_rect.findChildren(
+        self.__elements = self.__gui.findChildren(
             QtCore.QObject, options=QtCore.Qt.FindChildrenRecursively)
     
+    @QtCore.Slot()
     def eventFilter(self, obj: QtCore.QObject, event: QtCore.QEvent) -> bool:
         """Adapts the style of the elements.
 
         Filters the active state of the Frame and changes the style of all 
         elements accordingly.
+
+        :param obj: QtCore.QObject.
+        :param event: QtCore.QEvent.
         """
         if event.type() == QtCore.QEvent.WindowActivate:
-            self.__main_rect.setProperty('isActive', 'true')
+            self.__gui.setProperty('isActive', 'true')
             self.__state_style()
         elif event.type() == QtCore.QEvent.WindowDeactivate:
-            self.__main_rect.setProperty('isActive', 'false')
+            self.__gui.setProperty('isActive', 'false')
             self.__state_style(':inactive')
         
         return super().eventFilter(obj, event)
 
+    @QtCore.Slot()
     def __state_style(self, state: str = '') -> None:
         # MainFrame state colors
         frame = f'[{self.__ui._name}{state}]'
-        self.__main_rect.setProperty(
-            'backgroundColor',
-            self.__style[frame]['background_color'])
-        self.__main_rect.setProperty(
-            'borderColor',
-            self.__style[frame]['border_color'])
-        self.__main_rect.findChild(QtCore.QObject, 'canvas').requestPaint()
+        self.__gui.setProperty(
+            'backgroundColor', self.__style[frame]['background_color'])
+        self.__gui.setProperty(
+            'borderColor', self.__style[frame]['border_color'])
+        self.__gui.findChild(QtCore.QObject, 'canvas').requestPaint()
 
         for element in self.__elements:  # element.metaObject().className()
             change_element_style_state(element, state, self.__style)
@@ -78,16 +80,17 @@ class Application(object):
         self.__qml_code = None
         self.__qml_code_iterator = 0
         self.__qml_path = self.__path /'static'/'qml'/'main.qml'
+
         self.__write_qml(self.__ui)
 
         self.__qt_gui_application = QtGui.QGuiApplication(sys.argv)
         self.__engine = QtQml.QQmlApplicationEngine()
         self.__engine.load(self.__qml_path)
+
         if not self.__engine.rootObjects():
             sys.exit(-1)
 
         self.__gui = self.__engine.rootObjects()[0]
-        self.__main_rect = self.__gui.findChild(QtCore.QObject, 'mainRect')
         self.__handler = Handler(self.__gui, self.__ui)
 
     def frame(self) -> Frame:
@@ -102,10 +105,8 @@ class Application(object):
 
         Manages the processes to start the Application Frame and execute it.
         """
-        event_filter = AppEventFilter(
-            self.__ui, self.__main_rect, self.__ui.style)
+        event_filter = AppEventFilter(self.__ui, self.__gui, self.__ui.style)
         self.__gui.installEventFilter(event_filter)
-
         self.__engine.rootContext().setContextProperty('logic', self.__handler)
         sys.exit(self.__qt_gui_application.exec())
 

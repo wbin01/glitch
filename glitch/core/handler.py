@@ -14,14 +14,13 @@ class Handler(QtCore.QObject):
     initial UI elements, and then sets the style of the elements and the Frame 
     in each state.
     """
-
     def __init__(
             self, gui: QtQuick.QQuickWindow = None, ui: MainFrame = None
             ) -> None:
         """The init receives a QML-based UI and the app's Frame.
 
-        :param gui: QML based UI.
-        :param ui: The app's Frame.
+        :param gui: The graphic Qml-Window instance (QQuickWindow).
+        :param ui: The main Frame app instance.
         """
         super().__init__()
         self.__gui = gui
@@ -34,32 +33,6 @@ class Handler(QtCore.QObject):
         self.__gui.windowStateChanged.connect(self.__state_changed)
         self.__init_state_style()
         self.__integrate_graphic_elements(self.__ui)
-
-    @QtCore.Slot()
-    def connections(self):
-        """..."""
-
-        """
-        Qt.LeftButton
-        Qt.RightButton
-        Qt.MiddleButton – scroll
-        Qt.BackButton – botão "Voltar" do mouse
-        Qt.ForwardButton – botão "Avançar" do mouse
-        Qt.TaskButton – botão adicional (geralmente botão de aplicativo)
-        Qt.ExtraButton1 at Qt.ExtraButton24 – Extras (para mouses avançados)
-        Qt.AllButtons
-
-        Left and right click:
-            acceptedButtons: Qt.LeftButton | Qt.RightButton
-
-        Any buttons:
-            acceptedButtons: Qt.AllButtons
-
-        Only middle:
-            acceptedButtons: Qt.MiddleButton
-        """
-        if Event.MOUSE_RIGHT_PRESS in self.__ui.callbacks():
-            self.__ui.callbacks()[Event.MOUSE_RIGHT_PRESS]()
 
     @QtCore.Slot()
     def __element_clicked(self) -> None:
@@ -87,6 +60,7 @@ class Handler(QtCore.QObject):
 
         change_element_style_state(element, state, self.__ui.style)
 
+    @QtCore.Slot()
     def __integrate_graphic_elements(self, layout) -> None:
         # Integration Frame graphic elements into the MainFrame UI.
         for attr, value in layout.__dict__.items():
@@ -182,6 +156,35 @@ class Handler(QtCore.QObject):
                 self.__main_rect.setProperty('color', "#00000000")
 
             self.__main_rect.findChild(QtCore.QObject, 'canvas').requestPaint()
+
+    @QtCore.Slot()
+    def connections(self):
+        """Processes callback properties for QML.
+        
+        MOUSE_RIGHT_PRESS Event
+        """
+
+        """
+        Qt.LeftButton
+        Qt.RightButton
+        Qt.MiddleButton – scroll
+        Qt.BackButton – botão "Voltar" do mouse
+        Qt.ForwardButton – botão "Avançar" do mouse
+        Qt.TaskButton – botão adicional (geralmente botão de aplicativo)
+        Qt.ExtraButton1 at Qt.ExtraButton24 – Extras (para mouses avançados)
+        Qt.AllButtons
+
+        Left and right click:
+            acceptedButtons: Qt.LeftButton | Qt.RightButton
+
+        Any buttons:
+            acceptedButtons: Qt.AllButtons
+
+        Only middle:
+            acceptedButtons: Qt.MiddleButton
+        """
+        if Event.MOUSE_RIGHT_PRESS in self.__ui.callbacks():
+            self.__ui.callbacks()[Event.MOUSE_RIGHT_PRESS]()
 
     @QtCore.Slot()
     def start_move(self) -> None:

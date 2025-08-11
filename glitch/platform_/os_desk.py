@@ -5,9 +5,7 @@ import platform
 
 class OSDesk(object):
     """Platform Selector."""
-
-    def __init__(self):
-        """Class constructor."""
+    def __init__(self) -> None:
         # linux bsd mac windows unknown
         self.__operational_system = self.__os()
 
@@ -17,7 +15,13 @@ class OSDesk(object):
 
     @property
     def desktop_environment(self) -> str:
-        """Desktop environment name."""
+        """Desktop environment name.
+
+        For linux: 'plasma', 'cinnamon', 'xubuntu', 'mate', 'gnome'.
+        For Windos: 'windows-7', 'windows-10', 'windows-11'.
+        For BSD for now it's 'bsd', but it will be like in Linux.
+        For Mac OS for now it's 'mac'.
+        """
         return self.__desktop_environment
 
     @desktop_environment.setter
@@ -26,7 +30,10 @@ class OSDesk(object):
 
     @property
     def operational_system(self) -> str:
-        """Operational system name."""
+        """Operational system name.
+
+        Is 'linux', 'windows'and 'mac' for now.
+        """
         return self.__operational_system
 
     @operational_system.setter

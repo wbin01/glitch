@@ -7,13 +7,20 @@ from ..tools import IniParse
 
 
 class Icons(object):
-    def __init__(self, desktop_environment: str):
+    """Information about operating system icons."""
+    def __init__(self, desktop_environment: str) -> None:
+        """
+        :param desktop_environment: DE name, like 'plasma' or 'mate'.
+        """
         self.__desktop_environment = desktop_environment
         self.__plasma_icon_theme = None
         self.__gtk_icon_theme = None
 
     def icon_theme(self) -> str | None:
-        """..."""
+        """Icon theme name.
+
+        Retrieve the name of the system icon theme.
+        """
         if self.__desktop_environment == 'plasma':
             if self.__plasma_icon_theme:
                 return self.__plasma_icon_theme

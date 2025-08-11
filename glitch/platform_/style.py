@@ -64,7 +64,7 @@ class Style(object):
                 'border_radius': 10,
                 },
             '[Panel:inactive]': {
-                'background_color': '#EF202020',
+                'background_color': '#f00',
                 'border_color': '#202020',
                 'border_radius': 10,
                 },
