@@ -7,6 +7,7 @@ ScrollView {
     id: scroll  // ID
     objectName: "scroll"  // Object name
     property string className: "Scroll"  // Class name
+    property string styleClass: "Scroll"  // Style class
     property string baseClass: "Layout"  // Base class
 """
 

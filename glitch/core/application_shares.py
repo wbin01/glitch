@@ -1,12 +1,10 @@
 #!/usr/bin/env python3
 from PySide6 import QtCore
 
-from ..ui.base import Element
-
 
 @QtCore.Slot()
 def change_element_style_state(
-        element: Element, state: str, style: dict) -> None:
+        element, state: str, style: dict) -> None:
     """Adapts the Element's style based on the Frame's state.
 
     Iterates through the Element's properties and applies a style 
@@ -34,6 +32,9 @@ def change_element_style_state(
         }
 
     name = f'[{element.property('className')}{state}]'
+    if name not in style:
+        name = f'[{element.property('styleClass')}{state}]'
+
     for key, value in element_properties.items():
         if isinstance(value, str):
             if element.property(key) and value in style[name]:

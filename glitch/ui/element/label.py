@@ -8,6 +8,7 @@ Label {
     id: label  // ID
     objectName: "label"  // Object name
     property string className: "Label"  // Class name
+    property string styleClass: "Label"  // Style class
     property string baseClass: "Element"  // Base class name
 """
 
@@ -38,6 +39,7 @@ class Label(Element):
             '// Element header')[1].replace('\n    // Property',
                 properties.replace('<text>', self.__text))
         self.class_id('Label')
+        self.style_class = 'Label'
 
         # Properties
         self.text = self.__text

@@ -6,6 +6,7 @@ Item {
     id: ui  // ID
     objectName: "ui"  // Object name
     property string className: "UI"  // Class name
+    property string styleClass: "UI"  // Style class
     property string baseClass: "object"  // Base class name
 
     // Element header
@@ -51,7 +52,28 @@ class UI(object):
     def __init__(self, *args, **kwargs) -> None:
         self.__qml = qml_code
         self.__obj = None
+        self.__style_class = 'UI'
         self.class_id('UI')
+
+    @property
+    def style_class(self) -> str:
+        """..."""
+        return self.__style_class
+
+    @style_class.setter
+    def style_class(self, style_class: str) -> None:
+        # TODO: obj
+        qml_lines = []
+        for line in self.__qml.split('\n'):
+            if line.strip().endswith('// Style class'):
+                qml_lines.append(
+                    f'    property string styleClass: "{style_class}"  '
+                    '// Style class')
+            else:
+                qml_lines.append(line)
+
+        self.__qml = '\n'.join(qml_lines)
+        self.__style_class = style_class
 
     @property
     def _id(self) -> str:
@@ -114,11 +136,11 @@ class UI(object):
     def _qml(self, qml: str) -> None:
         self.__qml = qml
 
-    def class_id(self, name: str) -> None:
+    def class_id(self, class_id: str) -> None:
         """..."""
+        # Only __init__
         self._id = '_' + str(id(self))
-        self._name = name
-
+        self._name = class_id
 
     def __str__(self) -> str:
         return "<class 'UI'>"

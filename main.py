@@ -4,7 +4,7 @@ from glitch.core import Application, Signal
 from glitch.enum import Align, Event, FrameShape, FrameHint, Size
 # from glitch.ui import MainFrame, Frame, Column, Panel, Row, Scroll, Button, Label
 # from glitch.ui import *
-from glitch.ui.element import Button, Label
+from glitch.ui.element import Button, Label, ToolButton
 from glitch.ui.layout import Column, MainFrame, Frame, Panel, Row, Scroll
 
 
@@ -84,7 +84,9 @@ class View(MainFrame):
         self.label = self.add(Label('Panel slides from left'))
         self.label.margins = None, None, None, 100
 
-        self.button = self.add(Button('Button X', 'document-save'))
+        self.buttonxx = self.add(ToolButton('', 'document-save'))
+
+        self.button = self.add(Button('Button', 'document-save'))
         self.button.connect(self.on_button)
 
         self.button.size = Size.AUTO, 50

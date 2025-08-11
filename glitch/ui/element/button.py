@@ -13,6 +13,7 @@ Button {
     id: button  // ID
     objectName: "button"  // Object name
     property string className: "Button"  // Class name
+    property string styleClass: "Button"  // Style class
     property string baseClass: "Element"  // Base class name
 """
 
@@ -23,7 +24,7 @@ properties = """
 
 
 class Button(Element):
-    """Button Element"""
+    """Button Element."""
     def __init__(
             self, text: str = '', icon: str = None, *args, **kwargs) -> None:
         """
@@ -46,6 +47,7 @@ class Button(Element):
             properties.replace(
                 '<text>', self.__text).replace('<icon>', self.__icon))
         self.class_id('Button')
+        self.style_class = 'Button'
 
         # Properties
         self.text = self.__text

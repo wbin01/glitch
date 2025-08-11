@@ -20,7 +20,8 @@ import "elements"
 Window {
     id: frame  // ID
     objectName: "frame"  // Object name
-    property string className: "Window"  // Class name
+    property string className: "Frame"  // Class name
+    property string styleClass: "Frame"  // Style class
     property string baseClass: "Layout"  // Base class
 """
 

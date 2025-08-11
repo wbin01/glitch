@@ -11,6 +11,7 @@ Button {
     id: button  // ID
     objectName: "button"  // Object name
     property string className: "Button"  // Class name
+    property string styleClass: "Button"  // Style class
     property string baseClass: "Element"  // Base class
     property color borderColor: "#555"
     property color backgroundColor: "#444"
