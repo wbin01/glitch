@@ -8,4 +8,4 @@ class ToolButton(Button):
         super().__init__(icon_size=22, *args, **kwargs)
         self.size = self.size[1], self.size[1]
         self.class_id('ToolButton')
-        self._qml = self._qml.replace('checkable: false', 'checkable: true')
+        # self._qml = self._qml.replace('checkable: false', 'checkable: true')

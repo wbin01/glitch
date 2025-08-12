@@ -32,6 +32,24 @@ class Style(object):
                 'font_color': '#FFF',
                 'icon_opacity': 1.0,
                 },
+            '[Button:checked]': {
+                'background_color': '#883c8cbd',
+                'border_color': '#883c8cbd',
+                'font_color': '#FFF',
+                'icon_opacity': 1.0,
+                },
+            '[Button:checked:inactive]': {
+                'background_color': '#333',
+                'border_color': '#333',
+                'font_color': '#666',
+                'icon_opacity': 0.3,
+                },
+            '[Button:checked:hover]': {
+                'background_color': '#883c8cbd',
+                'border_color': '#883c8cbd',
+                'font_color': '#FFF',
+                'icon_opacity': 1.0,
+                },
             '[Frame]': {
                 'background_color': '#2A2A2A',  # Alt 282828
                 'border_color': '#3c8cbd',

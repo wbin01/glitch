@@ -85,15 +85,18 @@ class View(MainFrame):
         self.label.margins = None, None, None, 100
 
         self.tool_button = self.add(ToolButton('', 'document-save'))
+        self.tool_button.checkable = True
         # self.tool_button.style_class = 'Panel'
 
-        self.button = self.add(Button('Button', 'document-save'))
-        self.button.connect(self.on_button)
+        self.button = self.add(Button('Button check', 'document-open'))
+        # self.button.connect(self.on_button)
+        self.button.checkable = True
+        self.button.checked = True
 
-        self.button.size = Size.AUTO, 50
-        self.button.size = 300, Size.AUTO
-        self.button.size = Size.AUTO, None
-        self.button.size = Size.FILL, Size.AUTO
+        # self.button.size = Size.AUTO, 50
+        # self.button.size = 300, Size.AUTO
+        # self.button.size = Size.AUTO, None
+        # self.button.size = Size.FILL, Size.AUTO
 
         self.scroll = self.add(Scroll())
         self.scroll_column = self.scroll.add(Column())
@@ -112,8 +115,8 @@ class View(MainFrame):
         self.custom.button_clicked_signal.connect(self.on_custom_clicked)
 
         self.row = self.add(Row())
-        self.row.add(Button('Button 1'))
-        self.row.add(Button('Button 2'))
+        self.row.add(Button('Ok', 'dialog-ok-apply'))
+        self.row.add(Button('Cancel', 'dialog-cancel'))
 
         self.column = self.add(Column())
         self.column.add(Button('Button 1'))

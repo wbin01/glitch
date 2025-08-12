@@ -45,6 +45,8 @@ class Button(Element):
         self.__text = text
         self.__icon_size = icon_size
         self.__icon = self.__get_icon_path(icon)
+        self.__checkable = False
+        self.__checked = False
 
         # QML
         self._qml = header + self._qml.split(
@@ -55,8 +57,40 @@ class Button(Element):
         self.style_class = 'Button'
 
         # Properties
-        self.text = self.__text
+        # self.text = self.__text
         self.icon = icon
+
+    @property
+    def checkable(self) -> bool:
+        """..."""
+        return self.__checkable
+
+    @checkable.setter
+    def checkable(self, checkable: bool) -> None:
+        if self._obj:
+            self._obj.setProperty('checkable', checkable)
+        else:
+            last_checkable = 'true' if self.__checkable else 'false'
+            checkable_str = 'true' if checkable else 'false'
+            self._qml = self._qml.replace(
+                f'checkable: {last_checkable}', f'checkable: {checkable_str}')
+        self.__checkable = checkable
+
+    @property
+    def checked(self) -> bool:
+        """..."""
+        return self.__checked
+
+    @checked.setter
+    def checked(self, checked: bool) -> None:
+        if self._obj:
+            self._obj.setProperty('checked', checked)
+        else:
+            last_checked = 'true' if self.__checked else 'false'
+            checked_str = 'true' if checked else 'false'
+            self._qml = self._qml.replace(
+                f'checked: {last_checked}', f'checked: {checked_str}')
+        self.__checked = checked
 
     @property
     def icon(self) -> str:
@@ -64,33 +98,28 @@ class Button(Element):
         return self.__icon
 
     @icon.setter
-    def icon(self, name: str) -> None:
+    def icon(self, icon: str) -> None:
+        icon = self.__get_icon_path(icon)
+
         if self._obj:
-            self._obj.setProperty('icon', name)
-            return
-        
-        icon = self.__path/'static'/'icons'/f'{name}.svg'
-        self._qml = self._qml.replace(
-            f'\n    iconSource: "{self.__icon}"',
-            f'\n    iconSource: "{icon}"')
+            self._obj.setProperty('icon', icon)
+        else:
+            self._qml = self._qml.replace(
+                f'iconSource: "{self.__icon}"', f'iconSource: "{icon}"')
         self.__icon = icon
 
     @property
     def text(self) -> str:
         """Button text string."""
-        if self._obj:
-            return self._obj.property('text')
         return self.__text
 
     @text.setter
     def text(self, text: str) -> None:
         if self._obj:
             self._obj.setProperty('text', text)
-            return
-        
-        self._qml = self._qml.replace(
-            f'\n    text: "{self.__text}"',
-            f'\n    text: "{text}"')
+        else:
+            self._qml = self._qml.replace(
+                f'text: "{self.__text}"', f'text: "{text}"')
         self.__text = text
 
     def callbacks(self) -> dict:
@@ -128,7 +157,6 @@ class Button(Element):
         """
         if self._obj:
             return self._obj.property('hovered')
-
         return False
 
     def __get_icon_path(self, icon_name: str | None) -> str | None:
