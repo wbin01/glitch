@@ -12,8 +12,9 @@ ColumnLayout {
     id: column  // ID
     objectName: "column"  // Object name
     property string className: "Column"  // Class name
-    property string styleClass: "Column"  // Style class
     property string baseClass: "UI"  // Base class name
+    property string styleClass: "Column"  // Style class
+    property string baseStyle: "Column"  // Base style
 """
 
 row = """
@@ -21,8 +22,9 @@ RowLayout {
     id: row  // ID
     objectName: "row"  // Object name
     property string className: "Row"  // Class name
-    property string styleClass: "Row"  // Style class
     property string baseClass: "UI"  // Base class name
+    property string styleClass: "Row"  // Style class
+    property string baseStyle: "Row"  // Base style
 """
 
 # Layout goes in Item or Layout

@@ -8,8 +8,9 @@ Label {
     id: label  // ID
     objectName: "label"  // Object name
     property string className: "Label"  // Class name
+    property string baseClass: "Element"  // Base class
     property string styleClass: "Label"  // Style class
-    property string baseClass: "Element"  // Base class name
+    property string baseStyle: "Label"  // Base style
 """
 
 properties = """

@@ -84,7 +84,8 @@ class View(MainFrame):
         self.label = self.add(Label('Panel slides from left'))
         self.label.margins = None, None, None, 100
 
-        self.buttonxx = self.add(ToolButton('', 'document-save'))
+        self.tool_button = self.add(ToolButton('', 'document-save'))
+        # self.tool_button.style_class = 'Panel'
 
         self.button = self.add(Button('Button', 'document-save'))
         self.button.connect(self.on_button)

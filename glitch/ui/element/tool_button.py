@@ -8,3 +8,4 @@ class ToolButton(Button):
         super().__init__(*args, **kwargs)
         self.size = self.size[1], self.size[1]
         self.class_id('ToolButton')
+        # self.style_class = 'Panel'

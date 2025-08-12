@@ -13,8 +13,9 @@ Button {
     id: button  // ID
     objectName: "button"  // Object name
     property string className: "Button"  // Class name
+    property string baseClass: "Element"  // Base class
     property string styleClass: "Button"  // Style class
-    property string baseClass: "Element"  // Base class name
+    property string baseStyle: "Button"  // Base style
 """
 
 properties = """

@@ -64,13 +64,37 @@ class Style(object):
                 'border_radius': 10,
                 },
             '[Panel:inactive]': {
-                'background_color': '#f00',
+                'background_color': '#202020',
                 'border_color': '#202020',
                 'border_radius': 10,
                 },
             '[Platform]': {
                 'accent_color': '#3c8cbd',
                 },
+            '[ToolButton]': {
+                'background_color': '#333',
+                'border_color': '#090',
+                'font_color': '#EEE',
+                'icon_opacity': 1.0,
+                },
+            # '[ToolButton:inactive]': {
+            #     'background_color': '#222',
+            #     'border_color': '#333',
+            #     'font_color': '#666',
+            #     'icon_opacity': 0.3,
+            #     },
+            # '[ToolButton:hover]': {
+            #     'background_color': '#383838',
+            #     'border_color': '#883c8cbd',
+            #     'font_color': '#EEE',
+            #     'icon_opacity': 1.0,
+            #     },
+            # '[ToolButton:clicked]': {
+            #     'background_color': '#333c8cbd',
+            #     'border_color': '#883c8cbd',
+            #     'font_color': '#FFF',
+            #     'icon_opacity': 1.0,
+            #     },
             }
     
     def __str__(self) -> str:

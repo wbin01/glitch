@@ -21,8 +21,9 @@ Window {
     id: frame  // ID
     objectName: "frame"  // Object name
     property string className: "Frame"  // Class name
-    property string styleClass: "Frame"  // Style class
     property string baseClass: "Layout"  // Base class
+    property string styleClass: "Frame"  // Style class
+    property string baseStyle: "Frame"  // Base style
 """
 
 properties = """

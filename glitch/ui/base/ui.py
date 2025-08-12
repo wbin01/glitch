@@ -6,8 +6,9 @@ Item {
     id: ui  // ID
     objectName: "ui"  // Object name
     property string className: "UI"  // Class name
+    property string baseClass: "UI"  // Base class
     property string styleClass: "UI"  // Style class
-    property string baseClass: "object"  // Base class name
+    property string baseStyle: "UI"  // Base style
 
     // Element header
 
@@ -52,7 +53,9 @@ class UI(object):
     def __init__(self, *args, **kwargs) -> None:
         self.__qml = qml_code
         self.__obj = None
+        self.__name = 'UI'
         self.__style_class = 'UI'
+        self.__base_style_class = 'UI'
         self.class_id('UI')
 
     @property
@@ -91,7 +94,7 @@ class UI(object):
             else:
                 qml_lines.append(line)
 
-        self.__qml = '\n'.join(qml_lines)  # .replace('<suffix_id>', id_)
+        self.__qml = '\n'.join(qml_lines)
         self.__id = id_
 
     @property
@@ -139,6 +142,11 @@ class UI(object):
     def class_id(self, class_id: str) -> None:
         """..."""
         # Only __init__
+        self._qml = self._qml.replace(
+            f'property string baseStyle: "{self.__base_style_class}"',
+            f'property string baseStyle: "{class_id}"')
+        self.__base_style_class = self._name
+
         self._id = '_' + str(id(self))
         self._name = class_id
 
