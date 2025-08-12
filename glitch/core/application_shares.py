@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-from PySide6 import QtCore
+from PySide6 import QtCore, QtQuick
 
 
 @QtCore.Slot()
 def change_element_style_state(
-        element, state: str, style: dict) -> None:
+        element: QtQuick.QQuickItem, state: str, style: dict) -> None:
     """Adapts the Element's style based on the Frame's state.
 
     Iterates through the Element's properties and applies a style 
@@ -14,10 +14,33 @@ def change_element_style_state(
     :param state: Frame state like ":inactive".
     :param style: application styles.
     """
+    # Mark canvas
     canvas = element.property('className') in ['Panel', 'MainFrame', 'Frame']
     if (element.property('baseClass') != 'Element' and not canvas):
         return
 
+    # Style class
+    class_name = f'[{element.property('className')}{state}]'
+    style_class = f'[{element.property('styleClass')}{state}]'
+    base_style = f'[{element.property('baseStyle')}{state}]'
+
+    name = style_class if style_class != base_style else class_name
+    if name not in style:
+        name = class_name if class_name in style else base_style
+
+    # Checkable state
+    if element.property('checkable') and element.property('checked'):
+        if state == ':inactive':
+            name = f'[{element.property('className')}:checked:inactive]'
+        else:
+            if ':hover' in name:
+                name = f'[{element.property('className')}:checked:hover]'
+            elif ':clicked' in name:
+                name = f'[{element.property('className')}:clicked]'
+            else:
+                name = f'[{element.property('className')}:checked]'
+
+    # Aply style properties
     element_properties = {
         'color': 'font_color',
         'backgroundColor': 'background_color',
@@ -31,21 +54,12 @@ def change_element_style_state(
             'opacity': 'icon_opacity'},
         }
 
-    class_name = f'[{element.property('className')}{state}]'
-    style_class = f'[{element.property('styleClass')}{state}]'
-    base_style = f'[{element.property('baseStyle')}{state}]'
-
-    name = style_class if style_class != base_style else class_name
-    if name not in style:
-        name = class_name if class_name in style else base_style
-
     for key, value in element_properties.items():
         if isinstance(value, str):
             if element.property(key) and value in style[name]:
                 element.setProperty(key, style[name][value])
             # elif element.property(key) and value in style[base_style]:
             #     element.setProperty(key, style[base_style][value])
-
         else:
             base_element = element.findChild(QtCore.QObject, key)
             if not base_element:

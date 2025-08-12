@@ -72,29 +72,47 @@ class Style(object):
                 'accent_color': '#3c8cbd',
                 },
             '[ToolButton]': {
-                'background_color': '#333',
-                'border_color': '#090',
+                'background_color': '#00000000',
+                'border_color': '#00000000',
                 'font_color': '#EEE',
                 'icon_opacity': 1.0,
                 },
-            # '[ToolButton:inactive]': {
-            #     'background_color': '#222',
-            #     'border_color': '#333',
-            #     'font_color': '#666',
-            #     'icon_opacity': 0.3,
-            #     },
-            # '[ToolButton:hover]': {
-            #     'background_color': '#383838',
-            #     'border_color': '#883c8cbd',
-            #     'font_color': '#EEE',
-            #     'icon_opacity': 1.0,
-            #     },
-            # '[ToolButton:clicked]': {
-            #     'background_color': '#333c8cbd',
-            #     'border_color': '#883c8cbd',
-            #     'font_color': '#FFF',
-            #     'icon_opacity': 1.0,
-            #     },
+            '[ToolButton:inactive]': {
+                'background_color': '#00000000',
+                'border_color': '#00000000',
+                'font_color': '#666',
+                'icon_opacity': 0.3,
+                },
+            '[ToolButton:hover]': {
+                'background_color': '#00000000',
+                'border_color': '#883c8cbd',
+                'font_color': '#EEE',
+                'icon_opacity': 1.0,
+                },
+            '[ToolButton:clicked]': {
+                'background_color': '#333c8cbd',
+                'border_color': '#883c8cbd',
+                'font_color': '#FFF',
+                'icon_opacity': 1.0,
+                },
+            '[ToolButton:checked]': {
+                'background_color': '#333',
+                'border_color': '#444',
+                'font_color': '#FFF',
+                'icon_opacity': 1.0,
+                },
+            '[ToolButton:checked:inactive]': {
+                'background_color': '#222',
+                'border_color': '#333',
+                'font_color': '#666',
+                'icon_opacity': 0.3,
+                },
+            '[ToolButton:checked:hover]': {
+                'background_color': '#333',
+                'border_color': '#883c8cbd',
+                'font_color': '#FFF',
+                'icon_opacity': 1.0,
+                },
             }
     
     def __str__(self) -> str:

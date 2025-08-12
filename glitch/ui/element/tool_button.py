@@ -5,7 +5,7 @@ from .button import Button
 class ToolButton(Button):
     """Tool Button Element."""
     def __init__(self, *args, **kwargs) -> None:
-        super().__init__(*args, **kwargs)
+        super().__init__(icon_size=22, *args, **kwargs)
         self.size = self.size[1], self.size[1]
         self.class_id('ToolButton')
-        # self.style_class = 'Panel'
+        self._qml = self._qml.replace('checkable: false', 'checkable: true')

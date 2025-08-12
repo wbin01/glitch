@@ -21,13 +21,16 @@ Button {
 properties = """
     text: "<text>"
     iconSource: <icon>
+    checkable: false
+    checked: false
 """
 
 
 class Button(Element):
     """Button Element."""
     def __init__(
-            self, text: str = '', icon: str = None, *args, **kwargs) -> None:
+            self, text: str = '', icon: str = None, icon_size: int = 16,
+            *args, **kwargs) -> None:
         """
         :param text: Button text string.
         :param icon: Icon name or path string.
@@ -40,7 +43,8 @@ class Button(Element):
 
         # Args
         self.__text = text
-        self.__icon = self.__set_icon_path(icon)
+        self.__icon_size = icon_size
+        self.__icon = self.__get_icon_path(icon)
 
         # QML
         self._qml = header + self._qml.split(
@@ -127,7 +131,7 @@ class Button(Element):
 
         return False
 
-    def __set_icon_path(self, icon_name: str | None) -> str | None:
+    def __get_icon_path(self, icon_name: str | None) -> str | None:
         if not icon_name:
             return '""'
 
@@ -139,7 +143,7 @@ class Button(Element):
         else:
             icon_path = IconTheme.getIconPath(
                 iconname=icon_name,
-                size=16,
+                size=self.__icon_size,
                 theme=self.__platform_icons.icon_theme(),
                 extensions=['png', 'svg', 'xpm'])
 

@@ -22,6 +22,8 @@ Button {
     property bool hasIcon: iconSource !== ""
 
     hoverEnabled: true
+    checkable: false
+    checked: false
 
     contentItem: Item {
         anchors.fill: parent
