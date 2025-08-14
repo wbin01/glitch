@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from PySide6 import QtCore, QtQuick
 
-from .application_shares import change_element_style_state
+from .application_shares import change_element_style_state, style_value
 from ..enum import Event
 from ..ui.base import Element, Layout
 from ..ui.layout import Frame, MainFrame
@@ -132,11 +132,11 @@ class Handler(QtCore.QObject):
                 self.__main_rect.setProperty('borderWidth', 0)
                 self.__main_rect.setProperty('outLineWidth', 0)
                 self.__main_rect.setProperty('outLineColor',
-                    self.__ui.style[frame]['background_color'])
+                    style_value(self.__ui.style, frame, 'background_color'))
                 self.__main_rect.setProperty('borderColor',
-                    self.__ui.style[frame]['background_color'])
+                    style_value(self.__ui.style, frame, 'background_color'))
                 self.__main_rect.setProperty('color',
-                    self.__ui.style[frame]['background_color'])
+                    style_value(self.__ui.style, frame, 'background_color'))
             else:  # QtCore.Qt.WindowNoState
                 self.__main_rect.setProperty(
                     'radiusTopLeft', self.__ui.radius[0])
@@ -152,7 +152,7 @@ class Handler(QtCore.QObject):
                 self.__main_rect.setProperty('outLineWidth', 1)
                 self.__main_rect.setProperty('outLineColor', '#55000000')
                 self.__main_rect.setProperty('borderColor',
-                    self.__ui.style[frame]['border_color'])
+                    style_value(self.__ui.style, frame, 'border_color'))
                 self.__main_rect.setProperty('color', "#00000000")
 
             self.__main_rect.findChild(QtCore.QObject, 'canvas').requestPaint()

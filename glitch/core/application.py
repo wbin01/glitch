@@ -5,7 +5,7 @@ import pathlib
 from PySide6 import QtCore, QtGui, QtQml, QtQuick
 
 from .handler import Handler
-from .application_shares import change_element_style_state
+from .application_shares import change_element_style_state, style_value
 from ..ui.base import Element, Layout
 from ..ui.layout import Frame
 
@@ -53,9 +53,10 @@ class AppEventFilter(QtCore.QObject):
         # MainFrame state colors
         frame = f'[{self.__ui._name}{state}]'
         self.__gui.setProperty(
-            'backgroundColor', self.__style[frame]['background_color'])
+            'backgroundColor',
+            style_value(self.__style, frame, 'background_color'))
         self.__gui.setProperty(
-            'borderColor', self.__style[frame]['border_color'])
+            'borderColor', style_value(self.__style, frame, 'border_color'))
         self.__gui.findChild(QtCore.QObject, 'canvas').requestPaint()
 
         for element in self.__elements:  # element.metaObject().className()

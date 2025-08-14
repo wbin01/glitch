@@ -57,19 +57,39 @@ def change_element_style_state(
     for key, value in element_properties.items():
         if isinstance(value, str):
             if element.property(key) and value in style[name]:
-                element.setProperty(key, style[name][value])
+                element.setProperty(key, style_value(style, name, value))
             # elif element.property(key) and value in style[base_style]:
             #     element.setProperty(key, style[base_style][value])
         else:
-            base_element = element.findChild(QtCore.QObject, key)
-            if not base_element:
+            inner = element.findChild(QtCore.QObject, key)
+            if not inner:
                 continue
-            for key_, value_ in value.items():
-                if base_element.property(key_) and value_ in style[name]:
-                    base_element.setProperty(key_, style[name][value_])
-                # elif element.property(key_) and value_ in style[base_style]:
-                #     element.setProperty(key_, style[base_style][value_])
+            for key, value in value.items():
+                if inner.property(key) and value in style[name]:
+                    inner.setProperty(key, style_value(style, name, value))
 
     if canvas:
-        base_element = element.findChild(QtCore.QObject, 'canvas')
-        base_element.requestPaint()
+        inner = element.findChild(QtCore.QObject, 'canvas')
+        inner.requestPaint()
+
+
+def style_value(style, name, value) -> str:
+    value = style[name][value]
+    if not value.startswith('['):
+        return value
+
+    name, key = value.split(']')
+    key, *alpha = (key + '#').split('#')
+    alpha = (alpha[0].strip('*') + 'FF')[:2]
+
+    value = style[name.strip() + ']'][key.strip()].strip('#')
+    len_value  = len(value)
+
+    if len_value == 3:
+        value = '#' + alpha + value + value
+    elif len_value == 6:
+        value = '#' + alpha + value
+    else:
+        value = '#' + alpha + value[2:]
+
+    return value
