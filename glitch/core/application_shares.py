@@ -74,15 +74,18 @@ def change_element_style_state(
 
 
 def style_value(style, name, value) -> str:
-    value = style[name][value]
+    value = style[name][value].replace(' ', '')
     if not value.startswith('['):
         return value
 
     name, key = value.split(']')
-    key, *alpha = (key + '#').split('#')
-    alpha = (alpha[0].strip('*') + 'FF')[:2]
+    if '#' not in key:
+        return style[name + ']'][key]
 
-    value = style[name.strip() + ']'][key.strip()].strip('#')
+    key, *alpha = key.split('#')
+    alpha = (alpha[0] + 'FF')[:2]
+
+    value = style[name + ']'][key].strip('#')
     len_value  = len(value)
 
     if len_value == 3:
