@@ -50,12 +50,22 @@ class UI(object):
     Elements are visual and interactive application items such as buttons and 
     text.
     """
+    pass
+
+
+class UI(UI):
+    """A visual element object.
+
+    Elements are visual and interactive application items such as buttons and 
+    text.
+    """
     def __init__(self, *args, **kwargs) -> None:
         self.__qml = qml_code
         self.__obj = None
         self.__name = 'UI'
         self.__style_class = 'UI'
         self.__base_style_class = 'UI'
+        self.__application_frame = self
         self.class_id('UI')
 
     @property
@@ -77,6 +87,15 @@ class UI(object):
 
         self.__qml = '\n'.join(qml_lines)
         self.__style_class = style_class
+
+    @property
+    def _application_frame(self) -> UI:
+        """..."""
+        return self.__application_frame
+
+    @_application_frame.setter
+    def _application_frame(self, frame: UI) -> None:
+        self.__application_frame = frame
 
     @property
     def _id(self) -> str:

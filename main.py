@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+import pprint
+
 # from glitch import *
 from glitch.core import Application, Signal
 from glitch.enum import Align, Event, FrameShape, FrameHint, Size
@@ -55,13 +57,13 @@ class CustomElementX(Row):
         self.__custom_label.text = f'CustomElement clicked: {self.__num}'
 
 
-class View(Frame):
+class View(MainFrame):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         # Set
-        self.radius = 5
+        self.radius = 5, 5, 0, 0
+        # print(self.style['[MainFrame]']['border_radius'])
         # self.hint = FrameHint.TOP
-
         self.ola = 555
 
         self.panel_side = 'left'
@@ -93,7 +95,7 @@ class View(Frame):
         self.button.checkable = True
         self.button.checked = True
 
-        # self.button.size = Size.AUTO, 50
+        self.button.size = Size.AUTO, 50
         # self.button.size = 300, Size.AUTO
         # self.button.size = Size.AUTO, None
         # self.button.size = Size.FILL, Size.AUTO
@@ -120,11 +122,32 @@ class View(Frame):
 
         self.column = self.add(Column())
         self.column.add(Button('Button 1'))
-        self.column.add(Button('Button 2'))
+        self.button_2 = self.column.add(Button('Button 2'))
+        self.button_2.connect(lambda: print('button_2'))
+
+        self.button_2.style_class = 'button_2'
+        self.style['[button_2]'] = {
+            'background_color': 'red',
+            'border_color': 'green',
+            'icon_opacity': '1.0'}
 
         # Flags
         self.num = 0
         self.custom_num = 0
+
+        # print(self._application_frame)
+        # print(self.panel._application_frame)
+        # print(self.panel_column._application_frame)
+        # print(self.label._application_frame)
+        # print(self.tool_button._application_frame)
+        # print(self.button._application_frame)
+        # print(self.scroll._application_frame)
+        # print(self.scroll_column._application_frame)
+        # print(self.custom0._application_frame)
+        # print(self.customx._application_frame)
+        # print(self.custom._application_frame)
+        # print(self.column._application_frame)
+        # print(self.button_2._application_frame)
 
     def on_custom_clicked(self):
         self.button.size = 300, Size.AUTO
@@ -136,6 +159,12 @@ class View(Frame):
         else:
             self.panel_side = 'right'
             self.label.text = 'Panel slides from right'
+
+        # self.button._qml = self.button._qml.replace('backgroundColor')
+        print(self.button._obj.property('backgroundColor'))
+        print(self.button._id)
+        print(self.button._obj.property('objectName'))
+        pprint.pprint(self.style)
 
         # print(self.custom0.custom_button.text)
 

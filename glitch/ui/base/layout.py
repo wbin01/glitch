@@ -109,6 +109,8 @@ class Layout(UI):
         else:
             setattr(self, obj._id, obj)
 
+        obj._application_frame = self._application_frame
+
         self.__items.append(obj)
         return obj
 

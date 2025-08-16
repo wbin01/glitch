@@ -119,6 +119,8 @@ class Application(object):
                 if isinstance(element, Element):
                     element._id = attr
 
+        # TODO: update style
+
         # Parse QML
         end = '\n// Close'
         layout._qml, ui_close = layout._qml.split(end)
