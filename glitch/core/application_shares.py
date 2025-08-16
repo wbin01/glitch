@@ -24,21 +24,21 @@ def change_element_style_state(
     style_class = f'[{element.property('styleClass')}{state}]'
     base_style = f'[{element.property('baseStyle')}{state}]'
 
-    name = style_class if style_class != base_style else class_name
-    if name not in style:
-        name = class_name if class_name in style else base_style
+    header = style_class if style_class != base_style else class_name
+    if header not in style:
+        header = class_name if class_name in style else base_style
 
     # Checkable state
     if element.property('checkable') and element.property('checked'):
         if state == ':inactive':
-            name = f'[{element.property('className')}:checked:inactive]'
+            header = f'[{element.property('className')}:checked:inactive]'
         else:
-            if ':hover' in name:
-                name = f'[{element.property('className')}:checked:hover]'
-            elif ':clicked' in name:
-                name = f'[{element.property('className')}:clicked]'
+            if ':hover' in header:
+                header = f'[{element.property('className')}:checked:hover]'
+            elif ':clicked' in header:
+                header = f'[{element.property('className')}:clicked]'
             else:
-                name = f'[{element.property('className')}:checked]'
+                header = f'[{element.property('className')}:checked]'
 
     # Aply style properties
     element_properties = {
@@ -54,38 +54,35 @@ def change_element_style_state(
             'opacity': 'icon_opacity'},
         }
 
-    for key, value in element_properties.items():
-        if isinstance(value, str):
-            if element.property(key) and value in style[name]:
-                element.setProperty(key, style_value(style, name, value))
-            # elif element.property(key) and value in style[base_style]:
-            #     element.setProperty(key, style[base_style][value])
+    for key, prop in element_properties.items():
+        if isinstance(prop, str):
+            if element.property(key) and prop in style[header]:
+                element.setProperty(key, style_value(style, header, prop))
         else:
             inner = element.findChild(QtCore.QObject, key)
             if not inner:
                 continue
-            for key, value in value.items():
-                if inner.property(key) and value in style[name]:
-                    inner.setProperty(key, style_value(style, name, value))
-
+            for key, prop in prop.items():
+                if inner.property(key) and prop in style[header]:
+                    inner.setProperty(key, style_value(style, header, prop))
     if canvas:
         inner = element.findChild(QtCore.QObject, 'canvas')
         inner.requestPaint()
 
 
-def style_value(style, name, value) -> str:
-    value = style[name][value].replace(' ', '')
+def style_value(style: dict, header: str, prop: str) -> str:
+    value = style[header][prop]
     if not value.startswith('['):
         return value
 
-    name, key = value.split(']')
+    header, key = value.replace(' ', '').split(']')
     if '#' not in key:
-        return style[name + ']'][key]
+        return style[header + ']'][key]
 
     key, *alpha = key.split('#')
     alpha = (alpha[0] + 'FF')[:2]
 
-    value = style[name + ']'][key].strip('#')
+    value = style[header + ']'][key].strip('#')
     len_value  = len(value)
 
     if len_value == 3:

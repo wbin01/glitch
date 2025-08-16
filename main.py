@@ -55,7 +55,7 @@ class CustomElementX(Row):
         self.__custom_label.text = f'CustomElement clicked: {self.__num}'
 
 
-class View(MainFrame):
+class View(Frame):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         # Set
