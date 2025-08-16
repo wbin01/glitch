@@ -4,6 +4,7 @@ import logging
 from PySide6 import QtCore
 
 from ..base import Layout
+from ...core.signal import Signal
 from ...enum import Event, FrameHint, FrameShape, Orientation
 from ...platform_ import Style
 
@@ -258,6 +259,9 @@ class Frame(Layout):
     """
     def __init__(self, resizable: bool = False, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
+        self.size_signal = Signal()
+        self.shape_signal = Signal()
+
         # Args
         self.__resizable = resizable
 
@@ -279,7 +283,7 @@ class Frame(Layout):
         self.__hint = FrameHint.FRAME
         self.__shape = FrameShape.FRAME
         # self.__items = []
-        self.__style = Style().style
+        self.style = Style().style
         self.__visibility = 'Window.Windowed'
         self.__callbacks = {}
         self.__radius = 10, 10, 10, 10
@@ -448,6 +452,7 @@ class Frame(Layout):
 
         self.__visibility = visibility
         self.__shape = shape
+        self.shape_signal.emit()
 
     @property
     def size(self) -> tuple:
@@ -486,19 +491,7 @@ class Frame(Layout):
         self.__width = width
         self.__height = height
         self.__size = width, height
-
-    @property
-    def style(self) -> dict:
-        """Application style.
-
-        A dictionary with color and style information for each visual element 
-        in the application.
-        """
-        return self.__style
-
-    @style.setter
-    def style(self, style: dict) -> None:
-        self.__style = style
+        self.size_signal.emit()
 
     def callbacks(self) -> dict:
         """The functions used in the `connect` method.

@@ -139,6 +139,7 @@ class View(MainFrame):
         # print(self.panel._application_frame)
         # print(self.panel_column._application_frame)
         # print(self.label._application_frame)
+        #print(self.label.style)
         # print(self.tool_button._application_frame)
         # print(self.button._application_frame)
         # print(self.scroll._application_frame)
@@ -161,10 +162,12 @@ class View(MainFrame):
             self.label.text = 'Panel slides from right'
 
         # self.button._qml = self.button._qml.replace('backgroundColor')
-        print(self.button._obj.property('backgroundColor'))
-        print(self.button._id)
-        print(self.button._obj.property('objectName'))
-        pprint.pprint(self.style)
+        # print(self.button._obj.property('backgroundColor'))
+        # print(self.button._id)
+        # print(self.button._obj.property('objectName'))
+        # pprint.pprint(self.style)
+
+        self.button.style = {1:0}
 
         # print(self.custom0.custom_button.text)
 

@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 import logging
 
-from ...enum import Size
 from .ui import UI
+from ...core.signal import Signal
+from ...enum import Size
 
 
 class Element(UI):
@@ -13,6 +14,8 @@ class Element(UI):
     """
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
+        self.size_signal = Signal()
+
         self.__fill_height = False
         self.__fill_width = True
         self.__height = 30
@@ -150,6 +153,7 @@ class Element(UI):
         self.__width = width
         self.__height = height
         self.__size = width, height
+        self.size_signal.emit()
 
     def __set_obj_size(
             self, enum: Size, width_height: 'width', value: int) -> None:

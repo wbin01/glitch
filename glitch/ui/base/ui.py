@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-
+from ...core.signal import Signal
 
 qml_code = """
 Item {
@@ -60,13 +60,33 @@ class UI(UI):
     text.
     """
     def __init__(self, *args, **kwargs) -> None:
+        self.style_signal = Signal()
+        self.style_class_signal = Signal()
+
+        self.__id = None
         self.__qml = qml_code
         self.__obj = None
         self.__name = 'UI'
         self.__style_class = 'UI'
         self.__base_style_class = 'UI'
         self.__application_frame = self
+        self.__style = {}
         self.class_id('UI')
+
+    @property
+    def style(self) -> dict:
+        """Visual style.
+
+        A dictionary with color and style information for each visual element 
+        in the application.
+        """
+        return self.__style
+
+    @style.setter
+    def style(self, style: dict) -> None:
+        self.__style = style
+        self.style_signal.value = self.__style
+        self.style_signal.emit()
 
     @property
     def style_class(self) -> str:
@@ -87,6 +107,7 @@ class UI(UI):
 
         self.__qml = '\n'.join(qml_lines)
         self.__style_class = style_class
+        self.style_class_signal.emit()
 
     @property
     def _application_frame(self) -> UI:
