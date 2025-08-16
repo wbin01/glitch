@@ -106,8 +106,6 @@ class Layout(UI):
         :param obj: Element or Layout object type
         """
         obj._application_frame = self._application_frame
-        obj.style_signal.connect(
-            lambda signal=obj.style_signal: self.__style_signal_change(signal))
 
         if self._obj:
             obj._obj.setParentItem(self)
@@ -123,10 +121,6 @@ class Layout(UI):
         List that includes Elements and other Layouts.
         """
         return self.__items
-
-    def __style_signal_change(self, signal: Signal) -> None:
-        print(signal.value)
-        # self._application_frame
 
     def __str__(self) -> str:
         return "<class 'Layout'>"

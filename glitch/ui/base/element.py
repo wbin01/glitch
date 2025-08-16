@@ -52,12 +52,9 @@ class Element(UI):
         return self.__margins
 
     @margins.setter
-    def margins(self, margins: tuple) -> None:
-        if not isinstance(margins, int) and not isinstance(margins, tuple):
-            logging.error(
-                f'\n  {self._name}.margins: Use a tuple of integers like '
-                '(10, 10, 10, 10) or an integer like 10.')
-            return
+    def margins(self, margins: str | tuple) -> None:
+        if isinstance(margins, str):
+            margins = int(margins) if margins.isdigit() else margins.split(',')
 
         if isinstance(margins, int):
             top, right, bottom, left = margins, margins, margins, margins
@@ -121,12 +118,9 @@ class Element(UI):
         return self.__size
 
     @size.setter
-    def size(self, size: tuple) -> None:
-        if not isinstance(size, int) and not isinstance(size, tuple):
-            logging.error(
-                f'\n  {self._name}.size: Use a tuple of integers like '
-                '(100, 30) or an integer like 500.')
-            return
+    def size(self, size: str | tuple) -> None:
+        if isinstance(size, str):
+            size = int(size) if size.isdigit() else size.split(',')
 
         if isinstance(size, int):
             width, height = size, size

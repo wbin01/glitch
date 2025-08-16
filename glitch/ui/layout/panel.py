@@ -194,12 +194,9 @@ class Panel(Layout):
         return self.__radius
 
     @radius.setter
-    def radius(self, radius: tuple) -> None:
-        if not isinstance(radius, int) and not isinstance(radius, tuple):
-            logging.error(
-                f'\n  {self._name}.radius: Use a tuple of integers '
-                'like (10, 10, 10, 10) or an integer like 10.')
-            return
+    def radius(self, radius: str | tuple) -> None:
+        if isinstance(radius, str):
+            radius = int(radius) if radius.isdigit() else radius.split(',')
 
         if isinstance(radius, int):
             top_l, top_r, bottom_r, bottom_l = radius, radius, radius, radius
@@ -242,6 +239,8 @@ class Panel(Layout):
                 f'property int radiusBottomLeft: {bottom_l}')
 
         self.__radius = top_l, top_r, bottom_r, bottom_l
+        self._application_frame.style[
+            f'[{self._name}]']['border_radius'] = self.__radius
 
     def close(self) -> None:
         """Closes the Panel.

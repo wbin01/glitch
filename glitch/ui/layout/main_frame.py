@@ -40,9 +40,13 @@ class MainFrame(Frame):
     """
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(resizable=True, *args, **kwargs)
+        # QML
         qml_init, qml_end = self._qml.split('// MainFrame')
         self._qml = qml_init + properties + qml_end
         self.class_id('MainFrame')
+
+        # Set
+        self.radius = self.style[f'[{self._name}]']['border_radius']
 
     def __str__(self) -> str:
         return "<class 'MainFrame'>"

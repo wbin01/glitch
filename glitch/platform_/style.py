@@ -69,7 +69,7 @@ class Style(object):
             '[MainFrame]': {
                 'background_color': '#2A2A2A',  # Alt 282828
                 'border_color': '#333',
-                'border_radius': '10',
+                'border_radius': '20, 20, 0, 0',
                 },
             '[MainFrame:inactive]': {
                 'background_color': '#222',

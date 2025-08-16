@@ -51,11 +51,8 @@ class Box(Layout):
 
     @margins.setter
     def margins(self, margins: tuple) -> None:
-        if not isinstance(margins, int) and not isinstance(margins, tuple):
-            logging.error(
-                f'\n  {self._name}.margins: Use a tuple of integers like '
-                '(10, 10, 10, 10) or an integer like 10.')
-            return
+        if isinstance(margins, str):
+            margins = int(margins) if margins.isdigit() else margins.split(',')
 
         if isinstance(margins, int):
             top, right, bottom, left = margins, margins, margins, margins

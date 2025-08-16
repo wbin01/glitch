@@ -278,15 +278,16 @@ class Frame(Layout):
         self.__height = 300
         self.__width = 300
         self.__size = self.__width, self.__height
-        # self.__spacing = 6
-
+        self.__style = None
         self.__hint = FrameHint.FRAME
         self.__shape = FrameShape.FRAME
-        # self.__items = []
         self.style = Style().style
         self.__visibility = 'Window.Windowed'
         self.__callbacks = {}
         self.__radius = 10, 10, 10, 10
+
+        # Set
+        self.radius = self.style[f'[{self._name}]']['border_radius']
 
     @property
     def hint(self) -> FrameHint:
@@ -360,12 +361,9 @@ class Frame(Layout):
         return self.__radius
 
     @radius.setter
-    def radius(self, radius: tuple) -> None:
-        if not isinstance(radius, int) and not isinstance(radius, tuple):
-            logging.error(
-                f'\n  {self._name}.radius: Use a tuple of integers like '
-                '(10, 10, 10, 10) or an integer like 10.')
-            return
+    def radius(self, radius: str | tuple) -> None:
+        if isinstance(radius, str):
+            radius = int(radius) if radius.isdigit() else radius.split(',')
 
         if isinstance(radius, int):
             top_l, top_r, bottom_r, bottom_l = radius, radius, radius, radius
@@ -417,6 +415,7 @@ class Frame(Layout):
                 f'property int radiusBottomLeft: {bottom_l}')
 
         self.__radius = top_l, top_r, bottom_r, bottom_l
+        self.style[f'[{self._name}]']['border_radius'] = self.__radius
 
     @property
     def shape(self) -> FrameShape:
@@ -492,6 +491,19 @@ class Frame(Layout):
         self.__height = height
         self.__size = width, height
         self.size_signal.emit()
+
+    @property
+    def style(self) -> dict:
+        """Application style.
+
+        A dictionary with color and style information for each visual element 
+        in the application.
+        """
+        return self.__style
+
+    @style.setter
+    def style(self, style: dict) -> None:
+        self.__style = style
 
     def callbacks(self) -> dict:
         """The functions used in the `connect` method.

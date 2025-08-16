@@ -61,7 +61,9 @@ class View(MainFrame):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         # Set
-        self.radius = 5, 5, 0, 0
+        # print(self.style['[MainFrame]']['border_radius'])
+        # self.radius = 5, 5, 0, 0
+        # print(self.style['[MainFrame]']['border_radius'])
         # print(self.style['[MainFrame]']['border_radius'])
         # self.hint = FrameHint.TOP
         self.ola = 555
@@ -122,13 +124,13 @@ class View(MainFrame):
 
         self.column = self.add(Column())
         self.column.add(Button('Button 1'))
+
         self.button_2 = self.column.add(Button('Button 2'))
         self.button_2.connect(lambda: print('button_2'))
-
         self.button_2.style_class = 'button_2'
         self.style['[button_2]'] = {
-            'background_color': 'red',
-            'border_color': 'green',
+            'background_color': '#533',
+            'border_color': '#933',
             'icon_opacity': '1.0'}
 
         # Flags
@@ -167,7 +169,9 @@ class View(MainFrame):
         # print(self.button._obj.property('objectName'))
         # pprint.pprint(self.style)
 
-        self.button.style = {1:0}
+        # self.button.style = {1:0}
+        print(self.button_2.style)
+
 
         # print(self.custom0.custom_button.text)
 
