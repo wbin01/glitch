@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 import logging
 
+from .mixin import MarginsMixin
 from .ui import UI
 from ...core.signal import Signal
 from ...enum import Size
 
 
-class Element(UI):
+class Element(MarginsMixin, UI):
     """A visual element object.
 
     Elements are visual and interactive application items such as buttons and 
@@ -24,68 +25,6 @@ class Element(UI):
         self.__margins = 0, 0, 0, 0
 
         self.class_id('Element')
-
-    @property
-    def margins(self) -> tuple:
-        """Sets the `Button` margins.
-
-        A tuple with the 4 margin values. The values are in clockwise
-        order: top, right, bottom and left respectively.
-
-            (5, 10, 5, 10)
-
-        It is not mandatory to pass all the values, the last value will be 
-        used to fill in the missing ones:
-
-        `margins = 5` is equivalent to `margins = 5, 5, 5, 5`
-        `margins = 5, 10` is equivalent to `margins = 5, 10, 10, 10`
-
-        Any value other than an `int`, such as `None` or `Size.AUTO`, will 
-        be handled automatically, using the old value.
-
-            # Change vertical margins (top and bottom)
-            `margins = 10, None, 10, None`
-
-            # Change horizontal margins (right and left)
-            `margins = Size.AUTO, 5, Size.AUTO, 5`
-        """
-        return self.__margins
-
-    @margins.setter
-    def margins(self, margins: str | tuple) -> None:
-        if isinstance(margins, str):
-            margins = int(margins) if margins.isdigit() else margins.split(',')
-
-        if isinstance(margins, int):
-            top, right, bottom, left = margins, margins, margins, margins
-        elif len(margins) == 2:
-            top, right, bottom, left = margins + (margins[1], margins[1])
-        elif len(margins) == 3:
-            top, right, bottom, left = margins + (margins[2],)
-        else:
-            top, right, bottom, left = margins[:4]
-
-        top = self.__margins[0] if not isinstance(top, int) else top
-        right = self.__margins[1] if not isinstance(right, int) else right
-        bottom = self.__margins[2] if not isinstance(bottom, int) else bottom
-        left = self.__margins[3] if not isinstance(left, int) else left
-
-        if self._obj:
-            self._obj.setProperty('topMargin', top)
-            self._obj.setProperty('rightMargin', right)
-            self._obj.setProperty('bottomMargin', bottom)
-            self._obj.setProperty('leftMargin', left)
-        else:
-            self._qml = self._qml.replace(
-                f'topMargin: {self.__margins[0]}', f'topMargin: {top}')
-            self._qml = self._qml.replace(
-                f'rightMargin: {self.__margins[1]}', f'rightMargin: {right}')
-            self._qml = self._qml.replace(
-                f'bottomMargin: {self.__margins[2]}',f'bottomMargin: {bottom}')
-            self._qml = self._qml.replace(
-                f'leftMargin: {self.__margins[3]}', f'leftMargin: {left}')
-
-        self.__margins = top, left, bottom, right
 
     @property
     def size(self) -> tuple:

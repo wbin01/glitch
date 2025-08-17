@@ -61,9 +61,9 @@ class View(MainFrame):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         # Set
-        # print(self.style['[MainFrame]']['border_radius'])
-        # self.radius = 5, 5, 0, 0
-        # print(self.style['[MainFrame]']['border_radius'])
+        print(self.style['[MainFrame]']['border_radius'])
+        self.radius = 8, 8, 0, 0
+        print(self.style['[MainFrame]']['border_radius'])
         # print(self.style['[MainFrame]']['border_radius'])
         # self.hint = FrameHint.TOP
         self.ola = 555
@@ -103,6 +103,7 @@ class View(MainFrame):
         # self.button.size = Size.FILL, Size.AUTO
 
         self.scroll = self.add(Scroll())
+        self.scroll.margins = 10
         self.scroll_column = self.scroll.add(Column())
         self.scroll_column.margins = 10
 
@@ -154,6 +155,7 @@ class View(MainFrame):
 
     def on_custom_clicked(self):
         self.button.size = 300, Size.AUTO
+        # self.button.margins = 100, 20
         self.custom_num += 1
 
         if self.panel_side == 'right':

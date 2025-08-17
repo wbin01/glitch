@@ -40,6 +40,7 @@ class MarginsMixin(object):
     @margins.setter
     def margins(self, margins: tuple) -> None:
         if isinstance(margins, str):
+            margins = margins.replace(' ', '')
             margins = int(margins) if margins.isdigit() else margins.split(',')
 
         if isinstance(margins, int):
@@ -79,6 +80,10 @@ class MarginsMixin(object):
                 f'property int leftMargin: {left}')
 
         self.__margins = top, left, bottom, right
+        
+        header = '[' + self._name + ']'
+        if header in self._application_frame.style:
+            self._application_frame.style[header]['margins'] = self.__margins
 
     def __str__(self) -> str:
         return "<class 'MarginsMixin'>"
@@ -122,6 +127,7 @@ class RadiusMixin(object):
     @radius.setter
     def radius(self, radius: str | tuple) -> None:
         if isinstance(radius, str):
+            radius = radius.replace(' ', '')
             radius = int(radius) if radius.isdigit() else radius.split(',')
 
         if isinstance(radius, int):
@@ -174,4 +180,7 @@ class RadiusMixin(object):
                 f'property int radiusBottomLeft: {bottom_l}')
 
         self.__radius = top_l, top_r, bottom_r, bottom_l
-        self.style[f'[{self._name}]']['border_radius'] = self.__radius
+
+        header = '[' + self._name + ']'
+        if header in self._application_frame.style:
+            self._application_frame.style[header]['border_radius'] = self.__radius

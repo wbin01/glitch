@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from ..base import Layout
+from ..base import Layout, MarginsMixin
 
 
 header = """
@@ -13,6 +13,15 @@ ScrollView {
 """
 
 properties = """
+    property int topMargin: 0
+    property int rightMargin: 0
+    property int bottomMargin: 0
+    property int leftMargin: 0
+    Layout.topMargin: topMargin
+    Layout.rightMargin: rightMargin
+    Layout.bottomMargin: bottomMargin
+    Layout.leftMargin: leftMargin
+    
     Layout.fillWidth: true
     Layout.fillHeight: true
 
@@ -39,7 +48,7 @@ properties = """
 # } close on UI. Add // Property for inheritance
 
 
-class Scroll(Layout):
+class Scroll(MarginsMixin, Layout):
     """Scrollable column layout object.
 
     It is a type like `Column` object, but scrollable.
