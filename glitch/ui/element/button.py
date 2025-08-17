@@ -86,10 +86,11 @@ class Button(Element):
         if self._obj:
             self._obj.setProperty('checked', checked)
         else:
-            last_checked = 'true' if self.__checked else 'false'
+            __checked_str = 'true' if self.__checked else 'false'
             checked_str = 'true' if checked else 'false'
             self._qml = self._qml.replace(
-                f'checked: {last_checked}', f'checked: {checked_str}')
+                f'checked: {__checked_str}', f'checked: {checked_str}')
+        
         self.__checked = checked
 
     @property
@@ -102,10 +103,10 @@ class Button(Element):
         icon = self.__get_icon_path(icon)
 
         if self._obj:
-            self._obj.setProperty('icon', icon)
+            self._obj.setProperty('iconSource', icon.strip('"'))
         else:
             self._qml = self._qml.replace(
-                f'iconSource: "{self.__icon}"', f'iconSource: "{icon}"')
+                f'iconSource: {self.__icon}', f'iconSource: {icon}')
         self.__icon = icon
 
     @property

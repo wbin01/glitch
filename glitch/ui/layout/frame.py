@@ -337,8 +337,21 @@ class Frame(RadiusMixin, SizeMixin, Layout):
         return self.__shape
 
     @shape.setter
-    def shape(self, shape: FrameShape = FrameShape.FRAME) -> None:
+    def shape(
+            self, shape: FrameShape | QtCore.Qt.WindowState = FrameShape.FRAME
+            ) -> None:
         # Window.AutomaticVisibility  1     system default (normally Windowed)
+        if isinstance(shape, QtCore.Qt.WindowState):
+            if shape == QtCore.Qt.WindowFullScreen:
+                self.__shape = FrameShape.FULL
+            elif shape == QtCore.Qt.WindowMaximized:
+                self.__shape = FrameShape.MAX
+            elif shape == QtCore.Qt.WindowNoState:
+                self.__shape = FrameShape.FRAME
+            else:
+                self.__shape = FrameShape.MIN
+            return
+
         shape_value = {
             0: 'Window.Hidden', 1: 'Window.AutomaticVisibility',
             2: 'Window.Windowed', 3: 'Window.Minimized',

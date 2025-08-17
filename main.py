@@ -3,10 +3,10 @@ import pprint
 
 # from glitch import *
 from glitch.core import Application, Signal
-from glitch.enum import Align, Event, FrameShape, FrameHint, Size
+from glitch.enum import Align, Event, FrameAction, FrameShape, FrameHint, Size
 # from glitch.ui import MainFrame, Frame, Column, Panel, Row, Scroll, Button, Label
 # from glitch.ui import *
-from glitch.ui.element import Button, Label, ToolButton
+from glitch.ui.element import Button, FrameActionButton, Label, ToolButton
 from glitch.ui.layout import Column, MainFrame, Frame, Panel, Row, Scroll
 
 
@@ -65,17 +65,18 @@ class View(MainFrame):
         # self.hint = FrameHint.TOP
         self.ola = 555
 
+        self.close = self.add(FrameActionButton(FrameAction.MAX))
+
         self.panel_side = 'left'
         self.panel_l = self.add(Panel())
 
         self.panel = self.add(Panel(Align.RIGHT))
-        
         self.panel_column = self.panel.add(Column())
         self.panel_column.margins = 10
         self.panel_button = self.panel_column.add(Button('Hello'))
         self.connect(lambda: self.panel.open(), Event.MOUSE_RIGHT_PRESS)
 
-        # self.shape = FrameShape.MAXIMIZED  # FrameShape.FULL_SCREEN
+        # self.shape = FrameShape.MAX  # FrameShape.FULL
         # self.spacing = 0
         self.size = 400
         
@@ -83,9 +84,9 @@ class View(MainFrame):
         self.label = self.add(Label('Panel slides from left'))
         self.label.margins = None, None, None, 100
 
-        self.tool_button = self.add(ToolButton('', 'document-save'))
+        self.tool_button = self.add(ToolButton('document-save'))
         self.tool_button.checkable = True
-        self.tool_button.checked = True
+        # self.tool_button.checked = True
         # self.tool_button.style_class = 'Panel'
 
         self.button = self.add(Button('Button check', 'document-open'))
@@ -128,16 +129,16 @@ class View(MainFrame):
         self.style['[button_2]'] = {
             'background_color': '#533', 'border_color': '#933'}
 
-        self.style['[ToolButton:hover]'] = {
-            'background_color': '#533', 'border_color': '#993333'}
-        self.style['[ToolButton:checked:hover]'] = {
-            'background_color': '#533', 'border_color': '#993333'}
-        self.style['[ToolButton:clicked]'] = {
-            'border_color': '#FF993333', 'background_color': '#633'}
-        self.style['[ToolButton:checked]'] = {
-            'background_color': '#533', 'border_color': '#88993333'}
+        # self.style['[ToolButton:hover]'] = {
+        #     'background_color': '#533', 'border_color': '#993333'}
+        # self.style['[ToolButton:checked:hover]'] = {
+        #     'background_color': '#533', 'border_color': '#993333'}
+        # self.style['[ToolButton:clicked]'] = {
+        #     'border_color': '#FF993333', 'background_color': '#633'}
+        # self.style['[ToolButton:checked]'] = {
+        #     'background_color': '#533', 'border_color': '#88993333'}
 
-        self.button.style_class = 'ToolButton'
+        # self.button.style_class = 'ToolButton'
 
         # Flags
         self.num = 0

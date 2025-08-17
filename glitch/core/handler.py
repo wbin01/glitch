@@ -2,7 +2,7 @@
 from PySide6 import QtCore, QtQuick
 
 from .application_style import change_element_style_state, style_value
-from ..enum import Event
+from ..enum import Event, FrameShape
 from ..ui.base import Element, Layout
 from ..ui.layout import Frame, MainFrame
 
@@ -93,8 +93,8 @@ class Handler(QtCore.QObject):
     @QtCore.Slot()
     def __init_state_style(self) -> None:
         # Style of the elements and the Frame in each state.
-        if (self.__ui.shape.name == 'MAXIMIZED' or
-                self.__ui.shape.name == 'FULL_SCREEN'):
+        if (self.__ui.shape.name == 'MAX' or
+                self.__ui.shape.name == 'FULL'):
             QtCore.QTimer.singleShot(
                 300, lambda: self.__state_changed(QtCore.Qt.WindowFullScreen))
         else:
@@ -120,7 +120,12 @@ class Handler(QtCore.QObject):
     def __state_changed(self, state: QtCore.Qt.WindowState) -> None:
         # Frame style in full-screen or normal-screen states.
         if self.__main_rect:
+            
+            if self.__ui._obj:
+                self.__ui.shape = self.__ui._obj.windowState()
+
             frame = f'[{self.__ui._name}]'
+
             if (state == QtCore.Qt.WindowFullScreen
                     or state == QtCore.Qt.WindowMaximized):
                 self.__main_rect.setProperty('radiusTopLeft', 0)
@@ -155,6 +160,7 @@ class Handler(QtCore.QObject):
                     style_value(self.__ui.style, frame, 'border_color'))
                 self.__main_rect.setProperty('color', "#00000000")
 
+            self.__ui.shape_signal.emit()
             self.__main_rect.findChild(QtCore.QObject, 'canvas').requestPaint()
 
     @QtCore.Slot()
