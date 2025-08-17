@@ -3,7 +3,7 @@ import logging
 
 from PySide6 import QtCore
 
-from ..base import Layout, RadiusMixin
+from ..base import Layout, RadiusMixin, SizeMixin
 from ...core.signal import Signal
 from ...enum import Event, FrameHint, FrameShape, Orientation
 from ...platform_ import Style
@@ -32,13 +32,11 @@ properties = """
     color: "transparent"
     flags: Qt.FramelessWindowHint
 
-    property int width_: 300
-    property int height_: 300
-    width: width_
-    height: height_
+    width: 100
+    height: 30
 
     minimumWidth: 100
-    minimumHeight: 100
+    minimumHeight: 30
 
     visible: true
     visibility: Window.Windowed
@@ -249,7 +247,7 @@ edges = """
 """
 
 
-class Frame(RadiusMixin, Layout):
+class Frame(RadiusMixin, SizeMixin, Layout):
     """An application frame.
 
     A frame where visual elements are inserted. Usually called a "Window".
@@ -275,9 +273,7 @@ class Frame(RadiusMixin, Layout):
         self.class_id('Frame')
 
         # Properties
-        self.__height = 300
-        self.__width = 300
-        self.__size = self.__width, self.__height
+        self.size = 300
         self.__style = None
         self.__hint = FrameHint.FRAME
         self.__shape = FrameShape.FRAME
@@ -366,45 +362,6 @@ class Frame(RadiusMixin, Layout):
         self.__visibility = visibility
         self.__shape = shape
         self.shape_signal.emit()
-
-    @property
-    def size(self) -> tuple:
-        """Frame width and height.
-
-        Tuple like (500, 500).
-        """
-        return self.__size
-
-    @size.setter
-    def size(self, size: tuple) -> None:
-        if not isinstance(size, int) and not isinstance(size, tuple):
-            logging.error(
-                f'\n  {self._name}.size: Use a tuple of integers like '
-                '(600, 400) or an integer like 500.')
-            return
-
-        if isinstance(size, int):
-            width, height = size, size
-        elif len(size) == 1:
-            width, height = size[0], size[0]
-        elif len(size) >= 2:
-            width, height = size[:2]
-
-        width = self.__size[0] if width is None else width
-        height = self.__size[1] if height is None else height
-
-        if self._obj:
-            self._obj.setProperty('width_', width)
-            self._obj.setProperty('height_', height)
-        else:
-            self._qml = self._qml.replace(
-                f'width_: {self.__width}', f'width_: {width}').replace(
-                f'height_: {self.__height}', f'height_: {height}')
-
-        self.__width = width
-        self.__height = height
-        self.__size = width, height
-        self.size_signal.emit()
 
     @property
     def style(self) -> dict:

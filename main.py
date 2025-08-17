@@ -61,10 +61,7 @@ class View(MainFrame):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         # Set
-        print(self.style['[MainFrame]']['border_radius'])
         self.radius = 8, 8, 0, 0
-        print(self.style['[MainFrame]']['border_radius'])
-        # print(self.style['[MainFrame]']['border_radius'])
         # self.hint = FrameHint.TOP
         self.ola = 555
 
