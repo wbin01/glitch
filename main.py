@@ -85,6 +85,7 @@ class View(MainFrame):
 
         self.tool_button = self.add(ToolButton('', 'document-save'))
         self.tool_button.checkable = True
+        self.tool_button.checked = True
         # self.tool_button.style_class = 'Panel'
 
         self.button = self.add(Button('Button check', 'document-open'))
@@ -126,6 +127,17 @@ class View(MainFrame):
         self.button_2.style_class = 'button_2'
         self.style['[button_2]'] = {
             'background_color': '#533', 'border_color': '#933'}
+
+        self.style['[ToolButton:hover]'] = {
+            'background_color': '#533', 'border_color': '#993333'}
+        self.style['[ToolButton:checked:hover]'] = {
+            'background_color': '#533', 'border_color': '#993333'}
+        self.style['[ToolButton:clicked]'] = {
+            'border_color': '#FF993333', 'background_color': '#633'}
+        self.style['[ToolButton:checked]'] = {
+            'background_color': '#533', 'border_color': '#88993333'}
+
+        self.button.style_class = 'ToolButton'
 
         # Flags
         self.num = 0

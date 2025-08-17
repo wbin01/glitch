@@ -31,14 +31,17 @@ def change_element_style_state(
     # Checkable state
     if element.property('checkable') and element.property('checked'):
         if state == ':inactive':
-            header = f'[{element.property('className')}:checked:inactive]'
+            header = header.replace(':', ':checked:')
         else:
+            # [Element:hover] -> [Element:checked:hover]
             if ':hover' in header:
-                header = f'[{element.property('className')}:checked:hover]'
+                header = header.replace(':', ':checked:')
+            # [Element] -> [Element:checked]
+            elif ':' not in header:
+                header = header[:-1] + ':checked]'
+            # [Element:clicked] -> [Element:clicked]
             elif ':clicked' in header:
-                header = f'[{element.property('className')}:clicked]'
-            else:
-                header = f'[{element.property('className')}:checked]'
+                pass
 
     # Aply style properties / Only color; margins, size, radius are dinamic
     element_properties = {
