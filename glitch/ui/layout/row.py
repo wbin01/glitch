@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-from ..base import Box
+from ..base import MarginsMixin, Layout
 from ...enum.orientation import Orientation
 
 
-class Row(Box):
+class Row(MarginsMixin, Layout):
     """Row layout object.
 
     Organizes elements side by side like a row.

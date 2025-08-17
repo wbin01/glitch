@@ -3,7 +3,7 @@ import logging
 
 from PySide6 import QtCore
 
-from ..base import Layout
+from ..base import Layout, RadiusMixin
 from ...core.signal import Signal
 from ...enum import Event, FrameHint, FrameShape, Orientation
 from ...platform_ import Style
@@ -249,7 +249,7 @@ edges = """
 """
 
 
-class Frame(Layout):
+class Frame(RadiusMixin, Layout):
     """An application frame.
 
     A frame where visual elements are inserted. Usually called a "Window".
@@ -330,92 +330,6 @@ class Frame(Layout):
                 f'flags: {hints[hint.name]}')
 
         self.__hint = hint
-
-    @property
-    def radius(self) -> tuple:
-        """Sets the Frame radius.
-
-        A tuple with the 4 radius values. The values are order: top-left, 
-        top-right, bottom-right and bottom-left respectively:
-
-            (10, 10, 10, 10)
-
-        It is not mandatory to pass all the values, the last value will be 
-        used to fill in the missing ones:
-
-        `radius = 5` is equivalent to `radius = 5, 5, 5, 5`
-        `radius = 5, 10` is equivalent to `radius = 5, 10, 10, 10`
-
-        Use `None` for a value to be automatic. `None` indicates that the 
-        value is the same as before. Example:
-
-            # Change top-left and bottom-right
-            `element.radius = 10, None, 10, None`
-
-            # Change top-right and bottom-left
-            `element.radius = None, 5, None, 5`
-
-        Note! Only works as initialization (__init__), before the window is 
-        rendered.
-        """
-        return self.__radius
-
-    @radius.setter
-    def radius(self, radius: str | tuple) -> None:
-        if isinstance(radius, str):
-            radius = int(radius) if radius.isdigit() else radius.split(',')
-
-        if isinstance(radius, int):
-            top_l, top_r, bottom_r, bottom_l = radius, radius, radius, radius
-        elif len(radius) == 1:
-            top_l, top_r, bottom_r, bottom_l = (
-                radius[0], radius[0], radius[0], radius[0])
-        elif len(radius) == 2:
-            top_l, top_r, bottom_r, bottom_l = radius + (radius[1], radius[1])
-        elif len(radius) == 3:
-            top_l, top_r, bottom_r, bottom_l = radius + (radius[2],)
-        else:
-            top_l, top_r, bottom_r, bottom_l = radius[:4]
-
-        top_l = self.__radius[0] if top_l is None else top_l
-        top_r = self.__radius[1] if top_r is None else top_r
-        bottom_r = self.__radius[2] if bottom_r is None else bottom_r
-        bottom_l = self.__radius[3] if bottom_l is None else bottom_l
-
-        if self._obj:
-            # The code works, but is not desirable and has been disabled!
-            return
-
-            self._obj.setProperty('radiusTopLeft', top_l)
-            self._obj.setProperty('radiusTopRight', top_r)
-            self._obj.setProperty('radiusBottomRight', bottom_r)
-            self._obj.setProperty('radiusBottomLeft', bottom_l)
-
-            # TODO: Move to Application().processEvents()  works the right way
-            self._obj.findChild(QtCore.QObject, 'canvas').requestPaint()
-            shape = self.shape
-            self.shape = (FrameShape.MAXIMIZED
-                if shape.name != 'MAXIMIZED' else FrameShape.FULL_SCREEN)
-            def _shape_(shape):
-                self.shape = shape
-            QtCore.QTimer.singleShot(300, lambda: _shape_(shape))
-            
-        else:
-            self._qml = self._qml.replace(
-                f'property int radiusTopLeft: {self.__radius[0]}',
-                f'property int radiusTopLeft: {top_l}')
-            self._qml = self._qml.replace(
-                f'property int radiusTopRight: {self.__radius[1]}',
-                f'property int radiusTopRight: {top_r}')
-            self._qml = self._qml.replace(
-                f'property int radiusBottomRight: {self.__radius[2]}',
-                f'property int radiusBottomRight: {bottom_r}')
-            self._qml = self._qml.replace(
-                f'property int radiusBottomLeft: {self.__radius[3]}',
-                f'property int radiusBottomLeft: {bottom_l}')
-
-        self.__radius = top_l, top_r, bottom_r, bottom_l
-        self.style[f'[{self._name}]']['border_radius'] = self.__radius
 
     @property
     def shape(self) -> FrameShape:

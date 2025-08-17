@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-from ..base import Box
+from ..base import MarginsMixin, Layout
 
 
-class Column(Box):
+class Column(MarginsMixin, Layout):
     """Column layout object.
 
     Organizes elements in stacks like a column.

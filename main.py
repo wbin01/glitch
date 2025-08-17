@@ -163,18 +163,6 @@ class View(MainFrame):
             self.panel_side = 'right'
             self.label.text = 'Panel slides from right'
 
-        # self.button._qml = self.button._qml.replace('backgroundColor')
-        # print(self.button._obj.property('backgroundColor'))
-        # print(self.button._id)
-        # print(self.button._obj.property('objectName'))
-        # pprint.pprint(self.style)
-
-        # self.button.style = {1:0}
-        print(self.button_2.style)
-
-
-        # print(self.custom0.custom_button.text)
-
     def on_button(self):
         self.num += 1
         self.label.text = f'Button press: {self.num}'
