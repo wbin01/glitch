@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from PySide6 import QtCore, QtQuick
 
-from .application_shares import change_element_style_state, style_value
+from .application_style import change_element_style_state, style_value
 from ..enum import Event
 from ..ui.base import Element, Layout
 from ..ui.layout import Frame, MainFrame

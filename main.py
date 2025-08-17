@@ -121,13 +121,11 @@ class View(MainFrame):
         self.column = self.add(Column())
         self.column.add(Button('Button 1'))
 
-        self.button_2 = self.column.add(Button('Button 2'))
+        self.button_2 = self.column.add(Button('Button 2', 'dialog-close'))
         self.button_2.connect(lambda: print('button_2'))
         self.button_2.style_class = 'button_2'
         self.style['[button_2]'] = {
-            'background_color': '#533',
-            'border_color': '#933',
-            'icon_opacity': '1.0'}
+            'background_color': '#533', 'border_color': '#933'}
 
         # Flags
         self.num = 0

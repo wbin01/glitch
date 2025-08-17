@@ -20,13 +20,13 @@ def change_element_style_state(
         return
 
     # Style class
-    class_name = f'[{element.property('className')}{state}]'
-    style_class = f'[{element.property('styleClass')}{state}]'
-    base_style = f'[{element.property('baseStyle')}{state}]'
+    class_h = f'[{element.property('className')}{state}]'
+    style_h = f'[{element.property('styleClass')}{state}]'
+    base_h = f'[{element.property('baseStyle')}{state}]'
 
-    header = style_class if style_class != base_style else class_name
+    header = style_h if style_h != base_h else class_h
     if header not in style:
-        header = class_name if class_name in style else base_style
+        header = class_h if class_h in style else base_h
 
     # Checkable state
     if element.property('checkable') and element.property('checked'):
@@ -40,7 +40,7 @@ def change_element_style_state(
             else:
                 header = f'[{element.property('className')}:checked]'
 
-    # Aply style properties
+    # Aply style properties / Only color; margins, size, radius are dinamic
     element_properties = {
         'color': 'font_color',
         'backgroundColor': 'background_color',
@@ -54,17 +54,27 @@ def change_element_style_state(
             'opacity': 'icon_opacity'},
         }
 
-    for key, prop in element_properties.items():
-        if isinstance(prop, str):
-            if element.property(key) and prop in style[header]:
-                element.setProperty(key, style_value(style, header, prop))
+    for k, prop in element_properties.items():
+        if isinstance(prop, str) and element.property(k):
+            if prop in style[header]:
+                element.setProperty(k, style_value(style, header, prop))
+            elif prop in style[class_h]:
+                element.setProperty(k, style_value(style, class_h, prop))
+            elif prop in style[base_h]:
+                element.setProperty(k, style_value(style, base_h, prop))
         else:
-            inner = element.findChild(QtCore.QObject, key)
+            inner = element.findChild(QtCore.QObject, k)
             if not inner:
                 continue
-            for key, prop in prop.items():
-                if inner.property(key) and prop in style[header]:
-                    inner.setProperty(key, style_value(style, header, prop))
+
+            for k, prop in prop.items():
+                if inner.property(k):
+                    if prop in style[header]:
+                        inner.setProperty(k, style_value(style, header, prop))
+                    elif prop in style[class_h]:
+                        inner.setProperty(k, style_value(style, class_h, prop))
+                    elif prop in style[base_h]:
+                        inner.setProperty(k, style_value(style, base_h, prop))
     if canvas:
         inner = element.findChild(QtCore.QObject, 'canvas')
         inner.requestPaint()
