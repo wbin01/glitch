@@ -67,10 +67,8 @@ class View(MainFrame):
 
         self.panel_side = 'left'
         self.panel_l = self.add(Panel())
-        self.panel_l.radius = self.radius[0], 0, 0, self.radius[3]
 
         self.panel = self.add(Panel(Align.RIGHT))
-        self.panel.radius = 0, self.radius[1], self.radius[2], 0
         
         self.panel_column = self.panel.add(Column())
         self.panel_column.margins = 10
@@ -139,7 +137,7 @@ class View(MainFrame):
         # print(self.panel._application_frame)
         # print(self.panel_column._application_frame)
         # print(self.label._application_frame)
-        #print(self.label.style)
+        # print(self.label.style)
         # print(self.tool_button._application_frame)
         # print(self.button._application_frame)
         # print(self.scroll._application_frame)

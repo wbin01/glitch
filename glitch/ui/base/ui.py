@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-
+from ...core.signal import Signal
 
 qml_code = """
 Item {
@@ -60,6 +60,7 @@ class UI(UI):
     text.
     """
     def __init__(self, *args, **kwargs) -> None:
+        self.application_frame_signal = Signal()
         self.__id = None
         self.__qml = qml_code
         self.__obj = None
@@ -97,6 +98,7 @@ class UI(UI):
     @_application_frame.setter
     def _application_frame(self, frame: UI) -> None:
         self.__application_frame = frame
+        self.application_frame_signal.emit()
 
     @property
     def _id(self) -> str:

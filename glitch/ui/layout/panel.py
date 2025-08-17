@@ -125,16 +125,7 @@ class Panel(RadiusMixin, Layout):
         self.__connect_close = False
 
         # self.__radius = 10, 0, 0, 10
-
-    def __get_origin(self) -> str:
-        # transform_origin QML string
-        if self.__frame_side.name == 'RIGHT':
-            return 'Item.Right'
-        # elif self.__frame_side.name.startswith('BOTTOM'):
-        #     return 'Item.Bottom'
-        # elif self.__frame_side.name.startswith('TOP'):
-            return 'Item.Top'
-        return 'Item.Left'
+        self.application_frame_signal.connect(self.__sinc_radius)
 
     @property
     def frame_side(self) -> Align:
@@ -229,6 +220,26 @@ class Panel(RadiusMixin, Layout):
         # Hack
         self._obj.open()
         self.__show_anim.start()
+
+    def __get_origin(self) -> str:
+        # transform_origin QML string
+        if self.__frame_side.name == 'RIGHT':
+            return 'Item.Right'
+        # elif self.__frame_side.name.startswith('BOTTOM'):
+        #     return 'Item.Bottom'
+        # elif self.__frame_side.name.startswith('TOP'):
+            return 'Item.Top'
+        return 'Item.Left'
+
+    def __sinc_radius(self) -> None:
+        if self.frame_side.value == QtCore.Qt.AlignRight:
+            self.radius = (
+                0, self._application_frame.radius[1],
+                self._application_frame.radius[2], 0)
+        else:
+            self.radius = (
+                self._application_frame.radius[0], 0,
+                0, self._application_frame.radius[3])
 
     def __str__(self) -> str:
         return "<class 'Panel'>"
