@@ -10,7 +10,7 @@ properties = """
             objectName: "dragArea"
             // width: parent.width
             // width: parent.width - 20
-            height: 10
+            height: 20
             anchors {
                 top: parent.top
                 left: parent.left

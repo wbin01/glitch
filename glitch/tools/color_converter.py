@@ -20,8 +20,15 @@ def darken_hex(color: str, step: int = 10) -> str:
 
 def hex_to_rgba(color: str) -> tuple:
     """Convert hex color to rgba color."""
-    color = color.lstrip('#') + 'ff'
-    return tuple(int(color[:8][x:x + 2], 16) for x in (0, 2, 4, 6))
+    color = color.lstrip('#')
+    len_color = len(color)
+
+    if len_color == 3:
+        color = 'FF' + color + color
+    elif len_color == 6:
+        color = 'FF' + color
+    
+    return tuple(int(color[:8][x:x + 2], 16) for x in (2, 4, 6, 0))
 
 
 def is_dark(color: tuple) -> bool:
