@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 from .button import Button
-from ...enum.frame_action import FrameAction
+from ...enum.frame_control import FrameControl
 from ...enum.frame_shape import FrameShape
 
 
-class FrameActionButton(Button):
+class FrameControlButton(Button):
     """Tool Button Element."""
     def __init__(
-            self, frame_action: FrameAction = FrameAction.CLOSE,
+            self, frame_action: FrameControl = FrameControl.CLOSE,
             *args, **kwargs) -> None:
         super().__init__()
         # Args
@@ -30,36 +30,36 @@ class FrameActionButton(Button):
         self._application_frame.shape_signal.connect(self.__update_icon)
 
     def __get_icon(self) -> str:
-        if self.__frame_action == FrameAction.MAX:
+        if self.__frame_action == FrameControl.MAX:
             if self._application_frame.shape == FrameShape.MAX:
                 return 'window-restore'
             return 'window-maximize'
-        elif self.__frame_action == FrameAction.FULL:
+        elif self.__frame_action == FrameControl.FULL:
             if self._application_frame.shape == FrameShape.FULL:
                 return 'window-restore'
             return 'view-fullscreen'
-        elif self.__frame_action == FrameAction.MIN:
+        elif self.__frame_action == FrameControl.MIN:
             return 'window-minimize'
         return 'window-close'
 
     def __on_click(self) -> None:
-        if self.__frame_action == FrameAction.MAX:
+        if self.__frame_action == FrameControl.MAX:
             if self._application_frame.shape == FrameShape.MAX:
                 self._application_frame.shape = FrameShape.FRAME
             else:
                 self._application_frame.shape = FrameShape.MAX
-        elif self.__frame_action == FrameAction.FULL:
+        elif self.__frame_action == FrameControl.FULL:
             if self._application_frame.shape == FrameShape.FULL:
                 self._application_frame.shape = FrameShape.FRAME
             else:
                 self._application_frame.shape = FrameShape.FULL
-        elif self.__frame_action == FrameAction.MIN:
+        elif self.__frame_action == FrameControl.MIN:
             if self._application_frame.shape == FrameShape.MIN:
                 self._application_frame.shape = FrameShape.FRAME
             else:
                 self._application_frame.shape = FrameShape.MIN
 
-        elif self.__frame_action == FrameAction.CLOSE:
+        elif self.__frame_action == FrameControl.CLOSE:
             self._application_frame._obj.close()
 
     def __update_icon(self) -> str:

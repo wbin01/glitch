@@ -3,10 +3,10 @@ import pprint
 
 # from glitch import *
 from glitch.core import Application, Signal
-from glitch.enum import Align, Event, FrameAction, FrameShape, FrameHint, Size
+from glitch.enum import Align, Event, FrameControl, FrameShape, FrameHint, Size
 # from glitch.ui import MainFrame, Frame, Column, Panel, Row, Scroll, Button, Label
 # from glitch.ui import *
-from glitch.ui.element import Button, FrameActionButton, Label, ToolButton
+from glitch.ui.element import Button, FrameControlButton, Label, ToolButton
 from glitch.ui.layout import Column, MainFrame, Frame, Panel, Row, Scroll
 
 
@@ -66,9 +66,9 @@ class View(MainFrame):
         self.ola = 555
 
         self.header = self.add(Row())
-        self.action_close = self.header.add(FrameActionButton())
-        self.action_max = self.header.add(FrameActionButton(FrameAction.MAX))
-        self.action_min = self.header.add(FrameActionButton(FrameAction.MIN))
+        self.action_close = self.header.add(FrameControlButton())
+        self.action_max = self.header.add(FrameControlButton(FrameControl.MAX))
+        self.action_min = self.header.add(FrameControlButton(FrameControl.MIN))
 
         self.panel_side = 'left'
         self.panel_l = self.add(Panel())
