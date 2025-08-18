@@ -5,7 +5,7 @@ from .button import Button
 from ...core.application_style import style_value
 from ...enum.frame_control import FrameControl
 from ...enum.frame_shape import FrameShape
-from ...tools import color_converter 
+from ...tools import color_converter
 
 
 class FrameControlButton(Button):
@@ -44,9 +44,6 @@ class FrameControlButton(Button):
         self._application_frame.style['[ActionButton:inactive]'] = {
             'border_color': '#00000000',
             'background_color': inactive_header + propert}
-
-        # self.__is_dark = color_converter.is_dark(
-        #     QtGui.QPalette().color(QtGui.QPalette.Window).toTuple())
 
         self.__is_dark = color_converter.is_dark(color_converter.hex_to_rgba(
             style_value(self._application_frame.style, header, propert)))

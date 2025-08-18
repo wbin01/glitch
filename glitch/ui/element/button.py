@@ -4,8 +4,10 @@ import pathlib
 from xdg import IconTheme
 
 from ..base import Element
+from ...core.application_style import style_value
 from ...enum.event import Event
 from ...platform_ import OSDesk, Icons
+from ...tools import color_converter
 
 
 header = """
@@ -57,7 +59,6 @@ class Button(Element):
         self.style_class = 'Button'
 
         # Properties
-        # self.text = self.__text
         self.icon = icon
 
     @property

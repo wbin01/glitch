@@ -22,6 +22,7 @@ class Icons(object):
         Retrieve the name of the system icon theme.
         """
         if self.__desktop_environment == 'plasma':
+
             if self.__plasma_icon_theme:
                 return self.__plasma_icon_theme
 
@@ -30,10 +31,12 @@ class Icons(object):
                 ini = DesktopFile(kdeglobals)
 
                 if not '[Icons]' in ini.content:
-                    return None
+                    self.__plasma_icon_theme = 'breeze'
+                    return self.__plasma_icon_theme
 
                 if not 'Theme' in ini.content['[Icons]']:
-                    return None
+                    self.__plasma_icon_theme = 'breeze'
+                    return self.__plasma_icon_theme
                 
                 self.__plasma_icon_theme = ini.content['[Icons]']['Theme']
                 return self.__plasma_icon_theme

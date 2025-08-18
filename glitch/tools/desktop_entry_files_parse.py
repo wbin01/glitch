@@ -69,12 +69,12 @@ class DesktopFile(object):
             ini_text = ini_file.read()
 
         self.__content = {}
-        for scope in ini_text.split('['):
+        for scope in ini_text.replace('][', '||').split('['):
             if not scope.strip().startswith('#'):
                 scope = f'[{scope.strip()}'
 
             header, key, value = '', '', ''
-            for line in scope.split('\n'):
+            for line in scope.replace('||', '][').split('\n'):
                 if line and not line.strip().startswith('#'):
                     line = line.strip()
 

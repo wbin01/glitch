@@ -15,7 +15,7 @@ def darken_hex(color: str, step: int = 10) -> str:
     """Darken hex color."""
     rgba_dark = darken_rgba(hex_to_rgba(color), step)
     return "#{:02x}{:02x}{:02x}{:02x}".format(
-        rgba_dark[0], rgba_dark[1], rgba_dark[2], rgba_dark[3])
+        rgba_dark[3], rgba_dark[0], rgba_dark[1], rgba_dark[2])
 
 
 def hex_to_rgba(color: str) -> tuple:
@@ -49,7 +49,7 @@ def lighten_hex(color: str, step: int = 10) -> str:
     """Lighten hex color."""
     rgba_light = lighten_rgba(hex_to_rgba(color), step)
     return "#{:02x}{:02x}{:02x}{:02x}".format(
-        rgba_light[0], rgba_light[1], rgba_light[2], rgba_light[3])
+        rgba_light[3], rgba_light[0], rgba_light[1], rgba_light[2])
 
 
 def rgba_str_to_tuple(rgba_str: str) -> tuple:
@@ -75,7 +75,7 @@ def rgba_str_to_tuple(rgba_str: str) -> tuple:
 def rgba_to_hex(color: tuple) -> str:
     """Convert rgba color to hex color."""
     return "#{:02x}{:02x}{:02x}{:02x}".format(
-        color[0], color[1], color[2], color[3])
+        color[3], color[0], color[1], color[2])
 
 
 def rgba_to_qcolor(rgba: tuple) -> QtGui.QColor:
