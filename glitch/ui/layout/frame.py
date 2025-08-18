@@ -132,7 +132,7 @@ properties = """
             objectName: "mainColumnLayout"
             anchors.fill: parent
             // anchors.top: parent.top
-            anchors.margins: 6
+            anchors.margins: 4
             spacing: 6
             clip: true
             // Layout.fillHeight: false

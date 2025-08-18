@@ -12,13 +12,10 @@ class FrameActionButton(Button):
         super().__init__()
         # Args
         self.__frame_action = frame_action
-
-        # Get sys
+        self.size = 22
         self.style_class = 'ActionButton'
         self.application_frame_signal.connect(self.__set_style)
-
-        # Set from sys
-        self.size = self.size[1], self.size[1]
+        self.connect(self.__on_click)
 
     def __set_style(self) -> None:
         clean_style = {
@@ -45,6 +42,25 @@ class FrameActionButton(Button):
             return 'window-minimize'
         return 'window-close'
 
+    def __on_click(self) -> None:
+        if self.__frame_action == FrameAction.MAX:
+            if self._application_frame.shape == FrameShape.MAX:
+                self._application_frame.shape = FrameShape.FRAME
+            else:
+                self._application_frame.shape = FrameShape.MAX
+        elif self.__frame_action == FrameAction.FULL:
+            if self._application_frame.shape == FrameShape.FULL:
+                self._application_frame.shape = FrameShape.FRAME
+            else:
+                self._application_frame.shape = FrameShape.FULL
+        elif self.__frame_action == FrameAction.MIN:
+            if self._application_frame.shape == FrameShape.MIN:
+                self._application_frame.shape = FrameShape.FRAME
+            else:
+                self._application_frame.shape = FrameShape.MIN
+
+        elif self.__frame_action == FrameAction.CLOSE:
+            self._application_frame._obj.close()
+
     def __update_icon(self) -> str:
         self.icon = self.__get_icon()
-

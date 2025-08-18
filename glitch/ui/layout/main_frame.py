@@ -10,7 +10,7 @@ properties = """
             objectName: "dragArea"
             // width: parent.width
             // width: parent.width - 20
-            height: 20
+            height: 10
             anchors {
                 top: parent.top
                 left: parent.left
@@ -18,7 +18,7 @@ properties = """
                 margins: 5  // margem de 10px nas laterais
             }
             color: "transparent"
-            z: 2
+            z: 0  // 2
 
             MouseArea {
                 anchors.fill: parent

@@ -20,17 +20,23 @@ Popup {
 properties = """
     padding: 1 // Frame border
     width: 250
-    height: parent.height + 10 // Frame padding (10)
+
+    // Padding is 6 -> 6+6=12 -> 12-2 (2 is 1 pixel border on top and bottom) =10
+    height: parent.height + 6  // 10
+
     x: 0
-    y: - 5  // Half of the Frame padding - outer border
+
+    // Half of the Frame padding - outer border
+    y: - 3  // 5
+    
     modal: false
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
     clip: true
 
     transformOrigin: Item.Left
 
-    property int parentHeight: parent.height + 10
-    property int parentWidth: parent.width + 9  // 10 -1 detach from the right
+    property int parentHeight: parent.height + 6 // 10
+    property int parentWidth: parent.width + 7 // 9  // 10 -1 detach from the right
 
     property color backgroundColor: "#222"
     property color borderColor: "#222"

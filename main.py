@@ -61,11 +61,14 @@ class View(MainFrame):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         # Set
-        self.radius = 8, 8, 0, 0
+        self.radius = 6, 6, 0, 0
         # self.hint = FrameHint.TOP
         self.ola = 555
 
-        self.close = self.add(FrameActionButton(FrameAction.MAX))
+        self.header = self.add(Row())
+        self.action_close = self.header.add(FrameActionButton())
+        self.action_max = self.header.add(FrameActionButton(FrameAction.MAX))
+        self.action_min = self.header.add(FrameActionButton(FrameAction.MIN))
 
         self.panel_side = 'left'
         self.panel_l = self.add(Panel())
@@ -90,7 +93,7 @@ class View(MainFrame):
         # self.tool_button.style_class = 'Panel'
 
         self.button = self.add(Button('Button check', 'document-open'))
-        # self.button.connect(self.on_button)
+        self.button.connect(self.on_button)
         self.button.checkable = True
         self.button.checked = True
 
@@ -174,11 +177,16 @@ class View(MainFrame):
     def on_button(self):
         self.num += 1
         self.label.text = f'Button press: {self.num}'
-        self.label.margins = Size.AUTO, Size.AUTO, Size.AUTO, 0
-        if self.panel_side == 'right':
-            self.panel.open()
+        # self.label.margins = Size.AUTO, Size.AUTO, Size.AUTO, 0
+        # if self.panel_side == 'right':
+        #     self.panel.open()
+        # else:
+        #     self.panel_l.open()
+
+        if self.shape == FrameShape.FRAME:
+            self.shape = FrameShape.FULL
         else:
-            self.panel_l.open()
+            self.shape = FrameShape.FRAME
 
     def on_scroll_buttons(self, num):
         if getattr(self, f'button_{num}').is_mouse_hover():
