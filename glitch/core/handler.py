@@ -77,6 +77,7 @@ class Handler(QtCore.QObject):
                 self.__integrate_graphic_elements(element)
             
             elif isinstance(element, Element):
+                element._application_frame = self.__ui
                 if hasattr(element, 'callbacks'):
                     callbacks = element.callbacks()
 
