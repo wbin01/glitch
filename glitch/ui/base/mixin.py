@@ -129,19 +129,22 @@ class IconMixin(object):
                         if 'light' in self.__icon_theme.lower():
 
                             for x in self.__light_suffixes:
-                                self.__icon_theme = self.__icon_theme.replace(x, '')
+                                self.__icon_theme = (
+                                    self.__icon_theme.replace(x, ''))
 
                         if Path(path + self.__icon_theme + suffix).exists():
                             icon_theme = self.__icon_theme + suffix
 
                     elif not dark and 'dark' in self.__icon_theme.lower():
                         temp = self.__icon_theme.replace(suffix, '')
-                        if Path(path + temp).exists() and 'dark' not in temp.lower():
+                        if (Path(path + temp).exists() and
+                                'dark' not in temp.lower()):
                             icon_theme = temp
 
             icon = self.__icon.strip('"')
             icon_path = None
             for theme in [icon_theme, self.__icon_theme]:
+                self._application_frame._platform.icon_theme = theme
                 if theme:
                     icon_path = IconTheme.getIconPath(
                         iconname=Path(icon).stem,
@@ -152,10 +155,9 @@ class IconMixin(object):
                         break
 
             self.icon = icon_path if icon_path else icon
-            if (dark and 'dark' not in
-                    self._application_frame._platform.icon_theme.lower()):
-                self._application_frame._platform.icon_theme = (
-                    self.__icon_theme)
+
+    def __str__(self) -> str:
+        return "<class 'IconMixin'>"
 
 
 class MarginsMixin(object):
