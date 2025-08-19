@@ -278,7 +278,7 @@ class Frame(RadiusMixin, SizeMixin, Layout):
         self.__hint = FrameHint.FRAME
         self.__shape = FrameShape.FRAME
         self.__platform = Platform()
-        self.__style = self.__platform.style()
+        self.__style = self.__platform.style
         self.__visibility = 'Window.Windowed'
         self.__callbacks = {}
         self.__radius = 10, 10, 10, 10
@@ -390,6 +390,15 @@ class Frame(RadiusMixin, SizeMixin, Layout):
     def style(self, style: dict) -> None:
         self.__style = style
 
+    @property
+    def _platform(self) -> Platform:
+        """..."""
+        return self.__platform
+
+    @_platform.setter
+    def _platform(self, platform) -> None:
+        self.__platform = platform
+
     def callbacks(self) -> dict:
         """The functions used in the `connect` method.
 
@@ -410,9 +419,6 @@ class Frame(RadiusMixin, SizeMixin, Layout):
         :param event: Enum like `Event.MOUSE_HOVER` or `Event.MOUSE_WHEEL`
         """
         self.__callbacks[event] = method
-
-    def platform(self) -> Platform:
-        return self.__platform
 
     def __str__(self) -> str:
         return "<class 'Frame'>"

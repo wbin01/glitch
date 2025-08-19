@@ -42,6 +42,8 @@ class Button(Element):
         self.__path = pathlib.Path(__file__).parent.parent.parent
         self.__icon_path = self.__path / 'static' / 'icons' / 'linux'
         self.__platform_icons = Icons(OSDesk().desktop_environment)
+        self.__icon_theme = 'hicolor'
+        self.application_frame_signal.connect(self.__update_icon)
 
         # Args
         self.__text = text
@@ -60,6 +62,30 @@ class Button(Element):
 
         # Properties
         self.icon = icon
+
+    def __update_icon(self) -> None:
+        # Fix: Plasma updates icons without registering
+        if hasattr(self._application_frame, '_platform'):
+            self.__icon_theme = self._application_frame._platform.icon_theme
+
+            if 'breeze' not in self.__icon_theme:
+                return
+            
+            header = '[' + self._application_frame._name + ']'
+            is_dark = color_converter.is_dark(color_converter.hex_to_rgba(
+                self._application_frame.style[header]['background_color']))
+
+            self.__icon_theme = 'breeze-dark' if is_dark else 'breeze'
+            if self.__icon_theme == 'breeze-dark':
+                self._application_frame._platform.icon_theme = 'breeze-dark'
+
+                icon = self.__icon.strip('"')
+                icon_path = IconTheme.getIconPath(
+                    iconname=pathlib.Path(icon).stem,
+                    size=self.__icon_size,
+                    theme=self.__icon_theme,
+                    extensions=['png', 'svg', 'xpm'])
+                self.icon = icon_path if icon_path else icon
 
     @property
     def checkable(self) -> bool:
@@ -101,6 +127,7 @@ class Button(Element):
 
     @icon.setter
     def icon(self, icon: str) -> None:
+
         icon = self.__get_icon_path(icon)
 
         if self._obj:
@@ -174,7 +201,8 @@ class Button(Element):
             icon_path = IconTheme.getIconPath(
                 iconname=icon_name,
                 size=self.__icon_size,
-                theme=self.__platform_icons.icon_theme(),
+                # theme=self.__platform_icons.icon_theme(),
+                theme=self.__icon_theme,
                 extensions=['png', 'svg', 'xpm'])
 
             if icon_path:

@@ -17,7 +17,7 @@ class CustomElement(Row):
         super().__init__(*args, **kwargs)
         self.button_clicked_signal = Signal()
         
-        self.__custom_button = self.add(Button('Button X'))
+        self.__custom_button = self.add(Button('Button X', 'document-open'))
         self.__custom_button.connect(self.change_label)
 
         self.__custom_label, self.__num = self.add(Label('Label')), 0
@@ -175,6 +175,7 @@ class View(MainFrame):
             self.label.text = 'Panel slides from right'
 
     def on_button(self):
+        print(self._platform.icon_theme)
         self.num += 1
         self.label.text = f'Button press: {self.num}'
         # self.label.margins = Size.AUTO, Size.AUTO, Size.AUTO, 0
