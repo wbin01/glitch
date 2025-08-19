@@ -72,7 +72,8 @@ class FrameControlButton(Button):
         state = self.__state + self.__symbolic
 
         if self.__frame_action == FrameControl.MAX:
-            if self._application_frame.shape == FrameShape.MAX:
+            if (self._application_frame.shape == FrameShape.MAX or
+                    self._application_frame.shape == FrameShape.FULL):
                 return self.__icon_path + 'window-restore' + state + '.svg'
             return self.__icon_path + 'go-up' + state + '.svg'
         elif self.__frame_action == FrameControl.FULL:

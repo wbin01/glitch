@@ -61,6 +61,11 @@ class Icons(object):
             self.__gtk_icon_theme = gtk_icons if gtk_icons else None
             return self.__gtk_icon_theme
 
+    def clear_cache(self) -> None:
+        """Clear properties cache"""
+        self.__plasma_icon_theme = None
+        self.__gtk_icon_theme = None
+
     def __str__(self) -> str:
         return "<class 'Icons'>"
 

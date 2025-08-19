@@ -7,11 +7,11 @@ class OSDesk(object):
     """Platform Selector."""
     def __init__(self) -> None:
         # linux bsd mac windows unknown
-        self.__operational_system = self.__os()
+        self.__operational_system = None
 
         # plasma gnome cinnamon xfce mac
         # windows-7 windows-10 windows-11 unknown
-        self.__desktop_environment = self.__de()
+        self.__desktop_environment = None
 
     @property
     def desktop_environment(self) -> str:
@@ -22,6 +22,8 @@ class OSDesk(object):
         For BSD for now it's 'bsd', but it will be like in Linux.
         For Mac OS for now it's 'mac'.
         """
+        if not self.__desktop_environment:
+            self.__desktop_environment = self.__de()
         return self.__desktop_environment
 
     @desktop_environment.setter
@@ -34,14 +36,24 @@ class OSDesk(object):
 
         Is 'linux', 'windows'and 'mac' for now.
         """
+        if not self.__operational_system:
+            self.__operational_system = self.__os()
         return self.__operational_system
 
     @operational_system.setter
     def operational_system(self, operational_system_name: str) -> None:
         self.__operational_system = operational_system_name
 
+    def clear_cache(self) -> None:
+        """Clear properties cache"""
+        self.__operational_system = None
+        self.__desktop_environment = None
+
     def __de(self) -> str:
         # ...
+        if not self.__operational_system:
+            self.__operational_system = self.__os()
+        
         if self.__operational_system == 'linux':
             if (os.environ['DESKTOP_SESSION'] == 'plasma' or
                     os.environ['XDG_SESSION_DESKTOP'] == 'KDE' or

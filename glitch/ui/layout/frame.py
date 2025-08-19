@@ -6,7 +6,7 @@ from PySide6 import QtCore
 from ..base import Layout, RadiusMixin, SizeMixin
 from ...core.signal import Signal
 from ...enum import Event, FrameHint, FrameShape, Orientation
-from ...platform_ import Style
+from ...platform_ import Platform
 
 
 header = """
@@ -277,13 +277,14 @@ class Frame(RadiusMixin, SizeMixin, Layout):
         self.__style = None
         self.__hint = FrameHint.FRAME
         self.__shape = FrameShape.FRAME
-        self.style = Style().style
+        self.__platform = Platform()
+        self.__style = self.__platform.style()
         self.__visibility = 'Window.Windowed'
         self.__callbacks = {}
         self.__radius = 10, 10, 10, 10
 
         # Set
-        self.radius = self.style[f'[{self._name}]']['border_radius']
+        self.radius = self.__style[f'[{self._name}]']['border_radius']
 
     @property
     def hint(self) -> FrameHint:
@@ -409,6 +410,9 @@ class Frame(RadiusMixin, SizeMixin, Layout):
         :param event: Enum like `Event.MOUSE_HOVER` or `Event.MOUSE_WHEEL`
         """
         self.__callbacks[event] = method
+
+    def platform(self) -> Platform:
+        return self.__platform
 
     def __str__(self) -> str:
         return "<class 'Frame'>"

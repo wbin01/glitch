@@ -14,36 +14,28 @@ class Style(object):
     Manages style information according to the platform.
     """
 
-    def __init__(self):
-        """
-        [Colors:Window]
-        BackgroundAlternate=59,59,59
-        BackgroundNormal=50,50,50    
-        """
-        self.__desktop = 'plasma'
-        self.__conf = self.__get_sys_conf()
+    def __init__(self, desktop_environment: str = 'plasma') -> None:
+        self.__desktop = desktop_environment
+        self.__style = None
+        self.__conf = None
 
-        self.__frame_bg = self.__sanitized_color(  # Alt 282828
-            self.__conf['[Colors:Window]']['BackgroundNormal'], '#2A2A2A')
-        self.__frame_bg_is_dark = color_converter.is_dark(
-            color_converter.hex_to_rgba(self.__frame_bg))
-        
-        self.__frame_bd = self.__frame_bg
-        if self.__frame_bg_is_dark:
-            self.__frame_bd = color_converter.lighten_hex(self.__frame_bg, 15)
+        self.__frame_bg = None
+        self.__frame_bd = None
+        self.__frame_is_dark = None
+        self.__frame_inactive_bg = None
+        self.__frame_inactive_bd = None
 
-        # self.__frame_inactive_bg = self.__sanitized_color(
-        #     self.__conf['[Colors:Header][Inactive]']['BackgroundNormal'],
-        #     '#222')
-        self.__frame_inactive_bg = color_converter.darken_hex(
-            self.__frame_bg, 10)
+    def style(self) -> dict:
+        if self.__style:
+            return self.__style
 
-        self.__frame_inactive_bd = self.__frame_inactive_bg
-        if self.__frame_bg_is_dark:
-            self.__frame_inactive_bd = color_converter.lighten_hex(
-                self.__frame_inactive_bg, 15)
+        if not self.__conf:
+            self.__conf = self.__get_sys_conf()
 
-        self.style = {
+        if not self.__frame_bg:
+            self.__set_styles_from_platform()
+
+        self.__style = {
             '[Button]': {
                 'background_color': '#333',
                 'border_color': '#444',
@@ -88,12 +80,12 @@ class Style(object):
                 },
             '[Frame]': {
                 'background_color': self.__frame_bg,
-                'border_color': '[Platform] accent_color',
+                'border_color': self.__frame_bd,
                 'border_radius': '10',
                 },
             '[Frame:inactive]': {
-                'background_color': '#222',
-                'border_color': '[Platform] accent_color #55',
+                'background_color': self.__frame_inactive_bg,
+                'border_color': self.__frame_inactive_bd,
                 'border_radius': '10',
                 },
             '[Label]': {
@@ -161,6 +153,7 @@ class Style(object):
                 'icon_opacity': '1.0',
                 },
             }
+        return self.__style
 
     def __get_sys_conf(self) -> dict:
         conf_name = 'kdeglobals'
@@ -182,6 +175,27 @@ class Style(object):
                 color = int(color[0]), int(color[1]), int(color[2]), int(color[3])
             return color_converter.rgba_to_hex(color)
         return alt_color
+
+    def __set_styles_from_platform(self) -> None:
+        self.__frame_bg = self.__sanitized_color(  # Alt 282828
+            self.__conf['[Colors:Window]']['BackgroundNormal'], '#2A2A2A')
+        self.__frame_is_dark = color_converter.is_dark(
+            color_converter.hex_to_rgba(self.__frame_bg))
+        
+        self.__frame_bd = self.__frame_bg
+        if self.__frame_is_dark:
+            self.__frame_bd = color_converter.lighten_hex(self.__frame_bg, 15)
+
+        # self.__frame_inactive_bg = self.__sanitized_color(
+        #     self.__conf['[Colors:Header][Inactive]']['BackgroundNormal'],
+        #     '#222')
+        self.__frame_inactive_bg = color_converter.darken_hex(
+            self.__frame_bg, 10)
+
+        self.__frame_inactive_bd = self.__frame_inactive_bg
+        if self.__frame_is_dark:
+            self.__frame_inactive_bd = color_converter.lighten_hex(
+                self.__frame_inactive_bg, 5)
 
     def __q_sys_color(self) -> None:
         self.__palette = QtGui.QPalette()
@@ -212,6 +226,17 @@ class Style(object):
             QtGui.QPalette().color(  # ToolTipBase Button Window AlternateBase
                 QtGui.QPalette.Active, QtGui.QPalette.Window))
         print(self.palette_color)
+
+    def clear_cache(self) -> None:
+        """Clear properties cache"""
+        self.__style = None
+        self.__conf = None
+
+        self.__frame_bg = None
+        self.__frame_bd = None
+        self.__frame_is_dark = None
+        self.__frame_inactive_bg = None
+        self.__frame_inactive_bd = None
     
     def __str__(self) -> str:
         return "<class 'Style'>"
