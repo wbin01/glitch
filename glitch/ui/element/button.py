@@ -64,28 +64,57 @@ class Button(Element):
         self.icon = icon
 
     def __update_icon(self) -> None:
-        # Fix: Plasma updates icons without registering
+        # Fix: DE updates dark icons without registering
         if hasattr(self._application_frame, '_platform'):
             self.__icon_theme = self._application_frame._platform.icon_theme
 
-            if 'breeze' not in self.__icon_theme:
-                return
-            
             header = '[' + self._application_frame._name + ']'
-            is_dark = color_converter.is_dark(color_converter.hex_to_rgba(
+            dark = color_converter.is_dark(color_converter.hex_to_rgba(
                 self._application_frame.style[header]['background_color']))
 
-            self.__icon_theme = 'breeze-dark' if is_dark else 'breeze'
-            if self.__icon_theme == 'breeze-dark':
-                self._application_frame._platform.icon_theme = 'breeze-dark'
+            dark_icon_themes = []
+            if dark and not 'dark' in self.__icon_theme.lower():
+                dark_icon_themes = [
+                    self.__icon_theme + '-dark', self.__icon_theme + '-Dark',
+                    self.__icon_theme + ' dark', self.__icon_theme + ' Dark']
+            
+            elif not dark and 'dark' in self.__icon_theme.lower():
+                for x in ['-dark', '-Dark', ' dark', ' Dark']:
+                    if x in self.__icon_theme:
+                        dark_icon_themes = [self.__icon_theme.replace(x, '')]
+                        break
 
-                icon = self.__icon.strip('"')
+            dark_icon_theme = None
+            for icons_path in [
+                    '/home/user/.local/share/icons/', '/usr/share/icons/']:
+                for icon_theme in dark_icon_themes:
+                    dark_icon_path = pathlib.Path(icons_path + icon_theme)
+
+                    if dark_icon_path.exists():
+                        dark_icon_theme = str(dark_icon_path)
+
+            icon = self.__icon.strip('"')
+            icon_path = None
+            if dark_icon_theme:
+                icon_path = IconTheme.getIconPath(
+                    iconname=pathlib.Path(icon).stem,
+                    size=self.__icon_size,
+                    theme=dark_icon_theme,
+                    extensions=['png', 'svg', 'xpm'])
+
+            if not icon_path:
                 icon_path = IconTheme.getIconPath(
                     iconname=pathlib.Path(icon).stem,
                     size=self.__icon_size,
                     theme=self.__icon_theme,
                     extensions=['png', 'svg', 'xpm'])
-                self.icon = icon_path if icon_path else icon
+
+            self.icon = icon_path if icon_path else icon
+
+            if (dark and 'dark' not in
+                    self._application_frame._platform.icon_theme.lower()):
+                self._application_frame._platform.icon_theme = (
+                    self.__icon_theme)
 
     @property
     def checkable(self) -> bool:
