@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import pathlib
+from pathlib import Path
 
 from xdg import IconTheme
 
@@ -39,7 +39,7 @@ class Button(Element):
         """
         super().__init__(*args, **kwargs)
         self.__callbacks = {}
-        self.__path = pathlib.Path(__file__).parent.parent.parent
+        self.__path = Path(__file__).parent.parent.parent
         self.__icon_path = self.__path / 'static' / 'icons' / 'linux'
         self.__platform_icons = Icons(OSDesk().desktop_environment)
         self.__icon_theme = 'hicolor'
@@ -61,6 +61,11 @@ class Button(Element):
         self.style_class = 'Button'
 
         # Properties
+        self.__light_suffixes = ['-light', '-Light', ' light', ' Light']
+        self.__dark_suffixes = ['-dark', '-Dark', ' dark', ' Dark']
+        self.__icon_theme_paths = [
+            '/usr/share/icons/', '/home/user/.local/share/icons/',
+            '/home/user/.icons/']
         self.icon = icon
 
     def __update_icon(self) -> None:
@@ -72,45 +77,36 @@ class Button(Element):
             dark = color_converter.is_dark(color_converter.hex_to_rgba(
                 self._application_frame.style[header]['background_color']))
 
-            dark_icon_themes = []
-            if dark and not 'dark' in self.__icon_theme.lower():
-                dark_icon_themes = [
-                    self.__icon_theme + '-dark', self.__icon_theme + '-Dark',
-                    self.__icon_theme + ' dark', self.__icon_theme + ' Dark']
-            
-            elif not dark and 'dark' in self.__icon_theme.lower():
-                for x in ['-dark', '-Dark', ' dark', ' Dark']:
-                    if x in self.__icon_theme:
-                        dark_icon_themes = [self.__icon_theme.replace(x, '')]
-                        break
+            icon_theme = ''
+            for path in self.__icon_theme_paths:
+                for suffix in self.__dark_suffixes:
+                    if dark and 'dark' not in self.__icon_theme.lower():
+                        if 'light' in self.__icon_theme.lower():
 
-            dark_icon_theme = None
-            for icons_path in [
-                    '/home/user/.local/share/icons/', '/usr/share/icons/']:
-                for icon_theme in dark_icon_themes:
-                    dark_icon_path = pathlib.Path(icons_path + icon_theme)
+                            for x in self.__light_suffixes:
+                                self.__icon_theme = self.__icon_theme.replace(x, '')
 
-                    if dark_icon_path.exists():
-                        dark_icon_theme = str(dark_icon_path)
+                        if Path(path + self.__icon_theme + suffix).exists():
+                            icon_theme = self.__icon_theme + suffix
+
+                    elif not dark and 'dark' in self.__icon_theme.lower():
+                        temp = self.__icon_theme.replace(suffix, '')
+                        if Path(path + temp).exists() and 'dark' not in temp.lower():
+                            icon_theme = temp
 
             icon = self.__icon.strip('"')
             icon_path = None
-            if dark_icon_theme:
-                icon_path = IconTheme.getIconPath(
-                    iconname=pathlib.Path(icon).stem,
-                    size=self.__icon_size,
-                    theme=dark_icon_theme,
-                    extensions=['png', 'svg', 'xpm'])
-
-            if not icon_path:
-                icon_path = IconTheme.getIconPath(
-                    iconname=pathlib.Path(icon).stem,
-                    size=self.__icon_size,
-                    theme=self.__icon_theme,
-                    extensions=['png', 'svg', 'xpm'])
+            for theme in [icon_theme, self.__icon_theme]:
+                if theme:
+                    icon_path = IconTheme.getIconPath(
+                        iconname=Path(icon).stem,
+                        size=self.__icon_size,
+                        theme=theme,
+                        extensions=['png', 'svg', 'xpm'])
+                    if icon_path:
+                        break
 
             self.icon = icon_path if icon_path else icon
-
             if (dark and 'dark' not in
                     self._application_frame._platform.icon_theme.lower()):
                 self._application_frame._platform.icon_theme = (
@@ -222,7 +218,7 @@ class Button(Element):
             return '""'
 
         elif '/' in icon_name:
-            if not pathlib.Path(icon_name).exists():
+            if not Path(icon_name).exists():
                 return '""'
             return f'"{icon_name}"'
 
@@ -230,7 +226,6 @@ class Button(Element):
             icon_path = IconTheme.getIconPath(
                 iconname=icon_name,
                 size=self.__icon_size,
-                # theme=self.__platform_icons.icon_theme(),
                 theme=self.__icon_theme,
                 extensions=['png', 'svg', 'xpm'])
 

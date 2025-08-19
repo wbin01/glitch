@@ -17,7 +17,7 @@ class CustomElement(Row):
         super().__init__(*args, **kwargs)
         self.button_clicked_signal = Signal()
         
-        self.__custom_button = self.add(Button('Button X', 'document-open'))
+        self.__custom_button = self.add(Button('Elves', 'document-open'))
         self.__custom_button.connect(self.change_label)
 
         self.__custom_label, self.__num = self.add(Label('Label')), 0
@@ -115,7 +115,7 @@ class View(MainFrame):
 
         self.custom0 = self.scroll_column.add(CustomElement())
         self.customx = self.scroll_column.add(CustomElementX())
-
+        self.customx2 = self.scroll_column.add(CustomElementX())
         self.custom = self.scroll_column.add(CustomElement())
         self.custom.button_clicked_signal.connect(self.on_custom_clicked)
 
