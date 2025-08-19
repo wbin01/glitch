@@ -1,6 +1,161 @@
 #!/usr/bin/env python3
-import logging
+from xdg import IconTheme
+from pathlib import Path
+
 from ...enum import Orientation, Size
+from ...tools import color_converter
+
+
+class IconMixin(object):
+    """Icon mix object for implementing the icon property"""
+    def __init__(
+            self, icon: str = None, icon_size: int = 16,
+            *args, **kwargs) -> None:
+        super().__init__(icon=icon, icon_size=icon_size, *args, **kwargs)
+        self.__path = Path(__file__).parent.parent.parent
+        self.__icon_path = self.__path / 'static' / 'icons' / 'linux'
+        self.__icon_theme = 'hicolor'
+
+        # Args
+        self.__icon_size = icon_size
+        self.__icon = self.__get_icon_path(icon)
+
+        # QML
+        properties = '\n    iconSource: <icon>\n    // Property\n'
+        self._qml = self._qml.replace(
+            '\n    // Property', properties.replace('<icon>', self.__icon))
+
+        # Properties
+        self.__light_suffixes = ['-light', '-Light', ' light', ' Light']
+        self.__dark_suffixes = ['-dark', '-Dark', ' dark', ' Dark']
+        self.__icon_theme_paths = [
+            '/usr/share/icons/', '/home/user/.local/share/icons/',
+            '/home/user/.icons/']
+        self.icon = icon
+        self.application_frame_signal.connect(self.__update_icon)
+
+    @property
+    def icon(self) -> str:
+        """Icon name or path string."""
+        return self.__icon
+
+    @icon.setter
+    def icon(self, icon: str) -> None:
+
+        icon = self.__get_icon_path(icon)
+
+        if self._obj:
+            self._obj.setProperty('iconSource', icon.strip('"'))
+        else:
+            self._qml = self._qml.replace(
+                f'iconSource: {self.__icon}', f'iconSource: {icon}')
+        self.__icon = icon
+
+    def __get_icon_path(self, icon_name: str | None) -> str | None:
+        if not icon_name:
+            return '""'
+
+        elif '/' in icon_name:
+            if not Path(icon_name).exists():
+                return '""'
+            return f'"{icon_name}"'
+
+        else:
+            icon_path = IconTheme.getIconPath(
+                iconname=icon_name,
+                size=self.__icon_size,
+                theme=self.__icon_theme,
+                extensions=['png', 'svg', 'xpm'])
+
+            if icon_path:
+                return f'"{icon_path}"'
+
+            icon = icon_name + '.svg'
+            path = self.__icon_path / icon
+            return f'"{path}"' if path.exists() else '""'
+                # impl callback
+        """
+        IconTheme.getIconPath(
+            iconname=self.__icon_name,
+            size=22,
+            theme='breeze-dark',
+            extensions=['png', 'svg', 'xpm']
+
+        from PySide6.QtGui import QIcon
+        icon = QIcon.fromTheme("document-save")
+        
+        ----
+        Self linux impl
+        
+        ICON PATH
+            User:
+                Gtk
+                /home/user/.icons/icon-theme/22x22/actions/icon-name.svg
+                Qt
+                /home/user/.icons/icon-theme/actions/22/icon-name.svg
+            
+            Gtk
+            /usr/share/icons/icon-theme/22x22/actions/icon-name.svg
+            Qt
+            /usr/share/icons/icon-theme/actions/22/icon-name.svg
+            
+            Default sys
+            /usr/share/icons/hicolor/22x22/actions/icon-name.png
+            Default lib
+            self.__icon_path / document-save.svg
+
+        ROADMAP
+            loop paths:
+                check for: Gtk Qt icon-name icon-theme.png .svg
+            else:
+                or: Default sys
+                or: Default lib
+                or: callback-icon-path
+        """
+
+    def __update_icon(self) -> None:
+        # Fix: DE updates dark icons without registering
+        if hasattr(self._application_frame, '_platform'):
+            self.__icon_theme = self._application_frame._platform.icon_theme
+
+            header = '[' + self._application_frame._name + ']'
+            dark = color_converter.is_dark(color_converter.hex_to_rgba(
+                self._application_frame.style[header]['background_color']))
+
+            icon_theme = ''
+            for path in self.__icon_theme_paths:
+                for suffix in self.__dark_suffixes:
+                    if dark and 'dark' not in self.__icon_theme.lower():
+                        if 'light' in self.__icon_theme.lower():
+
+                            for x in self.__light_suffixes:
+                                self.__icon_theme = self.__icon_theme.replace(x, '')
+
+                        if Path(path + self.__icon_theme + suffix).exists():
+                            icon_theme = self.__icon_theme + suffix
+
+                    elif not dark and 'dark' in self.__icon_theme.lower():
+                        temp = self.__icon_theme.replace(suffix, '')
+                        if Path(path + temp).exists() and 'dark' not in temp.lower():
+                            icon_theme = temp
+
+            icon = self.__icon.strip('"')
+            icon_path = None
+            for theme in [icon_theme, self.__icon_theme]:
+                if theme:
+                    icon_path = IconTheme.getIconPath(
+                        iconname=Path(icon).stem,
+                        size=self.__icon_size,
+                        theme=theme,
+                        extensions=['png', 'svg', 'xpm'])
+                    if icon_path:
+                        break
+
+            self.icon = icon_path if icon_path else icon
+            if (dark and 'dark' not in
+                    self._application_frame._platform.icon_theme.lower()):
+                self._application_frame._platform.icon_theme = (
+                    self.__icon_theme)
 
 
 class MarginsMixin(object):
