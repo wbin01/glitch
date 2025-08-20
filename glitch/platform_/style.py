@@ -36,19 +36,23 @@ class Style(object):
         self.__button_ck_fg = None
         self.__button_ck_bg = None
         self.__button_ck_bd = None
+        self.__button_ck_io = None
         self.__button_ch_fg = None
         self.__button_ch_bg = None
         self.__button_ch_bd = None
+        self.__button_ch_io = None
         self.__button_ch_in_fg = None
         self.__button_ch_in_bg = None
         self.__button_ch_in_bd = None
+        self.__button_ch_in_io = None
         self.__button_ch_hv_fg = None
         self.__button_ch_hv_bg = None
         self.__button_ch_hv_bd = None
-
+        self.__button_ch_hv_io = None
         self.__button_ck_in_fg = None
         self.__button_ck_in_bg = None
         self.__button_ck_in_bd = None
+        self.__button_ck_in_io = None
 
         self.__frame_is_dark = None
         self.__frame_fg = None
@@ -87,13 +91,16 @@ class Style(object):
         self.__tool_button_hv_io = None
         self.__tool_button_ck_bg = None
         self.__tool_button_ck_bd = None
+        self.__tool_button_ck_io = None
         self.__tool_button_ch_bg = None
         self.__tool_button_ch_bd = None
+        self.__tool_button_ch_io = None
         self.__tool_button_ch_in_bg = None
         self.__tool_button_ch_in_bd = None
+        self.__tool_button_ch_in_io = None
         self.__tool_button_ch_hv_bg = None
         self.__tool_button_ch_hv_bd = None
-
+        self.__tool_button_ch_hv_io = None
 
     def style(self) -> dict:
         if self.__style:
@@ -125,28 +132,28 @@ class Style(object):
                 'icon_opacity': self.__button_hv_io,
                 },
             '[Button:clicked]': {
-                'background_color': '[Platform] accent_color #33',
-                'border_color': '[Platform] accent_color #88',
-                'font_color': '#FFF',
-                'icon_opacity': '1.0',
+                'background_color': self.__button_ck_bg,
+                'border_color': self.__button_ck_bd,
+                'font_color': self.__button_ck_fg,
+                'icon_opacity': self.__button_ck_io,
                 },
             '[Button:checked]': {
-                'background_color': '#484848',
-                'border_color': '#555',
-                'font_color': '#EEE',
-                'icon_opacity': '1.0',
+                'background_color': self.__button_ch_bg,
+                'border_color': self.__button_ch_bd,
+                'font_color': self.__button_ch_fg,
+                'icon_opacity': self.__button_ch_io,
                 },
             '[Button:checked:inactive]': {
-                'background_color': '#2A2A2A',
-                'border_color': '#333',
-                'font_color': '#666',
-                'icon_opacity': '0.3',
+                'background_color': self.__button_ch_in_bg,
+                'border_color': self.__button_ch_in_bd,
+                'font_color': self.__button_ch_in_fg,
+                'icon_opacity': self.__button_ch_in_io,
                 },
             '[Button:checked:hover]': {
-                'background_color': '#484848',
-                'border_color': '[Platform] accent_color #88',
-                'font_color': '#EEE',
-                'icon_opacity': '1.0',
+                'background_color': self.__button_ch_hv_bg,
+                'border_color': self.__button_ch_hv_bd,
+                'font_color': self.__button_ch_hv_fg,
+                'icon_opacity': self.__button_ch_hv_io,
                 },
             '[Frame]': {
                 'background_color': self.__frame_bg,
@@ -205,24 +212,24 @@ class Style(object):
                 'icon_opacity': self.__tool_button_hv_io,
                 },
             '[ToolButton:clicked]': {
-                'background_color': '[Platform] accent_color #33',
-                'border_color': '[Platform] accent_color #88',
-                'icon_opacity': '1.0',
+                'background_color': self.__tool_button_ck_bg,
+                'border_color': self.__tool_button_ck_bd,
+                'icon_opacity': self.__tool_button_ck_io,
                 },
             '[ToolButton:checked]': {
-                'background_color': '#333',
-                'border_color': '#444',
-                'icon_opacity': '1.0',
+                'background_color': self.__tool_button_ch_bg,
+                'border_color': self.__tool_button_ch_bd,
+                'icon_opacity': self.__tool_button_ch_io,
                 },
             '[ToolButton:checked:inactive]': {
-                'background_color': '#222',
-                'border_color': '#333',
-                'icon_opacity': '0.3',
+                'background_color': self.__tool_button_ch_in_bg,
+                'border_color': self.__tool_button_ch_in_bd,
+                'icon_opacity': self.__tool_button_ch_in_io,
                 },
             '[ToolButton:checked:hover]': {
-                'background_color': '#333',
-                'border_color': '[Platform] accent_color #88',
-                'icon_opacity': '1.0',
+                'background_color': self.__tool_button_ch_hv_bg,
+                'border_color': self.__tool_button_ch_hv_bd,
+                'icon_opacity': self.__tool_button_ch_hv_io,
                 },
             }
         return self.__style
@@ -263,9 +270,9 @@ class Style(object):
         if self.__main_frame_is_dark:
             self.__main_frame_bd = colr.lighten_hex(self.__main_frame_bg, 15)
 
-        self.__main_frame_rd = 6, 6, 0, 0
+        self.__main_frame_rd = '6, 6, 0, 0'
         self.__main_frame_io = '1.0'
-        self.__inactive_as_platform = True
+        # self.__inactive_as_platform = True
         if self.__inactive_as_platform:
             # [Colors:Header][Inactive]][BackgroundNormal]
             self.__main_frame_in_fg = self.__main_frame_fg
@@ -329,22 +336,30 @@ class Style(object):
             self.__conf['[Colors:Button]']['DecorationHover'], '#3C8CBD')
         self.__button_hv_io = self.__button_io
 
-        self.__button_ck_fg = None
-        self.__button_ck_bg = None
-        self.__button_ck_bd = None
+        self.__button_ck_fg = self.__button_fg
+        self.__button_ck_bg = '#33' + self.__button_hv_bd[3:]
+        self.__button_ck_bd = self.__button_hv_bd
+        self.__button_ck_io = self.__button_io
 
-        self.__button_ch_fg = None
-        self.__button_ch_bg = None
-        self.__button_ch_bd = None
+        self.__button_ch_fg = self.__button_fg
+        self.__button_ch_bg = '#AA' + self.__button_bd[3:]
+        self.__button_ch_bd = self.__button_bd
+        self.__button_ch_io = self.__button_io
 
-        self.__button_ch_in_fg = None
-        self.__button_ch_in_bg = None
-        self.__button_ch_in_bd = None
+        self.__button_ch_in_fg = self.__button_in_fg
+
+        if self.__inactive_as_platform:
+            self.__button_ch_in_bg = self.__button_ch_bg
+        else:
+            self.__button_ch_in_bg = '#33' + self.__button_ch_bg[3:]
+
+        self.__button_ch_in_bd = self.__button_in_bd
+        self.__button_ch_in_io = self.__button_in_io
         
-        self.__button_ch_hv_fg = None
-        self.__button_ch_hv_bg = None
-        self.__button_ch_hv_bd = None
-
+        self.__button_ch_hv_fg = self.__button_ch_fg
+        self.__button_ch_hv_bg = self.__button_ch_bg
+        self.__button_ch_hv_bd = self.__button_hv_bd
+        self.__button_ch_hv_io = self.__button_ch_io
 
         # ToolButton
         self.__tool_button_bg = self.__main_frame_bg
@@ -360,17 +375,26 @@ class Style(object):
         self.__tool_button_hv_bd = self.__button_hv_bd
         self.__tool_button_hv_io = self.__tool_button_io
 
-        self.__tool_button_ck_bg = None
-        self.__tool_button_ck_bd = None
+        self.__tool_button_ck_bg = self.__button_ck_bg
+        self.__tool_button_ck_bd = self.__button_ck_bd
+        self.__tool_button_ck_io = self.__button_ck_io
 
-        self.__tool_button_ch_bg = None
-        self.__tool_button_ch_bd = None
+        self.__tool_button_ch_bg = '#88' + self.__button_ch_bg[3:]
+        self.__tool_button_ch_bd = self.__button_ch_bd
+        self.__tool_button_ch_io = self.__button_ch_io
 
-        self.__tool_button_ch_in_bg = None
-        self.__tool_button_ch_in_bd = None
+        if self.__inactive_as_platform:
+            self.__tool_button_ch_in_bg = self.__tool_button_ch_bg
+            self.__tool_button_ch_in_bd = self.__tool_button_ch_bd
+        else:
+            self.__tool_button_ch_in_bg = '#33' + self.__tool_button_ch_bg[3:]
+            self.__tool_button_ch_in_bd = '#33' + self.__tool_button_ch_bd[3:]
 
-        self.__tool_button_ch_hv_bg = None
-        self.__tool_button_ch_hv_bd = None
+        self.__tool_button_ch_in_io = self.__tool_button_in_io
+
+        self.__tool_button_ch_hv_bg = self.__tool_button_ch_bg
+        self.__tool_button_ch_hv_bd = self.__tool_button_hv_bd
+        self.__tool_button_ch_hv_io = self.__tool_button_ch_io
 
     def __q_sys_color(self) -> None:
         self.__palette = QtGui.QPalette()
