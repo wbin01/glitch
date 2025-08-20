@@ -19,11 +19,55 @@ class Style(object):
         self.__style = None
         self.__conf = None
 
+        self.__main_frame_is_dark = None
+        self.__main_frame_fg = None
+        self.__main_frame_bg = None
+        self.__main_frame_bd = None
+        self.__main_frame_rd = None
+        self.__main_frame_in_fg = None
+        self.__main_frame_in_bg = None
+        self.__main_frame_in_bd = None
+
+        self.__button_fg = None
+        self.__button_bg = None
+        self.__button_bd = None
+        self.__button_rd = None
+        self.__button_io = None
+        self.__button_in_fg = None
+        self.__button_in_bg = None
+        self.__button_in_bd = None
+        self.__button_in_io = None
+        self.__button_ck_fg = None
+        self.__button_ck_bg = None
+        self.__button_ck_bd = None
+        self.__button_ck_in_fg = None
+        self.__button_ck_in_bg = None
+        self.__button_ck_in_bd = None
+
+        self.__frame_is_dark = None
+        self.__frame_fg = None
         self.__frame_bg = None
         self.__frame_bd = None
-        self.__frame_is_dark = None
-        self.__frame_inactive_bg = None
-        self.__frame_inactive_bd = None
+        self.__frame_rd = None
+        self.__frame_in_fg = None
+        self.__frame_in_bg = None
+        self.__frame_in_bd = None
+
+        self.__tool_button_fg = None
+        self.__tool_button_bg = None
+        self.__tool_button_bd = None
+        self.__tool_button_rd = None
+        self.__tool_button_io = None
+        self.__tool_button_in_fg = None
+        self.__tool_button_in_bg = None
+        self.__tool_button_in_bd = None
+        self.__tool_button_in_io = None
+        self.__tool_button_ck_fg = None
+        self.__tool_button_ck_bg = None
+        self.__tool_button_ck_bd = None
+        self.__tool_button_ck_in_fg = None
+        self.__tool_button_ck_in_bg = None
+        self.__tool_button_ck_in_bd = None
 
     def style(self) -> dict:
         if self.__style:
@@ -32,7 +76,7 @@ class Style(object):
         if not self.__conf:
             self.__conf = self.__get_sys_conf()
 
-        if not self.__frame_bg:
+        if not self.__main_frame_bg:
             self.__set_styles_from_platform()
 
         self.__style = {
@@ -84,8 +128,8 @@ class Style(object):
                 'border_radius': '10',
                 },
             '[Frame:inactive]': {
-                'background_color': self.__frame_inactive_bg,
-                'border_color': self.__frame_inactive_bd,
+                'background_color': self.__frame_in_bg,
+                'border_color': self.__frame_in_bd,
                 'border_radius': '10',
                 },
             '[Label]': {
@@ -95,13 +139,13 @@ class Style(object):
                 'font_color': '#666',
                 },
             '[MainFrame]': {
-                'background_color': self.__frame_bg,
-                'border_color': self.__frame_bd,
+                'background_color': self.__main_frame_bg,
+                'border_color': self.__main_frame_bd,
                 'border_radius': '20, 20, 0, 0',
                 },
             '[MainFrame:inactive]': {
-                'background_color': self.__frame_inactive_bg,
-                'border_color': self.__frame_inactive_bd,
+                'background_color': self.__main_frame_in_bg,
+                'border_color': self.__main_frame_in_bd,
                 'border_radius': '10',
                 },
             '[Panel]': {
@@ -118,8 +162,8 @@ class Style(object):
                 'accent_color': '#3C8CBD',
                 },
             '[ToolButton]': {
-                'background_color': '#00000000',
-                'border_color': '#00000000',
+                'background_color': self.__tool_button_bg,
+                'border_color': self.__tool_button_bg,
                 'icon_opacity': '1.0',
                 },
             '[ToolButton:inactive]': {
@@ -164,7 +208,7 @@ class Style(object):
             ini = DesktopFile(conf_file).content
         return ini
 
-    def __sanitized_color(self, color, alt_color) -> str:
+    def __conf_color_to_hex(self, color, alt_color) -> str:
         color = color.split(',')
         len_color = len(color)
 
@@ -177,25 +221,39 @@ class Style(object):
         return alt_color
 
     def __set_styles_from_platform(self) -> None:
-        self.__frame_bg = self.__sanitized_color(  # Alt 282828
+        # MainFrame
+
+        # self.__frame_is_dark = None
+        # self.__frame_fg = None
+        # self.__frame_rd = None
+        # self.__frame_in_fg = None
+
+        self.__main_frame_bg = self.__conf_color_to_hex(  # Alt 282828
             self.__conf['[Colors:Window]']['BackgroundNormal'], '#2A2A2A')
-        self.__frame_is_dark = color_converter.is_dark(
-            color_converter.hex_to_rgba(self.__frame_bg))
+
+        self.__main_frame_is_dark = color_converter.is_dark(
+            color_converter.hex_to_rgba(self.__main_frame_bg))
         
-        self.__frame_bd = self.__frame_bg
-        if self.__frame_is_dark:
-            self.__frame_bd = color_converter.lighten_hex(self.__frame_bg, 15)
+        self.__main_frame_bd = self.__main_frame_bg
+        if self.__main_frame_is_dark:
+            self.__main_frame_bd = color_converter.lighten_hex(self.__main_frame_bg, 15)
 
-        # self.__frame_inactive_bg = self.__sanitized_color(
-        #     self.__conf['[Colors:Header][Inactive]']['BackgroundNormal'],
-        #     '#222')
-        self.__frame_inactive_bg = color_converter.darken_hex(
-            self.__frame_bg, 10)
+        self.__main_frame_in_bg = color_converter.darken_hex(
+            self.__main_frame_bg, 10) # [Colors:Header][Inactive]][BackgroundNormal]
 
-        self.__frame_inactive_bd = self.__frame_inactive_bg
-        if self.__frame_is_dark:
-            self.__frame_inactive_bd = color_converter.lighten_hex(
-                self.__frame_inactive_bg, 5)
+        self.__main_frame_in_bd = self.__main_frame_in_bg
+        if self.__main_frame_is_dark:
+            self.__main_frame_in_bd = color_converter.lighten_hex(
+                self.__main_frame_in_bg, 5)
+
+        # Frame
+        self.__frame_is_dark = self.__main_frame_is_dark
+        self.__frame_bg = self.__main_frame_bg
+        self.__frame_bd = '#1962FF' # self.__main_frame_bd
+        self.__frame_in_bg = self.__main_frame_in_bg
+        self.__frame_in_bd = self.__main_frame_in_bd
+
+        self.__tool_button_bg = self.__main_frame_bg
 
     def __q_sys_color(self) -> None:
         self.__palette = QtGui.QPalette()
@@ -232,11 +290,11 @@ class Style(object):
         self.__style = None
         self.__conf = None
 
-        self.__frame_bg = None
-        self.__frame_bd = None
-        self.__frame_is_dark = None
-        self.__frame_inactive_bg = None
-        self.__frame_inactive_bd = None
+        self.__main_frame_bg = None
+        self.__main_frame_bd = None
+        self.__main_frame_is_dark = None
+        self.__main_frame_in_bg = None
+        self.__main_frame_in_bd = None
     
     def __str__(self) -> str:
         return "<class 'Style'>"

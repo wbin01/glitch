@@ -85,6 +85,8 @@ def change_element_style_state(
 
 def style_value(style: dict, header: str, prop: str) -> str:
     value = style[header][prop]
+    # if ',' in value:
+    #     return 
     if not value.startswith('['):
         return value
 

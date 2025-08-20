@@ -2,6 +2,7 @@
 from xdg import IconTheme
 from pathlib import Path
 
+from ...core.application_style import style_value
 from ...enum import Orientation, Size
 from ...tools import color_converter
 
@@ -26,11 +27,6 @@ class IconMixin(object):
             '\n    // Property', properties.replace('<icon>', self.__icon))
 
         # Properties
-        self.__light_suffixes = ['-light', '-Light', ' light', ' Light']
-        self.__dark_suffixes = ['-dark', '-Dark', ' dark', ' Dark']
-        self.__icon_theme_paths = [
-            '/usr/share/icons/', '/home/user/.local/share/icons/',
-            '/home/user/.icons/']
         self.icon = icon
         self.application_frame_signal.connect(self.__update_icon)
 
@@ -41,9 +37,7 @@ class IconMixin(object):
 
     @icon.setter
     def icon(self, icon: str) -> None:
-
         icon = self.__get_icon_path(icon)
-
         if self._obj:
             self._obj.setProperty('iconSource', icon.strip('"'))
         else:
@@ -118,28 +112,15 @@ class IconMixin(object):
         if hasattr(self._application_frame, '_platform'):
             self.__icon_theme = self._application_frame._platform.icon_theme
 
-            header = '[' + self._application_frame._name + ']'
-            dark = color_converter.is_dark(color_converter.hex_to_rgba(
-                self._application_frame.style[header]['background_color']))
+            is_dark = color_converter.is_dark(color_converter.hex_to_rgba(
+                style_value(
+                    self._application_frame.style,
+                    '[' + self._name + ']',
+                    'background_color')))
 
-            icon_theme = ''
-            for path in self.__icon_theme_paths:
-                for suffix in self.__dark_suffixes:
-                    if dark and 'dark' not in self.__icon_theme.lower():
-                        if 'light' in self.__icon_theme.lower():
-
-                            for x in self.__light_suffixes:
-                                self.__icon_theme = (
-                                    self.__icon_theme.replace(x, ''))
-
-                        if Path(path + self.__icon_theme + suffix).exists():
-                            icon_theme = self.__icon_theme + suffix
-
-                    elif not dark and 'dark' in self.__icon_theme.lower():
-                        temp = self.__icon_theme.replace(suffix, '')
-                        if (Path(path + temp).exists() and
-                                'dark' not in temp.lower()):
-                            icon_theme = temp
+            # TODO Condition for dark or light !=
+            icon_theme = self._application_frame._platform.variant_icon_theme(
+                self.__icon_theme, is_dark)
 
             icon = self.__icon.strip('"')
             icon_path = None
@@ -150,7 +131,7 @@ class IconMixin(object):
                         iconname=Path(icon).stem,
                         size=self.__icon_size,
                         theme=theme,
-                        extensions=['png', 'svg', 'xpm'])
+                        extensions=['png', 'svg'])  # 'xpm'
                     if icon_path:
                         break
 
