@@ -61,7 +61,7 @@ class View(MainFrame):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         # Set
-        self.radius = 6, 6, 0, 0
+        # self.radius = 6, 6, 0, 0
         # self.hint = FrameHint.TOP
         self.ola = 555
 
@@ -95,7 +95,7 @@ class View(MainFrame):
         self.button = self.add(Button('Button check', 'document-open'))
         self.button.connect(self.on_button)
         self.button.checkable = True
-        self.button.checked = True
+        # self.button.checked = True
 
         self.button.size = Size.AUTO, 50
         # self.button.size = 300, Size.AUTO
@@ -184,10 +184,10 @@ class View(MainFrame):
         # else:
         #     self.panel_l.open()
 
-        if self.shape == FrameShape.FRAME:
-            self.shape = FrameShape.FULL
-        else:
-            self.shape = FrameShape.FRAME
+        # if self.shape == FrameShape.FRAME:
+        #     self.shape = FrameShape.FULL
+        # else:
+        #     self.shape = FrameShape.FRAME
 
     def on_scroll_buttons(self, num):
         if getattr(self, f'button_{num}').is_mouse_hover():

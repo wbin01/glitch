@@ -281,7 +281,6 @@ class Frame(RadiusMixin, SizeMixin, Layout):
         self.__style = self.__platform.style
         self.__visibility = 'Window.Windowed'
         self.__callbacks = {}
-        self.__radius = 10, 10, 10, 10
 
         # Set
         self.radius = self.__style[f'[{self._name}]']['border_radius']
