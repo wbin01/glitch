@@ -49,6 +49,9 @@ class Button(IconMixin, Element):
         self.class_id('Button')
         self.style_class = 'Button'
 
+        # Properties
+        self.__hover = False
+
     @property
     def checkable(self) -> bool:
         """..."""
@@ -117,10 +120,8 @@ class Button(IconMixin, Element):
         if not self._obj:
             return
 
-        self._obj.clicked.connect(
-            lambda: self.mouse_press_signal.emit())
-        self._obj.hoveredChanged.connect(
-            lambda: self.mouse_hover_signal.emit())
+        self._obj.clicked.connect(self.mouse_press_signal._obj)
+        self._obj.hoveredChanged.connect(self.mouse_hover_signal._obj)
 
     def __str__(self) -> str:
         return "<class 'Button'>"

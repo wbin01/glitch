@@ -71,11 +71,21 @@ class Signal(object):
     """
     def __init__(self):
         self.__signal = BaseSignal()
+        self.__obj = self.__signal._obj
         self.__callback = None
 
     def callback(self) -> callable:
         """The callback sent."""
         return self.__callback
+
+    @property
+    def _obj(self) -> QtCore.QObject:
+        """QtCore.QObject Signal instance."""
+        return self.__obj
+
+    @_obj.setter
+    def _obj(self, signal: QtCore.QObject) -> None:
+        self.__obj = signal
 
     @property
     def value(self) -> any:

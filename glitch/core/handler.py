@@ -78,16 +78,6 @@ class Handler(QtCore.QObject):
             
             elif isinstance(element, Element):
                 element._application_frame = self.__ui
-                # if hasattr(element, 'callbacks'):
-                #     callbacks = element.callbacks()
-
-                #     if Event.MOUSE_PRESS in callbacks:
-                #         element.connect(
-                #             callbacks[Event.MOUSE_PRESS], Event.MOUSE_PRESS)
-                #     elif Event.MOUSE_HOVER in callbacks:
-                #         print('mouse hover vwei', element._name)
-                #         element.connect(
-                #             callbacks[Event.MOUSE_HOVER], Event.MOUSE_HOVER)
 
         if isinstance(layout, Frame):
             layout._obj = self.__gui

@@ -24,6 +24,7 @@ class FrameControlButton(Button):
         self.__is_dark = False
         self.__symbolic = '-symbolic' if self.__is_dark else ''
         self.__state = ''
+        self.__plasma_close_button_with_circle = False
 
         # Set
         self.size = 22
@@ -33,8 +34,6 @@ class FrameControlButton(Button):
         self.mouse_hover_signal.connect(self.__on_hover)
 
     def __set_style(self) -> None:
-        
-
         header = '[' + self._application_frame._name + ']'
         inactive_header = '[' + self._application_frame._name + ':inactive]'
         propert = 'background_color'
@@ -59,19 +58,6 @@ class FrameControlButton(Button):
     def __get_icon(self) -> str:
         return self.__get_plasma_icon()
 
-    def __get_frame_icon(self) -> str:
-        if self.__frame_action == FrameControl.MAX:
-            if self._application_frame.shape == FrameShape.MAX:
-                return 'window-restore'
-            return 'window-maximize'
-        elif self.__frame_action == FrameControl.FULL:
-            if self._application_frame.shape == FrameShape.FULL:
-                return 'window-restore'
-            return 'view-fullscreen'
-        elif self.__frame_action == FrameControl.MIN:
-            return 'window-minimize'
-        return 'window-close'
-
     def __get_plasma_icon(self) -> str:
         state = self.__state + self.__symbolic
 
@@ -86,7 +72,16 @@ class FrameControlButton(Button):
             return self.__icon_path + 'view-fullscreen' + state + '.svg'
         elif self.__frame_action == FrameControl.MIN:
             return self.__icon_path + 'go-down' + state + '.svg'
-        return self.__icon_path + 'window-close-b' + state + '.svg'
+
+        if self.__plasma_close_button_with_circle:
+            return self.__icon_path + 'window-close' + state + '.svg'
+        else:
+            name = 'window-close-b'
+            if self.__state == '-hover':
+                name = 'window-close'
+                if not self._application_frame._obj.isActive():
+                    state = ''
+            return self.__icon_path + name + state + '.svg'
 
     def __on_click(self) -> None:
         if self.__frame_action == FrameControl.MAX:
@@ -109,7 +104,8 @@ class FrameControlButton(Button):
             self._application_frame._obj.close()
 
     def __on_hover(self, *args) -> None:
-        print('hover')
+        self.__state = '-hover' if self.is_mouse_hover() else ''
+        self.__update_icon()
 
     def __update_icon(self) -> str:
         self.icon = self.__get_icon()

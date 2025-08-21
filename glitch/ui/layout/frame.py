@@ -400,13 +400,13 @@ class Frame(RadiusMixin, SizeMixin, Layout):
     def _platform(self, platform) -> None:
         self.__platform = platform
 
-    def callbacks(self) -> dict:
-        """The functions used in the `connect` method.
+    # def callbacks(self) -> dict:
+    #     """The functions used in the `connect` method.
 
-        The `connect` method organizes the received functions into a 
-        dictionary organized by the type of event they are associated with.
-        """
-        return self.__callbacks
+    #     The `connect` method organizes the received functions into a 
+    #     dictionary organized by the type of event they are associated with.
+    #     """
+    #     return self.__callbacks
 
     def __str__(self) -> str:
         return "<class 'Frame'>"
