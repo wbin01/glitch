@@ -163,7 +163,6 @@ class Style(object):
             '[Frame:inactive]': {
                 'background_color': self.__frame_in_bg,
                 'border_color': self.__frame_in_bd,
-                # 'border_radius': '10',
                 },
             '[Label]': {
                 'font_color': self.__label_fg,
@@ -181,7 +180,6 @@ class Style(object):
             '[MainFrame:inactive]': {
                 'background_color': self.__main_frame_in_bg,
                 'border_color': self.__main_frame_in_bd,
-                # 'border_radius': '10',
                 },
             '[Panel]': {
                 'background_color': '#EF222222',
@@ -256,6 +254,16 @@ class Style(object):
         return alt_color
 
     def __set_styles_from_platform(self) -> None:
+        # self.__inactive_as_platform = True
+
+        # It needs to have this order
+        self.__set_main_frame_style()
+        self.__set_frame_style()
+        self.__set_label_style()
+        self.__set_button_style()
+        self.__set_tool_button_style()
+
+    def __set_main_frame_style(self) -> None:
         # MainFrame
         self.__main_frame_fg = self.__color_to_hex(
             self.__conf['[Colors:Window]']['ForegroundNormal'], '#FFFFFF')
@@ -272,7 +280,6 @@ class Style(object):
 
         self.__main_frame_rd = '6, 6, 0, 0'
         self.__main_frame_io = '1.0'
-        # self.__inactive_as_platform = True
         if self.__inactive_as_platform:
             # [Colors:Header][Inactive]][BackgroundNormal]
             self.__main_frame_in_fg = self.__main_frame_fg
@@ -288,7 +295,8 @@ class Style(object):
             if self.__main_frame_is_dark:
                 self.__main_frame_in_bd = colr.lighten_hex(
                     self.__main_frame_in_bg, 5)
-        # Frame
+
+    def __set_frame_style(self) -> None:
         self.__frame_is_dark = self.__main_frame_is_dark
         self.__frame_fg = self.__main_frame_fg
         self.__frame_bg = self.__main_frame_bg
@@ -298,13 +306,13 @@ class Style(object):
         self.__frame_in_bg = self.__main_frame_in_bg
         self.__frame_in_bd = self.__main_frame_in_bd
 
-        # Label
+    def __set_label_style(self) -> None:
         self.__label_fg = self.__main_frame_fg
         self.__label_bg = self.__main_frame_bg
         self.__label_in_fg = self.__main_frame_in_fg
         self.__label_in_bg = self.__main_frame_in_bg
 
-        # Button
+    def __set_button_style(self) -> None:
         self.__button_fg = self.__main_frame_fg
 
         self.__button_bg = self.__color_to_hex(
@@ -361,11 +369,11 @@ class Style(object):
         self.__button_ch_hv_bd = self.__button_hv_bd
         self.__button_ch_hv_io = self.__button_ch_io
 
-        # ToolButton
+    def __set_tool_button_style(self) -> None:
         self.__tool_button_bg = self.__main_frame_bg
         self.__tool_button_bd = self.__main_frame_bg
-        # self.__tool_button_rd = None
         self.__tool_button_io = self.__button_io
+        self.__tool_button_rd = self.__button_rd
 
         self.__tool_button_in_bg = self.__main_frame_in_bg
         self.__tool_button_in_bd = self.__main_frame_in_bg
@@ -395,36 +403,6 @@ class Style(object):
         self.__tool_button_ch_hv_bg = self.__tool_button_ch_bg
         self.__tool_button_ch_hv_bd = self.__tool_button_hv_bd
         self.__tool_button_ch_hv_io = self.__tool_button_ch_io
-
-    def __q_sys_color(self) -> None:
-        self.__palette = QtGui.QPalette()
-
-        frame = self.__palette.color(QtGui.QPalette.Active, QtGui.QPalette.Window)
-        self.__frame_color = colr.rgba_to_hex(frame.toTuple())
-        print(self.__frame_color)
-
-        text = self.__palette.color(
-            QtGui.QPalette.Active, QtGui.QPalette.WindowText)
-        self.__label_color = colr.rgba_to_hex(text.toTuple())
-        print(self.__label_color)
-
-        accent = self.__palette.color(
-            QtGui.QPalette.Active, QtGui.QPalette.Highlight)
-        self.__accent_color = colr.rgba_to_hex(accent.toTuple())
-        print(self.__accent_color)
-
-        print('---')
-        # Background color
-        self.background_color = QtGui.QColor(
-            QtGui.QPalette().color(
-                QtGui.QPalette.Active, QtGui.QPalette.Midlight))
-        print(self.background_color)
-
-        # Background color
-        self.palette_color = QtGui.QColor(
-            QtGui.QPalette().color(  # ToolTipBase Button Window AlternateBase
-                QtGui.QPalette.Active, QtGui.QPalette.Window))
-        print(self.palette_color)
 
     def clear_cache(self) -> None:
         """Clear properties cache"""
