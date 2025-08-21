@@ -176,6 +176,7 @@ class View(MainFrame):
 
     def on_button(self):
         print(self._platform.icon_theme)
+        print(self._platform.accent_color)
         self.num += 1
         self.label.text = f'Button press: {self.num}'
         # self.label.margins = Size.AUTO, Size.AUTO, Size.AUTO, 0

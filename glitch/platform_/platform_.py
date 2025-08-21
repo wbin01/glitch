@@ -13,6 +13,7 @@ class Platform(object):
         self.__os_desk = OSDesk()
         self.__icons = Icons(self.__os_desk.desktop_environment)
         self.__style = Style()
+        self.__accent_color = None
 
         self.__light_suffixes = ['-light', '-Light', ' light', ' Light']
         self.__dark_suffixes = ['-dark', '-Dark', ' dark', ' Dark']
@@ -22,6 +23,13 @@ class Platform(object):
         self.__dark = color_converter.is_dark(color_converter.hex_to_rgba(
             self.style['[MainFrame]']['background_color']))
         self.__icon_theme = None
+
+    @property
+    def accent_color(self) -> str:
+        """..."""
+        if not self.__accent_color:
+            self.__accent_color = self.__style.accent_color()
+        return self.__accent_color
 
     @property
     def de(self) -> str:

@@ -19,6 +19,7 @@ class Style(object):
         self.__style = None
         self.__conf = None
         self.__inactive_as_platform = False
+        self.__accent_color = None
 
         self.__button_fg = None
         self.__button_bg = None
@@ -79,6 +80,12 @@ class Style(object):
         self.__main_frame_in_bd = None
         self.__main_frame_in_io = None
 
+        self.__panel_bg = None
+        self.__panel_bd = None
+        self.__panel_rd = None
+        self.__panel_in_bg = None
+        self.__panel_in_bd = None
+
         self.__tool_button_bg = None
         self.__tool_button_bd = None
         self.__tool_button_rd = None
@@ -102,7 +109,19 @@ class Style(object):
         self.__tool_button_ch_hv_bd = None
         self.__tool_button_ch_hv_io = None
 
+    def accent_color(self) -> str:
+        """..."""
+        if not self.__conf:
+            self.__conf = self.__get_sys_conf()
+
+        if not self.__accent_color:
+            self.__accent_color = self.__color_to_hex(
+                self.__conf['[General]']['AccentColor'], '#FF3C8CBD')
+
+        return self.__accent_color
+
     def style(self) -> dict:
+        """..."""
         if self.__style:
             return self.__style
 
@@ -182,17 +201,14 @@ class Style(object):
                 'border_color': self.__main_frame_in_bd,
                 },
             '[Panel]': {
-                'background_color': '#EF222222',
-                'border_color': '#222222',
-                'border_radius': '10',
+                'background_color': self.__panel_bg,
+                'border_color': self.__panel_bd,
+                'border_radius': self.__panel_rd,
                 },
             '[Panel:inactive]': {
-                'background_color': '#202020',
-                'border_color': '#202020',
-                'border_radius': '10',
-                },
-            '[Platform]': {
-                'accent_color': '#3C8CBD',
+                'background_color': self.__panel_in_bg,
+                'border_color': self.__panel_in_bd,
+                # 'border_radius': '10',
                 },
             '[ToolButton]': {
                 'background_color': self.__tool_button_bg,
@@ -240,7 +256,8 @@ class Style(object):
             if len_color == 3:
                 color = int(color[0]), int(color[1]), int(color[2]), 255
             else:
-                color = int(color[0]), int(color[1]), int(color[2]), int(color[3])
+                color = int(
+                    color[0]), int(color[1]), int(color[2]), int(color[3])
             return colr.rgba_to_hex(color)
         return alt_color
 
@@ -371,7 +388,11 @@ class Style(object):
                     self.__main_frame_in_bg, 5)
 
     def __style_panel(self) -> None:
-        pass
+        self.__panel_bg = colr.darken_hex(self.__main_frame_bg, 5)
+        self.__panel_bd = self.__panel_bg
+        self.__panel_rd = self.__main_frame_rd
+        self.__panel_in_bg = colr.darken_hex(self.__main_frame_in_bg, 5)
+        self.__panel_in_bd = self.__panel_in_bg
 
     def __style_tool_button(self) -> None:
         self.__tool_button_bg = self.__main_frame_bg
