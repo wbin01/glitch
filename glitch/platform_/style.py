@@ -110,7 +110,7 @@ class Style(object):
             self.__conf = self.__get_sys_conf()
 
         if not self.__main_frame_bg:
-            self.__set_styles_from_platform()
+            self.__set_styles()
 
         self.__style = {
             '[Button]': {
@@ -232,15 +232,6 @@ class Style(object):
             }
         return self.__style
 
-    def __get_sys_conf(self) -> dict:
-        conf_name = 'kdeglobals'
-        conf_file = pathlib.Path(os.environ['HOME']) / '.config' / conf_name
-
-        ini = {}
-        if conf_file.exists():
-            ini = DesktopFile(conf_file).content
-        return ini
-
     def __color_to_hex(self, color, alt_color) -> str:
         color = color.split(',')
         len_color = len(color)
@@ -253,66 +244,27 @@ class Style(object):
             return colr.rgba_to_hex(color)
         return alt_color
 
-    def __set_styles_from_platform(self) -> None:
+    def __get_sys_conf(self) -> dict:
+        conf_name = 'kdeglobals'
+        conf_file = pathlib.Path(os.environ['HOME']) / '.config' / conf_name
+
+        ini = {}
+        if conf_file.exists():
+            ini = DesktopFile(conf_file).content
+        return ini
+
+    def __set_styles(self) -> None:
         # self.__inactive_as_platform = True
 
         # It needs to have this order
-        self.__set_main_frame_style()
-        self.__set_frame_style()
-        self.__set_label_style()
-        self.__set_button_style()
-        self.__set_tool_button_style()
+        self.__style_main_frame()
+        self.__style_frame()
+        self.__style_label()
+        self.__style_button()
+        self.__style_tool_button()
+        self.__style_panel()
 
-    def __set_main_frame_style(self) -> None:
-        # MainFrame
-        self.__main_frame_fg = self.__color_to_hex(
-            self.__conf['[Colors:Window]']['ForegroundNormal'], '#FFFFFF')
-
-        self.__main_frame_bg = self.__color_to_hex(  # Alt 282828
-            self.__conf['[Colors:Window]']['BackgroundNormal'], '#2A2A2A')
-
-        self.__main_frame_is_dark = colr.is_dark(
-            colr.hex_to_rgba(self.__main_frame_bg))
-        
-        self.__main_frame_bd = self.__main_frame_bg
-        if self.__main_frame_is_dark:
-            self.__main_frame_bd = colr.lighten_hex(self.__main_frame_bg, 15)
-
-        self.__main_frame_rd = '6, 6, 0, 0'
-        self.__main_frame_io = '1.0'
-        if self.__inactive_as_platform:
-            # [Colors:Header][Inactive]][BackgroundNormal]
-            self.__main_frame_in_fg = self.__main_frame_fg
-            self.__main_frame_in_bg = self.__main_frame_bg
-            self.__main_frame_in_io = self.__main_frame_io
-            self.__main_frame_in_bd = self.__main_frame_bd
-        else:
-            self.__main_frame_in_fg = '#88' + self.__main_frame_fg[3:]
-            self.__main_frame_in_bg = colr.darken_hex(self.__main_frame_bg, 10)
-            self.__main_frame_in_io = '0.5'
-
-            self.__main_frame_in_bd = self.__main_frame_in_bg
-            if self.__main_frame_is_dark:
-                self.__main_frame_in_bd = colr.lighten_hex(
-                    self.__main_frame_in_bg, 5)
-
-    def __set_frame_style(self) -> None:
-        self.__frame_is_dark = self.__main_frame_is_dark
-        self.__frame_fg = self.__main_frame_fg
-        self.__frame_bg = self.__main_frame_bg
-        self.__frame_bd = self.__main_frame_bd
-        self.__frame_rd = self.__main_frame_rd[0]
-        self.__frame_in_fg = self.__main_frame_in_fg
-        self.__frame_in_bg = self.__main_frame_in_bg
-        self.__frame_in_bd = self.__main_frame_in_bd
-
-    def __set_label_style(self) -> None:
-        self.__label_fg = self.__main_frame_fg
-        self.__label_bg = self.__main_frame_bg
-        self.__label_in_fg = self.__main_frame_in_fg
-        self.__label_in_bg = self.__main_frame_in_bg
-
-    def __set_button_style(self) -> None:
+    def __style_button(self) -> None:
         self.__button_fg = self.__main_frame_fg
 
         self.__button_bg = self.__color_to_hex(
@@ -369,7 +321,59 @@ class Style(object):
         self.__button_ch_hv_bd = self.__button_hv_bd
         self.__button_ch_hv_io = self.__button_ch_io
 
-    def __set_tool_button_style(self) -> None:
+    def __style_frame(self) -> None:
+        self.__frame_is_dark = self.__main_frame_is_dark
+        self.__frame_fg = self.__main_frame_fg
+        self.__frame_bg = self.__main_frame_bg
+        self.__frame_bd = self.__main_frame_bd
+        self.__frame_rd = self.__main_frame_rd[0]
+        self.__frame_in_fg = self.__main_frame_in_fg
+        self.__frame_in_bg = self.__main_frame_in_bg
+        self.__frame_in_bd = self.__main_frame_in_bd
+
+    def __style_label(self) -> None:
+        self.__label_fg = self.__main_frame_fg
+        self.__label_bg = self.__main_frame_bg
+        self.__label_in_fg = self.__main_frame_in_fg
+        self.__label_in_bg = self.__main_frame_in_bg
+
+    def __style_main_frame(self) -> None:
+        # MainFrame
+        self.__main_frame_fg = self.__color_to_hex(
+            self.__conf['[Colors:Window]']['ForegroundNormal'], '#FFFFFF')
+
+        self.__main_frame_bg = self.__color_to_hex(  # Alt 282828
+            self.__conf['[Colors:Window]']['BackgroundNormal'], '#2A2A2A')
+
+        self.__main_frame_is_dark = colr.is_dark(
+            colr.hex_to_rgba(self.__main_frame_bg))
+        
+        self.__main_frame_bd = self.__main_frame_bg
+        if self.__main_frame_is_dark:
+            self.__main_frame_bd = colr.lighten_hex(self.__main_frame_bg, 15)
+
+        self.__main_frame_rd = '6, 6, 0, 0'
+        self.__main_frame_io = '1.0'
+        if self.__inactive_as_platform:
+            # [Colors:Header][Inactive]][BackgroundNormal]
+            self.__main_frame_in_fg = self.__main_frame_fg
+            self.__main_frame_in_bg = self.__main_frame_bg
+            self.__main_frame_in_io = self.__main_frame_io
+            self.__main_frame_in_bd = self.__main_frame_bd
+        else:
+            self.__main_frame_in_fg = '#88' + self.__main_frame_fg[3:]
+            self.__main_frame_in_bg = colr.darken_hex(self.__main_frame_bg, 10)
+            self.__main_frame_in_io = '0.5'
+
+            self.__main_frame_in_bd = self.__main_frame_in_bg
+            if self.__main_frame_is_dark:
+                self.__main_frame_in_bd = colr.lighten_hex(
+                    self.__main_frame_in_bg, 5)
+
+    def __style_panel(self) -> None:
+        pass
+
+    def __style_tool_button(self) -> None:
         self.__tool_button_bg = self.__main_frame_bg
         self.__tool_button_bd = self.__main_frame_bg
         self.__tool_button_io = self.__button_io
@@ -403,17 +407,6 @@ class Style(object):
         self.__tool_button_ch_hv_bg = self.__tool_button_ch_bg
         self.__tool_button_ch_hv_bd = self.__tool_button_hv_bd
         self.__tool_button_ch_hv_io = self.__tool_button_ch_io
-
-    def clear_cache(self) -> None:
-        """Clear properties cache"""
-        self.__style = None
-        self.__conf = None
-
-        self.__main_frame_bg = None
-        self.__main_frame_bd = None
-        self.__main_frame_is_dark = None
-        self.__main_frame_in_bg = None
-        self.__main_frame_in_bd = None
     
     def __str__(self) -> str:
         return "<class 'Style'>"
