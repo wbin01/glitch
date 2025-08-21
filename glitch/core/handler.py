@@ -78,15 +78,16 @@ class Handler(QtCore.QObject):
             
             elif isinstance(element, Element):
                 element._application_frame = self.__ui
-                if hasattr(element, 'callbacks'):
-                    callbacks = element.callbacks()
+                # if hasattr(element, 'callbacks'):
+                #     callbacks = element.callbacks()
 
-                    if Event.MOUSE_PRESS in callbacks:
-                        element.connect(
-                            callbacks[Event.MOUSE_PRESS], Event.MOUSE_PRESS)
-                    elif Event.MOUSE_HOVER in callbacks:
-                        element.connect(
-                            callbacks[Event.MOUSE_HOVER], Event.MOUSE_HOVER)
+                #     if Event.MOUSE_PRESS in callbacks:
+                #         element.connect(
+                #             callbacks[Event.MOUSE_PRESS], Event.MOUSE_PRESS)
+                #     elif Event.MOUSE_HOVER in callbacks:
+                #         print('mouse hover vwei', element._name)
+                #         element.connect(
+                #             callbacks[Event.MOUSE_HOVER], Event.MOUSE_HOVER)
 
         if isinstance(layout, Frame):
             layout._obj = self.__gui
@@ -190,8 +191,7 @@ class Handler(QtCore.QObject):
         Only middle:
             acceptedButtons: Qt.MiddleButton
         """
-        if Event.MOUSE_RIGHT_PRESS in self.__ui.callbacks():
-            self.__ui.callbacks()[Event.MOUSE_RIGHT_PRESS]()
+        self.__ui.mouse_right_press_signal.callback()()
 
     @QtCore.Slot()
     def start_move(self) -> None:

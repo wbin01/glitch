@@ -257,11 +257,13 @@ class Frame(RadiusMixin, SizeMixin, Layout):
     """
     def __init__(self, resizable: bool = False, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
-        self.size_signal = Signal()
-        self.shape_signal = Signal()
-
         # Args
         self.__resizable = resizable
+
+        # Sig
+        self.size_signal = Signal()
+        self.shape_signal = Signal()
+        self.mouse_right_press_signal = Signal()
 
         # QML
         self._qml = header + self._qml.split(
@@ -405,19 +407,6 @@ class Frame(RadiusMixin, SizeMixin, Layout):
         dictionary organized by the type of event they are associated with.
         """
         return self.__callbacks
-
-    def connect(
-            self, method: callable, event: Event = Event.MOUSE_PRESS) -> None:
-        """Connect the button to a method.
-
-        Pass a method to be executed when interacting with the button.
-        Alternatively, use an event like `Event.MOUSE_HOVER` or 
-        `Event.MOUSE_WHEEL` to configure when the button will use the method.
-
-        :param method: method to be executed when interacting with the button.
-        :param event: Enum like `Event.MOUSE_HOVER` or `Event.MOUSE_WHEEL`
-        """
-        self.__callbacks[event] = method
 
     def __str__(self) -> str:
         return "<class 'Frame'>"

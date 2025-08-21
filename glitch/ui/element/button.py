@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from ..base import Element, IconMixin
+from ...core.signal import Signal
 from ...enum.event import Event
 
 
@@ -36,6 +37,11 @@ class Button(IconMixin, Element):
         self.__text = text
         self.__checkable = False
         self.__checked = False
+
+        # Signals
+        self.mouse_press_signal = Signal()
+        self.mouse_hover_signal = Signal()
+        self.application_frame_signal.connect(self.__application_frame_signal)
 
         # QML
         self._qml = header + self._qml.split('// Element header')[1].replace(
@@ -98,26 +104,6 @@ class Button(IconMixin, Element):
         """
         return self.__callbacks
 
-    def connect(
-            self, method: callable, event: Event = Event.MOUSE_PRESS) -> None:
-        """Connect the button to a method.
-
-        Pass a method to be executed when interacting with the button.
-        Alternatively, use an event like `Event.MOUSE_HOVER` or 
-        `Event.MOUSE_WHEEL` to configure when the button will use the method.
-
-        :param method: method to be executed when interacting with the button.
-        :param event: Enum like `Event.MOUSE_HOVER` or `Event.MOUSE_WHEEL`
-        """
-        if self._obj:
-            if event == Event.MOUSE_PRESS:
-                self._obj.clicked.connect(method)
-            elif event == Event.MOUSE_HOVER:
-                self._obj.hoveredChanged.connect(method)
-            return
-
-        self.__callbacks[event] = method
-
     def is_mouse_hover(self) -> bool:
         """If the mouse is hovering over this button.
 
@@ -126,6 +112,15 @@ class Button(IconMixin, Element):
         if self._obj:
             return self._obj.property('hovered')
         return False
+
+    def __application_frame_signal(self) -> None:
+        if not self._obj:
+            return
+
+        self._obj.clicked.connect(
+            lambda: self.mouse_press_signal.emit())
+        self._obj.hoveredChanged.connect(
+            lambda: self.mouse_hover_signal.emit())
 
     def __str__(self) -> str:
         return "<class 'Button'>"

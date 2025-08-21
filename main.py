@@ -18,7 +18,7 @@ class CustomElement(Row):
         self.button_clicked_signal = Signal()
         
         self.__custom_button = self.add(Button('Elves', 'document-open'))
-        self.__custom_button.connect(self.change_label)
+        self.__custom_button.mouse_press_signal.connect(self.change_label)
 
         self.__custom_label, self.__num = self.add(Label('Label')), 0
         self.class_id('CustomElement')
@@ -40,7 +40,7 @@ class CustomElementX(Row):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self.__custom_button = self.add(Button('Button XX'))
-        self.__custom_button.connect(self.change_label)
+        self.__custom_button.mouse_press_signal.connect(self.change_label)
 
         self.__custom_label, self.__num = self.add(Label('Label')), 0
         self.class_id('CustomElement')
@@ -77,7 +77,7 @@ class View(MainFrame):
         self.panel_column = self.panel.add(Column())
         self.panel_column.margins = 10
         self.panel_button = self.panel_column.add(Button('Hello'))
-        self.connect(lambda: self.panel.open(), Event.MOUSE_RIGHT_PRESS)
+        self.mouse_right_press_signal.connect(lambda: self.panel.open())
 
         # self.shape = FrameShape.MAX  # FrameShape.FULL
         # self.spacing = 0
@@ -93,7 +93,7 @@ class View(MainFrame):
         # self.tool_button.style_class = 'Panel'
 
         self.button = self.add(Button('Button check', 'document-open'))
-        self.button.connect(self.on_button)
+        self.button.mouse_press_signal.connect(self.on_button)
         self.button.checkable = True
         # self.button.checked = True
 
@@ -109,8 +109,8 @@ class View(MainFrame):
 
         for num in range(5):
             button = self.scroll_column.add(Button(f'Button {num}'))
-            button.connect(
-                lambda num=num: self.on_scroll_buttons(num), Event.MOUSE_HOVER)
+            button.mouse_hover_signal.connect(
+                lambda num=num: self.on_scroll_buttons(num))
             setattr(self, f'button_{num}', button)
 
         self.custom0 = self.scroll_column.add(CustomElement())
@@ -127,7 +127,7 @@ class View(MainFrame):
         self.column.add(Button('Button 1'))
 
         self.button_2 = self.column.add(Button('Button 2', 'dialog-close'))
-        self.button_2.connect(lambda: print('button_2'))
+        self.button_2.mouse_press_signal.connect(lambda: print('button_2'))
         self.button_2.style_class = 'button_2'
         self.style['[button_2]'] = {
             'background_color': '#533', 'border_color': '#933'}

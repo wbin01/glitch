@@ -5,6 +5,7 @@ from .button import Button
 from ...core.application_style import style_value
 from ...enum.frame_control import FrameControl
 from ...enum.frame_shape import FrameShape
+from ...enum.event import Event
 from ...tools import color_converter
 
 
@@ -28,19 +29,22 @@ class FrameControlButton(Button):
         self.size = 22
         self.style_class = 'ActionButton'
         self.application_frame_signal.connect(self.__set_style)
-        self.connect(self.__on_click)
+        self.mouse_press_signal.connect(self.__on_click)
+        self.mouse_hover_signal.connect(self.__on_hover)
 
     def __set_style(self) -> None:
+        
+
         header = '[' + self._application_frame._name + ']'
         inactive_header = '[' + self._application_frame._name + ':inactive]'
         propert = 'background_color'
-        clean_style = {
+        style = {
             'border_color': '#00000000',
             'background_color': header + propert}
 
-        self._application_frame.style['[ActionButton]'] = clean_style
-        self._application_frame.style['[ActionButton:hover]'] = clean_style
-        self._application_frame.style['[ActionButton:clicked]'] = clean_style
+        self._application_frame.style['[ActionButton]'] = style
+        self._application_frame.style['[ActionButton:hover]'] = style
+        self._application_frame.style['[ActionButton:clicked]'] = style
         self._application_frame.style['[ActionButton:inactive]'] = {
             'border_color': '#00000000',
             'background_color': inactive_header + propert}
@@ -103,6 +107,9 @@ class FrameControlButton(Button):
 
         elif self.__frame_action == FrameControl.CLOSE:
             self._application_frame._obj.close()
+
+    def __on_hover(self, *args) -> None:
+        print('hover')
 
     def __update_icon(self) -> str:
         self.icon = self.__get_icon()
