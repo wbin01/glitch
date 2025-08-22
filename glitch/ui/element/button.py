@@ -41,7 +41,7 @@ class Button(IconMixin, Element):
         # Signals
         self.mouse_press_signal = Signal()
         self.mouse_hover_signal = Signal()
-        self.application_frame_signal.connect(self.__frame_signal)
+        self.frame_signal.connect(self.__frame_signal)
 
         # QML
         self._qml = header + self._qml.split('// Element header')[1].replace(

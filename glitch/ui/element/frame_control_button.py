@@ -64,12 +64,11 @@ class FrameMaxButton(Button):
 
         self.mouse_press_signal.connect(self.__on_click)
         self.mouse_hover_signal.connect(self.__on_hover)
-        self.application_frame_signal.connect(self.__on_frame)
+        self.frame_signal.connect(self.__on_frame)
 
     def __on_frame(self) -> None:
         dark = color_converter.is_dark(color_converter.hex_to_rgba(
-            self._frame.style[
-                '[FrameMaxButton]']['background_color']))
+            self._frame.style['[FrameMaxButton]']['background_color']))
         self.__sym = '-symbolic' if dark else ''
 
         self._frame.active_signal.connect(self.__on_active)
@@ -110,7 +109,8 @@ class FrameMaxButton(Button):
     def __on_hover(self) -> None:
         if self._frame.shape == FrameShape.MAX:
             if self._frame.is_active() and self.is_mouse_hover():
-                icon = self.__icon + 'window-restore-hover' + self.__sym + '.svg'
+                icon = (
+                    self.__icon + 'window-restore-hover' + self.__sym + '.svg')
                 self.icon = icon
                 self._frame.style['[FrameMaxButton:hover]']['icon'] = icon
             else:

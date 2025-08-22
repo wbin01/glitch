@@ -60,7 +60,7 @@ class UI(UI):
     text.
     """
     def __init__(self, *args, **kwargs) -> None:
-        self.application_frame_signal = Signal()
+        self.frame_signal = Signal()
         self.__id = None
         self.__qml = qml_code
         self.__obj = None
@@ -98,7 +98,7 @@ class UI(UI):
     @_frame.setter
     def _frame(self, frame: UI) -> None:
         self.__application_frame = frame
-        self.application_frame_signal.emit()
+        self.frame_signal.emit()
 
     @property
     def _id(self) -> str:

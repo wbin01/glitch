@@ -28,7 +28,7 @@ class IconMixin(object):
 
         # Properties
         self.icon = icon
-        self.application_frame_signal.connect(self.__update_icon)
+        self.frame_signal.connect(self.__update_icon)
 
     @property
     def icon(self) -> str:
@@ -115,8 +115,7 @@ class IconMixin(object):
             is_dark = color_converter.is_dark(color_converter.hex_to_rgba(
                 style_value(
                     self._frame.style,
-                    '[' + self._name + ']',
-                    'background_color')))
+                    '[' + self._name + ']', 'background_color')))
 
             # TODO Condition for dark or light !=
             icon_theme = self._frame._platform.variant_icon_theme(

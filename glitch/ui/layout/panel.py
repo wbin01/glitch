@@ -131,7 +131,7 @@ class Panel(RadiusMixin, Layout):
         self.__connect_close = False
 
         # self.__radius = 10, 0, 0, 10
-        self.application_frame_signal.connect(self.__sinc_radius)
+        self.frame_signal.connect(self.__sinc_radius)
 
     @property
     def frame_side(self) -> Align:
@@ -239,13 +239,9 @@ class Panel(RadiusMixin, Layout):
 
     def __sinc_radius(self) -> None:
         if self.frame_side.value == QtCore.Qt.AlignRight:
-            self.radius = (
-                0, self._frame.radius[1],
-                self._frame.radius[2], 0)
+            self.radius = (0, self._frame.radius[1], self._frame.radius[2], 0)
         else:
-            self.radius = (
-                self._frame.radius[0], 0,
-                0, self._frame.radius[3])
+            self.radius = (self._frame.radius[0], 0, 0, self._frame.radius[3])
 
     def __str__(self) -> str:
         return "<class 'Panel'>"
