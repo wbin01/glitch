@@ -3,7 +3,7 @@ import pprint
 
 # from glitch import *
 from glitch.core import Application, Signal
-from glitch.enum import Align, Event, FrameControl, FrameShape, FrameHint, Size
+from glitch.enum import Align, Event, FrameShape, FrameHint, Size
 # from glitch.ui import MainFrame, Frame, Column, Panel, Row, Scroll, Button, Label
 # from glitch.ui import *
 from glitch.ui.element import Button, FrameCloseButton, FrameMaxButton, FrameMinButton, Label, ToolButton

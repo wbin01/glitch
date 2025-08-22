@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from ...core.signal import Signal
 
+
 qml_code = """
 Item {
     id: ui  // ID
