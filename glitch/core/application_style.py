@@ -48,13 +48,15 @@ def change_element_style_state(
         'color': 'font_color',
         'backgroundColor': 'background_color',
         'borderColor': 'border_color',
+        'iconSource': 'icon',
         'text': {
             'color': 'font_color'},
         'background': {
             'backgroundColor': 'background_color',
             'borderColor': 'border_color'},
         'icon': {
-            'opacity': 'icon_opacity'},
+            'opacity': 'icon_opacity',
+            'iconSource': 'icon'},
         }
 
     for k, prop in element_properties.items():

@@ -18,8 +18,13 @@ class Style(object):
         self.__desktop = desktop_environment
         self.__style = None
         self.__conf = None
-        self.__inactive_as_platform = False
+        self.__inactive_as_platform = True
         self.__accent_color = None
+
+        self.__path = pathlib.Path(__file__).parent.parent
+        self.__icon_path = str(self.__path) + '/static/control_button/plasma/'
+        self.__plasma_close_button_with_circle = False
+        self.__symbolic = ''
 
         self.__button_fg = None
         self.__button_bg = None
@@ -63,6 +68,69 @@ class Style(object):
         self.__frame_in_fg = None
         self.__frame_in_bg = None
         self.__frame_in_bd = None
+
+        self.__frame_close_button_bg = None
+        self.__frame_close_button_bd = None
+        self.__frame_close_button_fg = None
+        self.__frame_close_button_io = None
+        self.__frame_close_button_i = None
+        self.__frame_close_button_in_bg = None
+        self.__frame_close_button_in_bd = None
+        self.__frame_close_button_in_fg = None
+        self.__frame_close_button_in_io = None
+        self.__frame_close_button_in_i = None
+        self.__frame_close_button_hv_bg = None
+        self.__frame_close_button_hv_bd = None
+        self.__frame_close_button_hv_fg = None
+        self.__frame_close_button_hv_io = None
+        self.__frame_close_button_hv_i = None
+        self.__frame_close_button_ck_bg = None
+        self.__frame_close_button_ck_bd = None
+        self.__frame_close_button_ck_fg = None
+        self.__frame_close_button_ck_io = None
+        self.__frame_close_button_ck_i = None
+
+        self.__frame_max_button_bg = None
+        self.__frame_max_button_bd = None
+        self.__frame_max_button_fg = None
+        self.__frame_max_button_io = None
+        self.__frame_max_button_i = None
+        self.__frame_max_button_in_bg = None
+        self.__frame_max_button_in_bd = None
+        self.__frame_max_button_in_fg = None
+        self.__frame_max_button_in_io = None
+        self.__frame_max_button_in_i = None
+        self.__frame_max_button_hv_bg = None
+        self.__frame_max_button_hv_bd = None
+        self.__frame_max_button_hv_fg = None
+        self.__frame_max_button_hv_io = None
+        self.__frame_max_button_hv_i = None
+        self.__frame_max_button_ck_bg = None
+        self.__frame_max_button_ck_bd = None
+        self.__frame_max_button_ck_fg = None
+        self.__frame_max_button_ck_io = None
+        self.__frame_max_button_ck_i = None
+
+        self.__frame_min_button_bg = None
+        self.__frame_min_button_bd = None
+        self.__frame_min_button_fg = None
+        self.__frame_min_button_io = None
+        self.__frame_min_button_i = None
+        self.__frame_min_button_in_bg = None
+        self.__frame_min_button_in_bd = None
+        self.__frame_min_button_in_fg = None
+        self.__frame_min_button_in_io = None
+        self.__frame_min_button_in_i = None
+        self.__frame_min_button_hv_bg = None
+        self.__frame_min_button_hv_bd = None
+        self.__frame_min_button_hv_fg = None
+        self.__frame_min_button_hv_io = None
+        self.__frame_min_button_hv_i = None
+        self.__frame_min_button_ck_bg = None
+        self.__frame_min_button_ck_bd = None
+        self.__frame_min_button_ck_fg = None
+        self.__frame_min_button_ck_io = None
+        self.__frame_min_button_ck_i = None
 
         self.__label_fg = None
         self.__label_bg = None
@@ -183,6 +251,90 @@ class Style(object):
                 'background_color': self.__frame_in_bg,
                 'border_color': self.__frame_in_bd,
                 },
+            '[FrameCloseButton]': {
+                'background_color': self.__frame_close_button_bg,
+                'border_color': self.__frame_close_button_bd,
+                'font_color': self.__frame_close_button_fg,
+                'icon_opacity': self.__frame_close_button_io,
+                'icon': self.__frame_close_button_i,
+                },
+            '[FrameCloseButton:inactive]': {
+                'background_color': self.__frame_close_button_in_bg,
+                'border_color': self.__frame_close_button_in_bd,
+                'font_color': self.__frame_close_button_in_fg,
+                'icon_opacity': self.__frame_close_button_in_io,
+                'icon': self.__frame_close_button_in_i,
+                },
+            '[FrameCloseButton:hover]': {
+                'background_color': self.__frame_close_button_hv_bg,
+                'border_color': self.__frame_close_button_hv_bd,
+                'font_color': self.__frame_close_button_hv_fg,
+                'icon_opacity': self.__frame_close_button_hv_io,
+                'icon': self.__frame_close_button_hv_i,
+                },
+            '[FrameCloseButton:clicked]': {
+                'background_color': self.__frame_close_button_ck_bg,
+                'border_color': self.__frame_close_button_ck_bd,
+                'font_color': self.__frame_close_button_ck_fg,
+                'icon_opacity': self.__frame_close_button_ck_io,
+                'icon': self.__frame_close_button_ck_i,
+                },
+            '[FrameMaxButton]': {
+                'background_color': self.__frame_max_button_bg,
+                'border_color': self.__frame_max_button_bd,
+                'font_color': self.__frame_max_button_fg,
+                'icon_opacity': self.__frame_max_button_io,
+                'icon': self.__frame_max_button_i,
+                },
+            '[FrameMaxButton:inactive]': {
+                'background_color': self.__frame_max_button_in_bg,
+                'border_color': self.__frame_max_button_in_bd,
+                'font_color': self.__frame_max_button_in_fg,
+                'icon_opacity': self.__frame_max_button_in_io,
+                'icon': self.__frame_max_button_in_i,
+                },
+            '[FrameMaxButton:hover]': {
+                'background_color': self.__frame_max_button_hv_bg,
+                'border_color': self.__frame_max_button_hv_bd,
+                'font_color': self.__frame_max_button_hv_fg,
+                'icon_opacity': self.__frame_max_button_hv_io,
+                'icon': self.__frame_max_button_hv_i,
+                },
+            '[FrameMaxButton:clicked]': {
+                'background_color': self.__frame_max_button_ck_bg,
+                'border_color': self.__frame_max_button_ck_bd,
+                'font_color': self.__frame_max_button_ck_fg,
+                'icon_opacity': self.__frame_max_button_ck_io,
+                'icon': self.__frame_max_button_ck_i,
+                },
+            '[FrameMinButton]': {
+                'background_color': self.__frame_min_button_bg,
+                'border_color': self.__frame_min_button_bd,
+                'font_color': self.__frame_min_button_fg,
+                'icon_opacity': self.__frame_min_button_io,
+                'icon': self.__frame_min_button_i,
+                },
+            '[FrameMinButton:inactive]': {
+                'background_color': self.__frame_min_button_in_bg,
+                'border_color': self.__frame_min_button_in_bd,
+                'font_color': self.__frame_min_button_in_fg,
+                'icon_opacity': self.__frame_min_button_in_io,
+                'icon': self.__frame_min_button_in_i,
+                },
+            '[FrameMinButton:hover]': {
+                'background_color': self.__frame_min_button_hv_bg,
+                'border_color': self.__frame_min_button_hv_bd,
+                'font_color': self.__frame_min_button_hv_fg,
+                'icon_opacity': self.__frame_min_button_hv_io,
+                'icon': self.__frame_min_button_hv_i,
+                },
+            '[FrameMinButton:clicked]': {
+                'background_color': self.__frame_min_button_ck_bg,
+                'border_color': self.__frame_min_button_ck_bd,
+                'font_color': self.__frame_min_button_ck_fg,
+                'icon_opacity': self.__frame_min_button_ck_io,
+                'icon': self.__frame_min_button_ck_i,
+                },
             '[Label]': {
                 'font_color': self.__label_fg,
                 'background_color': self.__label_bg,
@@ -279,6 +431,9 @@ class Style(object):
         self.__style_label()
         self.__style_button()
         self.__style_tool_button()
+        self.__style_frame_close_button()
+        self.__style_frame_max_button()
+        self.__style_frame_min_button()
         self.__style_panel()
 
     def __style_button(self) -> None:
@@ -347,6 +502,90 @@ class Style(object):
         self.__frame_in_fg = self.__main_frame_in_fg
         self.__frame_in_bg = self.__main_frame_in_bg
         self.__frame_in_bd = self.__main_frame_in_bd
+
+    def __style_frame_close_button(self) -> None:
+        icon = 'window-close'
+        ico = icon if self.__plasma_close_button_with_circle else icon + '-b'
+        self.__symbolic = '-symbolic' if self.__main_frame_is_dark else ''
+
+        self.__frame_close_button_bg = self.__main_frame_bg
+        self.__frame_close_button_bd = self.__main_frame_bg
+        self.__frame_close_button_fg = self.__main_frame_fg
+        self.__frame_close_button_io = self.__button_io
+        self.__frame_close_button_i = (
+            self.__icon_path + ico + self.__symbolic + '.svg')
+        self.__frame_close_button_in_bg = self.__main_frame_in_bg
+        self.__frame_close_button_in_bd = self.__main_frame_in_bg
+        self.__frame_close_button_in_fg = self.__main_frame_in_fg
+        self.__frame_close_button_in_io = self.__button_in_io
+        self.__frame_close_button_in_i = (
+            self.__icon_path + ico + '-inactive' + self.__symbolic + '.svg')
+        self.__frame_close_button_hv_bg = self.__main_frame_bg
+        self.__frame_close_button_hv_bd = self.__main_frame_bg
+        self.__frame_close_button_hv_fg = self.__main_frame_fg
+        self.__frame_close_button_hv_io = self.__button_hv_io
+        self.__frame_close_button_hv_i = (
+            self.__icon_path + icon + '-hover' + self.__symbolic + '.svg')
+        self.__frame_close_button_ck_bg = self.__main_frame_bg
+        self.__frame_close_button_ck_bd = self.__main_frame_bg
+        self.__frame_close_button_ck_fg = self.__main_frame_fg
+        self.__frame_close_button_ck_io = self.__button_ck_io
+        self.__frame_close_button_ck_i = (
+            self.__icon_path + icon + '-clicked' + '.svg')
+
+    def __style_frame_max_button(self) -> None:
+        icon = 'go-up'
+        self.__frame_max_button_bg = self.__frame_close_button_bg
+        self.__frame_max_button_bd = self.__frame_close_button_bd
+        self.__frame_max_button_fg = self.__frame_close_button_fg
+        self.__frame_max_button_io = self.__frame_close_button_io
+        self.__frame_max_button_i = (
+            self.__icon_path + icon + self.__symbolic + '.svg')
+        self.__frame_max_button_in_bg = self.__frame_close_button_in_bg
+        self.__frame_max_button_in_bd = self.__frame_close_button_in_bd
+        self.__frame_max_button_in_fg = self.__frame_close_button_in_fg
+        self.__frame_max_button_in_io = self.__frame_close_button_in_io
+        self.__frame_max_button_in_i = (
+            self.__icon_path + icon + '-inactive' + self.__symbolic + '.svg')
+        self.__frame_max_button_hv_bg = self.__frame_close_button_hv_bg
+        self.__frame_max_button_hv_bd = self.__frame_close_button_hv_bd
+        self.__frame_max_button_hv_fg = self.__frame_close_button_hv_fg
+        self.__frame_max_button_hv_io = self.__frame_close_button_hv_io
+        self.__frame_max_button_hv_i = (
+            self.__icon_path + icon + '-hover' + self.__symbolic + '.svg')
+        self.__frame_max_button_ck_bg = self.__frame_close_button_ck_bg
+        self.__frame_max_button_ck_bd = self.__frame_close_button_ck_bd
+        self.__frame_max_button_ck_fg = self.__frame_close_button_ck_fg
+        self.__frame_max_button_ck_io = self.__frame_close_button_ck_io
+        self.__frame_max_button_ck_i = (
+            self.__icon_path + icon + '-clicked' + '.svg')
+
+    def __style_frame_min_button(self) -> None:
+        icon = 'go-down'
+        self.__frame_min_button_bg = self.__frame_close_button_bg
+        self.__frame_min_button_bd = self.__frame_close_button_bd
+        self.__frame_min_button_fg = self.__frame_close_button_fg
+        self.__frame_min_button_io = self.__frame_close_button_io
+        self.__frame_min_button_i = (
+            self.__icon_path + icon + self.__symbolic + '.svg')
+        self.__frame_min_button_in_bg = self.__frame_close_button_in_bg
+        self.__frame_min_button_in_bd = self.__frame_close_button_in_bd
+        self.__frame_min_button_in_fg = self.__frame_close_button_in_fg
+        self.__frame_min_button_in_io = self.__frame_close_button_in_io
+        self.__frame_min_button_in_i = (
+            self.__icon_path + icon + '-inactive' + self.__symbolic + '.svg')
+        self.__frame_min_button_hv_bg = self.__frame_close_button_hv_bg
+        self.__frame_min_button_hv_bd = self.__frame_close_button_hv_bd
+        self.__frame_min_button_hv_fg = self.__frame_close_button_hv_fg
+        self.__frame_min_button_hv_io = self.__frame_close_button_hv_io
+        self.__frame_min_button_hv_i = (
+            self.__icon_path + icon + '-hover' + self.__symbolic + '.svg')
+        self.__frame_min_button_ck_bg = self.__frame_close_button_ck_bg
+        self.__frame_min_button_ck_bd = self.__frame_close_button_ck_bd
+        self.__frame_min_button_ck_fg = self.__frame_close_button_ck_fg
+        self.__frame_min_button_ck_io = self.__frame_close_button_ck_io
+        self.__frame_min_button_ck_i = (
+            self.__icon_path + icon + '-clicked' + '.svg')
 
     def __style_label(self) -> None:
         self.__label_fg = self.__main_frame_fg

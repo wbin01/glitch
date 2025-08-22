@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 import pathlib
 
+from PySide6 import QtCore
+
 from .button import Button
 from ...core.application_style import style_value
 from ...enum.frame_control import FrameControl
@@ -9,8 +11,8 @@ from ...enum.event import Event
 from ...tools import color_converter
 
 
-class FrameControlButton(Button):
-    """Tool Button Element."""
+class FrameCloseButton(Button):
+    """Frame close button Element."""
     def __init__(
             self, frame_action: FrameControl = FrameControl.CLOSE,
             *args, **kwargs) -> None:
@@ -18,70 +20,12 @@ class FrameControlButton(Button):
         # Args
         self.__frame_action = frame_action
 
-        # Properties
-        self.__path = pathlib.Path(__file__).parent.parent.parent
-        self.__icon_path = str(self.__path) + '/static/control_button/plasma/'
-        self.__is_dark = False
-        self.__symbolic = '-symbolic' if self.__is_dark else ''
-        self.__state = ''
-        self.__plasma_close_button_with_circle = False
-
         # Set
         self.size = 22
-        self.style_class = 'ActionButton'
-        self.application_frame_signal.connect(self.__set_style)
+        
+        self.class_id('FrameCloseButton')
+        self.style_class = 'FrameCloseButton'
         self.mouse_press_signal.connect(self.__on_click)
-        self.mouse_hover_signal.connect(self.__on_hover)
-
-    def __set_style(self) -> None:
-        header = '[' + self._application_frame._name + ']'
-        inactive_header = '[' + self._application_frame._name + ':inactive]'
-        propert = 'background_color'
-        style = {
-            'border_color': '#00000000',
-            'background_color': header + propert}
-
-        self._application_frame.style['[ActionButton]'] = style
-        self._application_frame.style['[ActionButton:hover]'] = style
-        self._application_frame.style['[ActionButton:clicked]'] = style
-        self._application_frame.style['[ActionButton:inactive]'] = {
-            'border_color': '#00000000',
-            'background_color': inactive_header + propert}
-
-        self.__is_dark = color_converter.is_dark(color_converter.hex_to_rgba(
-            style_value(self._application_frame.style, header, propert)))
-        self.__symbolic = '-symbolic' if self.__is_dark else ''
-
-        self.icon = self.__get_icon()
-        self._application_frame.shape_signal.connect(self.__update_icon)
-
-    def __get_icon(self) -> str:
-        return self.__get_plasma_icon()
-
-    def __get_plasma_icon(self) -> str:
-        state = self.__state + self.__symbolic
-
-        if self.__frame_action == FrameControl.MAX:
-            if (self._application_frame.shape == FrameShape.MAX or
-                    self._application_frame.shape == FrameShape.FULL):
-                return self.__icon_path + 'window-restore' + state + '.svg'
-            return self.__icon_path + 'go-up' + state + '.svg'
-        elif self.__frame_action == FrameControl.FULL:
-            if self._application_frame.shape == FrameShape.FULL:
-                return self.__icon_path + 'window-restore' + state + '.svg'
-            return self.__icon_path + 'view-fullscreen' + state + '.svg'
-        elif self.__frame_action == FrameControl.MIN:
-            return self.__icon_path + 'go-down' + state + '.svg'
-
-        if self.__plasma_close_button_with_circle:
-            return self.__icon_path + 'window-close' + state + '.svg'
-        else:
-            name = 'window-close-b'
-            if self.__state == '-hover':
-                name = 'window-close'
-                if not self._application_frame._obj.isActive():
-                    state = ''
-            return self.__icon_path + name + state + '.svg'
 
     def __on_click(self) -> None:
         if self.__frame_action == FrameControl.MAX:
@@ -103,9 +47,60 @@ class FrameControlButton(Button):
         elif self.__frame_action == FrameControl.CLOSE:
             self._application_frame._obj.close()
 
-    def __on_hover(self, *args) -> None:
-        self.__state = '-hover' if self.is_mouse_hover() else ''
-        self.__update_icon()
+    def __str__(self) -> str:
+        return "<class 'FrameCloseButton'>"
 
-    def __update_icon(self) -> str:
-        self.icon = self.__get_icon()
+
+class FrameMaxButton(Button):
+    """Frame maximize button Element."""
+    def __init__(self, *args, **kwargs) -> None:
+        super().__init__()
+        self.size = 22
+        self.class_id('FrameMaxButton')
+
+        self.__path = pathlib.Path(__file__).parent.parent.parent
+        self.__icon_path = str(self.__path) + '/static/control_button/plasma/'
+        self.__symbolic = ''
+
+        self.mouse_press_signal.connect(self.__on_click)
+        self.application_frame_signal.connect(self.__on_application_frame)
+
+    def __on_application_frame(self) -> None:
+        dark = self._application_frame.style[
+            '[FrameMaxButton]']['background_color']
+        self.__symbolic = '-symbolic' if dark else ''
+        self._application_frame.shape_signal.connect(self.__on_shape)
+        # self._application_frame._obj.activeChanged.connect(self.__on_active)
+        # self.window.visibilityChanged.connect(self.on_visibility_changed)
+
+    def __on_click(self) -> None:
+        if self._application_frame.shape == FrameShape.MAX:
+            self._application_frame.shape = FrameShape.FRAME
+        else:
+            self._application_frame.shape = FrameShape.MAX
+
+    def __on_shape(self) -> None:
+        if self._application_frame.shape == FrameShape.MAX:
+            self._application_frame.style['[FrameMaxButton]']['icon'] = (
+                self.__icon_path + 'window-restore' + self.__symbolic + '.svg')
+
+    def __str__(self) -> str:
+        return "<class 'FrameMaxButton'>"
+
+
+class FrameMinButton(Button):
+    """Frame minimize button Element."""
+    def __init__(self, *args, **kwargs) -> None:
+        super().__init__()
+        self.size = 22
+        self.class_id('FrameMinButton')
+        self.mouse_press_signal.connect(self.__on_click)
+
+    def __on_click(self) -> None:
+        if self._application_frame.shape == FrameShape.MIN:
+            self._application_frame.shape = FrameShape.FRAME
+        else:
+            self._application_frame.shape = FrameShape.MIN
+
+    def __str__(self) -> str:
+        return "<class 'FrameMinButton'>"
