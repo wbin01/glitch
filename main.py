@@ -147,20 +147,20 @@ class View(MainFrame):
         self.num = 0
         self.custom_num = 0
 
-        # print(self._application_frame)
-        # print(self.panel._application_frame)
-        # print(self.panel_column._application_frame)
-        # print(self.label._application_frame)
+        # print(self._frame)
+        # print(self.panel._frame)
+        # print(self.panel_column._frame)
+        # print(self.label._frame)
         # print(self.label.style)
-        # print(self.tool_button._application_frame)
-        # print(self.button._application_frame)
-        # print(self.scroll._application_frame)
-        # print(self.scroll_column._application_frame)
-        # print(self.custom0._application_frame)
-        # print(self.customx._application_frame)
-        # print(self.custom._application_frame)
-        # print(self.column._application_frame)
-        # print(self.button_2._application_frame)
+        # print(self.tool_button._frame)
+        # print(self.button._frame)
+        # print(self.scroll._frame)
+        # print(self.scroll_column._frame)
+        # print(self.custom0._frame)
+        # print(self.customx._frame)
+        # print(self.custom._frame)
+        # print(self.column._frame)
+        # print(self.button_2._frame)
 
     def on_custom_clicked(self):
         self.button.size = 300, Size.AUTO

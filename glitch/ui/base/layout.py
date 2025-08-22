@@ -111,7 +111,7 @@ class Layout(UI):
         
         :param obj: Element or Layout object type
         """
-        obj._application_frame = self._application_frame
+        obj._frame = self._frame
 
         if self._obj:
             obj._obj.setParentItem(self)

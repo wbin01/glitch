@@ -76,7 +76,7 @@ class Handler(QtCore.QObject):
             if isinstance(element, Layout):
                 self.__integrate_graphic_elements(element)
             else:
-                element._application_frame = self.__ui
+                element._frame = self.__ui
 
         if isinstance(layout, Frame):
             layout._obj = self.__gui

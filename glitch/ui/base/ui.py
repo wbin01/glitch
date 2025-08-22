@@ -91,12 +91,12 @@ class UI(UI):
         self.__style_class = style_class
 
     @property
-    def _application_frame(self) -> UI:
+    def _frame(self) -> UI:
         """..."""
         return self.__application_frame
 
-    @_application_frame.setter
-    def _application_frame(self, frame: UI) -> None:
+    @_frame.setter
+    def _frame(self, frame: UI) -> None:
         self.__application_frame = frame
         self.application_frame_signal.emit()
 

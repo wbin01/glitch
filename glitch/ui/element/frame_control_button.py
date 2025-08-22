@@ -29,23 +29,23 @@ class FrameCloseButton(Button):
 
     def __on_click(self) -> None:
         if self.__frame_action == FrameControl.MAX:
-            if self._application_frame.shape == FrameShape.MAX:
-                self._application_frame.shape = FrameShape.FRAME
+            if self._frame.shape == FrameShape.MAX:
+                self._frame.shape = FrameShape.FRAME
             else:
-                self._application_frame.shape = FrameShape.MAX
+                self._frame.shape = FrameShape.MAX
         elif self.__frame_action == FrameControl.FULL:
-            if self._application_frame.shape == FrameShape.FULL:
-                self._application_frame.shape = FrameShape.FRAME
+            if self._frame.shape == FrameShape.FULL:
+                self._frame.shape = FrameShape.FRAME
             else:
-                self._application_frame.shape = FrameShape.FULL
+                self._frame.shape = FrameShape.FULL
         elif self.__frame_action == FrameControl.MIN:
-            if self._application_frame.shape == FrameShape.MIN:
-                self._application_frame.shape = FrameShape.FRAME
+            if self._frame.shape == FrameShape.MIN:
+                self._frame.shape = FrameShape.FRAME
             else:
-                self._application_frame.shape = FrameShape.MIN
+                self._frame.shape = FrameShape.MIN
 
         elif self.__frame_action == FrameControl.CLOSE:
-            self._application_frame._obj.close()
+            self._frame._obj.close()
 
     def __str__(self) -> str:
         return "<class 'FrameCloseButton'>"
@@ -64,68 +64,68 @@ class FrameMaxButton(Button):
 
         self.mouse_press_signal.connect(self.__on_click)
         self.mouse_hover_signal.connect(self.__on_hover)
-        self.application_frame_signal.connect(self.__on_application_frame)
+        self.application_frame_signal.connect(self.__on_frame)
 
-    def __on_application_frame(self) -> None:
+    def __on_frame(self) -> None:
         dark = color_converter.is_dark(color_converter.hex_to_rgba(
-            self._application_frame.style[
+            self._frame.style[
                 '[FrameMaxButton]']['background_color']))
         self.__sym = '-symbolic' if dark else ''
 
-        self._application_frame.active_signal.connect(self.__on_active)
-        self._application_frame.shape_signal.connect(self.__on_shape)
+        self._frame.active_signal.connect(self.__on_active)
+        self._frame.shape_signal.connect(self.__on_shape)
 
     def __on_click(self) -> None:
-        if self._application_frame.shape == FrameShape.MAX:
-            self._application_frame.shape = FrameShape.FRAME
+        if self._frame.shape == FrameShape.MAX:
+            self._frame.shape = FrameShape.FRAME
         else:
-            self._application_frame.shape = FrameShape.MAX
+            self._frame.shape = FrameShape.MAX
 
     def __on_shape(self) -> None:
-        if self._application_frame.shape == FrameShape.MAX:
+        if self._frame.shape == FrameShape.MAX:
             icon = self.__icon + 'window-restore' + self.__sym + '.svg'
             self.icon = icon
-            self._application_frame.style['[FrameMaxButton]']['icon'] = icon
+            self._frame.style['[FrameMaxButton]']['icon'] = icon
 
             icon = self.__icon + 'window-restore-clicked' + self.__sym + '.svg'
-            self._application_frame.style['[FrameMaxButton:clicked]']['icon'] = icon
+            self._frame.style['[FrameMaxButton:clicked]']['icon'] = icon
         else:
             icon = self.__icon + 'go-up' + self.__sym + '.svg'
             self.icon = icon
-            self._application_frame.style['[FrameMaxButton]']['icon'] = icon
+            self._frame.style['[FrameMaxButton]']['icon'] = icon
 
             icon = self.__icon + 'go-up-clicked' + self.__sym + '.svg'
-            self._application_frame.style['[FrameMaxButton:clicked]']['icon'] = icon
+            self._frame.style['[FrameMaxButton:clicked]']['icon'] = icon
 
     def __on_active(self) -> None:
-        if self._application_frame.shape == FrameShape.MAX:
+        if self._frame.shape == FrameShape.MAX:
             icon = self.__icon + 'window-restore' + self.__sym + '.svg'
             self.icon = icon
-            self._application_frame.style['[FrameMaxButton]']['icon'] = icon
+            self._frame.style['[FrameMaxButton]']['icon'] = icon
         else:
             icon = self.__icon + 'go-up' + self.__sym + '.svg'
             self.icon = icon
-            self._application_frame.style['[FrameMaxButton:hover]']['icon'] = icon
+            self._frame.style['[FrameMaxButton:hover]']['icon'] = icon
 
     def __on_hover(self) -> None:
-        if self._application_frame.shape == FrameShape.MAX:
-            if self._application_frame.is_active() and self.is_mouse_hover():
+        if self._frame.shape == FrameShape.MAX:
+            if self._frame.is_active() and self.is_mouse_hover():
                 icon = self.__icon + 'window-restore-hover' + self.__sym + '.svg'
                 self.icon = icon
-                self._application_frame.style['[FrameMaxButton:hover]']['icon'] = icon
+                self._frame.style['[FrameMaxButton:hover]']['icon'] = icon
             else:
                 icon = self.__icon + 'window-restore' + self.__sym + '.svg'
                 self.icon = icon
-                self._application_frame.style['[FrameMaxButton:hover]']['icon'] = icon
+                self._frame.style['[FrameMaxButton:hover]']['icon'] = icon
         else:
-            if self._application_frame.is_active() and self.is_mouse_hover():
+            if self._frame.is_active() and self.is_mouse_hover():
                 icon = self.__icon + 'go-up-hover' + self.__sym + '.svg'
                 self.icon = icon
-                self._application_frame.style['[FrameMaxButton:hover]']['icon'] = icon
+                self._frame.style['[FrameMaxButton:hover]']['icon'] = icon
             else:
                 icon = self.__icon + 'go-up' + self.__sym + '.svg'
                 self.icon = icon
-                self._application_frame.style['[FrameMaxButton:hover]']['icon'] = icon
+                self._frame.style['[FrameMaxButton:hover]']['icon'] = icon
 
     def __str__(self) -> str:
         return "<class 'FrameMaxButton'>"
@@ -140,10 +140,10 @@ class FrameMinButton(Button):
         self.mouse_press_signal.connect(self.__on_click)
 
     def __on_click(self) -> None:
-        if self._application_frame.shape == FrameShape.MIN:
-            self._application_frame.shape = FrameShape.FRAME
+        if self._frame.shape == FrameShape.MIN:
+            self._frame.shape = FrameShape.FRAME
         else:
-            self._application_frame.shape = FrameShape.MIN
+            self._frame.shape = FrameShape.MIN
 
     def __str__(self) -> str:
         return "<class 'FrameMinButton'>"

@@ -109,23 +109,23 @@ class IconMixin(object):
 
     def __update_icon(self) -> None:
         # Fix: DE updates dark icons without registering
-        if hasattr(self._application_frame, '_platform'):
-            self.__icon_theme = self._application_frame._platform.icon_theme
+        if hasattr(self._frame, '_platform'):
+            self.__icon_theme = self._frame._platform.icon_theme
 
             is_dark = color_converter.is_dark(color_converter.hex_to_rgba(
                 style_value(
-                    self._application_frame.style,
+                    self._frame.style,
                     '[' + self._name + ']',
                     'background_color')))
 
             # TODO Condition for dark or light !=
-            icon_theme = self._application_frame._platform.variant_icon_theme(
+            icon_theme = self._frame._platform.variant_icon_theme(
                 self.__icon_theme, is_dark)
 
             icon = self.__icon.strip('"')
             icon_path = None
             for theme in [icon_theme, self.__icon_theme]:
-                self._application_frame._platform.icon_theme = theme
+                self._frame._platform.icon_theme = theme
                 if theme:
                     icon_path = IconTheme.getIconPath(
                         iconname=Path(icon).stem,
@@ -220,8 +220,8 @@ class MarginsMixin(object):
         self.__margins = top, left, bottom, right
         
         header = '[' + self._name + ']'
-        if header in self._application_frame.style:
-            self._application_frame.style[header]['margins'] = self.__margins
+        if header in self._frame.style:
+            self._frame.style[header]['margins'] = self.__margins
 
     def __str__(self) -> str:
         return "<class 'MarginsMixin'>"
@@ -320,8 +320,8 @@ class RadiusMixin(object):
         self.__radius = top_l, top_r, bottom_r, bottom_l
 
         header = '[' + self._name + ']'
-        if header in self._application_frame.style:
-            self._application_frame.style[header]['border_radius'] = self.__radius
+        if header in self._frame.style:
+            self._frame.style[header]['border_radius'] = self.__radius
 
     def __str__(self) -> str:
         return "<class 'RadiusMixin'>"

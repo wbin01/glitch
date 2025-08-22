@@ -240,12 +240,12 @@ class Panel(RadiusMixin, Layout):
     def __sinc_radius(self) -> None:
         if self.frame_side.value == QtCore.Qt.AlignRight:
             self.radius = (
-                0, self._application_frame.radius[1],
-                self._application_frame.radius[2], 0)
+                0, self._frame.radius[1],
+                self._frame.radius[2], 0)
         else:
             self.radius = (
-                self._application_frame.radius[0], 0,
-                0, self._application_frame.radius[3])
+                self._frame.radius[0], 0,
+                0, self._frame.radius[3])
 
     def __str__(self) -> str:
         return "<class 'Panel'>"
