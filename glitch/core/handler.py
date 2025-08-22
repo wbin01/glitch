@@ -75,12 +75,14 @@ class Handler(QtCore.QObject):
 
             if isinstance(element, Layout):
                 self.__integrate_graphic_elements(element)
-            
-            elif isinstance(element, Element):
+            else:
                 element._application_frame = self.__ui
 
         if isinstance(layout, Frame):
             layout._obj = self.__gui
+            layout._obj.activeChanged.connect(
+                lambda: layout.active_signal.emit())
+            # layout._obj.visibilityChanged.connect(self.on_visibility_changed)
 
     @QtCore.Slot()
     def __init_state_style(self) -> None:

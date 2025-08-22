@@ -59,19 +59,21 @@ class FrameMaxButton(Button):
         self.class_id('FrameMaxButton')
 
         self.__path = pathlib.Path(__file__).parent.parent.parent
-        self.__icon_path = str(self.__path) + '/static/control_button/plasma/'
-        self.__symbolic = ''
+        self.__icon = str(self.__path) + '/static/control_button/plasma/'
+        self.__sym = ''
 
         self.mouse_press_signal.connect(self.__on_click)
+        self.mouse_hover_signal.connect(self.__on_hover)
         self.application_frame_signal.connect(self.__on_application_frame)
 
     def __on_application_frame(self) -> None:
-        dark = self._application_frame.style[
-            '[FrameMaxButton]']['background_color']
-        self.__symbolic = '-symbolic' if dark else ''
+        dark = color_converter.is_dark(color_converter.hex_to_rgba(
+            self._application_frame.style[
+                '[FrameMaxButton]']['background_color']))
+        self.__sym = '-symbolic' if dark else ''
+
+        self._application_frame.active_signal.connect(self.__on_active)
         self._application_frame.shape_signal.connect(self.__on_shape)
-        # self._application_frame._obj.activeChanged.connect(self.__on_active)
-        # self.window.visibilityChanged.connect(self.on_visibility_changed)
 
     def __on_click(self) -> None:
         if self._application_frame.shape == FrameShape.MAX:
@@ -81,8 +83,49 @@ class FrameMaxButton(Button):
 
     def __on_shape(self) -> None:
         if self._application_frame.shape == FrameShape.MAX:
-            self._application_frame.style['[FrameMaxButton]']['icon'] = (
-                self.__icon_path + 'window-restore' + self.__symbolic + '.svg')
+            icon = self.__icon + 'window-restore' + self.__sym + '.svg'
+            self.icon = icon
+            self._application_frame.style['[FrameMaxButton]']['icon'] = icon
+
+            icon = self.__icon + 'window-restore-clicked' + self.__sym + '.svg'
+            self._application_frame.style['[FrameMaxButton:clicked]']['icon'] = icon
+        else:
+            icon = self.__icon + 'go-up' + self.__sym + '.svg'
+            self.icon = icon
+            self._application_frame.style['[FrameMaxButton]']['icon'] = icon
+
+            icon = self.__icon + 'go-up-clicked' + self.__sym + '.svg'
+            self._application_frame.style['[FrameMaxButton:clicked]']['icon'] = icon
+
+    def __on_active(self) -> None:
+        if self._application_frame.shape == FrameShape.MAX:
+            icon = self.__icon + 'window-restore' + self.__sym + '.svg'
+            self.icon = icon
+            self._application_frame.style['[FrameMaxButton]']['icon'] = icon
+        else:
+            icon = self.__icon + 'go-up' + self.__sym + '.svg'
+            self.icon = icon
+            self._application_frame.style['[FrameMaxButton:hover]']['icon'] = icon
+
+    def __on_hover(self) -> None:
+        if self._application_frame.shape == FrameShape.MAX:
+            if self._application_frame.is_active() and self.is_mouse_hover():
+                icon = self.__icon + 'window-restore-hover' + self.__sym + '.svg'
+                self.icon = icon
+                self._application_frame.style['[FrameMaxButton:hover]']['icon'] = icon
+            else:
+                icon = self.__icon + 'window-restore' + self.__sym + '.svg'
+                self.icon = icon
+                self._application_frame.style['[FrameMaxButton:hover]']['icon'] = icon
+        else:
+            if self._application_frame.is_active() and self.is_mouse_hover():
+                icon = self.__icon + 'go-up-hover' + self.__sym + '.svg'
+                self.icon = icon
+                self._application_frame.style['[FrameMaxButton:hover]']['icon'] = icon
+            else:
+                icon = self.__icon + 'go-up' + self.__sym + '.svg'
+                self.icon = icon
+                self._application_frame.style['[FrameMaxButton:hover]']['icon'] = icon
 
     def __str__(self) -> str:
         return "<class 'FrameMaxButton'>"

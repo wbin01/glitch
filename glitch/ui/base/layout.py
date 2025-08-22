@@ -42,6 +42,12 @@ properties = """
 # Layout.maximumHeight
 
 
+class Frame(object):
+    """Frame object."""
+    def __str__(self) -> str:
+        return "<class 'Layout'>"
+
+
 class Layout(object):
     """Layout object.
 

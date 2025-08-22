@@ -112,13 +112,11 @@ class IconMixin(object):
         if hasattr(self._application_frame, '_platform'):
             self.__icon_theme = self._application_frame._platform.icon_theme
 
-            is_dark = False
-            if '[' + self._name + ']' in self._application_frame.style:
-                is_dark = color_converter.is_dark(color_converter.hex_to_rgba(
-                    style_value(
-                        self._application_frame.style,
-                        '[' + self._name + ']',
-                        'background_color')))
+            is_dark = color_converter.is_dark(color_converter.hex_to_rgba(
+                style_value(
+                    self._application_frame.style,
+                    '[' + self._name + ']',
+                    'background_color')))
 
             # TODO Condition for dark or light !=
             icon_theme = self._application_frame._platform.variant_icon_theme(

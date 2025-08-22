@@ -263,6 +263,7 @@ class Frame(RadiusMixin, SizeMixin, Layout):
         # Sig
         self.size_signal = Signal()
         self.shape_signal = Signal()
+        self.active_signal = Signal()
         self.mouse_right_press_signal = Signal()
 
         # QML
@@ -282,7 +283,8 @@ class Frame(RadiusMixin, SizeMixin, Layout):
         self.__platform = Platform()
         self.__style = self.__platform.style
         self.__visibility = 'Window.Windowed'
-        self.__callbacks = {}
+        self.__active = True
+        self.active_signal.connect(self.__set_active)
 
         # Set
         self.radius = self.__style[f'[{self._name}]']['border_radius']
@@ -391,6 +393,10 @@ class Frame(RadiusMixin, SizeMixin, Layout):
     def style(self, style: dict) -> None:
         self.__style = style
 
+    def is_active(self) -> bool:
+        """..."""
+        return self.__active
+
     @property
     def _platform(self) -> Platform:
         """..."""
@@ -400,13 +406,8 @@ class Frame(RadiusMixin, SizeMixin, Layout):
     def _platform(self, platform) -> None:
         self.__platform = platform
 
-    # def callbacks(self) -> dict:
-    #     """The functions used in the `connect` method.
-
-    #     The `connect` method organizes the received functions into a 
-    #     dictionary organized by the type of event they are associated with.
-    #     """
-    #     return self.__callbacks
+    def __set_active(self) -> None:
+        self.__active = self._obj.isActive()
 
     def __str__(self) -> str:
         return "<class 'Frame'>"
