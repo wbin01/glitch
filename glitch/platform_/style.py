@@ -18,7 +18,7 @@ class Style(object):
         self.__desktop = desktop_environment
         self.__style = None
         self.__conf = None
-        self.__inactive_as_platform = True
+        self.__inactive_as_platform = False
         self.__accent_color = None
 
         self.__path = pathlib.Path(__file__).parent.parent
@@ -617,8 +617,8 @@ class Style(object):
             self.__main_frame_in_io = self.__main_frame_io
             self.__main_frame_in_bd = self.__main_frame_bd
         else:
-            self.__main_frame_in_fg = '#88' + self.__main_frame_fg[3:]
-            self.__main_frame_in_bg = colr.darken_hex(self.__main_frame_bg, 10)
+            self.__main_frame_in_fg = '#99' + self.__main_frame_fg[3:]
+            self.__main_frame_in_bg = colr.darken_hex(self.__main_frame_bg, 4)
             self.__main_frame_in_io = '0.5'
 
             self.__main_frame_in_bd = self.__main_frame_in_bg
@@ -627,7 +627,7 @@ class Style(object):
                     self.__main_frame_in_bg, 5)
 
     def __style_panel(self) -> None:
-        self.__panel_bg = colr.darken_hex(self.__main_frame_bg, 5)
+        self.__panel_bg = '#FA' + colr.darken_hex(self.__main_frame_bg, 5)[3:]
         self.__panel_bd = self.__panel_bg
         self.__panel_rd = self.__main_frame_rd
         self.__panel_in_bg = colr.darken_hex(self.__main_frame_in_bg, 5)

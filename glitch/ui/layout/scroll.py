@@ -29,7 +29,7 @@ properties = """
     contentWidth: availableWidth
 
     background: Rectangle {
-        color: "#11000000"
+        color: "#1E000000"
         radius: 4
     }
 
