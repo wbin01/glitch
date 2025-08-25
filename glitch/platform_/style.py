@@ -25,7 +25,7 @@ class Style(object):
         self.__icon_path = str(self.__path) + '/static/control_button/plasma/'
         self.__plasma_close_button_with_circle = False
         self.__symbolic = ''
-
+        
         self.__button_fg = None
         self.__button_bg = None
         self.__button_bd = None
@@ -464,8 +464,8 @@ class Style(object):
 
         self.__button_hv_fg = self.__button_fg
         self.__button_hv_bg = self.__button_bg
-        self.__button_hv_bd = self.__color_to_hex(
-            self.__conf['[Colors:Button]']['DecorationHover'], '#3C8CBD')
+        self.__button_hv_bd = '#99' + self.__color_to_hex(
+            self.__conf['[Colors:Button]']['DecorationHover'], '#3C8CBD')[3:]
         self.__button_hv_io = self.__button_io
 
         self.__button_ck_fg = self.__button_fg

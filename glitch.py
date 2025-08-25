@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import pprint
+import sys
 
 # from glitch import *
 from glitch.core import Application, Signal
@@ -198,6 +198,10 @@ class View(MainFrame):
             # self.shape = FrameShape.FRAME
 
 
-if __name__ == '__main__':
+def main_glitch():
     app = Application(View)
-    app.exec()
+    sys.exit(app.exec())
+
+
+if __name__ == '__main__':
+    main_glitch()

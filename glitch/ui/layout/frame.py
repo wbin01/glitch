@@ -277,7 +277,6 @@ class Frame(RadiusMixin, SizeMixin, Layout):
 
         # Properties
         self.size = 300
-        self.__style = None
         self.__hint = FrameHint.FRAME
         self.__shape = FrameShape.FRAME
         self.__platform = Platform()

@@ -15,8 +15,7 @@ class AppEventFilter(QtCore.QObject):
 
     Filters the Frame state and adapts the elements.
     """
-    def __init__(
-            self, ui: Frame, gui: QtQuick.QQuickWindow, style: dict) -> None:
+    def __init__(self, ui: Frame, gui: QtQuick.QQuickWindow) -> None:
         """
         :param ui: The main Frame app instance.
         :param gui: The graphic Qml-Window instance (QQuickWindow).
@@ -25,7 +24,6 @@ class AppEventFilter(QtCore.QObject):
         super().__init__()
         self.__ui = ui
         self.__gui = gui.findChild(QtCore.QObject, 'mainRect')
-        self.__style = style
         self.__elements = self.__gui.findChildren(
             QtCore.QObject, options=QtCore.Qt.FindChildrenRecursively)
     
@@ -53,14 +51,14 @@ class AppEventFilter(QtCore.QObject):
         # MainFrame state colors
         frame = f'[{self.__ui._name}{state}]'
         self.__gui.setProperty(
-            'backgroundColor',
-            style_value(self.__style, frame, 'background_color'))
+            'backgroundColor', style_value(
+                self.__ui.style, frame, 'background_color'))
         self.__gui.setProperty(
-            'borderColor', style_value(self.__style, frame, 'border_color'))
+            'borderColor', style_value(self.__ui.style, frame, 'border_color'))
         self.__gui.findChild(QtCore.QObject, 'canvas').requestPaint()
 
         for element in self.__elements:  # element.metaObject().className()
-            change_element_style_state(element, state, self.__style)
+            change_element_style_state(element, state, self.__ui.style)
 
     def __str__(self) -> str:
         return "<class 'AppEventFilter'>"
@@ -106,10 +104,10 @@ class Application(object):
 
         Manages the processes to start the Application Frame and execute it.
         """
-        event_filter = AppEventFilter(self.__ui, self.__gui, self.__ui.style)
+        event_filter = AppEventFilter(self.__ui, self.__gui)
         self.__gui.installEventFilter(event_filter)
         self.__engine.rootContext().setContextProperty('logic', self.__handler)
-        sys.exit(self.__qt_gui_application.exec())
+        self.__qt_gui_application.exec()
 
     def __write_qml(self, layout) -> None:
         # object_id as variable name
