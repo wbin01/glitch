@@ -1,0 +1,20 @@
+#!/usr/bin/env python3
+from . import QtObject
+
+
+class UI(QtObject):
+    """..."""
+    def __init__(self, name: str = 'Item', *args, **kwargs) -> None:
+        QtObject.__init__(self, name=name, *args, **kwargs)
+        self.qml = self.qml + '  // Close ' + name
+        self.__frame = None
+
+    @property
+    def _frame(self):
+        return self.__frame
+
+    def __repr__(self) -> str:
+        return f'{self.__class__.__name__}(name={self._QtObject__name!r})'
+
+    def __str__(self) -> str:
+        return self.__class__.__name__
