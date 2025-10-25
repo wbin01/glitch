@@ -1,16 +1,12 @@
 #!/usr/bin/env python3
-from ..ui import UI
 
 
-qml_header = """
-import QtQuick
-import QtQuick.Controls
-import QtQuick.Controls.AdaptiveGlitch
-import QtQuick.Layouts
-import QtQuick.Shapes
-"""
-
-window_properties = """
+qml_style = """
+import QtQuick 2.15
+import QtQuick.Controls 2.15
+// sep header-body
+// +
+MainFrame {
     title: qsTr("UI")
     color: "transparent"
     flags: Qt.FramelessWindowHint
@@ -244,99 +240,64 @@ window_properties = """
             clip: true
             Layout.alignment: Qt.AlignTop
             Layout.fillWidth: false
-    // } }
+        }
+    }
+    default property alias content: mainColumnLayout.data
+}
+// +
+Button {
+    id: control
+
+    background: Rectangle {
+        anchors.fill: parent
+        color: control.down ? "[Button:clicked]background_color" :
+               control.hovered ? "[Button:hover]background_color" :
+               "[Button]background_color"
+        border.color: control.down ? "[Button:clicked]border_color" :
+                      control.hovered ? "[Button:hover]border_color" :
+                      "[Button]border_color"
+        border.width: [Button]border_width
+        radius: [Button]border_radius
+    }
+}
+// +
+Label {
+    id: root
+    color: "[Label]font_color"
+}
+
 """
-window_properties = ''
 
-class QmlBuilder(object):
+class QmlStyle(object):
     """..."""
-    def __init__(self, ui: UI) -> None:
+    def __init__(self, style: dict, qml_path: str) -> None:
         """
-        :param ui:
+
+        :param style: ...
         """
-        self.__ui = ui
-        self.__qml_code = ''
-        self.__first_iteration = True
-        self.__write_qml(self.__ui)
-        self.__qml_finish()
+        self.__style = style
+        self.__qml_path = qml_path / 'QtQuick' / 'Controls' / 'AdaptiveGlitch'
+        self.__qml_style = qml_style
 
-    def __repr__(self) -> str:
-        return f'{self.__class__.__name__}(ui={self.__ui!r})'
+    def build(self) -> None:
+        for style_header, style_key in self.__style.items():
+            for key, value in style_key.items():
+                self.__qml_style = self.__qml_style.replace(
+                    style_header + key, str(value))
 
-    def __str__(self) -> str:
-        return f'{self.__class__.__name__}(ui={self.__ui!r})'
+        header, themes = self.__qml_style.split('// sep header-body')
+        for theme in themes.split('// +'):
+            if not theme.strip():
+                continue
 
-    @property
-    def _qml(self) -> str:
-        """..."""
-        return self.__qml_code
+            element_name = theme.strip().split('\n')[0].rstrip('{').strip()
 
-    def __write_qml(self, ui: UI, tab: str = '') -> None:
-        if not hasattr(ui, '_QtObject__items'):
-            return
+            header_comp = ''
+            if element_name in ['Window', 'MainFrame']:
+                header_comp = 'import QtQuick.Layouts\n'
+                theme = theme.replace('MainFrame', 'Window')
 
-        # Main Layout ID
-        if '// id' in ui.qml and self.__first_iteration:
-            id_ = 'root_' + ui.__class__.__name__.lower()
-            ui.qml = ui.qml.replace(
-                '// id', f'id: {id_}').replace(
-                '// objectName', f'objectName: "{id_}"').replace(
-                '// Close ' + ui._name, '// Close ' + id_).replace(
-                '// +', window_properties + '\n    // +\n')
+            element_theme = header.lstrip() + header_comp + theme.rstrip()
+            element_theme_path = self.__qml_path / (element_name + '.qml')
 
-        # UIs ID
-        for name, value in ui.__dict__.items():
-            element = getattr(ui, name)
-            if isinstance(element, UI):
-                id_ = name.lower()
-                element.qml = element.qml.replace(
-                    '// id', f'id: {id_}').replace(
-                    '// objectName', f'objectName: "{id_}"\n').replace(
-                    '// Close ' + element._name, '// Close ' + id_)
-
-        # UIs headers and his properties
-        header, body = ui.qml.split('// +')
-        qml_end = body.strip('\n')
-        # if self.__first_iteration:
-        #     qml_end = (
-        #         '\n        } // Close mainColumnLayout'
-        #         '\n    } // Close mainRectangle\n' + qml_end)
-
-        for line in header.split('\n'):
-            if '//' not in line:
-                self.__qml_code += tab + line + '\n'
-        self.__qml_code = self.__qml_code.strip() + '\n'
-
-        # UI childs
-        tab += '    '
-        # if self.__first_iteration:
-        #     # tab += '        '
-
-        self.__first_iteration = False
-        for element in ui._QtObject__items:
-            element_items = (getattr(element, '_QtObject__items')
-                if hasattr(element, '_QtObject__items') else None)
-            
-            if element_items and isinstance(element_items, list):
-                self.__write_qml(element, tab)
-            else:
-                for qml_line in element.qml.split('\n'):
-                    if '// Close' in qml_line:
-                        qml_line = qml_line.split('// Close')[0].rstrip()
-                    if qml_line and '//' not in qml_line:
-                        self.__qml_code += tab + qml_line + '\n'
-        # Close
-        self.__qml_code = self.__qml_code + tab[:-4] + qml_end + '\n'
-
-    def __qml_finish(self) -> None:
-        sparse_qml = ''
-        for line in self.__qml_code.split('\n'):
-            if line.strip():
-                if '{' in line:
-                    sparse_qml += '\n' + line + '\n'
-                elif '}' in line:
-                    sparse_qml += line + '\n'
-                else:
-                    sparse_qml += line + '\n'
-        self.__qml_code = qml_header.lstrip() + '\n' + sparse_qml.replace(
-            '// Close ', '// ')
+            element_theme_path.write_text(element_theme)

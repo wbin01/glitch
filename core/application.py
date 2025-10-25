@@ -7,6 +7,8 @@ from PySide6 import QtCore, QtGui, QtQml, QtQuick
 from .handler import Handler
 from ..ui import UI
 from .qml_builder import QmlBuilder
+from ..platform_ import Style
+from ..platform_.qml_style import QmlStyle
 
 
 class AppEventFilter(QtCore.QObject):
@@ -63,35 +65,25 @@ class Application(object):
         :param frame: The Application UI.
         """
         self.__ui = frame()
-        self.__path = pathlib.Path(__file__).parent.parent
-
-        self.__qml_code = None
-        self.__qml_code_iterator = 0
-        self.__qml_path = self.__path /'static'/'qml'/'main.qml'
         self.__dev = dev
 
+        self.__path = pathlib.Path(__file__).parent.parent
+        self.__qml_path = self.__path /'static'/'qml'/'main.qml'
+        self.__qml_theme_path = self.__path / 'static' / 'qml'
+        
         qml = QmlBuilder(self.__ui)
         if self.__dev:
             self.__qml_path.write_text(qml._qml)
 
+        # Style
+        style = Style()
+        qml_style = QmlStyle(style.style(), self.__qml_theme_path)
+        qml_style.build()
+
         self.__qt_gui_application = QtGui.QGuiApplication(sys.argv)
         self.__engine = QtQml.QQmlApplicationEngine()
-        
-        # self.__qml_theme_path = self.__path / 'static' / 'qml'
-        # self.__engine.addImportPath(str(self.__qml_theme_path))
-        # self.__engine.load(self.__qml_path)
-
-        self.__qml_theme_path = self.__path / 'static' / 'qml'
         self.__engine.addImportPath(str(self.__qml_theme_path))
         self.__engine.load(self.__qml_path)
-
-
-
-        # self.__qml_theme_path = self.__path / 'static' / 'qml'
-        # self.__engine = QtQml.QQmlApplicationEngine()
-        # self.__engine.addImportPath(str(self.__qml_theme_path))
-        # self.__engine.load(self.__qml_path)
-
         
         if not self.__engine.rootObjects():
             sys.exit(-1)

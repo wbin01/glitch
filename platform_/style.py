@@ -8,6 +8,7 @@ from PySide6 import QtGui
 from ..tools import color_converter as colr
 from ..tools import DesktopFile
 
+
 class Style(object):
     """Application style.
     
@@ -62,42 +63,56 @@ class Style(object):
                 'border_color': self.__button_bd,
                 'font_color': self.__button_fg,
                 'icon_opacity': self.__button_io,
+                'border_width': 1,
+                'border_radius': 3,
                 },
             '[Button:inactive]': {
                 'background_color': self.__button_in_bg,
                 'border_color': self.__button_in_bd,
                 'font_color': self.__button_in_fg,
                 'icon_opacity': self.__button_in_io,
+                'border_width': 1,
+                'border_radius': 3,
                 },
             '[Button:hover]': {
                 'background_color': self.__button_hv_bg,
                 'border_color': self.__button_hv_bd,
                 'font_color': self.__button_hv_fg,
                 'icon_opacity': self.__button_hv_io,
+                'border_width': 1,
+                'border_radius': 3,
                 },
             '[Button:clicked]': {
                 'background_color': self.__button_ck_bg,
                 'border_color': self.__button_ck_bd,
                 'font_color': self.__button_ck_fg,
                 'icon_opacity': self.__button_ck_io,
+                'border_width': 1,
+                'border_radius': 3,
                 },
             '[Button:checked]': {
                 'background_color': self.__button_ch_bg,
                 'border_color': self.__button_ch_bd,
                 'font_color': self.__button_ch_fg,
                 'icon_opacity': self.__button_ch_io,
+                'border_width': 1,
+                'border_radius': 3,
                 },
             '[Button:checked:inactive]': {
                 'background_color': self.__button_ch_in_bg,
                 'border_color': self.__button_ch_in_bd,
                 'font_color': self.__button_ch_in_fg,
                 'icon_opacity': self.__button_ch_in_io,
+                'border_width': 1,
+                'border_radius': 3,
                 },
             '[Button:checked:hover]': {
                 'background_color': self.__button_ch_hv_bg,
                 'border_color': self.__button_ch_hv_bd,
                 'font_color': self.__button_ch_hv_fg,
                 'icon_opacity': self.__button_ch_hv_io,
+                'border_width': 1,
+                'border_radius': 3,
                 },
             '[Frame]': {
                 'background_color': self.__frame_bg,

@@ -11,9 +11,9 @@ class Button(View):
         if self.__text:
             self._QtObject__set_property('text', self.__text)
         # TODO
-        self._QtObject__set_property(
-            'icon.source',
-            '/usr/share/icons/breeze-dark/actions/16/document-open.svg')
+        # self._QtObject__set_property(
+        #     'icon.source',
+        #     '/usr/share/icons/breeze-dark/actions/16/document-open.svg')
 
     def __repr__(self) -> str:
         return f'{self.__class__.__name__}(text={self.__text!r})'
