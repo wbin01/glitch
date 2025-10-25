@@ -76,8 +76,23 @@ class Application(object):
 
         self.__qt_gui_application = QtGui.QGuiApplication(sys.argv)
         self.__engine = QtQml.QQmlApplicationEngine()
+        
+        # self.__qml_theme_path = self.__path / 'static' / 'qml'
+        # self.__engine.addImportPath(str(self.__qml_theme_path))
+        # self.__engine.load(self.__qml_path)
+
+        self.__qml_theme_path = self.__path / 'static' / 'qml'
+        self.__engine.addImportPath(str(self.__qml_theme_path))
         self.__engine.load(self.__qml_path)
 
+
+
+        # self.__qml_theme_path = self.__path / 'static' / 'qml'
+        # self.__engine = QtQml.QQmlApplicationEngine()
+        # self.__engine.addImportPath(str(self.__qml_theme_path))
+        # self.__engine.load(self.__qml_path)
+
+        
         if not self.__engine.rootObjects():
             sys.exit(-1)
 

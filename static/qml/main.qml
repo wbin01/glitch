@@ -1,29 +1,21 @@
-#!/usr/bin/env python3
-from ..ui import UI
 
-
-# import "QtQuick/Controls.2/AdaptiveGlitch" as AdaptiveGlitch
-qml_header = """
 import QtQuick
 import QtQuick.Controls
 // import QtQuick.Controls.AdaptiveGlitch
 import QtQuick.Controls.AdaptiveGlitch
 import QtQuick.Layouts
 import QtQuick.Shapes
-"""
 
-window_properties = """
-    // Controls.style: "AdaptiveGlitch"
+Window {
+    id: window
+    objectName: "window"
     title: qsTr("UI")
     color: "transparent"
     flags: Qt.FramelessWindowHint
-
     width: 400
     height: 400
-
     minimumWidth: 100
     minimumHeight: 30
-
     visible: true
     visibility: Window.Windowed
 
@@ -40,13 +32,11 @@ window_properties = """
         color: "transparent"
         z: 1
         property bool isActive: true
-
         property color backgroundColor: "#222"
         property color borderColor: "#333"
         property color outLineColor: "#44000000"
         property int borderWidth: 1
         property int outLineWidth: 1
-
         property int radiusTopLeft: 6
         property int radiusTopRight: 6
         property int radiusBottomRight: 0
@@ -62,7 +52,6 @@ window_properties = """
                 var ctx = getContext("2d");
                 ctx.clearRect(0, 0, width, height);
 
-                // Function to draw rounded rectangle with individuals corners
                 function roundedRect(x, y, w, h, rtl, rtr, rbr, rbl) {
                     ctx.beginPath();
                     ctx.moveTo(x + rtl, y);
@@ -76,31 +65,23 @@ window_properties = """
                     ctx.arcTo(x, y, x + rtl, y, rtl);
                     ctx.closePath();
                 }
-
-                // --- Background ---
                 roundedRect(
                     1, 1, width - 2, height - 2,
                     mainRectangle.radiusTopLeft,
                     mainRectangle.radiusTopRight,
                     mainRectangle.radiusBottomRight,
                     mainRectangle.radiusBottomLeft);
-
                 ctx.fillStyle = mainRectangle.backgroundColor;
                 ctx.fill();
-
-                // --- Outer border ---
                 roundedRect(
                     0, 0, width, height,
                     mainRectangle.radiusTopLeft + 2,
                     mainRectangle.radiusTopRight + 2,
                     mainRectangle.radiusBottomRight + 2,
                     mainRectangle.radiusBottomLeft + 2);
-
                 ctx.strokeStyle = mainRectangle.outLineColor;
                 ctx.lineWidth = mainRectangle.outLineWidth;
                 ctx.stroke();
-
-                // --- Inner border ---
                 var inset = borderSpacing + mainRectangle.borderWidth / 2;
                 roundedRect(
                     inset, inset,
@@ -110,38 +91,31 @@ window_properties = """
                     Math.max(0, mainRectangle.radiusTopRight - inset),
                     Math.max(0, mainRectangle.radiusBottomRight - inset),
                     Math.max(0, mainRectangle.radiusBottomLeft - inset));
-
                 ctx.strokeStyle = mainRectangle.borderColor;
                 ctx.lineWidth = mainRectangle.borderWidth;
                 ctx.stroke();
             }
         }
 
-        // Drag area
         Rectangle {
             id: dragArea
             objectName: "dragArea"
             height: 20
+
             anchors {
                 top: parent.top
                 left: parent.left
                 right: parent.right
-                margins: 5  // margem de 10px nas laterais
             }
             color: "transparent"
             z: 0
 
             MouseArea {
                 anchors.fill: parent
-                // drag.target: // id
                 onPressed: logic.start_move()
             }
         }
-        // Drag area
 
-
-        // Resize corners
-        // Top left - resize NW
         MouseArea {
             id: resizeTopLeft
             width: 10
@@ -153,7 +127,6 @@ window_properties = """
             onPressed: logic.start_resize(Qt.TopEdge | Qt.LeftEdge)
         }
 
-        // Top right - resize NE
         MouseArea {
             id: resizeTopRight
             width: 10
@@ -165,7 +138,6 @@ window_properties = """
             onPressed: logic.start_resize(Qt.TopEdge | Qt.RightEdge)
         }
 
-        // Bottom left - resize SW
         MouseArea {
             id: resizeBottomLeft
             width: 10
@@ -177,7 +149,6 @@ window_properties = """
             onPressed: logic.start_resize(Qt.BottomEdge | Qt.LeftEdge)
         }
 
-        // Bottom right - resize SE
         MouseArea {
             id: resizeBottomRight
             width: 10
@@ -189,7 +160,6 @@ window_properties = """
             onPressed: logic.start_resize(Qt.BottomEdge | Qt.RightEdge)
         }
 
-        // Top - N
         MouseArea {
             id: resizeTop
             anchors.top: parent.top
@@ -201,7 +171,6 @@ window_properties = """
             onPressed: logic.start_resize(Qt.TopEdge)
         }
 
-        // Bottom - S
         MouseArea {
             id: resizeBottom
             anchors.bottom: parent.bottom
@@ -213,7 +182,6 @@ window_properties = """
             onPressed: logic.start_resize(Qt.BottomEdge)
         }
 
-        // Left - W
         MouseArea {
             id: resizeLeft
             anchors.top: resizeTopLeft.bottom
@@ -225,7 +193,6 @@ window_properties = """
             onPressed: logic.start_resize(Qt.LeftEdge)
         }
 
-        // Right - E
         MouseArea {
             id: resizeRight
             anchors.top: resizeTopRight.bottom
@@ -236,7 +203,6 @@ window_properties = """
             hoverEnabled: true
             onPressed: logic.start_resize(Qt.RightEdge)
         }
-        // Resize corners
 
         ColumnLayout {
             id: mainColumnLayout
@@ -247,97 +213,108 @@ window_properties = """
             clip: true
             Layout.alignment: Qt.AlignTop
             Layout.fillWidth: false
-    // } }
-"""
 
-class QmlBuilder(object):
-    """..."""
-    def __init__(self, ui: UI) -> None:
-        """
-        :param ui:
-        """
-        self.__ui = ui
-        self.__qml_code = ''
-        self.__first_iteration = True
-        self.__write_qml(self.__ui)
-        self.__qml_finish()
+            Label {
+                id: _window__label
+                objectName: "_window__label"
+                text: "Label xxx"
+            }
 
-    def __repr__(self) -> str:
-        return f'{self.__class__.__name__}(ui={self.__ui!r})'
+            ColumnLayout {
+                id: custom_col
+                objectName: "custom_col"
+                spacing: 6
+                clip: true
+                Layout.alignment: Qt.AlignTop
+                Layout.fillWidth: false
+                Layout.leftMargin: 15
 
-    def __str__(self) -> str:
-        return f'{self.__class__.__name__}(ui={self.__ui!r})'
+                Button {
+                    id: btn_top
+                    objectName: "btn_top"
+                    text: "TOOOp"
+                    icon.source: "/usr/share/icons/breeze-dark/actions/16/document-open.svg"
+                }
 
-    @property
-    def _qml(self) -> str:
-        """..."""
-        return self.__qml_code
+                Label {
+                    id: _window__label_custom_col
+                    objectName: "_window__label_custom_col"
+                    text: "Label custom col"
+                }
+            }  // custom_col
 
-    def __write_qml(self, ui: UI, tab: str = '') -> None:
-        if not hasattr(ui, '_QtObject__items'):
-            return
+            Button {
+                id: _window__custom_btn
+                objectName: "_window__custom_btn"
+                text: "CustomButton"
+                icon.source: "/usr/share/icons/breeze-dark/actions/16/document-open.svg"
+            }
 
-        # Main Layout ID
-        if '// id' in ui.qml and self.__first_iteration:
-            id_ = ui.__class__.__name__.lower()
-            ui.qml = ui.qml.replace(
-                '// id', f'id: {id_}').replace(
-                '// objectName', f'objectName: "{id_}"').replace(
-                '// Close ' + ui._name, '// Close ' + id_).replace(
-                '// +', window_properties + '\n    // +\n')
+            ColumnLayout {
+                id: col
+                objectName: "col"
+                spacing: 6
+                clip: true
+                Layout.alignment: Qt.AlignTop
+                Layout.fillWidth: false
+                Layout.leftMargin: 15
 
-        # UIs ID
-        for name, value in ui.__dict__.items():
-            element = getattr(ui, name)
-            if isinstance(element, UI):
-                id_ = name.lower()
-                element.qml = element.qml.replace(
-                    '// id', f'id: {id_}').replace(
-                    '// objectName', f'objectName: "{id_}"\n').replace(
-                    '// Close ' + element._name, '// Close ' + id_)
+                Button {
+                    id: btn_click
+                    objectName: "btn_click"
+                    text: "Button 1"
+                    icon.source: "/usr/share/icons/breeze-dark/actions/16/document-open.svg"
+                }
 
-        # UIs headers and his properties
-        header, body = ui.qml.split('// +')
-        qml_end = body.strip('\n')
-        if self.__first_iteration:
-            qml_end = (
-                '\n        } // Close mainColumnLayout'
-                '\n    } // Close mainRectangle\n' + qml_end)
+                Button {
+                    id: _window__btn2
+                    objectName: "_window__btn2"
+                    text: "Button 2"
+                    icon.source: "/usr/share/icons/breeze-dark/actions/16/document-open.svg"
+                }
 
-        for line in header.split('\n'):
-            if '//' not in line:
-                self.__qml_code += tab + line + '\n'
-        self.__qml_code = self.__qml_code.strip() + '\n'
+                Button {
+                    id: _window__btn3
+                    objectName: "_window__btn3"
+                    text: "Button 3"
+                    icon.source: "/usr/share/icons/breeze-dark/actions/16/document-open.svg"
+                }
 
-        # UI childs
-        tab += '    '
-        if self.__first_iteration:
-            tab += '        '
+                Button {
+                    id: _window__btn4
+                    objectName: "_window__btn4"
+                    text: "Button 4"
+                    icon.source: "/usr/share/icons/breeze-dark/actions/16/document-open.svg"
+                }
 
-        self.__first_iteration = False
-        for element in ui._QtObject__items:
-            element_items = (getattr(element, '_QtObject__items')
-                if hasattr(element, '_QtObject__items') else None)
-            
-            if element_items and isinstance(element_items, list):
-                self.__write_qml(element, tab)
-            else:
-                for qml_line in element.qml.split('\n'):
-                    if '// Close' in qml_line:
-                        qml_line = qml_line.split('// Close')[0].rstrip()
-                    if qml_line and '//' not in qml_line:
-                        self.__qml_code += tab + qml_line + '\n'
-        # Close
-        self.__qml_code = self.__qml_code + tab[:-4] + qml_end + '\n'
+                Button {
+                    id: _window__btn5
+                    objectName: "_window__btn5"
+                    text: "Button 5"
+                    icon.source: "/usr/share/icons/breeze-dark/actions/16/document-open.svg"
+                }
 
-    def __qml_finish(self) -> None:
-        sparse_qml = ''
-        for line in self.__qml_code.split('\n'):
-            if line.strip():
-                if '{' in line:
-                    sparse_qml += '\n' + line + '\n'
-                elif '}' in line:
-                    sparse_qml += line + '\n'
-                else:
-                    sparse_qml += line + '\n'
-        self.__qml_code = qml_header + sparse_qml.replace('// Close ', '// ')
+                Button {
+                    id: _window__btn6
+                    objectName: "_window__btn6"
+                    text: "Button 6"
+                    icon.source: "/usr/share/icons/breeze-dark/actions/16/document-open.svg"
+                }
+
+                Button {
+                    id: button0
+                    objectName: "button0"
+                    text: "Button range(0)"
+                    icon.source: "/usr/share/icons/breeze-dark/actions/16/document-open.svg"
+                }
+
+                Button {
+                    id: button1
+                    objectName: "button1"
+                    text: "Button range(1)"
+                    icon.source: "/usr/share/icons/breeze-dark/actions/16/document-open.svg"
+                }
+            }  // col
+        } // mainColumnLayout
+    } // mainRectangle
+}  // window
