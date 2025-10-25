@@ -4,7 +4,7 @@
 qml_style = """
 import QtQuick 2.15
 import QtQuick.Controls 2.15
-// sep header-body
+// sep imports-elements
 // +
 MainFrame {
     title: qsTr("UI")
@@ -285,19 +285,19 @@ class QmlStyle(object):
                 self.__qml_style = self.__qml_style.replace(
                     style_header + key, str(value))
 
-        header, themes = self.__qml_style.split('// sep header-body')
+        imports, themes = self.__qml_style.split('// sep imports-elements')
         for theme in themes.split('// +'):
             if not theme.strip():
                 continue
 
             element_name = theme.strip().split('\n')[0].rstrip('{').strip()
 
-            header_comp = ''
+            imports_add = ''
             if element_name in ['Window', 'MainFrame']:
-                header_comp = 'import QtQuick.Layouts\n'
+                imports_add = 'import QtQuick.Layouts\n'
                 theme = theme.replace('MainFrame', 'Window')
 
-            element_theme = header.lstrip() + header_comp + theme.rstrip()
+            element_theme = imports.lstrip() + imports_add + theme.rstrip()
             element_theme_path = self.__qml_path / (element_name + '.qml')
 
             element_theme_path.write_text(element_theme)
