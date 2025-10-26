@@ -1,0 +1,16 @@
+#!/usr/bin/env python3
+from .view import View
+from ...core.signal import Signal
+
+
+class FrameCloseButton(View):
+    def __init__(self, *args, **kwargs) -> None:
+        super().__init__(name='FrameCloseButton', *args, **kwargs)
+        self.mouse_press_signal = Signal()
+
+        self._frame_signal.connect(
+            lambda: self.mouse_press_signal.connect(
+                lambda: self._frame._QtObject__obj.window().close()))
+
+    def __repr__(self) -> str:
+        return f'{self.__class__.__name__}()'

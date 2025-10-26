@@ -2,8 +2,8 @@
 
 
 qml_style = """
-import QtQuick 2.15
-import QtQuick.Controls 2.15
+import QtQuick
+import QtQuick.Controls
 // sep imports-elements
 // +
 MainFrame {
@@ -286,7 +286,43 @@ Button {
         radius: [Button]border_radius
     }
 }
+// +
+FrameCloseButton {
+    id: frameCloseButton
+    property url normalIcon: "[FrameCloseButton]icon"
+    property url hoverIcon: "[FrameCloseButton:hover]icon"
+    property url clickedIcon: "[FrameCloseButton:clicked]icon"
 
+    icon.source:
+        frameCloseButton.down ?
+            clickedIcon :
+        frameCloseButton.hovered ?
+            hoverIcon : normalIcon
+
+    icon.width: undefined
+    icon.height: undefined
+
+    background: Rectangle {
+        anchors.fill: parent
+
+        color:
+            frameCloseButton.down ?
+                "[FrameCloseButton:clicked]background_color" :
+            frameCloseButton.hovered ?
+                "[FrameCloseButton:hover]background_color" :
+                "[FrameCloseButton]background_color"
+
+        border.color:
+            frameCloseButton.down ?
+                "[FrameCloseButton:clicked]border_color" :
+            frameCloseButton.hovered ?
+                "[FrameCloseButton:hover]border_color" :
+                "[FrameCloseButton]border_color"
+
+        border.width: [FrameCloseButton]border_width
+        radius: [FrameCloseButton]border_radius
+    }
+}
 // +
 ToolButton {
     id: toolButton
@@ -323,7 +359,6 @@ Label {
     id: label
     color: "[Label]font_color"
 }
-
 """
 
 
@@ -358,11 +393,15 @@ class QmlStyle(object):
             element_name = theme.strip().split('\n')[0].rstrip('{').strip()
 
             imports_add = ''
-            if element_name in ['Window', 'MainFrame']:
+            if element_name in ('Window', 'MainFrame', 'Frame'):
                 imports_add = 'import QtQuick.Layouts\n'
-                theme = theme.replace('MainFrame', 'Window')
 
-            element_theme = imports.lstrip() + imports_add + theme.rstrip()
+            for flip in (
+                    ('FrameCloseButton', 'ToolButton'),
+                    ('MainFrame', 'Window')):
+                theme = theme.replace(flip[0] + ' {', flip[1] + ' {')
+
+            element_theme = imports.lstrip() + imports_add + theme
             element_theme_path = self.__qml_path / (element_name + '.qml')
 
             element_theme_path.write_text(element_theme)

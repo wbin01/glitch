@@ -9,6 +9,11 @@ MainFrame {
     id: root_app
     objectName: "root_app"
 
+    FrameCloseButton {
+        id: _app__close_btn
+        objectName: "_app__close_btn"
+    }
+
     Label {
         id: _app__label
         objectName: "_app__label"

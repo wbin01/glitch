@@ -5,10 +5,10 @@ import pathlib
 from PySide6 import QtCore, QtGui, QtQml, QtQuick
 
 from .handler import Handler
-from ..ui import UI
 from .qml_builder import QmlBuilder
-from ..platform_ import Style
+from ..platform_ import Platform
 from ..platform_.qml_style import QmlStyle
+from ..ui import UI
 
 
 class AppEventFilter(QtCore.QObject):
@@ -51,6 +51,9 @@ class AppEventFilter(QtCore.QObject):
         elif event.type() == QtCore.QEvent.WindowDeactivate:
             # print('WindowDeactivate')
             pass
+        elif event.type() == QtCore.QEvent.Paint:
+            #print('Paint')
+            pass
 
         return super().eventFilter(obj, event)
 
@@ -67,6 +70,11 @@ class Application(object):
         self.__ui = frame()
         self.__dev = dev
 
+        self.__platform = Platform()
+        if hasattr(self.__ui, '_platform'):
+            self.__ui._MainFrame__platform = self.__platform
+            self.__ui._MainFrame__platform_added_signal.emit()
+
         self.__path = pathlib.Path(__file__).parent.parent
         self.__qml_path = self.__path /'static'/'qml'/'main.qml'
         self.__qml_theme_path = self.__path / 'static' / 'qml'
@@ -76,8 +84,7 @@ class Application(object):
             self.__qml_path.write_text(qml._qml)
 
         # Style
-        style = Style()
-        qml_style = QmlStyle(style.style(), self.__qml_theme_path)
+        qml_style = QmlStyle(self.__platform.style, self.__qml_theme_path)
         qml_style.build()
 
         self.__qt_gui_application = QtGui.QGuiApplication(sys.argv)
@@ -89,6 +96,7 @@ class Application(object):
             sys.exit(-1)
 
         self.__gui = self.__engine.rootObjects()[0]
+        self.__ui._QtObject__obj = self.__gui
         self.__handler = Handler(self.__ui, self.__gui)
 
     def __repr__(self) -> str:

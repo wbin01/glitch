@@ -3,7 +3,7 @@ from ..ui import UI
 from ..mixin import Add
 
 
-class Layout(Add, UI):
+class Layout(UI, Add):
     """..."""
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
