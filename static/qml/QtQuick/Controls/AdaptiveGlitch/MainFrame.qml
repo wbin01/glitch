@@ -30,16 +30,9 @@ Window {
         z: 1
         property bool isActive: true
 
-        property color backgroundColor: "#222"
-        property color borderColor: "#333"
         property color outLineColor: "#44000000"
         property int borderWidth: 1
         property int outLineWidth: 1
-
-        property int radiusTopLeft: 6
-        property int radiusTopRight: 6
-        property int radiusBottomRight: 0
-        property int radiusBottomLeft: 0
 
         Canvas {
             id: canvas
@@ -69,21 +62,21 @@ Window {
                 // --- Background ---
                 roundedRect(
                     1, 1, width - 2, height - 2,
-                    mainRectangle.radiusTopLeft,
-                    mainRectangle.radiusTopRight,
-                    mainRectangle.radiusBottomRight,
-                    mainRectangle.radiusBottomLeft);
+                    8,
+                    8,
+                    8,
+                    8);
 
-                ctx.fillStyle = mainRectangle.backgroundColor;
+                ctx.fillStyle = "#ff323232";
                 ctx.fill();
 
                 // --- Outer border ---
                 roundedRect(
                     0, 0, width, height,
-                    mainRectangle.radiusTopLeft + 2,
-                    mainRectangle.radiusTopRight + 2,
-                    mainRectangle.radiusBottomRight + 2,
-                    mainRectangle.radiusBottomLeft + 2);
+                    8 + 2,
+                    8 + 2,
+                    8 + 2,
+                    8 + 2);
 
                 ctx.strokeStyle = mainRectangle.outLineColor;
                 ctx.lineWidth = mainRectangle.outLineWidth;
@@ -95,12 +88,12 @@ Window {
                     inset, inset,
                     width - inset * 2,
                     height - inset * 2,
-                    Math.max(0, mainRectangle.radiusTopLeft - inset),
-                    Math.max(0, mainRectangle.radiusTopRight - inset),
-                    Math.max(0, mainRectangle.radiusBottomRight - inset),
-                    Math.max(0, mainRectangle.radiusBottomLeft - inset));
+                    Math.max(0, 8 - inset),
+                    Math.max(0, 8 - inset),
+                    Math.max(0, 8 - inset),
+                    Math.max(0, 8 - inset));
 
-                ctx.strokeStyle = mainRectangle.borderColor;
+                ctx.strokeStyle = "#ff414141";
                 ctx.lineWidth = mainRectangle.borderWidth;
                 ctx.stroke();
             }

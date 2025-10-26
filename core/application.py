@@ -76,9 +76,9 @@ class Application(object):
             self.__qml_path.write_text(qml._qml)
 
         # Style
-        style = Style()
-        qml_style = QmlStyle(style.style(), self.__qml_theme_path)
-        qml_style.build()
+        # style = Style()
+        # qml_style = QmlStyle(style.style(), self.__qml_theme_path)
+        # qml_style.build()
 
         self.__qt_gui_application = QtGui.QGuiApplication(sys.argv)
         self.__engine = QtQml.QQmlApplicationEngine()
