@@ -64,7 +64,7 @@ class Style(object):
                 'font_color': self.__button_fg,
                 'icon_opacity': self.__button_io,
                 'border_width': '1',
-                'border_radius': '3',
+                'border_radius': self.__button_rd,
                 },
             '[Button:inactive]': {
                 'background_color': self.__button_in_bg,
@@ -72,7 +72,7 @@ class Style(object):
                 'font_color': self.__button_in_fg,
                 'icon_opacity': self.__button_in_io,
                 'border_width': '1',
-                'border_radius': '3',
+                'border_radius': self.__button_rd,
                 },
             '[Button:hover]': {
                 'background_color': self.__button_hv_bg,
@@ -80,7 +80,7 @@ class Style(object):
                 'font_color': self.__button_hv_fg,
                 'icon_opacity': self.__button_hv_io,
                 'border_width': '1',
-                'border_radius': '3',
+                'border_radius': self.__button_rd,
                 },
             '[Button:clicked]': {
                 'background_color': self.__button_ck_bg,
@@ -96,7 +96,7 @@ class Style(object):
                 'font_color': self.__button_ch_fg,
                 'icon_opacity': self.__button_ch_io,
                 'border_width': '1',
-                'border_radius': '3',
+                'border_radius': self.__button_rd,
                 },
             '[Button:checked:inactive]': {
                 'background_color': self.__button_ch_in_bg,

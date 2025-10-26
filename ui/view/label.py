@@ -9,6 +9,10 @@ class Label(View):
         if self.__text:
             self._QtObject__set_property('text', self.__text)
 
+        # implicitHeight: 32
+        # // ou, se quiser forçar um mínimo absoluto:
+        # // minimumHeight: 32
+
     def __repr__(self) -> str:
         return f'{self.__class__.__name__}(text={self.__text!r})'
 

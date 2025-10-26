@@ -16,6 +16,17 @@ Window {
     visible: true
     visibility: Window.Windowed
 
+    property alias borderWidth: mainRectangle.borderWidth
+    property alias outLineWidth: mainRectangle.outLineWidth
+    property alias outLineColor: mainRectangle.outLineColor
+    property alias backgroundColor: mainRectangle.backgroundColor
+    property alias borderColor: mainRectangle.borderColor
+
+    property alias radiusTopLeft: mainRectangle.radiusTopLeft
+    property alias radiusTopRight: mainRectangle.radiusTopRight
+    property alias radiusBottomRight: mainRectangle.radiusBottomRight
+    property alias radiusBottomLeft: mainRectangle.radiusBottomLeft
+
     MouseArea {
         anchors.fill: parent
         acceptedButtons: Qt.RightButton
@@ -30,9 +41,16 @@ Window {
         z: 1
         property bool isActive: true
 
+        property color backgroundColor: "#ff323232"
+        property color borderColor: "#ff414141"
         property color outLineColor: "#44000000"
         property int borderWidth: 1
         property int outLineWidth: 1
+
+        property int radiusTopLeft: 8
+        property int radiusTopRight: 8
+        property int radiusBottomRight: 8
+        property int radiusBottomLeft: 8
 
         Canvas {
             id: canvas
@@ -62,21 +80,21 @@ Window {
                 // --- Background ---
                 roundedRect(
                     1, 1, width - 2, height - 2,
-                    8,
-                    8,
-                    8,
-                    8);
+                    mainRectangle.radiusTopLeft,
+                    mainRectangle.radiusTopRight,
+                    mainRectangle.radiusBottomRight,
+                    mainRectangle.radiusBottomLeft);
 
-                ctx.fillStyle = "#ff323232";
+                ctx.fillStyle = mainRectangle.backgroundColor;
                 ctx.fill();
 
                 // --- Outer border ---
                 roundedRect(
                     0, 0, width, height,
-                    8 + 2,
-                    8 + 2,
-                    8 + 2,
-                    8 + 2);
+                    mainRectangle.radiusTopLeft + 2,
+                    mainRectangle.radiusTopRight + 2,
+                    mainRectangle.radiusBottomRight + 2,
+                    mainRectangle.radiusBottomLeft + 2);
 
                 ctx.strokeStyle = mainRectangle.outLineColor;
                 ctx.lineWidth = mainRectangle.outLineWidth;
@@ -88,12 +106,12 @@ Window {
                     inset, inset,
                     width - inset * 2,
                     height - inset * 2,
-                    Math.max(0, 8 - inset),
-                    Math.max(0, 8 - inset),
-                    Math.max(0, 8 - inset),
-                    Math.max(0, 8 - inset));
+                    Math.max(0, mainRectangle.radiusTopLeft - inset),
+                    Math.max(0, mainRectangle.radiusTopRight - inset),
+                    Math.max(0, mainRectangle.radiusBottomRight - inset),
+                    Math.max(0, mainRectangle.radiusBottomLeft - inset));
 
-                ctx.strokeStyle = "#ff414141";
+                ctx.strokeStyle = mainRectangle.borderColor;
                 ctx.lineWidth = mainRectangle.borderWidth;
                 ctx.stroke();
             }
@@ -228,7 +246,7 @@ Window {
             spacing: 6
             clip: true
             Layout.alignment: Qt.AlignTop
-            Layout.fillWidth: false
+            Layout.fillWidth: true
         }
     }
     default property alias content: mainColumnLayout.data

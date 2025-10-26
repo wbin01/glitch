@@ -11,8 +11,8 @@ class Layout(Add, UI):
         self._QtObject__set_property('spacing', 6)
         self._QtObject__set_property('clip', 'true')
         self._QtObject__set_property('Layout.alignment', 'Qt.AlignTop')
-        self._QtObject__set_property('Layout.fill_width', 'false')
-        self._QtObject__set_property('Layout.left_margin', 15)
+        self._QtObject__set_property('Layout.fillWidth', 'true')
+        # self._QtObject__set_property('Layout.leftMargin', 15)
 
     def __repr__(self) -> str:
         return self.__class__.__name__

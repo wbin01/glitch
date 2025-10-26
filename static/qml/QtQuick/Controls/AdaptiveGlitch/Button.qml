@@ -13,6 +13,6 @@ Button {
                       control.hovered ? "#993080c7" :
                       "#ff5e5e5e"
         border.width: 1
-        radius: 3
+        radius: 6
     }
 }

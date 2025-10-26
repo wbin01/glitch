@@ -10,6 +10,9 @@ class Button(View):
         self.__text = text
         if self.__text:
             self._QtObject__set_property('text', self.__text)
+
+        self._QtObject__set_property('Layout.fillWidth', 'true')
+        self._QtObject__set_property('Layout.minimumHeight', '32')
         # TODO
         # self._QtObject__set_property(
         #     'icon.source',

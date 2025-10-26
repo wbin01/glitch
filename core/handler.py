@@ -23,7 +23,8 @@ class Handler(QtCore.QObject):
         self.__elements = self.__gui.findChildren(
             QtCore.QObject, options=QtCore.Qt.FindChildrenRecursively)
 
-        # self.__gui.windowStateChanged.connect(self.__state_changed)
+        self.__radius = None
+        self.__gui.windowStateChanged.connect(self.__state_changed)
         self.__integrate_graphic_elements(self.__ui)
 
     def __repr__(self) -> str:
@@ -61,8 +62,39 @@ class Handler(QtCore.QObject):
 
     @QtCore.Slot()
     def __state_changed(self, state: QtCore.Qt.WindowState) -> None:
-        # UI style in full-screen or normal-screen states.
-        pass
+        # self.__ui.shape = self.__ui._obj.windowState()
+        if not self.__radius:
+            self.__radius = (
+                self.__gui.property('radiusTopLeft'),
+                self.__gui.property('radiusTopRight'),
+                self.__gui.property('radiusBottomRight'),
+                self.__gui.property('radiusBottomLeft'),
+                self.__gui.property('borderColor'),
+                self.__gui.property('outLineColor'))
+
+        if (state == QtCore.Qt.WindowState.WindowFullScreen
+                or state == QtCore.Qt.WindowState.WindowMaximized):
+            self.__gui.setProperty('radiusTopLeft', 0)
+            self.__gui.setProperty('radiusTopRight', 0)
+            self.__gui.setProperty('radiusBottomRight', 0)
+            self.__gui.setProperty('radiusBottomLeft', 0)
+            self.__gui.setProperty(
+                'borderColor', self.__gui.property('backgroundColor'))
+            self.__gui.setProperty(
+                'outLineColor', self.__gui.property('backgroundColor'))
+            self.__gui.setProperty('borderWidth', 0)
+            self.__gui.setProperty('outLineWidth', 0)
+        else:
+            self.__gui.setProperty('borderWidth', 1)
+            self.__gui.setProperty('outLineWidth', 1)
+            self.__gui.setProperty('radiusTopLeft', self.__radius[0])
+            self.__gui.setProperty('radiusTopRight', self.__radius[1])
+            self.__gui.setProperty('radiusBottomRight', self.__radius[2])
+            self.__gui.setProperty('radiusBottomLeft', self.__radius[3])
+            self.__gui.setProperty('borderColor', self.__radius[4])
+            self.__gui.setProperty('outLineColor', self.__radius[5])
+
+        self.__gui.findChild(QtCore.QObject, 'canvas').requestPaint()
 
     @QtCore.Slot()
     def connections(self):

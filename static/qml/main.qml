@@ -21,13 +21,14 @@ MainFrame {
         spacing: 6
         clip: true
         Layout.alignment: Qt.AlignTop
-        Layout.fillWidth: false
-        Layout.leftMargin: 15
+        Layout.fillWidth: true
 
         Button {
             id: btn_top
             objectName: "btn_top"
             text: "TOOOp"
+            Layout.fillWidth: true
+            Layout.minimumHeight: 32
         }
 
         Label {
@@ -40,6 +41,8 @@ MainFrame {
     Button {
         id: _app__custom_btn
         objectName: "_app__custom_btn"
+        Layout.fillWidth: true
+        Layout.minimumHeight: 32
         icon.source: "/usr/share/icons/breeze-dark/actions/16/document-open.svg"
     }
 
@@ -49,55 +52,70 @@ MainFrame {
         spacing: 6
         clip: true
         Layout.alignment: Qt.AlignTop
-        Layout.fillWidth: false
-        Layout.leftMargin: 15
+        Layout.fillWidth: true
 
         Button {
             id: btn_click
             objectName: "btn_click"
             text: "Button 1"
+            Layout.fillWidth: true
+            Layout.minimumHeight: 32
         }
 
         Button {
             id: _app__btn2
             objectName: "_app__btn2"
             text: "Button 2"
+            Layout.fillWidth: true
+            Layout.minimumHeight: 32
         }
 
         Button {
             id: _app__btn3
             objectName: "_app__btn3"
             text: "Button 3"
+            Layout.fillWidth: true
+            Layout.minimumHeight: 32
         }
 
         Button {
             id: _app__btn4
             objectName: "_app__btn4"
             text: "Button 4"
+            Layout.fillWidth: true
+            Layout.minimumHeight: 32
         }
 
         Button {
             id: _app__btn5
             objectName: "_app__btn5"
             text: "Button 5"
+            Layout.fillWidth: true
+            Layout.minimumHeight: 32
         }
 
         Button {
             id: _app__btn6
             objectName: "_app__btn6"
             text: "Button 6"
+            Layout.fillWidth: true
+            Layout.minimumHeight: 32
         }
 
         Button {
             id: button0
             objectName: "button0"
             text: "Button range(0)"
+            Layout.fillWidth: true
+            Layout.minimumHeight: 32
         }
 
         Button {
             id: button1
             objectName: "button1"
             text: "Button range(1)"
+            Layout.fillWidth: true
+            Layout.minimumHeight: 32
         }
     }  // col
 }  // root_app
