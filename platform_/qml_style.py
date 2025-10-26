@@ -257,23 +257,70 @@ MainFrame {
 }
 // +
 Button {
-    id: control
+    id: button
 
     background: Rectangle {
         anchors.fill: parent
-        color: control.down ? "[Button:clicked]background_color" :
-               control.hovered ? "[Button:hover]background_color" :
-               "[Button]background_color"
-        border.color: control.down ? "[Button:clicked]border_color" :
-                      control.hovered ? "[Button:hover]border_color" :
-                      "[Button]border_color"
+
+        color:
+            button.checked && button.hovered ?
+                "[Button:checked:hover]background_color" :
+            button.checked ?
+                "[Button:checked]background_color" :
+            button.down ?
+                "[Button:clicked]background_color" :
+            button.hovered ?
+                "[Button:hover]background_color" : "[Button]background_color"
+
+        border.color:
+            button.checked && button.hovered ?
+                "[Button:checked:hover]border_color" :
+            button.checked ?
+                "[Button:checked]border_color" :
+            button.down ?
+                "[Button:clicked]border_color" :
+            button.hovered ?
+                "[Button:hover]border_color" : "[Button]border_color"
+
         border.width: [Button]border_width
         radius: [Button]border_radius
     }
 }
+
+// +
+ToolButton {
+    id: toolButton
+
+    background: Rectangle {
+        anchors.fill: parent
+
+        color:
+            toolButton.checked && toolButton.hovered ?
+                "[ToolButton:checked:hover]background_color" :
+            toolButton.checked ?
+                "[ToolButton:checked]background_color" :
+            toolButton.down ?
+                "[ToolButton:clicked]background_color" :
+            toolButton.hovered ?
+                "[ToolButton:hover]background_color" : "[ToolButton]background_color"
+
+        border.color:
+            toolButton.checked && toolButton.hovered ?
+                "[ToolButton:checked:hover]border_color" :
+            toolButton.checked ?
+                "[ToolButton:checked]border_color" :
+            toolButton.down ?
+                "[ToolButton:clicked]border_color" :
+            toolButton.hovered ?
+                "[ToolButton:hover]border_color" : "[ToolButton]border_color"
+
+        border.width: [ToolButton]border_width
+        radius: [ToolButton]border_radius
+    }
+}
 // +
 Label {
-    id: root
+    id: label
     color: "[Label]font_color"
 }
 

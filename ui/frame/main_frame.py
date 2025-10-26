@@ -8,7 +8,6 @@ class MainFrame(Frame):
     """..."""
     def __init__(self, *args, **kwargs) -> None:
         UI.__init__(self, name='MainFrame')
-        # self._QtObject__name = 'MainFrame'
 
     def __repr__(self) -> str:
         return self.__class__.__name__
