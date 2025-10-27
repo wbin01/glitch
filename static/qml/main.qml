@@ -79,26 +79,35 @@ MainFrame {
         Layout.minimumHeight: 32
     }
 
-    ToolButton {
-        id: _app__tool_btn
-        objectName: "_app__tool_btn"
-        icon.source: "/usr/share/icons/breeze-dark/actions/16/edit-image-face-recognize.svg"
-    }
-
-    ToolButton {
-        id: _app__tool_btn2
-        objectName: "_app__tool_btn2"
-        icon.source: "/home/user/Dev/github/glitch/static/icons/empty.svg"
-        checkable: true
-    }
-
-    ColumnLayout {
-        id: col
-        objectName: "col"
+    Scroll {
+        id: scroll
+        objectName: "scroll"
         spacing: 6
         clip: true
         Layout.alignment: Qt.AlignTop
         Layout.fillWidth: true
+
+        RowLayout {
+            id: scroll_row
+            objectName: "scroll_row"
+            spacing: 6
+            clip: true
+            Layout.alignment: Qt.AlignTop
+            Layout.fillWidth: true
+
+            ToolButton {
+                id: _app__tool_btn
+                objectName: "_app__tool_btn"
+                icon.source: "/usr/share/icons/breeze-dark/actions/16/edit-image-face-recognize.svg"
+            }
+
+            ToolButton {
+                id: _app__tool_btn2
+                objectName: "_app__tool_btn2"
+                icon.source: "/usr/share/icons/breeze-dark/actions/16/edit-image-face-recognize.svg"
+                checkable: true
+            }
+        }  // scroll_row
 
         Button {
             id: _app__btn2
@@ -139,5 +148,69 @@ MainFrame {
             Layout.fillWidth: true
             Layout.minimumHeight: 32
         }
-    }  // col
+
+        Button {
+            id: button2
+            objectName: "button2"
+            text: "Button range(2)"
+            Layout.fillWidth: true
+            Layout.minimumHeight: 32
+        }
+
+        Button {
+            id: button3
+            objectName: "button3"
+            text: "Button range(3)"
+            Layout.fillWidth: true
+            Layout.minimumHeight: 32
+        }
+
+        Button {
+            id: button4
+            objectName: "button4"
+            text: "Button range(4)"
+            Layout.fillWidth: true
+            Layout.minimumHeight: 32
+        }
+
+        Button {
+            id: button5
+            objectName: "button5"
+            text: "Button range(5)"
+            Layout.fillWidth: true
+            Layout.minimumHeight: 32
+        }
+
+        Button {
+            id: button6
+            objectName: "button6"
+            text: "Button range(6)"
+            Layout.fillWidth: true
+            Layout.minimumHeight: 32
+        }
+
+        Button {
+            id: button7
+            objectName: "button7"
+            text: "Button range(7)"
+            Layout.fillWidth: true
+            Layout.minimumHeight: 32
+        }
+
+        Button {
+            id: button8
+            objectName: "button8"
+            text: "Button range(8)"
+            Layout.fillWidth: true
+            Layout.minimumHeight: 32
+        }
+
+        Button {
+            id: button9
+            objectName: "button9"
+            text: "Button range(9)"
+            Layout.fillWidth: true
+            Layout.minimumHeight: 32
+        }
+    }  // scroll
 }  // root_app

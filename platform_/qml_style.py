@@ -256,6 +256,27 @@ MainFrame {
     default property alias content: mainColumnLayout.data
 }
 // +
+Scroll {
+    id: scroll
+    Layout.fillWidth: true
+    Layout.fillHeight: true
+
+    clip: true
+    contentWidth: availableWidth
+
+    background: Rectangle {
+        color: "#1E000000"
+        radius: 4
+    }
+
+    ColumnLayout {
+        id: scrollColumnLayout
+        width: parent.width
+        spacing: 6
+    }
+    default property alias content: scrollColumnLayout.data
+}
+// +
 Button {
     id: button
 
@@ -471,14 +492,15 @@ class QmlStyle(object):
             element_name = theme.strip().split('\n')[0].rstrip('{').strip()
 
             imports_add = ''
-            if element_name in ('Window', 'MainFrame', 'Frame'):
+            if element_name in ('Window', 'MainFrame', 'Frame', 'Scroll'):
                 imports_add = 'import QtQuick.Layouts\n'
 
             for flip in (
+                    ('MainFrame', 'Window'),
                     ('FrameCloseButton', 'ToolButton'),
                     ('FrameMaxButton', 'ToolButton'),
                     ('FrameMinButton', 'ToolButton'),
-                    ('MainFrame', 'Window')):
+                    ('Scroll', 'ScrollView')):
                 theme = theme.replace(flip[0] + ' {', flip[1] + ' {')
 
             element_theme = imports.lstrip() + imports_add + theme

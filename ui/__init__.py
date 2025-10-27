@@ -2,7 +2,7 @@
 from .qt_object import QtObject
 from .ui import UI
 from .frame import MainFrame
-from .layout import Col, Row, Grid
+from .layout import Col, Grid, Row, Scroll
 from .view import (
 	Button, ToolButton,
 	FrameCloseButton, FrameMaxButton, FrameMinButton,
