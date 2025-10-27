@@ -4,11 +4,11 @@ from .frame import Frame
 from ...core.signal import Signal
 
 
-class MainFrame(Frame):
+class AppFrame(Frame):
     """..."""
     def __init__(self, *args, **kwargs) -> None:
-        UI.__init__(self, name='MainFrame')
-        self._UI__frame = self
+        UI.__init__(self, name='AppFrame')
+        self._UI__app = self
 
     @property
     def _platform(self):

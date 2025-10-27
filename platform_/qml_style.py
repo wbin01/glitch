@@ -6,8 +6,8 @@ import QtQuick
 import QtQuick.Controls
 // sep imports-elements
 // +
-MainFrame {
-    title: qsTr("UI")
+AppFrame {
+    title: "Glitch App"
     color: "transparent"
     flags: Qt.FramelessWindowHint
 
@@ -45,16 +45,16 @@ MainFrame {
         z: 1
         property bool isActive: true
 
-        property color backgroundColor: "[MainFrame]background_color"
-        property color borderColor: "[MainFrame]border_color"
+        property color backgroundColor: "[AppFrame]background_color"
+        property color borderColor: "[AppFrame]border_color"
         property color outLineColor: "#44000000"
         property int borderWidth: 1
         property int outLineWidth: 1
 
-        property int radiusTopLeft: [MainFrame]border_radius_tl
-        property int radiusTopRight: [MainFrame]border_radius_tr
-        property int radiusBottomRight: [MainFrame]border_radius_br
-        property int radiusBottomLeft: [MainFrame]border_radius_bl
+        property int radiusTopLeft: [AppFrame]border_radius_tl
+        property int radiusTopRight: [AppFrame]border_radius_tr
+        property int radiusBottomRight: [AppFrame]border_radius_br
+        property int radiusBottomLeft: [AppFrame]border_radius_bl
 
         Canvas {
             id: canvas
@@ -521,11 +521,11 @@ class QmlStyle(object):
         for style_header, style_key in self.__style.items():
             for key, value in style_key.items():
                 mark = style_header + key
-                if mark == '[MainFrame]border_radius':
+                if mark == '[AppFrame]border_radius':
                     for val, edge in zip(
                             value.split(','), ('tl', 'tr', 'br', 'bl')):
                         self.__qml_style = self.__qml_style.replace(
-                            '[MainFrame]border_radius_' + edge, val.strip())
+                            '[AppFrame]border_radius_' + edge, val.strip())
                 else:
                     self.__qml_style = self.__qml_style.replace(mark, value)
 
@@ -537,11 +537,11 @@ class QmlStyle(object):
             element_name = theme.strip().split('\n')[0].rstrip('{').strip()
 
             imports_add = ''
-            if element_name in ('Window', 'MainFrame', 'Frame', 'Scroll'):
+            if element_name in ('Window', 'AppFrame', 'Frame', 'Scroll'):
                 imports_add = 'import QtQuick.Layouts\n'
 
             for flip in (
-                    ('MainFrame', 'Window'),
+                    ('AppFrame', 'Window'),
                     ('FrameCloseButton', 'ToolButton'),
                     ('FrameMaxButton', 'ToolButton'),
                     ('FrameMinButton', 'ToolButton'),

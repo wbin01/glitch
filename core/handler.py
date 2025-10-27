@@ -47,9 +47,9 @@ class Handler(QtCore.QObject):
                 # print(element._QtObject__property('id'))
                 self.__integrate_graphic_elements(element)
 
-            # if hasattr(element, '_UI__frame'):
+            # if hasattr(element, '_UI__app'):
             #     print(element._QtObject__property('id'))
-                    # element._QtObject__frame = self.__ui
+                    # element._QtObject__app = self.__ui
 
             if isinstance(element, UI):
                 obj_value = self.__gui.findChild(

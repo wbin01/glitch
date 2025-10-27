@@ -10,18 +10,18 @@ class UI(QtObject):
         self.__base = 'UI'
         
         self.qml = self.qml + '  // Close ' + name
-        self.__frame_signal = Signal()
-        self.__frame = None
+        self.__app_signal = Signal()
+        self.__app = None
 
     @property
-    def _frame(self):
+    def _app(self):
         """..."""
-        return self.__frame
+        return self.__app
 
     @property
-    def _frame_signal(self) -> Signal:
+    def _app_signal(self) -> Signal:
         """..."""
-        return self.__frame_signal
+        return self.__app_signal
 
     def __repr__(self) -> str:
         return f'{self.__class__.__name__}(name={self._QtObject__name!r})'

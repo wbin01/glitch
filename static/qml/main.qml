@@ -5,7 +5,7 @@ import QtQuick.Layouts
 import QtQuick.Shapes
 
 
-MainFrame {
+AppFrame {
     id: root_app
     objectName: "root_app"
 

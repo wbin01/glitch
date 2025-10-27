@@ -5,6 +5,6 @@ FrameCloseButton 1.0 FrameCloseButton.qml
 FrameMaxButton 1.0 FrameMaxButton.qml
 FrameMinButton 1.0 FrameMinButton.qml
 Label 1.0 Label.qml
-MainFrame 1.0 MainFrame.qml
+AppFrame 1.0 AppFrame.qml
 Scroll 1.0 Scroll.qml
 ToolButton 1.0 ToolButton.qml

@@ -8,9 +8,9 @@ class FrameMinButton(View):
         super().__init__(name='FrameMinButton', *args, **kwargs)
         self.__mouse_press_signal = Signal()
 
-        self._frame_signal.connect(
+        self._app_signal.connect(
             lambda: self.__mouse_press_signal.connect(
-                lambda: self._frame._QtObject__obj.showMinimized()))
+                lambda: self._app._QtObject__obj.showMinimized()))
 
     def __repr__(self) -> str:
         return f'{self.__class__.__name__}()'

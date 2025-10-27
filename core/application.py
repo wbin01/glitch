@@ -72,8 +72,8 @@ class Application(object):
 
         self.__platform = Platform()
         if hasattr(self.__ui, '_platform'):
-            self.__ui._MainFrame__platform = self.__platform
-            self.__ui._MainFrame__platform_added_signal.emit()
+            self.__ui._AppFrame__platform = self.__platform
+            self.__ui._AppFrame__platform_added_signal.emit()
 
         self.__path = pathlib.Path(__file__).parent.parent
         self.__qml_path = self.__path /'static'/'qml'/'main.qml'

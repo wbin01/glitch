@@ -21,7 +21,7 @@ class Platform(object):
             '/usr/share/icons/', '/home/user/.local/share/icons/',
             '/home/user/.icons/']
         self.__dark = color_converter.is_dark(color_converter.hex_to_rgba(
-            self.style['[MainFrame]']['background_color']))
+            self.style['[AppFrame]']['background_color']))
         self.__icon_theme = None
 
     @property

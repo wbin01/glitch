@@ -13,7 +13,7 @@ class FrameMaxButton(View):
         self.__hover, self.__restore_hover = None, None
         self.__clicked, self.__restore_clicked = None, None
 
-        self._frame_signal.connect(
+        self._app_signal.connect(
             lambda: self.__mouse_press_signal.connect(self.__max_restore))
 
     def __repr__(self) -> str:
@@ -42,14 +42,14 @@ class FrameMaxButton(View):
             self.__restore_clicked = self._QtObject__property(
                 'restoreClickedIcon')
 
-        state = self._frame._QtObject__obj.windowState()
+        state = self._app._QtObject__obj.windowState()
         if state == QtCore.Qt.WindowState.WindowMaximized:
-            self._frame._QtObject__obj.showNormal()  # .window().showNormal()
+            self._app._QtObject__obj.showNormal()  # .window().showNormal()
             self._QtObject__set_property('normalIcon', self.__max)
             self._QtObject__set_property('hoverIcon', self.__hover)
             self._QtObject__set_property('clickedIcon', self.__clicked)
         else:
-            self._frame._QtObject__obj.showMaximized()
+            self._app._QtObject__obj.showMaximized()
             self._QtObject__set_property('normalIcon', self.__restore)
             self._QtObject__set_property('hoverIcon', self.__restore_hover)
             self._QtObject__set_property('clickedIcon', self.__restore_clicked)

@@ -8,7 +8,7 @@ class Frame(UI, Add):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(name='Frame')
         self._base = 'Frame'
-        self._UI__frame = self
+        self._UI__app = self
         self.__platform = None
         self.__platform_added_signal = Signal()
 
