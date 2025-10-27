@@ -330,6 +330,10 @@ FrameMaxButton {
     property url hoverIcon: "[FrameMaxButton:hover]icon"
     property url clickedIcon: "[FrameMaxButton:clicked]icon"
 
+    property url restoreNormalIcon: "[FrameMaxButton]restore_icon"
+    property url restoreHoverIcon: "[FrameMaxButton:hover]restore_icon"
+    property url restoreClickedIcon: "[FrameMaxButton:clicked]restore_icon"
+
     icon.source:
         frameMaxButton.down ?
             clickedIcon :

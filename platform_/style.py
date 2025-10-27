@@ -147,6 +147,7 @@ class Style(object):
                 'font_color': self.__frame_max_button_fg,
                 'icon_opacity': self.__frame_max_button_io,
                 'icon': self.__frame_max_button_i,
+                'restore_icon': self.__frame_max_button_ir,
                 'border_width': '0',
                 'border_radius': self.__frame_max_button_rd,
                 },
@@ -156,6 +157,7 @@ class Style(object):
                 'font_color': self.__frame_max_button_in_fg,
                 'icon_opacity': self.__frame_max_button_in_io,
                 'icon': self.__frame_max_button_in_i,
+                'restore_icon': self.__frame_max_button_in_ir,
                 },
             '[FrameMaxButton:hover]': {
                 'background_color': self.__frame_max_button_hv_bg,
@@ -163,6 +165,7 @@ class Style(object):
                 'font_color': self.__frame_max_button_hv_fg,
                 'icon_opacity': self.__frame_max_button_hv_io,
                 'icon': self.__frame_max_button_hv_i,
+                'restore_icon': self.__frame_max_button_hv_ir,
                 },
             '[FrameMaxButton:clicked]': {
                 'background_color': self.__frame_max_button_ck_bg,
@@ -170,6 +173,7 @@ class Style(object):
                 'font_color': self.__frame_max_button_ck_fg,
                 'icon_opacity': self.__frame_max_button_ck_io,
                 'icon': self.__frame_max_button_ck_i,
+                'restore_icon': self.__frame_max_button_ck_ir,
                 },
             '[FrameMinButton]': {
                 'background_color': self.__frame_min_button_bg,
@@ -477,12 +481,15 @@ class Style(object):
 
     def __style_frame_max_button(self) -> None:
         icon = 'go-up'
+        restore = 'window-restore'
         self.__frame_max_button_bg = self.__frame_close_button_bg
         self.__frame_max_button_bd = self.__frame_close_button_bd
         self.__frame_max_button_fg = self.__frame_close_button_fg
         self.__frame_max_button_io = self.__frame_close_button_io
         self.__frame_max_button_i = (
             self.__icon_path + icon + self.__symbolic + '.svg')
+        self.__frame_max_button_ir = (
+            self.__icon_path + restore + self.__symbolic + '.svg')
         self.__frame_max_button_rd = self.__tool_button_rd
         self.__frame_max_button_in_bg = self.__frame_close_button_in_bg
         self.__frame_max_button_in_bd = self.__frame_close_button_in_bd
@@ -490,18 +497,24 @@ class Style(object):
         self.__frame_max_button_in_io = self.__frame_close_button_in_io
         self.__frame_max_button_in_i = (
             self.__icon_path + icon + '-inactive' + self.__symbolic + '.svg')
+        self.__frame_max_button_in_ir = (
+            self.__icon_path + restore + '-inactive' + self.__symbolic + '.svg')
         self.__frame_max_button_hv_bg = self.__frame_close_button_hv_bg
         self.__frame_max_button_hv_bd = self.__frame_close_button_hv_bd
         self.__frame_max_button_hv_fg = self.__frame_close_button_hv_fg
         self.__frame_max_button_hv_io = self.__frame_close_button_hv_io
         self.__frame_max_button_hv_i = (
             self.__icon_path + icon + '-hover' + self.__symbolic + '.svg')
+        self.__frame_max_button_hv_ir = (
+            self.__icon_path + restore + '-hover' + self.__symbolic + '.svg')
         self.__frame_max_button_ck_bg = self.__frame_close_button_ck_bg
         self.__frame_max_button_ck_bd = self.__frame_close_button_ck_bd
         self.__frame_max_button_ck_fg = self.__frame_close_button_ck_fg
         self.__frame_max_button_ck_io = self.__frame_close_button_ck_io
         self.__frame_max_button_ck_i = (
             self.__icon_path + icon + '-clicked' + '.svg')
+        self.__frame_max_button_ck_ir = (
+            self.__icon_path + restore + '-clicked' + '.svg')
 
     def __style_frame_min_button(self) -> None:
         icon = 'go-down'
