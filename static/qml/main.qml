@@ -9,10 +9,24 @@ MainFrame {
     id: root_app
     objectName: "root_app"
 
-    FrameCloseButton {
-        id: _app__close_btn
-        objectName: "_app__close_btn"
-    }
+    RowLayout {
+        id: _app__row
+        objectName: "_app__row"
+        spacing: 6
+        clip: true
+        Layout.alignment: Qt.AlignTop
+        Layout.fillWidth: true
+
+        FrameCloseButton {
+            id: _app__close_btn
+            objectName: "_app__close_btn"
+        }
+
+        FrameCloseButton {
+            id: _app__close_btn2
+            objectName: "_app__close_btn2"
+        }
+    }  // _app__row
 
     Label {
         id: _app__label
@@ -48,18 +62,19 @@ MainFrame {
         objectName: "_app__custom_btn"
         Layout.fillWidth: true
         Layout.minimumHeight: 32
-        icon.source: "/usr/share/icons/breeze-dark/actions/16/document-open.svg"
         checkable: true
     }
 
     ToolButton {
         id: _app__tool_btn
         objectName: "_app__tool_btn"
+        icon.source: "/usr/share/icons/breeze-dark/actions/16/edit-image-face-recognize.svg"
     }
 
     ToolButton {
         id: _app__tool_btn2
         objectName: "_app__tool_btn2"
+        icon.source: "/home/user/Dev/github/glitch/static/icons/empty.svg"
         checkable: true
     }
 
@@ -70,14 +85,6 @@ MainFrame {
         clip: true
         Layout.alignment: Qt.AlignTop
         Layout.fillWidth: true
-
-        Button {
-            id: btn_click
-            objectName: "btn_click"
-            text: "Button 1"
-            Layout.fillWidth: true
-            Layout.minimumHeight: 32
-        }
 
         Button {
             id: _app__btn2
@@ -99,22 +106,6 @@ MainFrame {
             id: _app__btn4
             objectName: "_app__btn4"
             text: "Button 4"
-            Layout.fillWidth: true
-            Layout.minimumHeight: 32
-        }
-
-        Button {
-            id: _app__btn5
-            objectName: "_app__btn5"
-            text: "Button 5"
-            Layout.fillWidth: true
-            Layout.minimumHeight: 32
-        }
-
-        Button {
-            id: _app__btn6
-            objectName: "_app__btn6"
-            text: "Button 6"
             Layout.fillWidth: true
             Layout.minimumHeight: 32
         }

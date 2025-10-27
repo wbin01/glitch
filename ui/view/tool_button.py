@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+import pathlib
+
 from .view import View
 from ...core.signal import Signal
 
@@ -7,7 +9,8 @@ class ToolButton(View):
     def __init__(self, icon_source: str = None, *args, **kwargs) -> None:
         super().__init__(name='ToolButton', *args, **kwargs)
         self.__mouse_press_signal = Signal()
-        self.__icon = icon_source
+        self.__icon = icon_source if icon_source else pathlib.Path(
+            __file__).parent.parent.parent / 'static' / 'icons' / 'empty.svg'
         if self.__icon:
             self._QtObject__set_property('icon.source', self.__icon)
         # self._QtObject__set_property('checkable', 'true')
