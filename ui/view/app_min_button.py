@@ -3,14 +3,14 @@ from .view import View
 from ...core.signal import Signal
 
 
-class FrameCloseButton(View):
+class AppMinButton(View):
     def __init__(self, *args, **kwargs) -> None:
-        super().__init__(name='FrameCloseButton', *args, **kwargs)
+        super().__init__(name='AppMinButton', *args, **kwargs)
         self.__mouse_press_signal = Signal()
 
         self._app_signal.connect(
-            lambda: self.__mouse_press_signal.connect(  # window().close()
-                lambda: self._app._QtObject__obj.close()))
+            lambda: self.__mouse_press_signal.connect(
+                lambda: self._app._QtObject__obj.showMinimized()))
 
     def __repr__(self) -> str:
         return f'{self.__class__.__name__}()'

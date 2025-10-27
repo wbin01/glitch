@@ -308,17 +308,17 @@ Button {
     }
 }
 // +
-FrameCloseButton {
-    id: frameCloseButton
+AppCloseButton {
+    id: appCloseButton
     padding: 0
-    property url normalIcon: "[FrameCloseButton]icon"
-    property url hoverIcon: "[FrameCloseButton:hover]icon"
-    property url clickedIcon: "[FrameCloseButton:clicked]icon"
+    property url normalIcon: "[AppCloseButton]icon"
+    property url hoverIcon: "[AppCloseButton:hover]icon"
+    property url clickedIcon: "[AppCloseButton:clicked]icon"
 
     icon.source:
-        frameCloseButton.down ?
+        appCloseButton.down ?
             clickedIcon :
-        frameCloseButton.hovered ?
+        appCloseButton.hovered ?
             hoverIcon : normalIcon
 
     icon.width: undefined
@@ -328,39 +328,39 @@ FrameCloseButton {
         anchors.fill: parent
 
         color:
-            frameCloseButton.down ?
-                "[FrameCloseButton:clicked]background_color" :
-            frameCloseButton.hovered ?
-                "[FrameCloseButton:hover]background_color" :
-                "[FrameCloseButton]background_color"
+            appCloseButton.down ?
+                "[AppCloseButton:clicked]background_color" :
+            appCloseButton.hovered ?
+                "[AppCloseButton:hover]background_color" :
+                "[AppCloseButton]background_color"
 
         border.color:
-            frameCloseButton.down ?
-                "[FrameCloseButton:clicked]border_color" :
-            frameCloseButton.hovered ?
-                "[FrameCloseButton:hover]border_color" :
-                "[FrameCloseButton]border_color"
+            appCloseButton.down ?
+                "[AppCloseButton:clicked]border_color" :
+            appCloseButton.hovered ?
+                "[AppCloseButton:hover]border_color" :
+                "[AppCloseButton]border_color"
 
-        border.width: [FrameCloseButton]border_width
-        radius: [FrameCloseButton]border_radius
+        border.width: [AppCloseButton]border_width
+        radius: [AppCloseButton]border_radius
     }
 }
 // +
-FrameFullButton {
-    id: frameFullButton
+AppFullButton {
+    id: appFullButton
     padding: 0
-    property url normalIcon: "[FrameFullButton]icon"
-    property url hoverIcon: "[FrameFullButton:hover]icon"
-    property url clickedIcon: "[FrameFullButton:clicked]icon"
+    property url normalIcon: "[AppFullButton]icon"
+    property url hoverIcon: "[AppFullButton:hover]icon"
+    property url clickedIcon: "[AppFullButton:clicked]icon"
 
-    property url restoreNormalIcon: "[FrameFullButton]restore_icon"
-    property url restoreHoverIcon: "[FrameFullButton:hover]restore_icon"
-    property url restoreClickedIcon: "[FrameFullButton:clicked]restore_icon"
+    property url restoreNormalIcon: "[AppFullButton]restore_icon"
+    property url restoreHoverIcon: "[AppFullButton:hover]restore_icon"
+    property url restoreClickedIcon: "[AppFullButton:clicked]restore_icon"
 
     icon.source:
-        frameFullButton.down ?
+        appFullButton.down ?
             clickedIcon :
-        frameFullButton.hovered ?
+        appFullButton.hovered ?
             hoverIcon : normalIcon
 
     icon.width: undefined
@@ -370,39 +370,39 @@ FrameFullButton {
         anchors.fill: parent
 
         color:
-            frameFullButton.down ?
-                "[FrameFullButton:clicked]background_color" :
-            frameFullButton.hovered ?
-                "[FrameFullButton:hover]background_color" :
-                "[FrameFullButton]background_color"
+            appFullButton.down ?
+                "[AppFullButton:clicked]background_color" :
+            appFullButton.hovered ?
+                "[AppFullButton:hover]background_color" :
+                "[AppFullButton]background_color"
 
         border.color:
-            frameFullButton.down ?
-                "[FrameFullButton:clicked]border_color" :
-            frameFullButton.hovered ?
-                "[FrameFullButton:hover]border_color" :
-                "[FrameFullButton]border_color"
+            appFullButton.down ?
+                "[AppFullButton:clicked]border_color" :
+            appFullButton.hovered ?
+                "[AppFullButton:hover]border_color" :
+                "[AppFullButton]border_color"
 
-        border.width: [FrameFullButton]border_width
-        radius: [FrameFullButton]border_radius
+        border.width: [AppFullButton]border_width
+        radius: [AppFullButton]border_radius
     }
 }
 // +
-FrameMaxButton {
-    id: frameMaxButton
+AppMaxButton {
+    id: appMaxButton
     padding: 0
-    property url normalIcon: "[FrameMaxButton]icon"
-    property url hoverIcon: "[FrameMaxButton:hover]icon"
-    property url clickedIcon: "[FrameMaxButton:clicked]icon"
+    property url normalIcon: "[AppMaxButton]icon"
+    property url hoverIcon: "[AppMaxButton:hover]icon"
+    property url clickedIcon: "[AppMaxButton:clicked]icon"
 
-    property url restoreNormalIcon: "[FrameMaxButton]restore_icon"
-    property url restoreHoverIcon: "[FrameMaxButton:hover]restore_icon"
-    property url restoreClickedIcon: "[FrameMaxButton:clicked]restore_icon"
+    property url restoreNormalIcon: "[AppMaxButton]restore_icon"
+    property url restoreHoverIcon: "[AppMaxButton:hover]restore_icon"
+    property url restoreClickedIcon: "[AppMaxButton:clicked]restore_icon"
 
     icon.source:
-        frameMaxButton.down ?
+        appMaxButton.down ?
             clickedIcon :
-        frameMaxButton.hovered ?
+        appMaxButton.hovered ?
             hoverIcon : normalIcon
 
     icon.width: undefined
@@ -412,35 +412,35 @@ FrameMaxButton {
         anchors.fill: parent
 
         color:
-            frameMaxButton.down ?
-                "[FrameMaxButton:clicked]background_color" :
-            frameMaxButton.hovered ?
-                "[FrameMaxButton:hover]background_color" :
-                "[FrameMaxButton]background_color"
+            appMaxButton.down ?
+                "[AppMaxButton:clicked]background_color" :
+            appMaxButton.hovered ?
+                "[AppMaxButton:hover]background_color" :
+                "[AppMaxButton]background_color"
 
         border.color:
-            frameMaxButton.down ?
-                "[FrameMaxButton:clicked]border_color" :
-            frameMaxButton.hovered ?
-                "[FrameMaxButton:hover]border_color" :
-                "[FrameMaxButton]border_color"
+            appMaxButton.down ?
+                "[AppMaxButton:clicked]border_color" :
+            appMaxButton.hovered ?
+                "[AppMaxButton:hover]border_color" :
+                "[AppMaxButton]border_color"
 
-        border.width: [FrameMaxButton]border_width
-        radius: [FrameMaxButton]border_radius
+        border.width: [AppMaxButton]border_width
+        radius: [AppMaxButton]border_radius
     }
 }
 // +
-FrameMinButton {
-    id: frameMinButton
+AppMinButton {
+    id: appMinButton
     padding: 0
-    property url normalIcon: "[FrameMinButton]icon"
-    property url hoverIcon: "[FrameMinButton:hover]icon"
-    property url clickedIcon: "[FrameMinButton:clicked]icon"
+    property url normalIcon: "[AppMinButton]icon"
+    property url hoverIcon: "[AppMinButton:hover]icon"
+    property url clickedIcon: "[AppMinButton:clicked]icon"
 
     icon.source:
-        frameMinButton.down ?
+        appMinButton.down ?
             clickedIcon :
-        frameMinButton.hovered ?
+        appMinButton.hovered ?
             hoverIcon : normalIcon
 
     icon.width: undefined
@@ -450,21 +450,21 @@ FrameMinButton {
         anchors.fill: parent
 
         color:
-            frameMinButton.down ?
-                "[FrameMinButton:clicked]background_color" :
-            frameMinButton.hovered ?
-                "[FrameMinButton:hover]background_color" :
-                "[FrameMinButton]background_color"
+            appMinButton.down ?
+                "[AppMinButton:clicked]background_color" :
+            appMinButton.hovered ?
+                "[AppMinButton:hover]background_color" :
+                "[AppMinButton]background_color"
 
         border.color:
-            frameMinButton.down ?
-                "[FrameMinButton:clicked]border_color" :
-            frameMinButton.hovered ?
-                "[FrameMinButton:hover]border_color" :
-                "[FrameMinButton]border_color"
+            appMinButton.down ?
+                "[AppMinButton:clicked]border_color" :
+            appMinButton.hovered ?
+                "[AppMinButton:hover]border_color" :
+                "[AppMinButton]border_color"
 
-        border.width: [FrameMinButton]border_width
-        radius: [FrameMinButton]border_radius
+        border.width: [AppMinButton]border_width
+        radius: [AppMinButton]border_radius
     }
 }
 // +
@@ -542,9 +542,9 @@ class QmlStyle(object):
 
             for flip in (
                     ('AppFrame', 'Window'),
-                    ('FrameCloseButton', 'ToolButton'),
-                    ('FrameMaxButton', 'ToolButton'),
-                    ('FrameMinButton', 'ToolButton'),
+                    ('AppCloseButton', 'ToolButton'),
+                    ('AppMaxButton', 'ToolButton'),
+                    ('AppMinButton', 'ToolButton'),
                     ('Scroll', 'ScrollView')):
                 theme = theme.replace(flip[0] + ' {', flip[1] + ' {')
 

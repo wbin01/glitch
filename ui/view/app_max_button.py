@@ -5,9 +5,9 @@ from .view import View
 from ...core.signal import Signal
 
 
-class FrameMaxButton(View):
+class AppMaxButton(View):
     def __init__(self, *args, **kwargs) -> None:
-        super().__init__(name='FrameMaxButton', *args, **kwargs)
+        super().__init__(name='AppMaxButton', *args, **kwargs)
         self.__mouse_press_signal = Signal()
         self.__max, self.__restore = None, None
         self.__hover, self.__restore_hover = None, None

@@ -18,19 +18,19 @@ AppFrame {
         Layout.fillWidth: true
         Layout.margins: 5
 
-        FrameCloseButton {
-            id: _framecontrolbuttons__close_btn
-            objectName: "_framecontrolbuttons__close_btn"
+        AppCloseButton {
+            id: _appcontrolbuttons__close_btn
+            objectName: "_appcontrolbuttons__close_btn"
         }
 
-        FrameMaxButton {
-            id: _framecontrolbuttons__max_btn
-            objectName: "_framecontrolbuttons__max_btn"
+        AppMaxButton {
+            id: _appcontrolbuttons__max_btn
+            objectName: "_appcontrolbuttons__max_btn"
         }
 
-        FrameMinButton {
-            id: _framecontrolbuttons__min_btn
-            objectName: "_framecontrolbuttons__min_btn"
+        AppMinButton {
+            id: _appcontrolbuttons__min_btn
+            objectName: "_appcontrolbuttons__min_btn"
         }
     }  // _app__control_btn
 
@@ -43,17 +43,17 @@ AppFrame {
         Layout.fillWidth: true
         Layout.margins: 5
 
-        FrameCloseButton {
+        AppCloseButton {
             id: _app__close_btn
             objectName: "_app__close_btn"
         }
 
-        FrameMaxButton {
+        AppMaxButton {
             id: _app__max_btn
             objectName: "_app__max_btn"
         }
 
-        FrameMinButton {
+        AppMinButton {
             id: _app__min_btn
             objectName: "_app__min_btn"
         }
