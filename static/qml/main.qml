@@ -22,7 +22,7 @@ MainFrame {
             objectName: "_app__close_btn"
         }
 
-        FrameCloseButton {
+        FrameMaxButton {
             id: _app__close_btn2
             objectName: "_app__close_btn2"
         }

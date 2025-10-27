@@ -147,6 +147,8 @@ class Style(object):
                 'font_color': self.__frame_max_button_fg,
                 'icon_opacity': self.__frame_max_button_io,
                 'icon': self.__frame_max_button_i,
+                'border_width': '0',
+                'border_radius': self.__frame_max_button_rd,
                 },
             '[FrameMaxButton:inactive]': {
                 'background_color': self.__frame_max_button_in_bg,
@@ -481,6 +483,7 @@ class Style(object):
         self.__frame_max_button_io = self.__frame_close_button_io
         self.__frame_max_button_i = (
             self.__icon_path + icon + self.__symbolic + '.svg')
+        self.__frame_max_button_rd = self.__tool_button_rd
         self.__frame_max_button_in_bg = self.__frame_close_button_in_bg
         self.__frame_max_button_in_bd = self.__frame_close_button_in_bd
         self.__frame_max_button_in_fg = self.__frame_close_button_in_fg

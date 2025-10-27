@@ -3,4 +3,4 @@ from .qt_object import QtObject
 from .ui import UI
 from .frame import MainFrame
 from .layout import Col, Row, Grid
-from .view import Button, FrameCloseButton, Label, ToolButton
+from .view import Button, FrameCloseButton, FrameMaxButton, Label, ToolButton

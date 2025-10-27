@@ -3,4 +3,5 @@ Button 1.0 Button.qml
 Label 1.0 Label.qml
 MainFrame 1.0 MainFrame.qml
 FrameCloseButton 1.0 FrameCloseButton.qml
+FrameMaxButton 1.0 FrameMaxButton.qml
 ToolButton 1.0 ToolButton.qml
