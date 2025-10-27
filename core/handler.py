@@ -37,7 +37,7 @@ class Handler(QtCore.QObject):
     @QtCore.Slot()
     def __integrate_graphic_elements(self, layout) -> None:
         # Integration UI graphic elements into the Main UI QtObject.
-        signals = ['mouse_press_signal']
+        signals = ['_mouse_press_signal']
 
         for attr, value in layout.__dict__.items():
             element = getattr(layout, attr)

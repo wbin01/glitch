@@ -4,4 +4,3 @@ Label 1.0 Label.qml
 MainFrame 1.0 MainFrame.qml
 FrameCloseButton 1.0 FrameCloseButton.qml
 ToolButton 1.0 ToolButton.qml
-

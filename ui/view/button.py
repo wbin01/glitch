@@ -6,7 +6,7 @@ from ...core.signal import Signal
 class Button(View):
     def __init__(self, text: str = None, *args, **kwargs) -> None:
         super().__init__(name='Button', *args, **kwargs)
-        self.mouse_press_signal = Signal()
+        self.__mouse_press_signal = Signal()
         self.__text = text
         if self.__text:
             self._QtObject__set_property('text', self.__text)
@@ -37,3 +37,8 @@ class Button(View):
     def text(self, text: str) -> None:
         self.__text = text
         self._QtObject__set_property('text', text)
+
+    @property
+    def _mouse_press_signal(self) -> Signal:
+        """..."""
+        return self.__mouse_press_signal

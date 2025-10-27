@@ -50,21 +50,17 @@ MainFrame {
         Layout.minimumHeight: 32
         icon.source: "/usr/share/icons/breeze-dark/actions/16/document-open.svg"
         checkable: true
-        onToggled: console.log("Estado:", checked)
     }
 
     ToolButton {
         id: _app__tool_btn
         objectName: "_app__tool_btn"
-        icon.source: "/usr/share/icons/breeze-dark/actions/16/document-open.svg"
     }
 
     ToolButton {
         id: _app__tool_btn2
         objectName: "_app__tool_btn2"
-        icon.source: "/usr/share/icons/breeze-dark/actions/16/document-open.svg"
         checkable: true
-        onToggled: console.log("Estado:", checked)
     }
 
     ColumnLayout {

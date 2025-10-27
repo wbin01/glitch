@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 from ..ui import UI
-from ...core.signal import Signal
 
 
 class View(UI):
