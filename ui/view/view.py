@@ -6,6 +6,7 @@ class View(UI):
     """..."""
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
+        self._base = 'View'
 
     def __repr__(self) -> str:
         return self.__class__.__name__

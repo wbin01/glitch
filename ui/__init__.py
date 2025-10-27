@@ -5,5 +5,5 @@ from .frame import MainFrame
 from .layout import Col, Grid, Row, Scroll
 from .view import (
 	Button, ToolButton,
-	FrameCloseButton, FrameMaxButton, FrameMinButton,
+	FrameCloseButton, FrameMaxButton, FrameMinButton, FrameControlButtons,
 	Label)

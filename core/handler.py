@@ -23,7 +23,7 @@ class Handler(QtCore.QObject):
         self.__elements = self.__gui.findChildren(
             QtCore.QObject, options=QtCore.Qt.FindChildrenRecursively)
 
-        self.__radius = None
+        self.__state_border = None
         self.__gui.windowStateChanged.connect(self.__state_changed)
         self.__integrate_graphic_elements(self.__ui)
 
@@ -39,15 +39,22 @@ class Handler(QtCore.QObject):
         # Integration UI graphic elements into the Main UI QtObject.
         signals = ['_mouse_press_signal']
 
-        for attr, value in layout.__dict__.items():
-            element = getattr(layout, attr)
-            # print(element)
-            # setattr(self.__ui, element, value)
+        # for attr, value in layout.__dict__.items():
+        #     element = getattr(layout, attr)
+        for element in layout._QtObject__items:
+
+            if element._base == 'Layout':
+                # print(element._QtObject__property('id'))
+                self.__integrate_graphic_elements(element)
+
+            # if hasattr(element, '_UI__frame'):
+            #     print(element._QtObject__property('id'))
+                    # element._QtObject__frame = self.__ui
+
             if isinstance(element, UI):
                 obj_value = self.__gui.findChild(
                     QtCore.QObject, element._QtObject__property('id'))
-                    # QtCore.QObject, element._QtObject__id)
-
+                
                 if not obj_value:
                     continue
 
@@ -63,8 +70,8 @@ class Handler(QtCore.QObject):
     @QtCore.Slot()
     def __state_changed(self, state: QtCore.Qt.WindowState) -> None:
         # self.__ui.shape = self.__ui._obj.windowState()
-        if not self.__radius:
-            self.__radius = (
+        if not self.__state_border:
+            self.__state_border = (
                 self.__gui.property('radiusTopLeft'),
                 self.__gui.property('radiusTopRight'),
                 self.__gui.property('radiusBottomRight'),
@@ -87,12 +94,12 @@ class Handler(QtCore.QObject):
         else:
             self.__gui.setProperty('borderWidth', 1)
             self.__gui.setProperty('outLineWidth', 1)
-            self.__gui.setProperty('radiusTopLeft', self.__radius[0])
-            self.__gui.setProperty('radiusTopRight', self.__radius[1])
-            self.__gui.setProperty('radiusBottomRight', self.__radius[2])
-            self.__gui.setProperty('radiusBottomLeft', self.__radius[3])
-            self.__gui.setProperty('borderColor', self.__radius[4])
-            self.__gui.setProperty('outLineColor', self.__radius[5])
+            self.__gui.setProperty('radiusTopLeft', self.__state_border[0])
+            self.__gui.setProperty('radiusTopRight', self.__state_border[1])
+            self.__gui.setProperty('radiusBottomRight', self.__state_border[2])
+            self.__gui.setProperty('radiusBottomLeft', self.__state_border[3])
+            self.__gui.setProperty('borderColor', self.__state_border[4])
+            self.__gui.setProperty('outLineColor', self.__state_border[5])
 
         self.__gui.findChild(QtCore.QObject, 'canvas').requestPaint()
 

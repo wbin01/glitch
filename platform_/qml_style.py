@@ -246,7 +246,7 @@ MainFrame {
             id: mainColumnLayout
             objectName: "mainColumnLayout"
             anchors.fill: parent
-            anchors.margins: 4
+            anchors.margins: 1
             spacing: 6
             clip: true
             Layout.alignment: Qt.AlignTop
@@ -310,6 +310,7 @@ Button {
 // +
 FrameCloseButton {
     id: frameCloseButton
+    padding: 0
     property url normalIcon: "[FrameCloseButton]icon"
     property url hoverIcon: "[FrameCloseButton:hover]icon"
     property url clickedIcon: "[FrameCloseButton:clicked]icon"
@@ -345,8 +346,51 @@ FrameCloseButton {
     }
 }
 // +
+FrameFullButton {
+    id: frameFullButton
+    padding: 0
+    property url normalIcon: "[FrameFullButton]icon"
+    property url hoverIcon: "[FrameFullButton:hover]icon"
+    property url clickedIcon: "[FrameFullButton:clicked]icon"
+
+    property url restoreNormalIcon: "[FrameFullButton]restore_icon"
+    property url restoreHoverIcon: "[FrameFullButton:hover]restore_icon"
+    property url restoreClickedIcon: "[FrameFullButton:clicked]restore_icon"
+
+    icon.source:
+        frameFullButton.down ?
+            clickedIcon :
+        frameFullButton.hovered ?
+            hoverIcon : normalIcon
+
+    icon.width: undefined
+    icon.height: undefined
+
+    background: Rectangle {
+        anchors.fill: parent
+
+        color:
+            frameFullButton.down ?
+                "[FrameFullButton:clicked]background_color" :
+            frameFullButton.hovered ?
+                "[FrameFullButton:hover]background_color" :
+                "[FrameFullButton]background_color"
+
+        border.color:
+            frameFullButton.down ?
+                "[FrameFullButton:clicked]border_color" :
+            frameFullButton.hovered ?
+                "[FrameFullButton:hover]border_color" :
+                "[FrameFullButton]border_color"
+
+        border.width: [FrameFullButton]border_width
+        radius: [FrameFullButton]border_radius
+    }
+}
+// +
 FrameMaxButton {
     id: frameMaxButton
+    padding: 0
     property url normalIcon: "[FrameMaxButton]icon"
     property url hoverIcon: "[FrameMaxButton:hover]icon"
     property url clickedIcon: "[FrameMaxButton:clicked]icon"
@@ -388,6 +432,7 @@ FrameMaxButton {
 // +
 FrameMinButton {
     id: frameMinButton
+    padding: 0
     property url normalIcon: "[FrameMinButton]icon"
     property url hoverIcon: "[FrameMinButton:hover]icon"
     property url clickedIcon: "[FrameMinButton:clicked]icon"

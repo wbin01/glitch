@@ -10,12 +10,38 @@ MainFrame {
     objectName: "root_app"
 
     RowLayout {
+        id: _app__control_btn
+        objectName: "_app__control_btn"
+        spacing: 6
+        clip: true
+        Layout.alignment: Qt.AlignTop
+        Layout.fillWidth: true
+        Layout.margins: 5
+
+        FrameCloseButton {
+            id: _framecontrolbuttons__close_btn
+            objectName: "_framecontrolbuttons__close_btn"
+        }
+
+        FrameMaxButton {
+            id: _framecontrolbuttons__max_btn
+            objectName: "_framecontrolbuttons__max_btn"
+        }
+
+        FrameMinButton {
+            id: _framecontrolbuttons__min_btn
+            objectName: "_framecontrolbuttons__min_btn"
+        }
+    }  // _app__control_btn
+
+    RowLayout {
         id: _app__row
         objectName: "_app__row"
         spacing: 6
         clip: true
         Layout.alignment: Qt.AlignTop
         Layout.fillWidth: true
+        Layout.margins: 5
 
         FrameCloseButton {
             id: _app__close_btn
@@ -30,6 +56,27 @@ MainFrame {
         FrameMinButton {
             id: _app__min_btn
             objectName: "_app__min_btn"
+        }
+
+        ToolButton {
+            id: _app__tool
+            objectName: "_app__tool"
+            icon.source: "/usr/share/icons/breeze-dark/actions/16/edit-image-face-recognize.svg"
+            checkable: true
+        }
+
+        ToolButton {
+            id: _app__tool2
+            objectName: "_app__tool2"
+            icon.source: "/usr/share/icons/breeze-dark/actions/16/edit-image-face-recognize.svg"
+            checkable: true
+        }
+
+        ToolButton {
+            id: _app__tool3
+            objectName: "_app__tool3"
+            icon.source: "/usr/share/icons/breeze-dark/actions/16/edit-image-face-recognize.svg"
+            checkable: true
         }
     }  // _app__row
 

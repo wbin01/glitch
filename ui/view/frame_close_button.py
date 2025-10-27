@@ -9,8 +9,8 @@ class FrameCloseButton(View):
         self.__mouse_press_signal = Signal()
 
         self._frame_signal.connect(
-            lambda: self.__mouse_press_signal.connect(
-                lambda: self._frame._QtObject__obj.window().close()))
+            lambda: self.__mouse_press_signal.connect(  # window().close()
+                lambda: self._frame._QtObject__obj.close()))
 
     def __repr__(self) -> str:
         return f'{self.__class__.__name__}()'
