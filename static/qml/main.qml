@@ -23,8 +23,13 @@ MainFrame {
         }
 
         FrameMaxButton {
-            id: _app__close_btn2
-            objectName: "_app__close_btn2"
+            id: _app__max_btn
+            objectName: "_app__max_btn"
+        }
+
+        FrameMinButton {
+            id: _app__min_btn
+            objectName: "_app__min_btn"
         }
     }  // _app__row
 
@@ -60,9 +65,18 @@ MainFrame {
     Button {
         id: _app__custom_btn
         objectName: "_app__custom_btn"
+        text: "Aplicar"
         Layout.fillWidth: true
         Layout.minimumHeight: 32
         checkable: true
+    }
+
+    Button {
+        id: _app__custom_btn2
+        objectName: "_app__custom_btn2"
+        text: "Cancelar"
+        Layout.fillWidth: true
+        Layout.minimumHeight: 32
     }
 
     ToolButton {

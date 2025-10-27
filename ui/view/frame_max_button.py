@@ -14,7 +14,7 @@ class FrameMaxButton(View):
         self.__clicked, self.__restore_clicked = None, None
 
         self._frame_signal.connect(
-            lambda: self.__mouse_press_signal.connect(self.__state_action))
+            lambda: self.__mouse_press_signal.connect(self.__max_restore))
 
     def __repr__(self) -> str:
         return f'{self.__class__.__name__}()'
@@ -24,7 +24,13 @@ class FrameMaxButton(View):
         """..."""
         return self.__mouse_press_signal
 
-    def __state_action(self):
+    def __max_restore(self) -> None:
+        """
+        .showNormal()
+        .showMaximized()
+        .showMinimized()
+        .showFullScreen()
+        """
         if not self.__max:
             self.__max = self._QtObject__property('normalIcon')
             self.__restore = self._QtObject__property('restoreNormalIcon')
@@ -47,9 +53,3 @@ class FrameMaxButton(View):
             self._QtObject__set_property('normalIcon', self.__restore)
             self._QtObject__set_property('hoverIcon', self.__restore_hover)
             self._QtObject__set_property('clickedIcon', self.__restore_clicked)
-        """
-        .showNormal()
-        .showMaximized()
-        .showMinimized()
-        .showFullScreen()
-        """

@@ -365,6 +365,43 @@ FrameMaxButton {
     }
 }
 // +
+FrameMinButton {
+    id: frameMinButton
+    property url normalIcon: "[FrameMinButton]icon"
+    property url hoverIcon: "[FrameMinButton:hover]icon"
+    property url clickedIcon: "[FrameMinButton:clicked]icon"
+
+    icon.source:
+        frameMinButton.down ?
+            clickedIcon :
+        frameMinButton.hovered ?
+            hoverIcon : normalIcon
+
+    icon.width: undefined
+    icon.height: undefined
+
+    background: Rectangle {
+        anchors.fill: parent
+
+        color:
+            frameMinButton.down ?
+                "[FrameMinButton:clicked]background_color" :
+            frameMinButton.hovered ?
+                "[FrameMinButton:hover]background_color" :
+                "[FrameMinButton]background_color"
+
+        border.color:
+            frameMinButton.down ?
+                "[FrameMinButton:clicked]border_color" :
+            frameMinButton.hovered ?
+                "[FrameMinButton:hover]border_color" :
+                "[FrameMinButton]border_color"
+
+        border.width: [FrameMinButton]border_width
+        radius: [FrameMinButton]border_radius
+    }
+}
+// +
 ToolButton {
     id: toolButton
 
@@ -440,6 +477,7 @@ class QmlStyle(object):
             for flip in (
                     ('FrameCloseButton', 'ToolButton'),
                     ('FrameMaxButton', 'ToolButton'),
+                    ('FrameMinButton', 'ToolButton'),
                     ('MainFrame', 'Window')):
                 theme = theme.replace(flip[0] + ' {', flip[1] + ' {')
 
