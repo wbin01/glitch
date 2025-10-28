@@ -52,9 +52,10 @@ class AppEventFilter(QtCore.QObject):
         elif event.type() == QtCore.QEvent.WindowDeactivate:
             # print('WindowDeactivate')
             pass
-        elif event.type() == QtCore.QEvent.Paint and not self.__paint:
-            self.__ui._AppFrame__render_signal.emit()
-            self.__paint = 1
+        elif event.type() == QtCore.QEvent.Paint:
+            if not self.__paint:
+                self.__ui._AppFrame__render_signal.emit()
+                self.__paint = 1
 
         return super().eventFilter(obj, event)
 

@@ -40,10 +40,12 @@ class HeaderBar(Row):
         left = (
             self.__control_buttons._QtObject__property('width') * ratio) + (
             self.__left._QtObject__property('width') * ratio)
+        if left < 0: left = 0
         right = (
             self.__right._QtObject__property('width') * ratio) + (
             self.__icon._QtObject__property('width') * ratio)
-
+        if right < 0: right = 0
+        
         if left > right:
             self._right_space._QtObject__set_property(
                 'rwidth', int(left - right))
