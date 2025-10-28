@@ -65,7 +65,8 @@ class Handler(QtCore.QObject):
 
                     call = getattr(element, signal).callback()
                     if callable(call):
-                        element._QtObject__obj.pressed.connect(call)
+                        # element._QtObject__obj.pressed.connect(call)
+                        element._QtObject__obj.released.connect(call)
 
     @QtCore.Slot()
     def __state_changed(self, state: QtCore.Qt.WindowState) -> None:
