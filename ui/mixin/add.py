@@ -29,7 +29,7 @@ class Add(object):
             item._UI__app = self._UI__app
             item._UI__app_signal.emit()
 
-        if item._base == 'Layout':
-            self.__add_app(item)
+            if item._base == 'Layout':
+                self.__add_app(item)
 
         return item

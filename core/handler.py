@@ -102,6 +102,7 @@ class Handler(QtCore.QObject):
             self.__gui.setProperty('outLineColor', self.__state_border[5])
 
         self.__gui.findChild(QtCore.QObject, 'canvas').requestPaint()
+        # self.__ui._AppFrame__state_signal.emit()
 
     @QtCore.Slot()
     def connections(self):

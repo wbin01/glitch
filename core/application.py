@@ -26,6 +26,7 @@ class AppEventFilter(QtCore.QObject):
         self.__ui = ui
         self.__gui = gui
         self.__paint = 0
+        self.__state_border = None
         self.__elements = self.__gui.findChildren(
             QtCore.QObject, options=QtCore.Qt.FindChildrenRecursively)
 
@@ -46,13 +47,20 @@ class AppEventFilter(QtCore.QObject):
         :param obj: QtCore.QObject.
         :param event: QtCore.QEvent.
         """
-        if event.type() == QtCore.QEvent.WindowActivate:
+        event_type = event.type()
+        # print(event_type)
+        if event_type == QtCore.QEvent.WindowActivate:
             # print('WindowActivate')
             pass
-        elif event.type() == QtCore.QEvent.WindowDeactivate:
+        
+        elif event_type == QtCore.QEvent.WindowDeactivate:
             # print('WindowDeactivate')
             pass
-        elif event.type() == QtCore.QEvent.Paint:
+
+        elif event_type == QtCore.QEvent.WindowStateChange:
+            self.__ui._AppFrame__state_signal.emit()
+
+        elif event_type == QtCore.QEvent.Paint:
             if not self.__paint:
                 self.__ui._AppFrame__render_signal.emit()
                 self.__paint = 1

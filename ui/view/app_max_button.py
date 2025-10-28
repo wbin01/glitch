@@ -13,8 +13,7 @@ class AppMaxButton(View):
         self.__hover, self.__restore_hover = None, None
         self.__clicked, self.__restore_clicked = None, None
 
-        self._app_signal.connect(
-            lambda: self.__mouse_press_signal.connect(self.__max_restore))
+        self._app_signal.connect(self.__on_app_signal)
 
     def __repr__(self) -> str:
         return f'{self.__class__.__name__}()'
@@ -24,13 +23,41 @@ class AppMaxButton(View):
         """..."""
         return self.__mouse_press_signal
 
+    def __on_app_signal(self):
+        self.__mouse_press_signal.connect(self.__max_restore)
+        self._app._render_signal.connect(
+            lambda: self._app._state_signal.connect(self.__update_icon))
+
     def __max_restore(self) -> None:
-        """
-        .showNormal()
-        .showMaximized()
-        .showMinimized()
-        .showFullScreen()
-        """
+        # showNormal() .showFullScreen()
+        self.__saved_properties()
+        state = self._app._QtObject__obj.windowState()
+        if state == QtCore.Qt.WindowState.WindowMaximized:
+            self._app._QtObject__obj.showNormal()
+            self.__max_icon()
+        else:
+            self._app._QtObject__obj.showMaximized()
+            self.__restore_icon()
+
+    def __update_icon(self) -> None:
+        self.__saved_properties()
+        state = self._app._QtObject__obj.windowState()
+        if state == QtCore.Qt.WindowState.WindowMaximized:
+            self.__restore_icon()
+        else:
+            self.__max_icon()
+
+    def __max_icon(self) -> None:
+        self._QtObject__set_property('normalIcon', self.__max)
+        self._QtObject__set_property('hoverIcon', self.__hover)
+        self._QtObject__set_property('clickedIcon', self.__clicked)
+
+    def __restore_icon(self) -> None:
+        self._QtObject__set_property('normalIcon', self.__restore)
+        self._QtObject__set_property('hoverIcon', self.__restore_hover)
+        self._QtObject__set_property('clickedIcon', self.__restore_clicked)
+
+    def __saved_properties(self) -> None:
         if not self.__max:
             self.__max = self._QtObject__property('normalIcon')
             self.__restore = self._QtObject__property('restoreNormalIcon')
@@ -41,15 +68,3 @@ class AppMaxButton(View):
             self.__clicked = self._QtObject__property('clickedIcon')
             self.__restore_clicked = self._QtObject__property(
                 'restoreClickedIcon')
-
-        state = self._app._QtObject__obj.windowState()
-        if state == QtCore.Qt.WindowState.WindowMaximized:
-            self._app._QtObject__obj.showNormal()  # .window().showNormal()
-            self._QtObject__set_property('normalIcon', self.__max)
-            self._QtObject__set_property('hoverIcon', self.__hover)
-            self._QtObject__set_property('clickedIcon', self.__clicked)
-        else:
-            self._app._QtObject__obj.showMaximized()
-            self._QtObject__set_property('normalIcon', self.__restore)
-            self._QtObject__set_property('hoverIcon', self.__restore_hover)
-            self._QtObject__set_property('clickedIcon', self.__restore_clicked)
