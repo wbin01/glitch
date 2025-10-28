@@ -19,6 +19,7 @@ class QmlBuilder(object):
         self.__ui = ui
         self.__qml_code = ''
         self.__first_iteration = True
+        self.__suffix = 0
         self.__write_qml(self.__ui)
         self.__qml_finish()
 
@@ -36,11 +37,13 @@ class QmlBuilder(object):
     def __write_qml(self, ui: UI, tab: str = '') -> None:
         if not hasattr(ui, '_QtObject__items'):
             return
+        self.__suffix += 1
 
-        # Main Layout ID
+        # Layout ID
         if '// id' in ui.qml and self.__first_iteration:
             # id_ = 'root_' + ui.__class__.__name__.lower()
-            id_ = '_' + str(id(ui))
+            # id_ = '_' + str(id(ui))
+            id_ = f'{ui.__class__.__name__.lower()}_{self.__suffix}'
             ui.qml = ui.qml.replace(
                 '// id', f'id: {id_}').replace(
                 '// objectName', f'objectName: "{id_}"').replace(
@@ -48,17 +51,18 @@ class QmlBuilder(object):
                 # .replace(
                 # '// +', window_properties + '\n    // +\n')
 
-        # UIs ID
+        # Childs ID
         for name, value in ui.__dict__.items():
             element = getattr(ui, name)
             if isinstance(element, UI):
-                id_ = '_' + str(id(element))  # id_ = name.lower()
+                # id_ = '_' + str(id(element))  # id_ = name.lower()
+                id_ = f'{name.lower()}_{self.__suffix}'
                 element.qml = element.qml.replace(
                     '// id', f'id: {id_}').replace(
                     '// objectName', f'objectName: "{id_}"\n').replace(
                     '// Close ' + element._name, '// Close ' + id_)
 
-        # UIs headers and his properties
+        # Headers and his properties
         header, body = ui.qml.split('// +')
         qml_end = body.strip('\n')
         # if self.__first_iteration:
@@ -71,7 +75,7 @@ class QmlBuilder(object):
                 self.__qml_code += tab + line + '\n'
         self.__qml_code = self.__qml_code.strip() + '\n'
 
-        # UI childs
+        # Sub Childs
         tab += '    '
         # if self.__first_iteration:
         #     # tab += '        '
