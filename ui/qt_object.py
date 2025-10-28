@@ -86,6 +86,7 @@ class QtObject(object):
             return
 
         # Apply Qobj
+        print(name_camel)
         self.__obj.setProperty(name_camel, value)
 
     @property

@@ -8,17 +8,13 @@ class AppFrame(Frame):
     """..."""
     def __init__(self, *args, **kwargs) -> None:
         UI.__init__(self, name='AppFrame')
+        self.__render_signal = Signal()
         self._UI__app = self
 
     @property
-    def _platform(self):
+    def _render_signal(self):
         """..."""
-        return self.__platform
-
-    @property
-    def _platform_added_signal(self):
-        """..."""
-        return self.__platform_added_signal
+        return self.__render_signal
 
     def __repr__(self) -> str:
         return self.__class__.__name__
