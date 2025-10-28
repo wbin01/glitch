@@ -39,7 +39,8 @@ class QmlBuilder(object):
 
         # Main Layout ID
         if '// id' in ui.qml and self.__first_iteration:
-            id_ = 'root_' + ui.__class__.__name__.lower()
+            # id_ = 'root_' + ui.__class__.__name__.lower()
+            id_ = '_' + str(id(ui))
             ui.qml = ui.qml.replace(
                 '// id', f'id: {id_}').replace(
                 '// objectName', f'objectName: "{id_}"').replace(
@@ -51,7 +52,7 @@ class QmlBuilder(object):
         for name, value in ui.__dict__.items():
             element = getattr(ui, name)
             if isinstance(element, UI):
-                id_ = name.lower()
+                id_ = '_' + str(id(element))  # id_ = name.lower()
                 element.qml = element.qml.replace(
                     '// id', f'id: {id_}').replace(
                     '// objectName', f'objectName: "{id_}"\n').replace(
