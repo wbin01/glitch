@@ -1,4 +1,5 @@
 /static/qml/QtQuick/Controls/AdaptiveGlitch/*.qml
+/static/qml/main.qml
 .directory
 .idea/
 src/db.sqlite3
