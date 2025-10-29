@@ -12,6 +12,7 @@ class AppControlButtons(Row):
         self.__max_btn = self.add(AppMaxButton())
         self.__min_btn = self.add(AppMinButton())
         self._QtObject__set_property('Layout.margins', 5)
+        self._QtObject__set_property('Layout.topMargin', 6)
 
     def __repr__(self) -> str:
         return f'{self.__class__.__name__}()'
