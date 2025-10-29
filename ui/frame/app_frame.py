@@ -9,6 +9,7 @@ class AppFrame(Frame):
     def __init__(self, *args, **kwargs) -> None:
         UI.__init__(self, name='AppFrame')
         self.__render_signal = Signal()
+        self.__resize_signal = Signal()
         self.__state_signal = Signal()
         self._UI__app = self
 

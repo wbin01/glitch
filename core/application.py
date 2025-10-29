@@ -57,6 +57,9 @@ class AppEventFilter(QtCore.QObject):
             # print('WindowDeactivate')
             pass
 
+        if event_type == QtCore.QEvent.Resize:
+            self.__ui._AppFrame__resize_signal.emit()
+
         elif event_type == QtCore.QEvent.WindowStateChange:
             self.__ui._AppFrame__state_signal.emit()
 
