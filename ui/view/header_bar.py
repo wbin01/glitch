@@ -21,6 +21,7 @@ class HeaderBar(Row):
         self.__rwidth = 0
         self.__lwidth = 0
         self.__margin_delta = 0
+        self.__stop = False
 
         self.__control_buttons = self._QtObject__add(AppControlButtons())
         self.__left = self._QtObject__add(Row())
@@ -74,6 +75,7 @@ class HeaderBar(Row):
         self.__center_title(True)
 
     def __center_title(self, state=False) -> None:
+        # Size vars
         left = int(self.__left._QtObject__property('width'))
         left_margin = int(self.__left_margin._QtObject__property('width'))
         left_span = int(self.__left_span._QtObject__property('width'))
@@ -88,54 +90,54 @@ class HeaderBar(Row):
         window = int(self._app._QtObject__obj.width())
         ratio = self._app._QtObject__obj.devicePixelRatio()
 
-        left_side = (self.__control_buttons._QtObject__property('width'
-            ) * ratio) + (left * ratio)
+        left_side = (self.__control_buttons._QtObject__property(
+            'width') * ratio) + (left * ratio)
         if left_side < 0: left_side = 0
 
         right_side = (right * ratio) + (icon * ratio)
         if right_side < 0: right_side = 0
 
-        # print(left, left_margin, left_span, 'text',
-        #     right_span, right_margin, right)
+        # Signals
         if state:
             self.__right_margin._QtObject__set_property('rwidth', 0)
             self.__left_margin._QtObject__set_property('lwidth', 0)
+            self.__stop = False
             QTimer.singleShot(50, self.__center_title)
-            # self.__center_title(state=False)
 
         if not self.__resize:
             self._app._AppFrame__resize_signal.connect(self.__center_title)
             self.__resize = True
 
+        # Equal sides +
         if left_side > right_side:
             self.__rwidth = int(left_side - right_side)
-            self.__right_margin._QtObject__set_property('rwidth',self.__rwidth)
             self.__side = 'right'
             self.__margin_delta = self.__rwidth
+            rwidth = 0 if self.__stop else self.__rwidth
+            self.__right_margin._QtObject__set_property('rwidth', rwidth)
         else:
             self.__lwidth = int(right_side - left_side)
-            self.__left_margin._QtObject__set_property('lwidth', self.__lwidth)
             self.__side = 'left'
             self.__margin_delta = self.__lwidth
+            lwidth = 0 if self.__stop else self.__lwidth
+            self.__left_margin._QtObject__set_property('lwidth', lwidth)
 
+        # Equal sides -
         total_left = left_side + left_margin + left_span
         total_right = right_side + right_margin + right_span
         total = total_left + title + total_right + 20
         dt = total - window
-        
-        if self.__side == 'right' and not right_span and right_margin - dt > 2:
-            if left_margin == 0 and right_margin > 10:
-                # print('R STOP')
-                pass
+
+        rwidth = right_margin - dt
+        if self.__side == 'right' and not right_span and rwidth > 2:
+            self.__stop = True if left_margin == 0 and rwidth < 10 else False
+            if self.__stop: rwidth = 0
             if self.__margin_delta > right_margin - dt:
-                self.__right_margin._QtObject__set_property(
-                    'rwidth', right_margin - dt)
+                self.__right_margin._QtObject__set_property('rwidth', rwidth)
 
-        if self.__side == 'left' and not left_span and left_margin - dt > 2:
-            if right_margin == 0 and left_margin > 10:
-                # print('L STOP')
-                pass
-
+        lwidth = left_margin - dt
+        if self.__side == 'left' and not left_span and lwidth > 2:
+            self.__stop = True if right_margin == 0 and lwidth < 10 else False
+            if self.__stop: lwidth = 0
             if self.__margin_delta > left_margin - dt:
-                self.__left_margin._QtObject__set_property(
-                    'lwidth', left_margin - dt)
+                self.__left_margin._QtObject__set_property('lwidth', lwidth)
