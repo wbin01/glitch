@@ -16,12 +16,11 @@ class HeaderBar(Row):
         self._QtObject__set_property('spacing', '0')
         self._QtObject__set_property('Layout.fillWidth', 'true')
         self.__resize = False
-        self.__side = 'left'
-        self.__margin_delta = 0
 
-        self.__total_left = 0
-        self.__total_right = 0
-        self.__total = 0
+        self.__side = 'left'
+        self.__rwidth = 0
+        self.__lwidth = 0
+        self.__margin_delta = 0
 
         self.__control_buttons = self._QtObject__add(AppControlButtons())
         self.__left = self._QtObject__add(Row())
@@ -53,8 +52,7 @@ class HeaderBar(Row):
             __file__).parent.parent.parent / 'static' / 'icons' / 'glitch.svg')
         self.__icon._QtObject__set_property('Layout.margins', 5)
 
-        self._app_signal.connect(
-            lambda: self._app._render_signal.connect(self.__center_title))
+        self._app_signal.connect(self.__center_title_config)
 
     def __repr__(self) -> str:
         return f'{self.__class__.__name__}()'
@@ -65,14 +63,17 @@ class HeaderBar(Row):
             return self.__right.add(item)
         return self.__left.add(item)
 
-    def __center_title_shot(self) -> None:
-        print('SHOOOT')
-        self.__center_title()
+    def __center_title_config(self) -> None:
+        self._app._render_signal.connect(self.__center_title)
+        self._app._state_signal.connect(self.__center_title_state_config)
 
-    def __center_title(self) -> None:
-        self._app._state_signal.connect(
-            lambda: QTimer.singleShot(2000, self.__center_title_shot))
+    def __center_title_state_config(self) -> None:
+        QTimer.singleShot(100, self.__center_title_state)
 
+    def __center_title_state(self) -> None:
+        self.__center_title(True)
+
+    def __center_title(self, state=False) -> None:
         left = int(self.__left._QtObject__property('width'))
         left_margin = int(self.__left_margin._QtObject__property('width'))
         left_span = int(self.__left_span._QtObject__property('width'))
@@ -96,6 +97,11 @@ class HeaderBar(Row):
 
         # print(left, left_margin, left_span, 'text',
         #     right_span, right_margin, right)
+        if state:
+            self.__right_margin._QtObject__set_property('rwidth', 0)
+            self.__left_margin._QtObject__set_property('lwidth', 0)
+            QTimer.singleShot(50, self.__center_title)
+            # self.__center_title(state=False)
 
         if not self.__resize:
             self._app._AppFrame__resize_signal.connect(self.__center_title)
