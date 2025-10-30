@@ -53,7 +53,7 @@ class HeaderBar(Row):
             __file__).parent.parent.parent / 'static' / 'icons' / 'glitch.svg')
         self.__icon._QtObject__set_property('Layout.margins', 5)
 
-        self._app_signal.connect(self.__center_title_config)
+        self._app_signal.connect(self.__signals_conf)
 
     def __repr__(self) -> str:
         return f'{self.__class__.__name__}()'
@@ -63,15 +63,23 @@ class HeaderBar(Row):
         if right:
             return self.__right.add(item)
         return self.__left.add(item)
+    
+    @property
+    def text(self) -> str:
+        return self.__title.text
 
-    def __center_title_config(self) -> None:
+    @text.setter
+    def text(self, text: str) -> None:
+        self.__title.text = text
+
+    def __signals_conf(self) -> None:
         self._app._render_signal.connect(self.__center_title)
-        self._app._state_signal.connect(self.__center_title_state_config)
+        self._app._state_signal.connect(self.__state_signal_thread)
 
-    def __center_title_state_config(self) -> None:
-        QTimer.singleShot(100, self.__center_title_state)
+    def __state_signal_thread(self) -> None:
+        QTimer.singleShot(100, self.__on_state_signal)
 
-    def __center_title_state(self) -> None:
+    def __on_state_signal(self) -> None:
         self.__center_title(True)
 
     def __center_title(self, state=False) -> None:
@@ -125,19 +133,18 @@ class HeaderBar(Row):
         # Equal sides -
         total_left = left_side + left_margin + left_span
         total_right = right_side + right_margin + right_span
-        total = total_left + title + total_right + 20
-        dt = total - window
+        dt = (total_left + title + total_right + 20) - window
 
         rwidth = right_margin - dt
         if self.__side == 'right' and not right_span and rwidth > 2:
-            self.__stop = True if left_margin == 0 and rwidth < 10 else False
-            if self.__stop: rwidth = 0
+            self.__stop = True if left_margin < 10 and rwidth < 10 else False
+            if self.__stop: rwidth = 5
             if self.__margin_delta > right_margin - dt:
                 self.__right_margin._QtObject__set_property('rwidth', rwidth)
 
         lwidth = left_margin - dt
         if self.__side == 'left' and not left_span and lwidth > 2:
-            self.__stop = True if right_margin == 0 and lwidth < 10 else False
-            if self.__stop: lwidth = 0
+            self.__stop = True if right_margin < 10 and lwidth < 10 else False
+            if self.__stop: lwidth = 5
             if self.__margin_delta > left_margin - dt:
                 self.__left_margin._QtObject__set_property('lwidth', lwidth)
