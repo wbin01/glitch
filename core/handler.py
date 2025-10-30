@@ -40,10 +40,10 @@ class Handler(QtCore.QObject):
         signals = ['_mouse_press_signal']
         for element in layout._QtObject__items:
 
-            in_base = f'_{element.__class__.__name__}__base'
+            qml_base = f'_{element.__class__.__name__}__qml_base'
             if (element._base == 'Layout' or
-                    hasattr(element, in_base) and
-                    getattr(element, in_base) == 'Layout'):
+                    hasattr(element, qml_base) and
+                    getattr(element, qml_base) == 'Layout'):
                 self.__integrate_graphic_elements(element)
 
             if isinstance(element, UI):
