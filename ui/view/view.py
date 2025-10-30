@@ -6,10 +6,15 @@ class View(UI):
     """..."""
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
-        self._base = 'View'
+        self.__base = 'View'
 
     def __repr__(self) -> str:
         return self.__class__.__name__
+
+    @property
+    def _base(self):
+        """..."""
+        return self.__base
 
     @property
     def visible(self) -> bool:

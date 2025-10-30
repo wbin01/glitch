@@ -7,7 +7,7 @@ class UI(QtObject):
     """..."""
     def __init__(self, name: str = 'Item', *args, **kwargs) -> None:
         QtObject.__init__(self, name=name, *args, **kwargs)
-        self._base = 'UI'
+        self.__base = 'UI'
         
         self.qml = self.qml + '  // Close ' + name
         self.__app_signal = Signal()
@@ -22,6 +22,11 @@ class UI(QtObject):
     def _app_signal(self) -> Signal:
         """..."""
         return self.__app_signal
+
+    @property
+    def _base(self):
+        """..."""
+        return self.__base
 
     def __repr__(self) -> str:
         return f'{self.__class__.__name__}(name={self._QtObject__name!r})'

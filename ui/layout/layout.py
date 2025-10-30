@@ -7,7 +7,7 @@ class Layout(UI, Add):
     """..."""
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
-        self._base = 'Layout'
+        self.__base = 'Layout'
         # TODO: Create this properties
         self._QtObject__set_property('clip', 'true')
         self._QtObject__set_property('Layout.alignment', 'Qt.AlignTop')
@@ -16,3 +16,8 @@ class Layout(UI, Add):
 
     def __repr__(self) -> str:
         return self.__class__.__name__
+
+    @property
+    def _base(self):
+        """..."""
+        return self.__base

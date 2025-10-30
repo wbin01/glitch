@@ -25,7 +25,11 @@ class Add(object):
 
     def __add_app(self, layout: None):
         for x in layout._QtObject__items:
-            if x._base == 'Layout':
+            # if x._base == 'Layout':
+            in_base = f'_{x.__class__.__name__}__base'
+            if (x._base == 'Layout' or
+                    hasattr(x, in_base) and
+                    getattr(x, in_base) == 'Layout'):
                 self.__add_app(x)
 
             if not x._UI__app or x._UI__app != self._UI__app:
@@ -42,7 +46,11 @@ class Add(object):
             item._UI__app = self._UI__app
             item._UI__app_signal.emit()
 
-            if item._base == 'Layout':
+            #if item._base == 'Layout':
+            in_base = f'_{item.__class__.__name__}__base'
+            if (item._base == 'Layout' or
+                    hasattr(item, in_base) and
+                    getattr(item, in_base) == 'Layout'):
                 self.__add_app(item)
 
         return item

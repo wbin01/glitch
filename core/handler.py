@@ -38,18 +38,13 @@ class Handler(QtCore.QObject):
     def __integrate_graphic_elements(self, layout) -> None:
         # Integration UI graphic elements into the Main UI QtObject.
         signals = ['_mouse_press_signal']
-
-        # for attr, value in layout.__dict__.items():
-        #     element = getattr(layout, attr)
         for element in layout._QtObject__items:
 
-            if element._base == 'Layout':
-                # print(element._QtObject__property('id'))
+            in_base = f'_{element.__class__.__name__}__base'
+            if (element._base == 'Layout' or
+                    hasattr(element, in_base) and
+                    getattr(element, in_base) == 'Layout'):
                 self.__integrate_graphic_elements(element)
-
-            # if hasattr(element, '_UI__app'):
-            #     print(element._QtObject__property('id'))
-                    # element._QtObject__app = self.__ui
 
             if isinstance(element, UI):
                 obj_value = self.__gui.findChild(
@@ -65,12 +60,11 @@ class Handler(QtCore.QObject):
 
                     call = getattr(element, signal).callback()
                     if callable(call):
-                        # element._QtObject__obj.pressed.connect(call)
                         element._QtObject__obj.released.connect(call)
 
     @QtCore.Slot()
     def __state_changed(self, state: QtCore.Qt.WindowState) -> None:
-        # self.__ui.shape = self.__ui._obj.windowState()
+        # Update UI shape: self.__ui.shape = self.__ui._obj.windowState()
         if not self.__state_border:
             self.__state_border = (
                 self.__gui.property('radiusTopLeft'),
