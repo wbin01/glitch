@@ -113,7 +113,7 @@ class HeaderBar(Row):
             QTimer.singleShot(50, self.__center_title)
 
         if not self.__resize:
-            self._app._AppFrame__resize_signal.connect(self.__center_title)
+            self._app._resize_signal.connect(self.__center_title)
             self.__resize = True
 
         # Equal sides +

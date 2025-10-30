@@ -12,11 +12,17 @@ class AppFrame(Frame):
         self.__resize_signal = Signal()
         self.__state_signal = Signal()
         self._UI__app = self
+        self.__platform = None
 
     @property
     def _render_signal(self):
         """..."""
         return self.__render_signal
+
+    @property
+    def _resize_signal(self):
+        """..."""
+        return self.__resize_signal
 
     @property
     def _state_signal(self):

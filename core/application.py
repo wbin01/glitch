@@ -58,14 +58,14 @@ class AppEventFilter(QtCore.QObject):
             pass
 
         if event_type == QtCore.QEvent.Resize:
-            self.__ui._AppFrame__resize_signal.emit()
+            self.__ui._resize_signal.emit()
 
         elif event_type == QtCore.QEvent.WindowStateChange:
-            self.__ui._AppFrame__state_signal.emit()
+            self.__ui._state_signal.emit()
 
         elif event_type == QtCore.QEvent.Paint:
             if not self.__paint:
-                self.__ui._AppFrame__render_signal.emit()
+                self.__ui._render_signal.emit()
                 self.__paint = 1
 
         return super().eventFilter(obj, event)
@@ -83,11 +83,6 @@ class Application(object):
         self.__ui = frame()
         self.__dev = dev
 
-        self.__platform = Platform()
-        if hasattr(self.__ui, '_platform'):
-            self.__ui._AppFrame__platform = self.__platform
-            self.__ui._AppFrame__platform_added_signal.emit()
-
         self.__path = pathlib.Path(__file__).parent.parent
         self.__qml_path = self.__path /'static'/'qml'/'main.qml'
         self.__qml_theme_path = self.__path / 'static' / 'qml'
@@ -97,8 +92,10 @@ class Application(object):
             self.__qml_path.write_text(qml._qml)
 
         # Style
+        self.__platform = Platform()
         qml_style = QmlStyle(self.__platform.style, self.__qml_theme_path)
         qml_style.build()
+        self.__ui._AppFrame__platform = self.__platform
 
         self.__qt_gui_application = QtGui.QGuiApplication(sys.argv)
         self.__engine = QtQml.QQmlApplicationEngine()
