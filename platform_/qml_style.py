@@ -31,6 +31,8 @@ AppFrame {
     property alias radiusBottomRight: mainRectangle.radiusBottomRight
     property alias radiusBottomLeft: mainRectangle.radiusBottomLeft
 
+    property alias spacing: mainColumnLayout.spacing
+
     MouseArea {
         anchors.fill: parent
         acceptedButtons: Qt.RightButton

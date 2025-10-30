@@ -13,7 +13,7 @@ from ..layout import Row
 class HeaderBar(Row):
     def __init__(self, title: str = 'Olá mundo!', *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
-        self._QtObject__set_property('spacing', '0')
+        self._QtObject__set_property('spacing', 0)
         self._QtObject__set_property('Layout.fillWidth', 'true')
         self.__resize = False
 
@@ -25,6 +25,7 @@ class HeaderBar(Row):
 
         self.__control_buttons = self._QtObject__add(AppControlButtons())
         self.__left = self._QtObject__add(Row())
+        self.__left.spacing = 6
         self.__left._QtObject__set_property('Layout.fillWidth', 'true')
         self.__left._QtObject__set_property('Layout.topMargin', 2)
         
@@ -45,6 +46,7 @@ class HeaderBar(Row):
             'Layout.preferredWidth', 'rwidth')
 
         self.__right = self._QtObject__add(Row())
+        self.__right.spacing = 6
         self.__right._QtObject__set_property('Layout.fillWidth', 'true')
         self.__right._QtObject__set_property('Layout.topMargin', 2)
 
@@ -58,11 +60,21 @@ class HeaderBar(Row):
     def __repr__(self) -> str:
         return f'{self.__class__.__name__}()'
 
-    def add(self, item: ToolButton, right: bool = False) -> ToolButton:
+    @property
+    def spacing(self) -> int:
         """..."""
-        if right:
-            return self.__right.add(item)
-        return self.__left.add(item)
+        return self._QtObject__property('spacing')
+
+    @spacing.setter
+    def spacing(self, spacing: int) -> None:
+        if hasattr(self, '_HeaderBar__left'):
+            getattr(self, '_HeaderBar__left').spacing = spacing
+
+        if hasattr(self, '_HeaderBar__left'):
+            getattr(self, '_HeaderBar__left').spacing = spacing
+
+        if hasattr(self, '_HeaderBar__right'):
+            getattr(self, '_HeaderBar__right').spacing = spacing
     
     @property
     def text(self) -> str:
@@ -71,6 +83,12 @@ class HeaderBar(Row):
     @text.setter
     def text(self, text: str) -> None:
         self.__title.text = text
+
+    def add(self, item: ToolButton, right: bool = False) -> ToolButton:
+        """..."""
+        if right:
+            return self.__right.add(item)
+        return self.__left.add(item)
 
     def __signals_conf(self) -> None:
         self._app._render_signal.connect(self.__center_title)

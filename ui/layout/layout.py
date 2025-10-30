@@ -9,7 +9,6 @@ class Layout(UI, Add):
         super().__init__(*args, **kwargs)
         self._base = 'Layout'
         # TODO: Create this properties
-        self._QtObject__set_property('spacing', 6)
         self._QtObject__set_property('clip', 'true')
         self._QtObject__set_property('Layout.alignment', 'Qt.AlignTop')
         self._QtObject__set_property('Layout.fillWidth', 'true')

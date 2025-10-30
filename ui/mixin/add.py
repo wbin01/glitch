@@ -9,6 +9,19 @@ class Add(object):
     """..."""
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
+        self.spacing = 6
+
+    def __repr__(self) -> str:
+        return self.__class__.__name__
+
+    @property
+    def spacing(self) -> int:
+        """..."""
+        return self._QtObject__property('spacing')
+
+    @spacing.setter
+    def spacing(self, spacing: int) -> None:
+        self._QtObject__set_property('spacing', spacing)
 
     def __add_app(self, layout: None):
         for x in layout._QtObject__items:

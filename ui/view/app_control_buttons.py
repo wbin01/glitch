@@ -8,6 +8,7 @@ from .app_min_button import AppMinButton
 class AppControlButtons(Row):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
+        self.spacing = 6
         self.__close_btn = self.add(AppCloseButton())
         self.__max_btn = self.add(AppMaxButton())
         self.__min_btn = self.add(AppMinButton())
