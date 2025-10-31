@@ -33,5 +33,5 @@ class FrameHint(Enum):
     # Controlam botões
     # Qt.WindowMinimizeButtonHint, Qt.WindowMaximizeButtonHint
 
-    def __str__(self) -> str:
-        return "<class 'FrameHint'>"
+    def __repr__(self) -> str:
+        return self.__class__.__name__

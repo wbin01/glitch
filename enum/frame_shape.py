@@ -11,5 +11,5 @@ class FrameShape(Enum):
     MIN = 3
     FULL = 5
 
-    def __str__(self) -> str:
-        return "<class 'FrameShape'>"
+    def __repr__(self) -> str:
+        return self.__class__.__name__

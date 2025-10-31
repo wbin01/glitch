@@ -20,5 +20,5 @@ class Align(Enum):
     TOP_RIGHT = QtCore.Qt.AlignTop | QtCore.Qt.AlignRight
     V_CENTER = QtCore.Qt.AlignVCenter
     
-    def __str__(self) -> str:
-        return "<class 'Align'>"
+    def __repr__(self) -> str:
+        return self.__class__.__name__

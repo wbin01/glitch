@@ -7,5 +7,5 @@ class Orientation(Enum):
     VERTICAL = 0
     HORIZONTAL = 1
 
-    def __str__(self) -> str:
-        return "<class 'Orientation'>"
+    def __repr__(self) -> str:
+        return self.__class__.__name__
