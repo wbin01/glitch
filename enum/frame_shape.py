@@ -4,8 +4,8 @@ from enum import Enum
 
 class FrameShape(Enum):
     """Frame state enumeration."""
-    # HIDDEN = 0 
-    # AUTO = 1 
+    # HIDDEN = 0
+    # AUTO = 1
     FRAME = 2
     MAX = 4
     MIN = 3

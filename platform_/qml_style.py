@@ -9,7 +9,7 @@ import QtQuick.Controls
 AppFrame {
     title: "Glitch App"
     color: "transparent"
-    flags: Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint
+    flags: Qt.FramelessWindowHint
 
     width: 400
     height: 400

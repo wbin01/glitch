@@ -37,7 +37,7 @@ class Handler(QtCore.QObject):
     @QtCore.Slot()
     def __integrate_graphic_elements(self, layout) -> None:
         # Integration UI graphic elements into the Main UI QtObject.
-        signals = ['_mouse_press_signal']
+        signals = ['_mouse_press_signal', '_state_signal']
         for element in layout._QtObject__items:
 
             qml_base = f'_{element.__class__.__name__}__qml_base'
@@ -64,7 +64,6 @@ class Handler(QtCore.QObject):
 
     @QtCore.Slot()
     def __state_changed(self, state: QtCore.Qt.WindowState) -> None:
-        # Update UI shape: self.__ui.shape = self.__ui._obj.windowState()
         if not self.__state_border:
             self.__state_border = (
                 self.__gui.property('radiusTopLeft'),
