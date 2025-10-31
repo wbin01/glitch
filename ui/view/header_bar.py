@@ -6,13 +6,15 @@ from PySide6.QtCore import QTimer
 from .app_control_buttons import AppControlButtons
 from .label import Label
 from .tool_button import ToolButton
+from .view import View
 from ..ui import UI
 from ..layout import Row
 
 
-class HeaderBar(Row):
+class HeaderBar(View):
     def __init__(self, title: str = 'Olá mundo!', *args, **kwargs) -> None:
-        super().__init__(*args, **kwargs)
+        super().__init__(name='RowLayout', *args, **kwargs)
+        self.__qml_base = 'Layout'
         self._QtObject__set_property('spacing', 0)
         self._QtObject__set_property('Layout.fillWidth', 'true')
         self.__resize = False

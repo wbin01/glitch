@@ -8,7 +8,7 @@ from ..layout.row import Row
 
 class AppControlButtons(View):
     def __init__(self, *args, **kwargs) -> None:
-        super().__init__(name='RowLayout',*args, **kwargs)
+        super().__init__(name='RowLayout', *args, **kwargs)
         self.__qml_base = 'Layout'
         self.spacing = 6
         self.__close_btn = self._QtObject__add(AppCloseButton())
