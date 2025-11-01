@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from PySide6 import QtCore
+import subprocess
 
 from .frame import Frame
 from ..ui import UI
@@ -89,8 +90,15 @@ class AppFrame(Frame):
                 'borderColor', self.__state_border[6])
             self._QtObject__obj.setProperty(
                 'outLineColor',self.__state_border[6])
-            self._QtObject__obj.setProperty('color', self.__state_border[6])
+            # Bug: Adding and then removing the background color (necessary to 
+            # cover a transparent border pixel in maximized mode) causes the 
+            # window to gradually turn black in Wayland.
+            if self.__platform._display_server != 'wayland':
+                self._QtObject__obj.setProperty('color', self.__state_border[6])
         else:
+            if self.__platform._display_server != 'wayland':
+                self._QtObject__obj.setProperty('color', 'transparent')
+            
             if self.__shape.value == 2:
                 self._QtObject__obj.showNormal()
             elif self.__shape.value == 3:
@@ -109,7 +117,6 @@ class AppFrame(Frame):
                 'borderColor', self.__state_border[4])
             self._QtObject__obj.setProperty(
                 'outLineColor', self.__state_border[5])
-            self._QtObject__obj.setProperty('color', 'transparent')
 
         self._shape_signal.value = self.__shape
         self._shape_signal.emit()

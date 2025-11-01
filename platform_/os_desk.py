@@ -13,6 +13,11 @@ class OSDesk(object):
         # windows-7 windows-10 windows-11 unknown
         self.__desktop_environment = None
 
+        self.__display_server = None
+
+    def __repr__(self) -> str:
+        return self.__class__.__name__
+
     @property
     def desktop_environment(self) -> str:
         """Desktop environment name.
@@ -29,6 +34,17 @@ class OSDesk(object):
     @desktop_environment.setter
     def desktop_environment(self, desktop_environment_name: str) -> None:
         self.__desktop_environment = desktop_environment_name
+
+    @property
+    def display_server(self) -> str:
+        """..."""
+        if not self.__display_server:
+            self.__get_display_server()
+        return self.__display_server
+
+    @display_server.setter
+    def display_server(self, display_server: str) -> None:
+        self.__display_server = display_server
 
     @property
     def operational_system(self) -> str:
@@ -94,6 +110,17 @@ class OSDesk(object):
 
         return 'unknown'
 
+    def __get_display_server(self) -> str:
+        # command = subprocess.run('echo $XDG_SESSION_TYPE',
+        #     shell=True, capture_output=True, text=True)
+        # command.stdout
+        # command.stderr
+        # command.returncode
+        if self.operational_system == 'linux':
+            self.__display_server = os.environ['XDG_SESSION_TYPE'].lower()
+        else:
+            self.__display_server = self.operational_system
+
     @staticmethod
     def __os() -> str:
         # 'unknown', 'linux', 'bsd', 'mac', 'windows'
@@ -109,6 +136,3 @@ class OSDesk(object):
 
         elif os.name == 'nt' and platform.system() == 'Windows':
             return 'windows'
-
-    def __str__(self) -> str:
-        return "<class 'OSDesk'>"

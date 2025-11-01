@@ -21,20 +21,23 @@ class Platform(object):
             '/usr/share/icons/', '/home/user/.local/share/icons/',
             '/home/user/.icons/']
         self.__dark = color_converter.is_dark(color_converter.hex_to_rgba(
-            self.style['[AppFrame]']['background_color']))
+            self._style['[AppFrame]']['background_color']))
         self.__icon_theme = None
 
     @property
-    def accent_color(self) -> str:
+    def _accent_color(self) -> str:
         """..."""
         if not self.__accent_color:
             self.__accent_color = self.__style.accent_color()
         return self.__accent_color
 
     @property
-    def de(self) -> str:
+    def _de(self) -> str:
         """..."""
-        return self.__os_desk.operational_system
+        return self.__os_desk.desktop_environment
+    @property
+    def _display_server(self) -> str:
+        return self.__os_desk.display_server
 
     @property
     def icon_theme(self) -> str | None:
@@ -49,16 +52,16 @@ class Platform(object):
         self.__icon_theme = icon_theme
 
     @property
-    def os(self) -> str:
+    def _os(self) -> str:
         """..."""
-        return self.__os_desk.desktop_environment
+        return self.__os_desk.operational_system
 
     @property
-    def style(self) -> dict:
+    def _style(self) -> dict:
         """..."""
         return self.__style.style()
 
-    def variant_icon_theme(
+    def _variant_icon_theme(
             self, theme: str, frame_is_dark: bool) -> str:
         """Dark or light variant icon theme"""
         icon_theme = ''

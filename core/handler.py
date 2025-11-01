@@ -82,15 +82,21 @@ class Handler(QtCore.QObject):
             self.__gui.setProperty('radiusBottomLeft', 0)
             self.__gui.setProperty('borderColor', self.__state_border[6])
             self.__gui.setProperty('outLineColor', self.__state_border[6])
-            self.__gui.setProperty('color', self.__state_border[6])
+            # Bug: Adding and then removing the background color (necessary to 
+            # cover a transparent border pixel in maximized mode) causes the 
+            # window to gradually turn black in Wayland.
+            if self.__ui._AppFrame__platform._display_server != 'wayland':
+                self.__gui.setProperty('color', self.__state_border[6])
         else:  # borderWidth outLineWidth
+            if self.__ui._AppFrame__platform._display_server != 'wayland':
+                self.__gui.setProperty('color', 'transparent')
             self.__gui.setProperty('radiusTopLeft', self.__state_border[0])
             self.__gui.setProperty('radiusTopRight', self.__state_border[1])
             self.__gui.setProperty('radiusBottomRight', self.__state_border[2])
             self.__gui.setProperty('radiusBottomLeft', self.__state_border[3])
             self.__gui.setProperty('borderColor', self.__state_border[4])
             self.__gui.setProperty('outLineColor', self.__state_border[5])
-            self.__gui.setProperty('color', 'transparent')
+            
 
         self.__gui.findChild(QtCore.QObject, 'canvas').requestPaint()
 
