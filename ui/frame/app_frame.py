@@ -90,15 +90,9 @@ class AppFrame(Frame):
                 'borderColor', self.__state_border[6])
             self._QtObject__obj.setProperty(
                 'outLineColor',self.__state_border[6])
-            # Bug: Adding and then removing the background color (necessary to 
-            # cover a transparent border pixel in maximized mode) causes the 
-            # window to gradually turn black in Wayland.
-            if self.__platform._display_server != 'wayland':
-                self._QtObject__obj.setProperty('color', self.__state_border[6])
+            self._QtObject__obj.setProperty('borderSpacing', 0)
         else:
-            if self.__platform._display_server != 'wayland':
-                self._QtObject__obj.setProperty('color', 'transparent')
-            
+            self._QtObject__obj.setProperty('borderSpacing', 1)
             if self.__shape.value == 2:
                 self._QtObject__obj.showNormal()
             elif self.__shape.value == 3:

@@ -32,6 +32,7 @@ AppFrame {
     property alias radiusBottomLeft: mainRectangle.radiusBottomLeft
 
     property alias spacing: mainColumnLayout.spacing
+    property alias borderSpacing: canvas.borderSpacing
 
     MouseArea {
         anchors.fill: parent
