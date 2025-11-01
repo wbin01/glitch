@@ -71,7 +71,8 @@ class Handler(QtCore.QObject):
                 self.__gui.property('radiusBottomRight'),
                 self.__gui.property('radiusBottomLeft'),
                 self.__gui.property('borderColor'),
-                self.__gui.property('outLineColor'))
+                self.__gui.property('outLineColor'),
+                self.__gui.property('backgroundColor'))
 
         if (state == QtCore.Qt.WindowState.WindowFullScreen
                 or state == QtCore.Qt.WindowState.WindowMaximized):
@@ -79,21 +80,17 @@ class Handler(QtCore.QObject):
             self.__gui.setProperty('radiusTopRight', 0)
             self.__gui.setProperty('radiusBottomRight', 0)
             self.__gui.setProperty('radiusBottomLeft', 0)
-            self.__gui.setProperty(
-                'borderColor', self.__gui.property('backgroundColor'))
-            self.__gui.setProperty(
-                'outLineColor', self.__gui.property('backgroundColor'))
-            self.__gui.setProperty('borderWidth', 0)
-            self.__gui.setProperty('outLineWidth', 0)
-        else:
-            self.__gui.setProperty('borderWidth', 1)
-            self.__gui.setProperty('outLineWidth', 1)
+            self.__gui.setProperty('borderColor', self.__state_border[6])
+            self.__gui.setProperty('outLineColor', self.__state_border[6])
+            self.__gui.setProperty('color', self.__state_border[6])
+        else:  # borderWidth outLineWidth
             self.__gui.setProperty('radiusTopLeft', self.__state_border[0])
             self.__gui.setProperty('radiusTopRight', self.__state_border[1])
             self.__gui.setProperty('radiusBottomRight', self.__state_border[2])
             self.__gui.setProperty('radiusBottomLeft', self.__state_border[3])
             self.__gui.setProperty('borderColor', self.__state_border[4])
             self.__gui.setProperty('outLineColor', self.__state_border[5])
+            self.__gui.setProperty('color', 'transparent')
 
         self.__gui.findChild(QtCore.QObject, 'canvas').requestPaint()
 

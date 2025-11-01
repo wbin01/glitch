@@ -4,8 +4,15 @@ from enum import Enum
 
 class FrameShape(Enum):
     """Frame state enumeration."""
-    # HIDDEN = 0
-    # AUTO = 1
+    # 0: Window.Hidden
+    # 1: Window.AutomaticVisibility (default - normally Windowed)
+    # 2: Window.Windowed
+    # 3: Window.Minimized
+    # 4: Window.Maximized
+    # 5: Window.FullScreen
+
+    HIDDEN = 0
+    AUTO = 1
     FRAME = 2
     MAX = 4
     MIN = 3

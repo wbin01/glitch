@@ -58,11 +58,7 @@ class AppFrame(Frame):
 
     @shape.setter
     def shape(self, shape: FrameShape = None) -> None:
-        # {  # 1 default (normally Windowed)
-        #     0: 'Window.Hidden', 1: 'Window.AutomaticVisibility',
-        #     2: 'Window.Windowed', 3: 'Window.Minimized',
-        #     4: 'Window.Maximized', 5: 'Window.FullScreen'}
-        
+        """..."""
         if shape: self.__shape = shape
 
         if not self._QtObject__obj:
@@ -76,7 +72,8 @@ class AppFrame(Frame):
                 self._QtObject__obj.property('radiusBottomRight'),
                 self._QtObject__obj.property('radiusBottomLeft'),
                 self._QtObject__obj.property('borderColor'),
-                self._QtObject__obj.property('outLineColor'))
+                self._QtObject__obj.property('outLineColor'),
+                self._QtObject__obj.property('backgroundColor'))
 
         if self.__shape.value == 4 or self.__shape.value == 5:
             if self.__shape.value == 5:
@@ -89,20 +86,17 @@ class AppFrame(Frame):
             self._QtObject__obj.setProperty('radiusBottomRight', 0)
             self._QtObject__obj.setProperty('radiusBottomLeft', 0)
             self._QtObject__obj.setProperty(
-                'borderColor', self._QtObject__obj.property('backgroundColor'))
+                'borderColor', self.__state_border[6])
             self._QtObject__obj.setProperty(
-                'outLineColor',self._QtObject__obj.property('backgroundColor'))
-            self._QtObject__obj.setProperty('borderWidth', 0)
-            self._QtObject__obj.setProperty('outLineWidth', 0)
+                'outLineColor',self.__state_border[6])
+            self._QtObject__obj.setProperty('color', self.__state_border[6])
         else:
             if self.__shape.value == 2:
                 self._QtObject__obj.showNormal()
             elif self.__shape.value == 3:
                 self._QtObject__obj.showMinimized()
 
-            self._QtObject__obj.windowStateChanged.emit(shape.value)
-            self._QtObject__obj.setProperty('borderWidth', 1)
-            self._QtObject__obj.setProperty('outLineWidth', 1)
+            # self._QtObject__obj.windowStateChanged.emit(shape.value)
             self._QtObject__obj.setProperty(
                 'radiusTopLeft', self.__state_border[0])
             self._QtObject__obj.setProperty(
@@ -115,11 +109,11 @@ class AppFrame(Frame):
                 'borderColor', self.__state_border[4])
             self._QtObject__obj.setProperty(
                 'outLineColor', self.__state_border[5])
+            self._QtObject__obj.setProperty('color', 'transparent')
 
         self._shape_signal.value = self.__shape
         self._shape_signal.emit()
         self._QtObject__obj.findChild(QtCore.QObject, 'canvas').requestPaint()
-        # self._QtObject__obj.windowStateChanged.emit(shape.value)
 
     def __max_style_qml(self) -> None:
         self.shape = self.__shape
