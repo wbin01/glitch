@@ -1,17 +1,41 @@
 #!/usr/bin/env python3
 from ..ui import UI
 from ..mixin import Add
+from ...enum.align import Align
 
 
-class Frame(UI, Add):
+class Frame(Add, UI):
     """..."""
     def __init__(self, *args, **kwargs) -> None:
-        super().__init__(name='Frame')
+        super().__init__(name='Window', *args, **kwargs)
         self.__base = 'Frame'
         self._UI__app = self
 
+        # self._QtObject__set_property(
+        #     'property int alignment', 'Layout.alignment')
+        self.__aligns = [
+            Align.BASE_LINE, Align.BOTTOM, Align.BOTTOM_LEFT,
+            Align.BOTTOM_RIGHT, Align.CENTER, Align.H_CENTER,
+            Align.JUSTIFY, Align.LEFT, Align.RIGHT, Align.TOP, Align.TOP_LEFT,
+            Align.TOP_RIGHT, Align.V_CENTER]
+
+        # self._QtObject__set_property('Layout.fillWidth', 'true')
+
     def __repr__(self) -> str:
         return self.__class__.__name__
+
+    @property
+    def align(self) -> Align:
+        """..."""
+        alignment = self._QtObject__property('windowAlignment')
+        print(alignment)
+        for align in self.__aligns:
+            if align == alignment:
+                return align
+
+    @align.setter
+    def align(self, align: Align) -> None:
+        self._QtObject__set_property('windowAlignment', align)
 
     @property
     def _base(self):

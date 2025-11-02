@@ -6,7 +6,7 @@ from ..core.signal import Signal
 class UI(QtObject):
     """..."""
     def __init__(self, name: str = 'Item', *args, **kwargs) -> None:
-        QtObject.__init__(self, name=name, *args, **kwargs)
+        super().__init__(name=name, *args, **kwargs)
         self.__base = 'UI'
         
         self.qml = self.qml + '  // Close ' + name

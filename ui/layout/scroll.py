@@ -5,7 +5,7 @@ from .layout import Layout
 class Scroll(Layout):
     """..."""
     def __init__(self, *args, **kwargs) -> None:
-        super().__init__(name='Scroll', *args, **kwargs)
+        super().__init__(name='ScrollView', *args, **kwargs)
         # self._QtObject__set_property('Layout.fillWidth', 'true')
         # self._QtObject__set_property('Layout.fillHeight', 'true')
         # self._QtObject__set_property('contentWidth', 'availableWidth')

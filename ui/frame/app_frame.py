@@ -12,7 +12,7 @@ from ...enum.frame_hint import FrameHint
 class AppFrame(Frame):
     """..."""
     def __init__(self, *args, **kwargs) -> None:
-        UI.__init__(self, name='AppFrame')
+        super().__init__(*args, **kwargs)
         self.__hint_signal = Signal()
         self.__render_signal = Signal()
         self.__resize_signal = Signal()
@@ -115,6 +115,11 @@ class AppFrame(Frame):
         self._shape_signal.value = self.__shape
         self._shape_signal.emit()
         self._QtObject__obj.findChild(QtCore.QObject, 'canvas').requestPaint()
+
+    def close(self) -> None:
+        """..."""
+        if self._QtObject__obj:
+            self._QtObject__obj.close()
 
     def __max_style_qml(self) -> None:
         self.shape = self.__shape

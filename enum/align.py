@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-from enum import Enum
+from enum import IntEnum
 
 from PySide6 import QtCore
 
 
-class Align(Enum):
+class Align(IntEnum):
     """Align enumeration."""
     BASE_LINE = QtCore.Qt.AlignBaseline
     BOTTOM = QtCore.Qt.AlignBottom
@@ -21,4 +21,4 @@ class Align(Enum):
     V_CENTER = QtCore.Qt.AlignVCenter
     
     def __repr__(self) -> str:
-        return self.__class__.__name__
+        return f"{self.__class__.__name__}.{self.name}"

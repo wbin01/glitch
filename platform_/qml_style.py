@@ -6,7 +6,7 @@ import QtQuick
 import QtQuick.Controls
 // sep imports-elements
 // +
-AppFrame {
+Window {
     title: "Glitch App"
     color: "transparent"
     flags: Qt.FramelessWindowHint
@@ -31,6 +31,7 @@ AppFrame {
     property alias radiusBottomRight: mainRectangle.radiusBottomRight
     property alias radiusBottomLeft: mainRectangle.radiusBottomLeft
 
+    property int windowAlignment: Qt.AlignTop
     property alias spacing: mainColumnLayout.spacing
     property alias borderSpacing: canvas.borderSpacing
 
@@ -245,21 +246,51 @@ AppFrame {
         }
         // Resize corners
 
+        // ColumnLayout {
+        //     id: mainColumnLayout
+        //     objectName: "mainColumnLayout"
+        //     anchors.fill: parent
+        //     anchors.margins: 1
+        //     spacing: 6
+        //     clip: true
+        //     Layout.alignment: windowAlignment
+        //     Layout.fillWidth: true
+        // }
+
         ColumnLayout {
             id: mainColumnLayout
-            objectName: "mainColumnLayout"
-            anchors.fill: parent
+            // anchors.left: parent.left
+            // anchors.right: parent.right
             anchors.margins: 1
             spacing: 6
             clip: true
-            Layout.alignment: Qt.AlignTop
-            Layout.fillWidth: true
+
+            property int alignment: windowAlignment
+
+            // --- Horizontal ---
+            anchors.left:
+                (alignment & Qt.AlignLeft) ? parent.left : undefined
+            anchors.right:
+                (alignment & Qt.AlignRight) ? parent.right : undefined
+            anchors.horizontalCenter:
+                (alignment & Qt.AlignHCenter) ? parent.horizontalCenter :
+                    undefined
+
+            // --- Vertical ---
+            anchors.top:
+                (alignment & Qt.AlignTop) ? parent.top : undefined
+            anchors.bottom:
+                (alignment & Qt.AlignBottom) ? parent.bottom : undefined
+            anchors.verticalCenter:
+                (alignment & Qt.AlignVCenter) ? parent.verticalCenter :
+                    undefined
         }
+
     }
     default property alias content: mainColumnLayout.data
 }
 // +
-Scroll {
+ScrollView {
     id: scroll
     Layout.fillWidth: true
     Layout.fillHeight: true
@@ -540,15 +571,13 @@ class QmlStyle(object):
             element_name = theme.strip().split('\n')[0].rstrip('{').strip()
 
             imports_add = ''
-            if element_name in ('Window', 'AppFrame', 'Frame', 'Scroll'):
+            if element_name in ('Window', 'ScrollView'):
                 imports_add = 'import QtQuick.Layouts\n'
 
             for flip in (
-                    ('AppFrame', 'Window'),
                     ('AppCloseButton', 'ToolButton'),
                     ('AppMaxButton', 'ToolButton'),
-                    ('AppMinButton', 'ToolButton'),
-                    ('Scroll', 'ScrollView')):
+                    ('AppMinButton', 'ToolButton')):
                 theme = theme.replace(flip[0] + ' {', flip[1] + ' {')
 
             element_theme = imports.lstrip() + imports_add + theme
