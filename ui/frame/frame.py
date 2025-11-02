@@ -28,14 +28,13 @@ class Frame(Add, UI):
     def align(self) -> Align:
         """..."""
         alignment = self._QtObject__property('windowAlignment')
-        print(alignment)
         for align in self.__aligns:
-            if align == alignment:
+            if align.value == alignment:
                 return align
 
     @align.setter
     def align(self, align: Align) -> None:
-        self._QtObject__set_property('windowAlignment', align)
+        self._QtObject__set_property('windowAlignment', align.value)
 
     @property
     def _base(self):

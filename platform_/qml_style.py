@@ -32,6 +32,8 @@ Window {
     property alias radiusBottomLeft: mainRectangle.radiusBottomLeft
 
     property int windowAlignment: Qt.AlignTop
+    property bool windowFillWidth: true
+    property bool windowFillHeight: false
     property alias spacing: mainColumnLayout.spacing
     property alias borderSpacing: canvas.borderSpacing
 
@@ -246,46 +248,20 @@ Window {
         }
         // Resize corners
 
-        // ColumnLayout {
-        //     id: mainColumnLayout
-        //     objectName: "mainColumnLayout"
-        //     anchors.fill: parent
-        //     anchors.margins: 1
-        //     spacing: 6
-        //     clip: true
-        //     Layout.alignment: windowAlignment
-        //     Layout.fillWidth: true
-        // }
-
         ColumnLayout {
-            id: mainColumnLayout
-            // anchors.left: parent.left
-            // anchors.right: parent.right
+            anchors.fill: parent
             anchors.margins: 1
-            spacing: 6
-            clip: true
 
-            property int alignment: windowAlignment
-
-            // --- Horizontal ---
-            anchors.left:
-                (alignment & Qt.AlignLeft) ? parent.left : undefined
-            anchors.right:
-                (alignment & Qt.AlignRight) ? parent.right : undefined
-            anchors.horizontalCenter:
-                (alignment & Qt.AlignHCenter) ? parent.horizontalCenter :
-                    undefined
-
-            // --- Vertical ---
-            anchors.top:
-                (alignment & Qt.AlignTop) ? parent.top : undefined
-            anchors.bottom:
-                (alignment & Qt.AlignBottom) ? parent.bottom : undefined
-            anchors.verticalCenter:
-                (alignment & Qt.AlignVCenter) ? parent.verticalCenter :
-                    undefined
+            ColumnLayout {
+                id: mainColumnLayout
+                objectName: "mainColumnLayout"
+                spacing: 6
+                clip: true
+                Layout.alignment: windowAlignment
+                Layout.fillWidth: windowFillWidth
+                Layout.fillHeight: windowFillHeight
+            }
         }
-
     }
     default property alias content: mainColumnLayout.data
 }

@@ -30,12 +30,12 @@ class Layout(Add, UI):
         """..."""
         alignment = self._QtObject__property('alignment')
         for align in self.__aligns:
-            if align == alignment:
+            if align.value == alignment:
                 return align
-    
+
     @align.setter
     def align(self, align: Align) -> None:
-        self._QtObject__set_property('alignment', align)
+        self._QtObject__set_property('alignment', align.value)
 
     @property
     def _base(self):

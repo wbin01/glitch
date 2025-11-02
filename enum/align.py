@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-from enum import IntEnum
+from enum import Enum
 
 from PySide6 import QtCore
 
 
-class Align(IntEnum):
+class Align(Enum):
     """Align enumeration."""
     BASE_LINE = QtCore.Qt.AlignBaseline
     BOTTOM = QtCore.Qt.AlignBottom
