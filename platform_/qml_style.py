@@ -31,9 +31,6 @@ Window {
     property alias radiusBottomRight: mainRectangle.radiusBottomRight
     property alias radiusBottomLeft: mainRectangle.radiusBottomLeft
 
-    property int windowAlignment: Qt.AlignTop
-    property bool windowFillWidth: true
-    property bool windowFillHeight: false
     property alias spacing: mainColumnLayout.spacing
     property alias borderSpacing: canvas.borderSpacing
 
@@ -249,18 +246,11 @@ Window {
         // Resize corners
 
         ColumnLayout {
+            id: mainColumnLayout
             anchors.fill: parent
-            anchors.margins: 1
-
-            ColumnLayout {
-                id: mainColumnLayout
-                objectName: "mainColumnLayout"
-                spacing: 6
-                clip: true
-                Layout.alignment: windowAlignment
-                Layout.fillWidth: windowFillWidth
-                Layout.fillHeight: windowFillHeight
-            }
+            anchors.margins: 0
+            spacing: 6
+            clip: true
         }
     }
     default property alias content: mainColumnLayout.data
@@ -547,7 +537,8 @@ class QmlStyle(object):
             element_name = theme.strip().split('\n')[0].rstrip('{').strip()
 
             imports_add = ''
-            if element_name in ('Window', 'ScrollView'):
+            if element_name in ('Window',
+                    'ScrollView', 'Layout', 'ColumnLayout', 'RowLayout'):
                 imports_add = 'import QtQuick.Layouts\n'
 
             for flip in (

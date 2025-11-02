@@ -8,3 +8,4 @@ ScrollView 1.0 ScrollView.qml
 Button 1.0 Button.qml
 ToolButton 1.0 ToolButton.qml
 Label 1.0 Label.qml
+Layout 1.0 Layout.qml

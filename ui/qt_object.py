@@ -60,6 +60,9 @@ class QtObject(object):
         if not self.__obj:
             mark = name_camel + ':'
 
+            if isinstance(value, bool):
+                value = 'true' if value else 'false'
+
             # Create qml property
             new_qml = ''
             if not mark in self.__qml:

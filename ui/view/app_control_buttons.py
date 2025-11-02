@@ -14,8 +14,8 @@ class AppControlButtons(View):
         self.__close_btn = self._QtObject__add(AppCloseButton())
         self.__max_btn = self._QtObject__add(AppMaxButton())
         self.__min_btn = self._QtObject__add(AppMinButton())
-        self._QtObject__set_property('Layout.margins', 5)
-        self._QtObject__set_property('Layout.topMargin', 2)
+        self._QtObject__set_property('Layout.margins', 6)
+        self._QtObject__set_property('Layout.topMargin', 4)
 
     def __repr__(self) -> str:
         return f'{self.__class__.__name__}()'

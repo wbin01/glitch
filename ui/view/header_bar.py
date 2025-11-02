@@ -29,7 +29,7 @@ class HeaderBar(View):
         self.__left = self._QtObject__add(Row())
         self.__left.spacing = 6
         self.__left._QtObject__set_property('Layout.fillWidth', 'true')
-        self.__left._QtObject__set_property('Layout.topMargin', 2)
+        self.__left._QtObject__set_property('Layout.topMargin', 3)
         
         self.__left_margin = self._QtObject__add(UI())
         self.__left_margin._QtObject__set_property('property int lwidth', 0)
@@ -50,7 +50,7 @@ class HeaderBar(View):
         self.__right = self._QtObject__add(Row())
         self.__right.spacing = 6
         self.__right._QtObject__set_property('Layout.fillWidth', 'true')
-        self.__right._QtObject__set_property('Layout.topMargin', 2)
+        self.__right._QtObject__set_property('Layout.topMargin', 3)
 
         self.__icon = self._QtObject__add(UI('Image'))
         self.__icon._QtObject__set_property('source', pathlib.Path(

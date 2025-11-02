@@ -19,6 +19,7 @@ class Align(Enum):
     TOP_LEFT = QtCore.Qt.AlignTop | QtCore.Qt.AlignLeft
     TOP_RIGHT = QtCore.Qt.AlignTop | QtCore.Qt.AlignRight
     V_CENTER = QtCore.Qt.AlignVCenter
+    NONE = 0
     
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}.{self.name}"

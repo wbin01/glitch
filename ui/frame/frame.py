@@ -11,32 +11,10 @@ class Frame(Add, UI):
         self.__base = 'Frame'
         self._UI__app = self
 
-        # self._QtObject__set_property(
-        #     'property int alignment', 'Layout.alignment')
-        self.__aligns = [
-            Align.BASE_LINE, Align.BOTTOM, Align.BOTTOM_LEFT,
-            Align.BOTTOM_RIGHT, Align.CENTER, Align.H_CENTER,
-            Align.JUSTIFY, Align.LEFT, Align.RIGHT, Align.TOP, Align.TOP_LEFT,
-            Align.TOP_RIGHT, Align.V_CENTER]
-
-        # self._QtObject__set_property('Layout.fillWidth', 'true')
-
     def __repr__(self) -> str:
         return self.__class__.__name__
 
     @property
-    def align(self) -> Align:
-        """..."""
-        alignment = self._QtObject__property('windowAlignment')
-        for align in self.__aligns:
-            if align.value == alignment:
-                return align
-
-    @align.setter
-    def align(self, align: Align) -> None:
-        self._QtObject__set_property('windowAlignment', align.value)
-
-    @property
-    def _base(self):
+    def _base(self) -> str:
         """..."""
         return self.__base
