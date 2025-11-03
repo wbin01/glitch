@@ -44,7 +44,7 @@ class Layout(Add, UI):
         """..."""
         if not self._QtObject__obj:
             return Align.TOP, True, False
-        
+
         fill_width = self._QtObject__property('fillWidth')
         fill_height = self._QtObject__property('fillHeight')
         alignment = self._QtObject__property('alignment')
@@ -62,12 +62,10 @@ class Layout(Add, UI):
                 self._QtObject__set_property('alignment', align.value)
             return
 
-        alignment = self._QtObject__property('alignment')
-        fill_width = self._QtObject__property('fillWidth')
-        fill_height = self._QtObject__property('fillHeight')
-
+        fill_width = None
+        fill_height = None
         if not align:
-            align = alignment
+            align = None
         elif len(align) == 1:
             align = align[0]
         elif len(align) == 2:
