@@ -19,9 +19,11 @@ class View(UI):
     @property
     def visible(self) -> bool:
         """..."""
-        return self._QtObject__property('visible')
+        visible = self._QtObject__property('visible')
+        if visible is None:
+            return True
+        return visible
 
     @visible.setter
     def visible(self, visible: bool) -> None:
-        visible = 'true' if visible else 'false'
         self._QtObject__set_property('visible', visible)

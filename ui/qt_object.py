@@ -25,7 +25,6 @@ class QtObject(object):
             return self.__id
 
         name_camel = self.__snake_to_camel(name)
-
         if not self.__obj:
             mark = name_camel + ':'
 
@@ -34,18 +33,26 @@ class QtObject(object):
 
             for line in self.__qml.split('\n'):
                 if mark in line:
-                    property_ = line.split(':')[-1].strip()  # Convert value
-                    if property_.endswith('"') and property_.startswith('"'):
-                        return property_.strip('"')
-                    return property_
+                    prop = line.split(':')[-1].strip()
+                    if prop.endswith('"') and prop.startswith('"'):
+                        prop = prop.strip('"')
+
+                    if prop.isdigit():
+                        prop = int(prop)
+                    elif '.' in prop and prop.replace('.', '').isdigit():
+                        prop = float(prop)
+                    elif prop == 'true' or prop == 'false':
+                        prop = True if prop == 'true' else False
+                    return prop
+
             return None
 
-        property_ = self.__obj.property(name_camel)
-        if callable(property_):
+        prop = self.__obj.property(name_camel)
+        if callable(prop):
             def method(*args, **kwargs):
-                return property_(*args, **kwargs)
+                return prop(*args, **kwargs)
             return method
-        return property_
+        return prop
 
     def __set_property(self, name, value) -> None:
         if name == 'id':
@@ -112,8 +119,5 @@ class QtObject(object):
 
     @staticmethod
     def __snake_to_camel(name: str) -> str:
-        'anchors__fill'
-        if '__' in name:
-            name = name.replace('__', '_.')
         name = name.split('_')
         return name[0] + ''.join(x.capitalize() for x in name[1:])
