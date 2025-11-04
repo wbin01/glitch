@@ -248,7 +248,7 @@ Window {
         ColumnLayout {
             id: mainColumnLayout
             anchors.fill: parent
-            anchors.margins: 0
+            anchors.margins: 1
             spacing: 6
             clip: true
         }
