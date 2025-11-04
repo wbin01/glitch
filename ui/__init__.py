@@ -4,7 +4,6 @@ from .ui import UI
 from .frame import AppFrame
 from .layout import Col, Grid, Row, Scroll
 from .view import (
-	HeaderBar,
-	AppCloseButton, AppMaxButton, AppMinButton, AppControlButtons,
-	Button, ToolButton,
+	Header,
+	CloseButton, MaxButton, MinButton, ControlButtons, Button, ToolButton,
 	Label)

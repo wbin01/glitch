@@ -3,7 +3,7 @@ import pathlib
 
 from PySide6.QtCore import QTimer
 
-from .app_control_buttons import AppControlButtons
+from .control_buttons import ControlButtons
 from .label import Label
 from .tool_button import ToolButton
 from .view import View
@@ -11,21 +11,24 @@ from ..ui import UI
 from ..layout import Row
 
 
-class HeaderBar(View):
-    def __init__(self, title: str = 'Olá mundo!', *args, **kwargs) -> None:
+class Header(View):
+    def __init__(self, text: str = 'Olá mundo!', *args, **kwargs) -> None:
         super().__init__(name='RowLayout', *args, **kwargs)
+        # set
         self.__qml_base = 'Layout'
         self._QtObject__set_property('spacing', 0)
         self._QtObject__set_property('Layout.fillWidth', 'true')
         self.__resize = False
 
+        # Flags
         self.__side = 'left'
         self.__rwidth = 0
         self.__lwidth = 0
         self.__margin_delta = 0
         self.__stop = False
 
-        self.__control_buttons = self._QtObject__add(AppControlButtons())
+        # Left
+        self.__control_buttons = self._QtObject__add(ControlButtons())
         self.__left = self._QtObject__add(Row())
         self.__left.spacing = 6
         self.__left._QtObject__set_property('Layout.fillWidth', 'true')
@@ -36,12 +39,14 @@ class HeaderBar(View):
         self.__left_margin._QtObject__set_property(
             'Layout.preferredWidth', 'lwidth')
 
+        # Text
         self.__left_span = self._QtObject__add(UI())
         self.__left_span._QtObject__set_property('Layout.fillWidth', 'true')
-        self.__title = self._QtObject__add(Label(title))
+        self.__text = self._QtObject__add(Label(text))
         self.__right_span = self._QtObject__add(UI())
         self.__right_span._QtObject__set_property('Layout.fillWidth', 'true')
 
+        # Right
         self.__right_margin = self._QtObject__add(UI())
         self.__right_margin._QtObject__set_property('property int rwidth', 0)
         self.__right_margin._QtObject__set_property(
@@ -80,11 +85,11 @@ class HeaderBar(View):
     
     @property
     def text(self) -> str:
-        return self.__title.text
+        return self.__text.text
 
     @text.setter
     def text(self, text: str) -> None:
-        self.__title.text = text
+        self.__text.text = text
 
     def add(self, item: ToolButton, right: bool = False) -> ToolButton:
         """..."""
@@ -108,7 +113,7 @@ class HeaderBar(View):
         left_margin = int(self.__left_margin._QtObject__property('width'))
         left_span = int(self.__left_span._QtObject__property('width'))
 
-        title = int(self.__title._QtObject__property('width'))
+        title = int(self.__text._QtObject__property('width'))
 
         right = int(self.__right._QtObject__property('width'))
         right_margin = int(self.__right_margin._QtObject__property('width'))

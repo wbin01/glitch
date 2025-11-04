@@ -40,7 +40,7 @@ class Layout(Add, UI):
         return self.__class__.__name__
 
     @property
-    def align(self) -> Align:
+    def align(self) -> tuple:
         """..."""
         if not self._QtObject__obj:
             return Align.TOP, True, False

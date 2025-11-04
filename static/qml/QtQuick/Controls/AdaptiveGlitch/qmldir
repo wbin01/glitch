@@ -1,9 +1,9 @@
 module QtQuick.Controls.AdaptiveGlitch
 
 Window 1.0 Window.qml
-AppCloseButton 1.0 AppCloseButton.qml
-AppMaxButton 1.0 AppMaxButton.qml
-AppMinButton 1.0 AppMinButton.qml
+CloseButton 1.0 CloseButton.qml
+MaxButton 1.0 MaxButton.qml
+MinButton 1.0 MinButton.qml
 ScrollView 1.0 ScrollView.qml
 Button 1.0 Button.qml
 ToolButton 1.0 ToolButton.qml

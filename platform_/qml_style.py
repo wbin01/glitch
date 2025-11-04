@@ -308,7 +308,7 @@ Button {
     }
 }
 // +
-AppCloseButton {
+CloseButton {
     id: appCloseButton
     padding: 0
     property url normalIcon: "[AppCloseButton]icon"
@@ -346,7 +346,7 @@ AppCloseButton {
     }
 }
 // +
-AppFullButton {
+FullButton {
     id: appFullButton
     padding: 0
     property url normalIcon: "[AppFullButton]icon"
@@ -388,7 +388,7 @@ AppFullButton {
     }
 }
 // +
-AppMaxButton {
+MaxButton {
     id: appMaxButton
     padding: 0
     property url normalIcon: "[AppMaxButton]icon"
@@ -430,7 +430,7 @@ AppMaxButton {
     }
 }
 // +
-AppMinButton {
+MinButton {
     id: appMinButton
     padding: 0
     property url normalIcon: "[AppMinButton]icon"
@@ -542,9 +542,9 @@ class QmlStyle(object):
                 imports_add = 'import QtQuick.Layouts\n'
 
             for flip in (
-                    ('AppCloseButton', 'ToolButton'),
-                    ('AppMaxButton', 'ToolButton'),
-                    ('AppMinButton', 'ToolButton')):
+                    ('CloseButton', 'ToolButton'),
+                    ('MaxButton', 'ToolButton'),
+                    ('MinButton', 'ToolButton')):
                 theme = theme.replace(flip[0] + ' {', flip[1] + ' {')
 
             element_theme = imports.lstrip() + imports_add + theme

@@ -17,6 +17,15 @@ class View(UI):
         return self.__base
 
     @property
+    def height(self) -> tuple:
+        """..."""
+        pass
+
+    @height.setter
+    def height(self, height: int | tuple) -> None:
+        pass
+
+    @property
     def visible(self) -> bool:
         """..."""
         visible = self._QtObject__property('visible')
@@ -27,3 +36,12 @@ class View(UI):
     @visible.setter
     def visible(self, visible: bool) -> None:
         self._QtObject__set_property('visible', visible)
+
+    @property
+    def width(self) -> tuple:
+        """..."""
+        pass
+
+    @width.setter
+    def width(self, width: int | tuple) -> None:
+        pass
