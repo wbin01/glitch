@@ -46,6 +46,7 @@ class QmlBuilder(object):
             id_ = f'{ui.__class__.__name__.lower()}_{self.__suffix}'
             ui.qml = ui.qml.replace(
                 '// id', f'id: {id_}').replace(
+                '// <id>', f'{id_}').replace(
                 '// objectName', f'objectName: "{id_}"').replace(
                 '// Close ' + ui._name, '// Close ' + id_)
                 # .replace(
@@ -59,6 +60,7 @@ class QmlBuilder(object):
                 id_ = f'{name.lower()}_{self.__suffix}'
                 element.qml = element.qml.replace(
                     '// id', f'id: {id_}').replace(
+                    '// <id>', f'{id_}').replace(
                     '// objectName', f'objectName: "{id_}"\n').replace(
                     '// Close ' + element._name, '// Close ' + id_)
 

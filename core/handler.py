@@ -40,7 +40,7 @@ class Handler(QtCore.QObject):
         signals = ['_mouse_press_signal', '_state_signal']
         for element in layout._QtObject__items:
 
-            qml_base = f'_{element.__class__.__name__}__qml_base'
+            qml_base = f'_{element.__class__.__name__}__qml_base'  # Header
             if (element._base == 'Layout' or
                     hasattr(element, qml_base) and
                     getattr(element, qml_base) == 'Layout'):

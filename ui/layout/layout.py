@@ -7,8 +7,7 @@ from ...enum.align import Align
 class Layout(Add, UI):
     """..."""
     def __init__(self, *args, **kwargs) -> None:
-        super().__init__(*args, **kwargs)
-        self.__base = 'Layout'
+        super().__init__(*args, base='Layout', **kwargs)
         self._QtObject__set_property('clip', 'true')
 
         self.__aligns = {
@@ -87,8 +86,3 @@ class Layout(Add, UI):
                 self._QtObject__set_property('alignment', self.__aligns[align])
             else:
                 self._QtObject__set_property('alignment', align.value)
-
-    @property
-    def _base(self):
-        """..."""
-        return self.__base
