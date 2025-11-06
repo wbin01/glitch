@@ -12,7 +12,9 @@ class Button(View):
             self._QtObject__set_property('text', self.__text)
 
         self._QtObject__set_property('Layout.fillWidth', 'true')
-        self._QtObject__set_property('Layout.minimumHeight', '32')
+        self._QtObject__set_property(
+            'property real layoutMinimumHeight', '32')
+        # self._QtObject__set_property('Layout.minimumHeight', '32')
         # self._QtObject__set_property('checkable', 'true')
         # self._QtObject__set_property(
         #     'onToggled', 'console.log("Estado:", checked)')

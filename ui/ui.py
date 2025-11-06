@@ -53,7 +53,7 @@ class UI(QtObject):
                 'property real layoutMaximumWidth', '-1')
 
             self._QtObject__set_property(
-                'property real layoutMinimumHeight', '32')
+                'property real layoutMinimumHeight', '0')
             self._QtObject__set_property(
                 'property real layoutMaximumHeight', '-1')
 
