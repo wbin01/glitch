@@ -70,18 +70,12 @@ class Header(View):
     @property
     def spacing(self) -> int:
         """..."""
-        return self._QtObject__property('spacing')
+        return self.__left.spacing
 
     @spacing.setter
     def spacing(self, spacing: int) -> None:
-        if hasattr(self, '_HeaderBar__left'):
-            getattr(self, '_HeaderBar__left').spacing = spacing
-
-        if hasattr(self, '_HeaderBar__left'):
-            getattr(self, '_HeaderBar__left').spacing = spacing
-
-        if hasattr(self, '_HeaderBar__right'):
-            getattr(self, '_HeaderBar__right').spacing = spacing
+        self.__left.spacing = spacing
+        self.__right.spacing = spacing
     
     @property
     def text(self) -> str:

@@ -62,21 +62,26 @@ class Layout(Add, UI):
                 self._QtObject__set_property('alignment', align.value)
             return
 
+        if not align:
+            return
+
         fill_width = None
         fill_height = None
-        if not align:
-            align = None
-        elif len(align) == 1:
+        len_align = len(align)
+        
+        if len_align == 1:
             align = align[0]
-        elif len(align) == 2:
+        elif len_align == 2:
             align, fill_width = align
         else:
             align, fill_width, fill_height = align[:3]
         
         if fill_width is not None:
             self._QtObject__set_property('fillWidth', fill_width)
+
         if fill_height is not None:
             self._QtObject__set_property('fillHeight', fill_height)
+
         if align is not None:
             if not self._QtObject__obj:
                 self._QtObject__set_property('alignment', self.__aligns[align])
