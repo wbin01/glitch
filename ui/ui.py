@@ -8,13 +8,19 @@ from ..core.signal import Signal
 binding = """
     Binding { 
         target: // <id>.Layout; 
-        property: "minimumWidth"; 
-        value: // <id>.layoutMinimumWidth 
+        property: "minimumWidth"; value: // <id>.layoutMinimumWidth 
     }
     Binding { 
         target: // <id>.Layout; 
-        property: "maximumWidth"; 
-        value: // <id>.layoutMaximumWidth 
+        property: "maximumWidth"; value: // <id>.layoutMaximumWidth 
+    }
+    Binding { 
+        target: // <id>.Layout; 
+        property: "minimumHeight"; value: // <id>.layoutMinimumHeight
+    }
+    Binding { 
+        target: // <id>.Layout; 
+        property: "maximumHeight"; value: // <id>.layoutMaximumHeight 
     }
     // +
 """
@@ -36,14 +42,20 @@ class UI(QtObject):
         self.__min_width = None
         self.__max_width = None
 
-        self.__set_min_width = False
-        self.__set_max_width = False
+        self.__height = None
+        self.__min_height = None
+        self.__max_height = None
 
         if self._base != 'Frame':
             self._QtObject__set_property(
                 'property real layoutMinimumWidth', '0')
             self._QtObject__set_property(
                 'property real layoutMaximumWidth', '-1')
+
+            self._QtObject__set_property(
+                'property real layoutMinimumHeight', '32')
+            self._QtObject__set_property(
+                'property real layoutMaximumHeight', '-1')
 
             self.qml = self.qml.replace('    // +', binding)
 
@@ -56,11 +68,58 @@ class UI(QtObject):
     @property
     def height(self) -> tuple:
         """..."""
-        pass
+        return self.__height, self.__min_height, self.__max_height
 
     @height.setter
     def height(self, height: int | tuple) -> None:
-        pass
+        if not height:
+            return
+        
+        height_ = None
+        min_height = None
+        max_height = None
+        
+        if isinstance(height, int): height = (height,)
+        len_height = len(height)
+
+        if len_height == 1:
+            height_ = height[0]
+        elif len_height == 2:
+            height_, min_height = height
+        else:
+            height_, min_height, max_height = height[:3]
+
+        if min_height is not None:
+            if max_height and min_height > max_height: min_height = max_height
+            if height_ and min_height > height_: min_height = height_
+            self.__min_height = min_height
+
+        elif self.__min_height is not None:
+            if max_height and self.__min_height > max_height:
+                self.__min_height = max_height
+            if height_ and self.__min_height > height_:
+                self.__min_height = height_
+    
+
+        if max_height is not None:
+            self.__max_height = max_height
+
+        if height_ is not None:
+            self.__height = height_
+            max_height = height_
+
+        if not self._QtObject__obj:
+            if min_height is not None:
+                self._QtObject__set_property(
+                    'property real layoutMinimumHeight', min_height)
+            if max_height is not None:
+                self._QtObject__set_property(
+                    'property real layoutMaximumHeight', max_height)
+        else:
+            if min_height is not None:
+                self._QtObject__set_property('layoutMinimumHeight', min_height)
+            if max_height is not None:
+                self._QtObject__set_property('layoutMaximumHeight', max_height)
 
     @property
     def width(self) -> tuple:
