@@ -39,7 +39,7 @@ class UI(QtObject):
         self.__set_min_width = False
         self.__set_max_width = False
 
-        if self._base == 'View':
+        if self._base != 'Frame':
             self._QtObject__set_property(
                 'property real layoutMinimumWidth', '0')
             self._QtObject__set_property(
