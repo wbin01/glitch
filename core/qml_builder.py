@@ -40,37 +40,22 @@ class QmlBuilder(object):
         self.__suffix += 1
 
         # Layout ID
-        if '// id' in ui.qml and self.__first_iteration:
-            # id_ = 'root_' + ui.__class__.__name__.lower()
-            # id_ = '_' + str(id(ui))
+        if '<id>' in ui.qml and self.__first_iteration:
             id_ = f'{ui.__class__.__name__.lower()}_{self.__suffix}'
-            ui.qml = ui.qml.replace(
-                '// id', f'id: {id_}').replace(
-                '// <id>', f'{id_}').replace(
-                '// objectName', f'objectName: "{id_}"').replace(
+            ui.qml = ui.qml.replace('<id>', f'{id_}').replace(
                 '// Close ' + ui._name, '// Close ' + id_)
-                # .replace(
-                # '// +', window_properties + '\n    // +\n')
 
         # Childs ID
         for name, value in ui.__dict__.items():
             element = getattr(ui, name)
             if isinstance(element, UI):
-                # id_ = '_' + str(id(element))  # id_ = name.lower()
                 id_ = f'{name.lower()}_{self.__suffix}'
-                element.qml = element.qml.replace(
-                    '// id', f'id: {id_}').replace(
-                    '// <id>', f'{id_}').replace(
-                    '// objectName', f'objectName: "{id_}"\n').replace(
+                element.qml = element.qml.replace('<id>', f'{id_}').replace(
                     '// Close ' + element._name, '// Close ' + id_)
 
         # Headers and his properties
         header, body = ui.qml.split('// +')
         qml_end = body.strip('\n')
-        # if self.__first_iteration:
-        #     qml_end = (
-        #         '\n        } // Close mainColumnLayout'
-        #         '\n    } // Close mainRectangle\n' + qml_end)
 
         for line in header.split('\n'):
             if '//' not in line:
@@ -79,9 +64,6 @@ class QmlBuilder(object):
 
         # Sub Childs
         tab += '    '
-        # if self.__first_iteration:
-        #     # tab += '        '
-
         self.__first_iteration = False
         for element in ui._QtObject__items:
             element_items = (getattr(element, '_QtObject__items')

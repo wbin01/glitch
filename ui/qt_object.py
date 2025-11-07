@@ -8,8 +8,10 @@ class UI(object):
 class QtObject(object):
     """..."""
     def __init__(self, name: str = 'Item', *args, **kwargs) -> None:
+        qml = name + ' {\n    id: <id>\n    objectName: "<id>"\n    // +\n}'
+
         self.__name = name
-        self.__qml = name + ' {\n    // id\n    // objectName\n    // +\n}'
+        self.__qml = qml
         self.__obj = None
         self.__items = []
         self.__id = None

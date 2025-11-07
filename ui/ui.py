@@ -7,20 +7,20 @@ from ..core.signal import Signal
 
 binding = """
     Binding { 
-        target: // <id>.Layout; 
-        property: "minimumWidth"; value: // <id>.layoutMinimumWidth 
+        target: <id>.Layout; 
+        property: "minimumWidth"; value: <id>.layoutMinimumWidth 
     }
     Binding { 
-        target: // <id>.Layout; 
-        property: "maximumWidth"; value: // <id>.layoutMaximumWidth 
+        target: <id>.Layout; 
+        property: "maximumWidth"; value: <id>.layoutMaximumWidth 
     }
     Binding { 
-        target: // <id>.Layout; 
-        property: "minimumHeight"; value: // <id>.layoutMinimumHeight
+        target: <id>.Layout; 
+        property: "minimumHeight"; value: <id>.layoutMinimumHeight
     }
     Binding { 
-        target: // <id>.Layout; 
-        property: "maximumHeight"; value: // <id>.layoutMaximumHeight 
+        target: <id>.Layout; 
+        property: "maximumHeight"; value: <id>.layoutMaximumHeight 
     }
     // +
 """
@@ -87,14 +87,14 @@ class UI(QtObject):
             width, 'Width', self.__width, self.__min_width, self.__max_width)
 
     @property
-    def _app(self):
-        """..."""
-        return self.__app
-
-    @property
     def _app_signal(self) -> Signal:
         """..."""
         return self.__app_signal
+
+    @property
+    def _app(self):
+        """..."""
+        return self.__app
 
     @property
     def _base(self):

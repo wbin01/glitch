@@ -140,7 +140,7 @@ Window {
 
             MouseArea {
                 anchors.fill: parent
-                // drag.target: // id
+                // drag.target: <id>
                 onPressed: logic.start_move()
             }
         }
