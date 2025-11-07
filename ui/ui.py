@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
 import math
 
+from PySide6.QtQml import QQmlComponent, QQmlEngine, QQmlContext
+from PySide6.QtCore import QUrl
+
 from . import QtObject
 from ..core.signal import Signal
 
 
-binding = """
+binding_width = """
     Binding { 
         target: <id>.Layout; 
         property: "minimumWidth"; value: <id>.layoutMinimumWidth 
@@ -14,6 +17,10 @@ binding = """
         target: <id>.Layout; 
         property: "maximumWidth"; value: <id>.layoutMaximumWidth 
     }
+    // +
+"""
+
+binding_height = """
     Binding { 
         target: <id>.Layout; 
         property: "minimumHeight"; value: <id>.layoutMinimumHeight
@@ -46,18 +53,8 @@ class UI(QtObject):
         self.__min_height = None
         self.__max_height = None
 
-        if self._base != 'Frame':
-            self._QtObject__set_property(
-                'property real layoutMinimumWidth', '0')
-            self._QtObject__set_property(
-                'property real layoutMaximumWidth', '-1')
-
-            self._QtObject__set_property(
-                'property real layoutMinimumHeight', '0')
-            self._QtObject__set_property(
-                'property real layoutMaximumHeight', '-1')
-
-            self._QtObject__qml = self._QtObject__qml.replace('// +', binding)
+        self.__width_has_set = False
+        self.__height_has_set = False
 
     def __repr__(self) -> str:
         return f'{self.__class__.__name__}(name={self._QtObject__name!r})'
@@ -105,19 +102,63 @@ class UI(QtObject):
         """..."""
         return self.__base
 
+    def __binding_obj(self, item, layout_prop, value, wh_type) -> bool:
+        if not self.__width_has_set or not self.__height_has_set:
+            engine = QQmlEngine.contextForObject(item).engine()
+            qml_code = f"""
+                import QtQuick
+                import QtQuick.Layouts
+
+                Binding {{
+                    target: layoutTarget.Layout
+                    property: "{layout_prop}"
+                    value: bindingValue
+                }}
+            """
+
+            component = QQmlComponent(engine)
+            component.setData(qml_code.encode("utf-8"), QUrl())
+
+            context = QQmlContext(engine.rootContext())
+            context.setContextProperty('layoutTarget', item)
+            context.setContextProperty('bindingValue', value)
+
+            binding = component.create(context)
+            binding.setParent(item)
+
+            if wh_type == 'Width': self.__width_has_set = True
+            if wh_type == 'Height': self.__height_has_set = True
+            return True
+        return False
+
+    def __binding_qml(self, wh_type) -> bool:
+        if not self.__width_has_set or not self.__height_has_set:
+            self._QtObject__set_property(
+                'property real layoutMinimum' + wh_type, '0')
+            self._QtObject__set_property(
+                'property real layoutMaximum' + wh_type, '-1')
+
+            if wh_type == 'Width':
+                self._QtObject__qml = self._QtObject__qml.replace(
+                    '// +', binding_width)
+                self.__width_has_set = True
+            else:
+                self._QtObject__qml = self._QtObject__qml.replace(
+                    '// +', binding_height)
+                self.__height_has_set = True
+            return True
+        return False
+
     def __w_or_h(
             self, wh: int | tuple, wh_type: str,
             property_: int, property_min: int, property_max: int) -> tuple:
         if not wh: return property_, property_min, property_max
 
         # Values
-        wh_ = None
-        min_wh = None
-        max_wh = None
-        
+        wh_, min_wh, max_wh = None, None, None
         if isinstance(wh, int): wh = (wh,)
-        len_wh = len(wh)
 
+        len_wh = len(wh)
         if len_wh == 1:
             wh_ = wh[0]
         elif len_wh == 2:
@@ -125,17 +166,15 @@ class UI(QtObject):
         else:
             wh_, min_wh, max_wh = wh[:3]
 
-        # Calibrate values
+        # Calibrate (When min is >)
         if min_wh is not None:
             if max_wh and min_wh > max_wh: min_wh = max_wh
             if wh_ and min_wh > wh_: min_wh = wh_
             property_min = min_wh
 
         elif property_min is not None:
-            if max_wh and property_min > max_wh:
-                property_min = max_wh
-            if wh_ and property_min > wh_:
-                property_min = wh_
+            if max_wh and property_min > max_wh: property_min = max_wh
+            if wh_ and property_min > wh_: property_min = wh_
         
         # Set for Frames
         if self._base == 'Frame':
@@ -147,15 +186,14 @@ class UI(QtObject):
                 self._QtObject__set_property('maximum' + wh_type, max_wh)
             return property_, property_min, property_max
 
-        # Set for Layouts and Views (ignore width and use maximun on layouts)
-        if max_wh is not None:
-            property_max = max_wh
-
-        if wh_ is not None:
-            property_ = wh_
-            max_wh = wh_
-
+        # Calibrate for Layouts and Views (ignore width: layouts use maximun)
+        if max_wh is not None: property_max = max_wh
+        if wh_ is not None: property_, max_wh = wh_, wh_
+        
+        # Set for Layouts and Views
         if not self._QtObject__obj:
+            self.__binding_qml(wh_type)
+
             if min_wh is not None:
                 self._QtObject__set_property(
                     'property real layoutMinimum' + wh_type, min_wh)
@@ -164,8 +202,14 @@ class UI(QtObject):
                     'property real layoutMaximum' + wh_type, max_wh)
         else:
             if min_wh is not None:
-                self._QtObject__set_property('layoutMinimum' + wh_type, min_wh)
+                if not self.__binding_obj(self._QtObject__obj,
+                        'minimum' + wh_type, min_wh, wh_type):
+                    self._QtObject__set_property(
+                        'layoutMinimum' + wh_type, min_wh)
             if max_wh is not None:
-                self._QtObject__set_property('layoutMaximum' + wh_type, max_wh)
+                if not self.__binding_obj(self._QtObject__obj,
+                        'maximum' + wh_type, max_wh, wh_type):
+                    self._QtObject__set_property(
+                        'layoutMaximum' + wh_type, max_wh)
 
         return property_, property_min, property_max
