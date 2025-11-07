@@ -34,7 +34,7 @@ class UI(QtObject):
         super().__init__(name=name, base=base, *args, **kwargs)
         self.__base = base
         
-        self.qml = self.qml + '  // Close ' + name
+        self._QtObject__qml = self._QtObject__qml + '  // Close ' + name
         self.__app_signal = Signal()
         self.__app = None
         
@@ -57,7 +57,7 @@ class UI(QtObject):
             self._QtObject__set_property(
                 'property real layoutMaximumHeight', '-1')
 
-            self.qml = self.qml.replace('    // +', binding)
+            self._QtObject__qml = self._QtObject__qml.replace('// +', binding)
 
     def __repr__(self) -> str:
         return f'{self.__class__.__name__}(name={self._QtObject__name!r})'

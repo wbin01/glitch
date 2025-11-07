@@ -40,9 +40,10 @@ class QmlBuilder(object):
         self.__suffix += 1
 
         # Layout ID
-        if '<id>' in ui.qml and self.__first_iteration:
+        if '<id>' in ui._QtObject__qml and self.__first_iteration:
             id_ = f'{ui.__class__.__name__.lower()}_{self.__suffix}'
-            ui.qml = ui.qml.replace('<id>', f'{id_}').replace(
+            ui._QtObject__qml = ui._QtObject__qml.replace(
+                '<id>', f'{id_}').replace(
                 '// Close ' + ui._name, '// Close ' + id_)
 
         # Childs ID
@@ -50,11 +51,12 @@ class QmlBuilder(object):
             element = getattr(ui, name)
             if isinstance(element, UI):
                 id_ = f'{name.lower()}_{self.__suffix}'
-                element.qml = element.qml.replace('<id>', f'{id_}').replace(
+                element._QtObject__qml = element._QtObject__qml.replace(
+                    '<id>', f'{id_}').replace(
                     '// Close ' + element._name, '// Close ' + id_)
 
         # Headers and his properties
-        header, body = ui.qml.split('// +')
+        header, body = ui._QtObject__qml.split('// +')
         qml_end = body.strip('\n')
 
         for line in header.split('\n'):
@@ -72,7 +74,7 @@ class QmlBuilder(object):
             if element_items and isinstance(element_items, list):
                 self.__write_qml(element, tab)
             else:
-                for qml_line in element.qml.split('\n'):
+                for qml_line in element._QtObject__qml.split('\n'):
                     if '// Close' in qml_line:
                         qml_line = qml_line.split('// Close')[0].rstrip()
                     if qml_line and '//' not in qml_line:

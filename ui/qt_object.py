@@ -101,15 +101,6 @@ class QtObject(object):
         self.__obj.setProperty(name_camel, value)
 
     @property
-    def qml(self) -> str:
-        """..."""
-        return self.__qml
-
-    @qml.setter
-    def qml(self, qml: str) -> None:
-        self.__qml = qml
-
-    @property
     def _name(self) -> str:
         """..."""
         return self.__name
