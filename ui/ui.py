@@ -68,6 +68,8 @@ class UI(QtObject):
     @property
     def height(self) -> tuple:
         """..."""
+        height = self._QtObject__property('height')
+        if height: self.__height = height
         return self.__height, self.__min_height, self.__max_height
 
     @height.setter
@@ -79,6 +81,8 @@ class UI(QtObject):
     @property
     def width(self) -> tuple:
         """..."""
+        width = self._QtObject__property('width')
+        if width: self.__width = width
         return self.__width, self.__min_width, self.__max_width
 
     @width.setter
@@ -104,7 +108,7 @@ class UI(QtObject):
     def __w_or_h(
             self, wh: int | tuple, wh_type: str,
             property_: int, property_min: int, property_max: int) -> tuple:
-        if not wh: return
+        if not wh: return property_, property_min, property_max
 
         # Values
         wh_ = None

@@ -258,9 +258,6 @@ Window {
 // +
 ScrollView {
     id: scroll
-    Layout.fillWidth: true
-    Layout.fillHeight: true
-
     clip: true
     contentWidth: availableWidth
 

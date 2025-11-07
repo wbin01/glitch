@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+from re import findall
+
 from ..ui import UI
 
 
@@ -94,3 +96,5 @@ class QmlBuilder(object):
                     sparse_qml += line + '\n'
         self.__qml_code = qml_imports.lstrip() + '\n' + sparse_qml.replace(
             '// Close ', '// ')
+        for x in findall(r'<id>', self.__qml_code):
+            print(x)
