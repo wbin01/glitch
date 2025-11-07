@@ -99,7 +99,15 @@ class UI(QtObject):
                 self.__min_height = max_height
             if height_ and self.__min_height > height_:
                 self.__min_height = height_
-    
+        
+        if self._base == 'Frame':
+            if height_ is not None:
+                self._QtObject__set_property('height', height_)
+            if min_height is not None:
+                self._QtObject__set_property('minimumHeight', min_height)
+            if max_height is not None:
+                self._QtObject__set_property('maximumHeight', max_height)
+            return
 
         if max_height is not None:
             self.__max_height = max_height
@@ -154,7 +162,15 @@ class UI(QtObject):
             if max_width and self.__min_width > max_width:
                 self.__min_width = max_width
             if width_ and self.__min_width > width_: self.__min_width = width_
-    
+
+        if self._base == 'Frame':
+            if width_ is not None:
+                self._QtObject__set_property('width', width_)
+            if min_width is not None:
+                self._QtObject__set_property('minimumWidth', min_width)
+            if max_width is not None:
+                self._QtObject__set_property('maximumWidth', max_width)
+            return
 
         if max_width is not None:
             self.__max_width = max_width
