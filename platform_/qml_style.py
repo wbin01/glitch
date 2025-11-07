@@ -276,6 +276,7 @@ ScrollView {
 // +
 Button {
     id: button
+    implicitHeight: 32
 
     background: Rectangle {
         anchors.fill: parent

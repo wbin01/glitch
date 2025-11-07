@@ -131,24 +131,6 @@ class UI(QtObject):
             return True
         return False
 
-    def __binding_qml(self, wh_type) -> bool:
-        if not self.__width_has_set or not self.__height_has_set:
-            self._QtObject__set_property(
-                'property real layoutMinimum' + wh_type, '0')
-            self._QtObject__set_property(
-                'property real layoutMaximum' + wh_type, '-1')
-
-            if wh_type == 'Width':
-                self._QtObject__qml = self._QtObject__qml.replace(
-                    '// +', binding_width)
-                self.__width_has_set = True
-            else:
-                self._QtObject__qml = self._QtObject__qml.replace(
-                    '// +', binding_height)
-                self.__height_has_set = True
-            return True
-        return False
-
     def __w_or_h(
             self, wh: int | tuple, wh_type: str,
             property_: int, property_min: int, property_max: int) -> tuple:
@@ -192,14 +174,22 @@ class UI(QtObject):
         
         # Set for Layouts and Views
         if not self._QtObject__obj:
-            self.__binding_qml(wh_type)
-
             if min_wh is not None:
                 self._QtObject__set_property(
                     'property real layoutMinimum' + wh_type, min_wh)
             if max_wh is not None:
                 self._QtObject__set_property(
                     'property real layoutMaximum' + wh_type, max_wh)
+            
+            if min_wh or max_wh:
+                if wh_type == 'Height' and not self.__height_has_set:
+                    self._QtObject__qml = self._QtObject__qml.replace(
+                    '// +', binding_height)
+                    self.__height_has_set = True
+                elif wh_type == 'Width' and not self.__width_has_set:
+                    self._QtObject__qml = self._QtObject__qml.replace(
+                        '// +', binding_width)
+                    self.__width_has_set = True
         else:
             if min_wh is not None:
                 if not self.__binding_obj(self._QtObject__obj,
