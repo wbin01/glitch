@@ -72,62 +72,8 @@ class UI(QtObject):
 
     @height.setter
     def height(self, height: int | tuple) -> None:
-        if not height:
-            return
-        
-        height_ = None
-        min_height = None
-        max_height = None
-        
-        if isinstance(height, int): height = (height,)
-        len_height = len(height)
-
-        if len_height == 1:
-            height_ = height[0]
-        elif len_height == 2:
-            height_, min_height = height
-        else:
-            height_, min_height, max_height = height[:3]
-
-        if min_height is not None:
-            if max_height and min_height > max_height: min_height = max_height
-            if height_ and min_height > height_: min_height = height_
-            self.__min_height = min_height
-
-        elif self.__min_height is not None:
-            if max_height and self.__min_height > max_height:
-                self.__min_height = max_height
-            if height_ and self.__min_height > height_:
-                self.__min_height = height_
-        
-        if self._base == 'Frame':
-            if height_ is not None:
-                self._QtObject__set_property('height', height_)
-            if min_height is not None:
-                self._QtObject__set_property('minimumHeight', min_height)
-            if max_height is not None:
-                self._QtObject__set_property('maximumHeight', max_height)
-            return
-
-        if max_height is not None:
-            self.__max_height = max_height
-
-        if height_ is not None:
-            self.__height = height_
-            max_height = height_
-
-        if not self._QtObject__obj:
-            if min_height is not None:
-                self._QtObject__set_property(
-                    'property real layoutMinimumHeight', min_height)
-            if max_height is not None:
-                self._QtObject__set_property(
-                    'property real layoutMaximumHeight', max_height)
-        else:
-            if min_height is not None:
-                self._QtObject__set_property('layoutMinimumHeight', min_height)
-            if max_height is not None:
-                self._QtObject__set_property('layoutMaximumHeight', max_height)
+        self.__width_or_height(height, 'Height',
+            self.__height, self.__min_height, self.__max_height)
 
     @property
     def width(self) -> tuple:
@@ -136,61 +82,8 @@ class UI(QtObject):
 
     @width.setter
     def width(self, width: int | tuple) -> None:
-        if not width:
-            return
-        
-        width_ = None
-        min_width = None
-        max_width = None
-        
-        if isinstance(width, int): width = (width,)
-        len_width = len(width)
-
-        if len_width == 1:
-            width_ = width[0]
-        elif len_width == 2:
-            width_, min_width = width
-        else:
-            width_, min_width, max_width = width[:3]
-
-        if min_width is not None:
-            if max_width and min_width > max_width: min_width = max_width
-            if width_ and min_width > width_: min_width = width_
-            self.__min_width = min_width
-
-        elif self.__min_width is not None:
-            if max_width and self.__min_width > max_width:
-                self.__min_width = max_width
-            if width_ and self.__min_width > width_: self.__min_width = width_
-
-        if self._base == 'Frame':
-            if width_ is not None:
-                self._QtObject__set_property('width', width_)
-            if min_width is not None:
-                self._QtObject__set_property('minimumWidth', min_width)
-            if max_width is not None:
-                self._QtObject__set_property('maximumWidth', max_width)
-            return
-
-        if max_width is not None:
-            self.__max_width = max_width
-
-        if width_ is not None:
-            self.__width = width_
-            max_width = width_
-
-        if not self._QtObject__obj:
-            if min_width is not None:
-                self._QtObject__set_property(
-                    'property real layoutMinimumWidth', min_width)
-            if max_width is not None:
-                self._QtObject__set_property(
-                    'property real layoutMaximumWidth', max_width)
-        else:
-            if min_width is not None:
-                self._QtObject__set_property('layoutMinimumWidth', min_width)
-            if max_width is not None:
-                self._QtObject__set_property('layoutMaximumWidth', max_width)
+        self.__width_or_height(width, 'Width',
+            self.__width, self.__min_width, self.__max_width)
 
     @property
     def _app(self):
@@ -206,3 +99,66 @@ class UI(QtObject):
     def _base(self):
         """..."""
         return self.__base
+
+    def __width_or_height(
+            self, wh: int | tuple, wh_type: str,
+            property_: int, property_min: int, property_max: int) -> None:
+        if not wh: return
+
+        # Values
+        wh_ = None
+        min_wh = None
+        max_wh = None
+        
+        if isinstance(wh, int): wh = (wh,)
+        len_wh = len(wh)
+
+        if len_wh == 1:
+            wh_ = wh[0]
+        elif len_wh == 2:
+            wh_, min_wh = wh
+        else:
+            wh_, min_wh, max_wh = wh[:3]
+
+        # Calibrate values
+        if min_wh is not None:
+            if max_wh and min_wh > max_wh: min_wh = max_wh
+            if wh_ and min_wh > wh_: min_wh = wh_
+            property_min = min_wh
+
+        elif property_min is not None:
+            if max_wh and property_min > max_wh:
+                property_min = max_wh
+            if wh_ and property_min > wh_:
+                property_min = wh_
+        
+        # Set for Frames
+        if self._base == 'Frame':
+            if wh_ is not None:
+                self._QtObject__set_property(wh_type.lower(), wh_)
+            if min_wh is not None:
+                self._QtObject__set_property('minimum' + wh_type, min_wh)
+            if max_wh is not None:
+                self._QtObject__set_property('maximum' + wh_type, max_wh)
+            return
+
+        # Set for Layouts and Views (ignore width and use maximun on layouts)
+        if max_wh is not None:
+            property_max = max_wh
+
+        if wh_ is not None:
+            property_ = wh_
+            max_wh = wh_
+
+        if not self._QtObject__obj:
+            if min_wh is not None:
+                self._QtObject__set_property(
+                    'property real layoutMinimum' + wh_type, min_wh)
+            if max_wh is not None:
+                self._QtObject__set_property(
+                    'property real layoutMaximum' + wh_type, max_wh)
+        else:
+            if min_wh is not None:
+                self._QtObject__set_property('layoutMinimum' + wh_type, min_wh)
+            if max_wh is not None:
+                self._QtObject__set_property('layoutMaximum' + wh_type, max_wh)
