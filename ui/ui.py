@@ -72,7 +72,8 @@ class UI(QtObject):
 
     @height.setter
     def height(self, height: int | tuple) -> None:
-        self.__width_or_height(height, 'Height',
+        self.__height, self.__min_height, self.__max_height = self.__w_or_h(
+            height, 'Height',
             self.__height, self.__min_height, self.__max_height)
 
     @property
@@ -82,8 +83,8 @@ class UI(QtObject):
 
     @width.setter
     def width(self, width: int | tuple) -> None:
-        self.__width_or_height(width, 'Width',
-            self.__width, self.__min_width, self.__max_width)
+        self.__width, self.__min_width, self.__max_width = self.__w_or_h(
+            width, 'Width', self.__width, self.__min_width, self.__max_width)
 
     @property
     def _app(self):
@@ -100,9 +101,9 @@ class UI(QtObject):
         """..."""
         return self.__base
 
-    def __width_or_height(
+    def __w_or_h(
             self, wh: int | tuple, wh_type: str,
-            property_: int, property_min: int, property_max: int) -> None:
+            property_: int, property_min: int, property_max: int) -> tuple:
         if not wh: return
 
         # Values
@@ -140,7 +141,7 @@ class UI(QtObject):
                 self._QtObject__set_property('minimum' + wh_type, min_wh)
             if max_wh is not None:
                 self._QtObject__set_property('maximum' + wh_type, max_wh)
-            return
+            return property_, property_min, property_max
 
         # Set for Layouts and Views (ignore width and use maximun on layouts)
         if max_wh is not None:
@@ -162,3 +163,5 @@ class UI(QtObject):
                 self._QtObject__set_property('layoutMinimum' + wh_type, min_wh)
             if max_wh is not None:
                 self._QtObject__set_property('layoutMaximum' + wh_type, max_wh)
+
+        return property_, property_min, property_max
