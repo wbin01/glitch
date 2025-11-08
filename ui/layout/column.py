@@ -2,7 +2,7 @@
 from .layout import Layout
 
 
-class Col(Layout):
+class Column(Layout):
     """..."""
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(name='ColumnLayout', *args, **kwargs)

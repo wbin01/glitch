@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from PySide6.QtQml import QQmlComponent, QQmlEngine, QQmlContext
-from PySide6.QtCore import QUrl, Qt
+from PySide6.QtCore import QUrl
 
 from ..ui import UI
 from ..mixin import Add
