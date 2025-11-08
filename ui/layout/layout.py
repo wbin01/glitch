@@ -32,6 +32,9 @@ class Layout(Add, UI):
         super().__init__(*args, base='Layout', **kwargs)
         self._QtObject__set_property('clip', 'true')
         self.__align_has_set = False
+        self.__alignment = Align.TOP
+        self.__fill_width = True
+        self.__fill_height = True
 
         self.__aligns = {
             Align.BASE_LINE: 'Qt.AlignBaseline',
@@ -55,18 +58,7 @@ class Layout(Add, UI):
     @property
     def align(self) -> tuple:
         """..."""
-        if not self._QtObject__obj: return Align.TOP, True, True
-
-        fill_width = self._QtObject__property('fillWidth')
-        fill_height = self._QtObject__property('fillHeight')
-        alignment = self._QtObject__property('alignment')
-
-        if not fill_width: fill_width = True
-        if not fill_height: fill_height = True
-        if not alignment: alignment = 'Qt.AlignTop'
-
-        for key, value in self.__aligns.items():
-            if value == alignment: return key, fill_width, fill_height
+        return self.__alignment, self.__fill_width, self.__fill_height
 
     @align.setter
     def align(self, align: Align | tuple) -> None:
@@ -108,12 +100,14 @@ class Layout(Add, UI):
                 self._QtObject__set_property('fillWidth', fill_width)
             else:
                 self.__binding(self._QtObject__obj, 'fillWidth', fill_width)
+            self.__fill_width = fill_width
 
         if fill_height is not None:
             if not self._QtObject__obj:
                 self._QtObject__set_property('fillHeight', fill_height)
             else:
                 self.__binding(self._QtObject__obj, 'fillHeight', fill_height)
+            self.__fill_height = fill_height
 
         if align is not None:
             if not self._QtObject__obj:
@@ -121,6 +115,7 @@ class Layout(Add, UI):
             else:
                 self.__binding(
                     self._QtObject__obj, 'alignment', int(align.value))
+            self.__alignment = align
 
     def __binding(self, item, layout_prop, value):
         engine = QQmlEngine.contextForObject(item).engine()
