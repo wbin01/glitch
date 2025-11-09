@@ -309,9 +309,9 @@ Button {
 CloseButton {
     id: appCloseButton
     padding: 0
-    property url normalIcon: "[AppCloseButton]icon"
-    property url hoverIcon: "[AppCloseButton:hover]icon"
-    property url clickedIcon: "[AppCloseButton:clicked]icon"
+    property url normalIcon: "[CloseButton]icon"
+    property url hoverIcon: "[CloseButton:hover]icon"
+    property url clickedIcon: "[CloseButton:clicked]icon"
 
     icon.source:
         appCloseButton.down ?
@@ -327,33 +327,33 @@ CloseButton {
 
         color:
             appCloseButton.down ?
-                "[AppCloseButton:clicked]background_color" :
+                "[CloseButton:clicked]background_color" :
             appCloseButton.hovered ?
-                "[AppCloseButton:hover]background_color" :
-                "[AppCloseButton]background_color"
+                "[CloseButton:hover]background_color" :
+                "[CloseButton]background_color"
 
         border.color:
             appCloseButton.down ?
-                "[AppCloseButton:clicked]border_color" :
+                "[CloseButton:clicked]border_color" :
             appCloseButton.hovered ?
-                "[AppCloseButton:hover]border_color" :
-                "[AppCloseButton]border_color"
+                "[CloseButton:hover]border_color" :
+                "[CloseButton]border_color"
 
-        border.width: [AppCloseButton]border_width
-        radius: [AppCloseButton]border_radius
+        border.width: [CloseButton]border_width
+        radius: [CloseButton]border_radius
     }
 }
 // +
 FullButton {
     id: appFullButton
     padding: 0
-    property url normalIcon: "[AppFullButton]icon"
-    property url hoverIcon: "[AppFullButton:hover]icon"
-    property url clickedIcon: "[AppFullButton:clicked]icon"
+    property url normalIcon: "[FullButton]icon"
+    property url hoverIcon: "[FullButton:hover]icon"
+    property url clickedIcon: "[FullButton:clicked]icon"
 
-    property url restoreNormalIcon: "[AppFullButton]restore_icon"
-    property url restoreHoverIcon: "[AppFullButton:hover]restore_icon"
-    property url restoreClickedIcon: "[AppFullButton:clicked]restore_icon"
+    property url restoreNormalIcon: "[FullButton]restore_icon"
+    property url restoreHoverIcon: "[FullButton:hover]restore_icon"
+    property url restoreClickedIcon: "[FullButton:clicked]restore_icon"
 
     icon.source:
         appFullButton.down ?
@@ -369,33 +369,33 @@ FullButton {
 
         color:
             appFullButton.down ?
-                "[AppFullButton:clicked]background_color" :
+                "[FullButton:clicked]background_color" :
             appFullButton.hovered ?
-                "[AppFullButton:hover]background_color" :
-                "[AppFullButton]background_color"
+                "[FullButton:hover]background_color" :
+                "[FullButton]background_color"
 
         border.color:
             appFullButton.down ?
-                "[AppFullButton:clicked]border_color" :
+                "[FullButton:clicked]border_color" :
             appFullButton.hovered ?
-                "[AppFullButton:hover]border_color" :
-                "[AppFullButton]border_color"
+                "[FullButton:hover]border_color" :
+                "[FullButton]border_color"
 
-        border.width: [AppFullButton]border_width
-        radius: [AppFullButton]border_radius
+        border.width: [FullButton]border_width
+        radius: [FullButton]border_radius
     }
 }
 // +
 MaxButton {
     id: appMaxButton
     padding: 0
-    property url normalIcon: "[AppMaxButton]icon"
-    property url hoverIcon: "[AppMaxButton:hover]icon"
-    property url clickedIcon: "[AppMaxButton:clicked]icon"
+    property url normalIcon: "[MaxButton]icon"
+    property url hoverIcon: "[MaxButton:hover]icon"
+    property url clickedIcon: "[MaxButton:clicked]icon"
 
-    property url restoreNormalIcon: "[AppMaxButton]restore_icon"
-    property url restoreHoverIcon: "[AppMaxButton:hover]restore_icon"
-    property url restoreClickedIcon: "[AppMaxButton:clicked]restore_icon"
+    property url restoreNormalIcon: "[MaxButton]restore_icon"
+    property url restoreHoverIcon: "[MaxButton:hover]restore_icon"
+    property url restoreClickedIcon: "[MaxButton:clicked]restore_icon"
 
     icon.source:
         appMaxButton.down ?
@@ -411,29 +411,29 @@ MaxButton {
 
         color:
             appMaxButton.down ?
-                "[AppMaxButton:clicked]background_color" :
+                "[MaxButton:clicked]background_color" :
             appMaxButton.hovered ?
-                "[AppMaxButton:hover]background_color" :
-                "[AppMaxButton]background_color"
+                "[MaxButton:hover]background_color" :
+                "[MaxButton]background_color"
 
         border.color:
             appMaxButton.down ?
-                "[AppMaxButton:clicked]border_color" :
+                "[MaxButton:clicked]border_color" :
             appMaxButton.hovered ?
-                "[AppMaxButton:hover]border_color" :
-                "[AppMaxButton]border_color"
+                "[MaxButton:hover]border_color" :
+                "[MaxButton]border_color"
 
-        border.width: [AppMaxButton]border_width
-        radius: [AppMaxButton]border_radius
+        border.width: [MaxButton]border_width
+        radius: [MaxButton]border_radius
     }
 }
 // +
 MinButton {
     id: appMinButton
     padding: 0
-    property url normalIcon: "[AppMinButton]icon"
-    property url hoverIcon: "[AppMinButton:hover]icon"
-    property url clickedIcon: "[AppMinButton:clicked]icon"
+    property url normalIcon: "[MinButton]icon"
+    property url hoverIcon: "[MinButton:hover]icon"
+    property url clickedIcon: "[MinButton:clicked]icon"
 
     icon.source:
         appMinButton.down ?
@@ -449,20 +449,20 @@ MinButton {
 
         color:
             appMinButton.down ?
-                "[AppMinButton:clicked]background_color" :
+                "[MinButton:clicked]background_color" :
             appMinButton.hovered ?
-                "[AppMinButton:hover]background_color" :
-                "[AppMinButton]background_color"
+                "[MinButton:hover]background_color" :
+                "[MinButton]background_color"
 
         border.color:
             appMinButton.down ?
-                "[AppMinButton:clicked]border_color" :
+                "[MinButton:clicked]border_color" :
             appMinButton.hovered ?
-                "[AppMinButton:hover]border_color" :
-                "[AppMinButton]border_color"
+                "[MinButton:hover]border_color" :
+                "[MinButton]border_color"
 
-        border.width: [AppMinButton]border_width
-        radius: [AppMinButton]border_radius
+        border.width: [MinButton]border_width
+        radius: [MinButton]border_radius
     }
 }
 // +
@@ -480,7 +480,8 @@ ToolButton {
             toolButton.down ?
                 "[ToolButton:clicked]background_color" :
             toolButton.hovered ?
-                "[ToolButton:hover]background_color" : "[ToolButton]background_color"
+                "[ToolButton:hover]background_color" : 
+                "[ToolButton]background_color"
 
         border.color:
             toolButton.checked && toolButton.hovered ?
