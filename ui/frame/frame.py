@@ -4,8 +4,8 @@ from PySide6 import QtCore
 from ..ui import UI
 from ..mixin import Add
 from ...core.signal import Signal
-from ...enum.frame_shape import FrameShape
-from ...enum.frame_hint import FrameHint
+from ...enum.shape import Shape
+from ...enum.hint import Hint
 
 
 class Frame(Add, UI):
@@ -23,8 +23,8 @@ class Frame(Add, UI):
         self.__state_signal = Signal()
         
         # Properties
-        self.__hint = FrameHint.FRAME
-        self.__shape = FrameShape.FRAME
+        self.__hint = Hint.FRAME
+        self.__shape = Shape.FRAME
         self.__visibility = 'Window.Windowed'
         self.__platform = None
 
@@ -35,12 +35,12 @@ class Frame(Add, UI):
         return self.__class__.__name__
 
     @property
-    def hint(self) -> FrameHint:
+    def hint(self) -> Hint:
         """..."""
         return self.__hint
 
     @hint.setter
-    def hint(self, hint: FrameHint) -> None:
+    def hint(self, hint: Hint) -> None:
         hints = {
             'BOTTOM': 'Qt.FramelessWindowHint | Qt.WindowStaysOnBottomHint',
             'FRAME': 'Qt.FramelessWindowHint',
@@ -56,12 +56,12 @@ class Frame(Add, UI):
         self._hint_signal.emit()
 
     @property
-    def shape(self) -> FrameShape:
+    def shape(self) -> Shape:
         """..."""
         return self.__shape
 
     @shape.setter
-    def shape(self, shape: FrameShape = None) -> None:
+    def shape(self, shape: Shape = None) -> None:
         """..."""
         if shape: self.__shape = shape
 

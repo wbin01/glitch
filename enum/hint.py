@@ -4,7 +4,7 @@ from enum import Enum
 from PySide6 import QtCore
 
 
-class FrameHint(Enum):
+class Hint(Enum):
     """Frame hint enumeration.
 
     FrameHint.BOTTOM → Always behind.
@@ -13,13 +13,13 @@ class FrameHint(Enum):
     FrameHint.TOOL → Tool-like Frame (does not appear in the taskbar).
     FrameHint.TOP → Always on top.
 
-    Use `FrameHint.TOOL` and `FrameHint.POPUP` inside a method to activate 
+    Use `Hint.TOOL` and `Hint.POPUP` inside a method to activate 
     them only when the window is ready; this will avoid styling issues.
 
     Use the `name` property to know which `FrameHint` it is.
     
-    >>> self.frame_hint = FrameHint.FRAME
-    >>> print(self.frame_hint.name)
+    >>> self.hint = Hint.FRAME
+    >>> print(self.hint.name)
     FRAME
     """
     BOTTOM = QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnBottomHint
