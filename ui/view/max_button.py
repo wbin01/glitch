@@ -26,13 +26,13 @@ class MaxButton(View):
     def __on_app_signal(self):
         self.__mouse_press_signal.connect(self.__max_restore)
         self._app._render_signal.connect(
-            lambda: self._app._state_signal.connect(self.__update_icon))
+            lambda: self._app._shape_signal.connect(self.__update_icon))
 
     def __max_restore(self) -> None:
         # showNormal() .showFullScreen()
         self.__saved_properties()
-        state = self._app._QtObject__obj.windowState()
-        if state == QtCore.Qt.WindowState.WindowMaximized:
+        shape = self._app._QtObject__obj.windowState()
+        if shape == QtCore.Qt.WindowState.WindowMaximized:
             self._app._QtObject__obj.showNormal()
             self.__max_icon()
         else:
@@ -41,8 +41,9 @@ class MaxButton(View):
 
     def __update_icon(self) -> None:
         self.__saved_properties()
-        state = self._app._QtObject__obj.windowState()
-        if state == QtCore.Qt.WindowState.WindowMaximized:
+        shape = self._app._QtObject__obj.windowState()
+        if (shape == QtCore.Qt.WindowState.WindowMaximized or
+                shape == QtCore.Qt.WindowState.WindowFullScreen):
             self.__restore_icon()
         else:
             self.__max_icon()

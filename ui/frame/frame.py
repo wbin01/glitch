@@ -20,7 +20,6 @@ class Frame(Add, UI):
         self.__render_signal = Signal()
         self.__resize_signal = Signal()
         self.__shape_signal = Signal()
-        self.__state_signal = Signal()
         
         # Properties
         self.__hint = Hint.FRAME
@@ -29,7 +28,7 @@ class Frame(Add, UI):
         self.__platform = None
 
         # Flags
-        self.__state_border = None
+        self.__shape_border = None
 
     def __repr__(self) -> str:
         return self.__class__.__name__
@@ -69,8 +68,8 @@ class Frame(Add, UI):
             self._render_signal.connect(self.__max_style_qml)
             return
 
-        if not self.__state_border:
-            self.__state_border = (
+        if not self.__shape_border:
+            self.__shape_border = (
                 self._QtObject__property('radiusTopLeft'),
                 self._QtObject__property('radiusTopRight'),
                 self._QtObject__property('radiusBottomRight'),
@@ -89,8 +88,8 @@ class Frame(Add, UI):
             self._QtObject__set_property('radiusTopRight', 0)
             self._QtObject__set_property('radiusBottomRight', 0)
             self._QtObject__set_property('radiusBottomLeft', 0)
-            self._QtObject__set_property('borderColor', self.__state_border[6])
-            self._QtObject__set_property('outLineColor',self.__state_border[6])
+            self._QtObject__set_property('borderColor', self.__shape_border[6])
+            self._QtObject__set_property('outLineColor',self.__shape_border[6])
             self._QtObject__set_property('borderSpacing', 0)
         else:
             self._QtObject__set_property('borderSpacing', 1)
@@ -101,17 +100,17 @@ class Frame(Add, UI):
 
             # self._QtObject__obj.windowStateChanged.emit(shape.value)
             self._QtObject__set_property(
-                'radiusTopLeft', self.__state_border[0])
+                'radiusTopLeft', self.__shape_border[0])
             self._QtObject__set_property(
-                'radiusTopRight', self.__state_border[1])
+                'radiusTopRight', self.__shape_border[1])
             self._QtObject__set_property(
-                'radiusBottomRight', self.__state_border[2])
+                'radiusBottomRight', self.__shape_border[2])
             self._QtObject__set_property(
-                'radiusBottomLeft', self.__state_border[3])
+                'radiusBottomLeft', self.__shape_border[3])
             self._QtObject__set_property(
-                'borderColor', self.__state_border[4])
+                'borderColor', self.__shape_border[4])
             self._QtObject__set_property(
-                'outLineColor', self.__state_border[5])
+                'outLineColor', self.__shape_border[5])
 
         self._shape_signal.value = self.__shape
         self._shape_signal.emit()
@@ -136,11 +135,6 @@ class Frame(Add, UI):
     def _shape_signal(self):
         """..."""
         return self.__shape_signal
-
-    @property
-    def _state_signal(self):
-        """..."""
-        return self.__state_signal
 
     def close(self) -> None:
         """..."""

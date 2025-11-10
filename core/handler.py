@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from PySide6 import QtCore, QtQuick
+
 from ..ui import UI
 
 
@@ -8,7 +9,7 @@ class Handler(QtCore.QObject):
 
     Retrieves the graphic elements from the UI and integrates them with the 
     initial QtObject elements, and then sets the style of the elements and the 
-    UI in each state.
+    UI in each shape state.
     """
     def __init__(
             self, ui = UI, gui: QtQuick.QQuickWindow = None) -> None:
@@ -23,8 +24,8 @@ class Handler(QtCore.QObject):
         self.__elements = self.__gui.findChildren(
             QtCore.QObject, options=QtCore.Qt.FindChildrenRecursively)
 
-        self.__state_border = None
-        self.__gui.windowStateChanged.connect(self.__state_changed)
+        self.__shape_border = None
+        self.__gui.windowStateChanged.connect(self.__shape_changed)
         self.__integrate_graphic_elements(self.__ui)
 
     def __repr__(self) -> str:
@@ -37,7 +38,7 @@ class Handler(QtCore.QObject):
     @QtCore.Slot()
     def __integrate_graphic_elements(self, layout) -> None:
         # Integration UI graphic elements into the Main UI QtObject.
-        signals = ['_mouse_press_signal', '_state_signal']
+        signals = ['_mouse_press_signal', '_shape_signal']
         for element in layout._QtObject__items:
 
             qml_base = f'_{element.__class__.__name__}__qml_base'  # Header
@@ -63,9 +64,9 @@ class Handler(QtCore.QObject):
                         element._QtObject__obj.released.connect(call)
 
     @QtCore.Slot()
-    def __state_changed(self, state: QtCore.Qt.WindowState) -> None:
-        if not self.__state_border:
-            self.__state_border = (
+    def __shape_changed(self, shape: QtCore.Qt.WindowState) -> None:
+        if not self.__shape_border:
+            self.__shape_border = (
                 self.__gui.property('radiusTopLeft'),
                 self.__gui.property('radiusTopRight'),
                 self.__gui.property('radiusBottomRight'),
@@ -74,25 +75,24 @@ class Handler(QtCore.QObject):
                 self.__gui.property('outLineColor'),
                 self.__gui.property('backgroundColor'))
 
-        if (state == QtCore.Qt.WindowState.WindowFullScreen
-                or state == QtCore.Qt.WindowState.WindowMaximized):
+        if (shape == QtCore.Qt.WindowState.WindowFullScreen
+                or shape == QtCore.Qt.WindowState.WindowMaximized):
             self.__gui.setProperty('radiusTopLeft', 0)
             self.__gui.setProperty('radiusTopRight', 0)
             self.__gui.setProperty('radiusBottomRight', 0)
             self.__gui.setProperty('radiusBottomLeft', 0)
-            self.__gui.setProperty('borderColor', self.__state_border[6])
-            self.__gui.setProperty('outLineColor', self.__state_border[6])
+            self.__gui.setProperty('borderColor', self.__shape_border[6])
+            self.__gui.setProperty('outLineColor', self.__shape_border[6])
             self.__gui.setProperty('borderSpacing', 0)
         else:  # borderWidth outLineWidth
             self.__gui.setProperty('borderSpacing', 1)
-            self.__gui.setProperty('radiusTopLeft', self.__state_border[0])
-            self.__gui.setProperty('radiusTopRight', self.__state_border[1])
-            self.__gui.setProperty('radiusBottomRight', self.__state_border[2])
-            self.__gui.setProperty('radiusBottomLeft', self.__state_border[3])
-            self.__gui.setProperty('borderColor', self.__state_border[4])
-            self.__gui.setProperty('outLineColor', self.__state_border[5])
-            
-
+            self.__gui.setProperty('radiusTopLeft', self.__shape_border[0])
+            self.__gui.setProperty('radiusTopRight', self.__shape_border[1])
+            self.__gui.setProperty('radiusBottomRight', self.__shape_border[2])
+            self.__gui.setProperty('radiusBottomLeft', self.__shape_border[3])
+            self.__gui.setProperty('borderColor', self.__shape_border[4])
+            self.__gui.setProperty('outLineColor', self.__shape_border[5])
+        
         self.__gui.findChild(QtCore.QObject, 'canvas').requestPaint()
 
     @QtCore.Slot()

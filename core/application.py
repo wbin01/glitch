@@ -14,7 +14,7 @@ from ..ui import UI
 class AppEventFilter(QtCore.QObject):
     """Application event filter.
 
-    Filters the UI state and adapts the elements.
+    Filters the UI events and adapts the elements.
     """
     def __init__(self, ui: UI, gui: QtQuick.QQuickWindow) -> None:
         """
@@ -26,7 +26,6 @@ class AppEventFilter(QtCore.QObject):
         self.__ui = ui
         self.__gui = gui
         self.__paint = 0
-        self.__state_border = None
         self.__elements = self.__gui.findChildren(
             QtCore.QObject, options=QtCore.Qt.FindChildrenRecursively)
 
@@ -41,7 +40,7 @@ class AppEventFilter(QtCore.QObject):
     def eventFilter(self, obj: QtCore.QObject, event: QtCore.QEvent) -> bool:
         """Adapts the style of the elements.
 
-        Filters the active state of the UI and changes the style of all 
+        Filters the active events of the UI and changes the style of all 
         elements accordingly.
 
         :param obj: QtCore.QObject.
@@ -61,7 +60,7 @@ class AppEventFilter(QtCore.QObject):
             self.__ui._resize_signal.emit()
 
         elif event_type == QtCore.QEvent.WindowStateChange:
-            self.__ui._state_signal.emit()
+            self.__ui._shape_signal.emit()
 
         elif event_type == QtCore.QEvent.Paint:
             if not self.__paint:

@@ -93,15 +93,15 @@ class Header(View):
 
     def __signals_conf(self) -> None:
         self._app._render_signal.connect(self.__center_title)
-        self._app._state_signal.connect(self.__state_signal_thread)
+        self._app._shape_signal.connect(self.__shape_signal_thread)
 
-    def __state_signal_thread(self) -> None:
-        QTimer.singleShot(100, self.__on_state_signal)
+    def __shape_signal_thread(self) -> None:
+        QTimer.singleShot(100, self.__on_shape_signal)
 
-    def __on_state_signal(self) -> None:
+    def __on_shape_signal(self) -> None:
         self.__center_title(True)
 
-    def __center_title(self, state=False) -> None:
+    def __center_title(self, shape=False) -> None:
         # Size vars
         left = int(self.__left._QtObject__property('width'))
         left_margin = int(self.__left_margin._QtObject__property('width'))
@@ -134,7 +134,7 @@ class Header(View):
         if right_side < 0: right_side = 0
 
         # Signals
-        if state:
+        if shape:
             self.__right_margin._QtObject__set_property('rwidth', 0)
             self.__left_margin._QtObject__set_property('lwidth', 0)
             self.__stop = False
