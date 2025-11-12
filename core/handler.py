@@ -21,11 +21,21 @@ class Handler(QtCore.QObject):
         super().__init__()
         self.__ui = ui
         self.__gui = gui
+
         self.__elements = self.__gui.findChildren(
             QtCore.QObject, options=QtCore.Qt.FindChildrenRecursively)
 
         self.__shape_border = None
         self.__gui.windowStateChanged.connect(self.__shape_changed)
+
+        self.__signals = {
+            '_clicked_signal': 'clicked', '_pressed_signal': 'pressed',
+            '_released_signal': 'released', '_hovered_signal':'hoveredChanged',
+            '_toggled_signal': 'toggled', '_checked_signal': 'checkedChanged',
+            '_down_signal': 'downChanged', '_canceled_signal': 'canceled',
+            '_active_focus_signal': 'activeFocusChanged',
+            '_enabled_signal': 'enabledChanged',
+            '_visible_signal': 'visibleChanged'}
         self.__integrate_graphic_elements(self.__ui)
 
     def __repr__(self) -> str:
@@ -38,11 +48,6 @@ class Handler(QtCore.QObject):
     @QtCore.Slot()
     def __integrate_graphic_elements(self, layout) -> None:
         # Integration UI graphic elements into the Main UI QtObject.
-        signals = (
-            '_clicked_signal', '_pressed_signal', '_released_signal',
-            '_hovered_signal', '_toggled_signal', '_checked_signal',
-            '_canceled_signal')
-
         for element in layout._QtObject__items:
 
             qml_base = f'_{element.__class__.__name__}__qml_base'  # Header
@@ -59,25 +64,15 @@ class Handler(QtCore.QObject):
                     continue
 
                 element._QtObject__obj = obj_value
-                for signal in signals:
+                for signal, qt_signal in self.__signals.items():
                     if not hasattr(element, signal):
                         continue
 
                     call = getattr(element, signal).callback()
-                    if callable(call):
-                        if signal == '_clicked_signal':
-                            element._QtObject__obj.clicked.connect(call)
-                        elif signal == '_pressed_signal':
-                            element._QtObject__obj.pressed.connect(call)
-                        elif signal == '_released_signal':
-                            element._QtObject__obj.released.connect(call)
-
-                        elif signal == '_hovered_signal':
-                            element._QtObject__obj.hoveredChanged.connect(call)
-                        elif signal == '_toggled_signal':
-                            element._QtObject__obj.toggled.connect(call)
-                        elif signal == '_checked_signal':
-                            element._QtObject__obj.checkedChanged.connect(call)
+                    if callable(call) and hasattr(
+                            element._QtObject__obj, qt_signal):
+                        getattr(element._QtObject__obj, qt_signal).connect(call)
+                        # element._QtObject__obj.clicked.connect(call)
 
     @QtCore.Slot()
     def __shape_changed(self, shape: QtCore.Qt.WindowState) -> None:
