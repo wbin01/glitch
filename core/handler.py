@@ -47,32 +47,33 @@ class Handler(QtCore.QObject):
 
     @QtCore.Slot()
     def __integrate_graphic_elements(self, layout) -> None:
-        # Integration UI graphic elements into the Main UI QtObject.
-        for element in layout._QtObject__items:
+        # Integrate/Connect real Qt element on UI class element.
+        # ui_ prefix is UI class element and gui_ is the Qt engine element.
+        # >>> ui_element._QtObject__obj = gui_element
+        
+        for ui_element in layout._QtObject__items:
 
-            qml_base = f'_{element.__class__.__name__}__qml_base'  # Header
-            if (element._base == 'Layout' or
-                    hasattr(element, qml_base) and
-                    getattr(element, qml_base) == 'Layout'):
-                self.__integrate_graphic_elements(element)
+            qml_base = f'_{ui_element.__class__.__name__}__qml_base'  # Header
+            if (ui_element._base == 'Layout' or
+                    hasattr(ui_element, qml_base) and
+                    getattr(ui_element, qml_base) == 'Layout'):
+                self.__integrate_graphic_elements(ui_element)
 
-            if isinstance(element, UI):
-                obj_value = self.__gui.findChild(
-                    QtCore.QObject, element._QtObject__property('id'))
+            if isinstance(ui_element, UI):
+                gui_element = self.__gui.findChild(
+                    QtCore.QObject, ui_element._QtObject__property('id'))
                 
-                if not obj_value:
+                if not gui_element:
                     continue
 
-                element._QtObject__obj = obj_value
-                for signal, qt_signal in self.__signals.items():
-                    if not hasattr(element, signal):
+                ui_element._QtObject__obj = gui_element
+                for ui_signal, gui_signal in self.__signals.items():
+                    if not hasattr(ui_element, ui_signal):
                         continue
 
-                    call = getattr(element, signal).callback()
-                    if callable(call) and hasattr(
-                            element._QtObject__obj, qt_signal):
-                        getattr(element._QtObject__obj, qt_signal).connect(call)
-                        # element._QtObject__obj.clicked.connect(call)
+                    call = getattr(ui_element, ui_signal).callback()
+                    if callable(call) and hasattr(gui_element, gui_signal):
+                        getattr(gui_element, gui_signal).connect(call)
 
     @QtCore.Slot()
     def __shape_changed(self, shape: QtCore.Qt.WindowState) -> None:
