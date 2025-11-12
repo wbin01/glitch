@@ -8,7 +8,7 @@ from ...core.signal import Signal
 class MaxButton(View):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(name='MaxButton', *args, **kwargs)
-        self.__mouse_press_signal = Signal()
+        self.__clicked_signal = Signal()
         self.__max, self.__restore = None, None
         self.__hover, self.__restore_hover = None, None
         self.__clicked, self.__restore_clicked = None, None
@@ -19,12 +19,12 @@ class MaxButton(View):
         return f'{self.__class__.__name__}()'
 
     @property
-    def _mouse_press_signal(self) -> Signal:
+    def _clicked_signal(self) -> Signal:
         """..."""
-        return self.__mouse_press_signal
+        return self.__clicked_signal
 
     def __on_app_signal(self):
-        self.__mouse_press_signal.connect(self.__max_restore)
+        self.__clicked_signal.connect(self.__max_restore)
         self._app._render_signal.connect(
             lambda: self._app._shape_signal.connect(self.__update_icon))
 

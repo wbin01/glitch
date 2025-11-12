@@ -38,7 +38,11 @@ class Handler(QtCore.QObject):
     @QtCore.Slot()
     def __integrate_graphic_elements(self, layout) -> None:
         # Integration UI graphic elements into the Main UI QtObject.
-        signals = ['_mouse_press_signal', '_shape_signal']
+        signals = (
+            '_clicked_signal', '_pressed_signal', '_released_signal',
+            '_hovered_signal', '_toggled_signal', '_checked_signal',
+            '_canceled_signal')
+
         for element in layout._QtObject__items:
 
             qml_base = f'_{element.__class__.__name__}__qml_base'  # Header
@@ -61,7 +65,19 @@ class Handler(QtCore.QObject):
 
                     call = getattr(element, signal).callback()
                     if callable(call):
-                        element._QtObject__obj.released.connect(call)
+                        if signal == '_clicked_signal':
+                            element._QtObject__obj.clicked.connect(call)
+                        elif signal == '_pressed_signal':
+                            element._QtObject__obj.pressed.connect(call)
+                        elif signal == '_released_signal':
+                            element._QtObject__obj.released.connect(call)
+
+                        elif signal == '_hovered_signal':
+                            element._QtObject__obj.hoveredChanged.connect(call)
+                        elif signal == '_toggled_signal':
+                            element._QtObject__obj.toggled.connect(call)
+                        elif signal == '_checked_signal':
+                            element._QtObject__obj.checkedChanged.connect(call)
 
     @QtCore.Slot()
     def __shape_changed(self, shape: QtCore.Qt.WindowState) -> None:
