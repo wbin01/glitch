@@ -33,7 +33,7 @@ class Handler(QtCore.QObject):
             '_released_signal': 'released', '_hovered_signal':'hoveredChanged',
             '_toggled_signal': 'toggled', '_checked_signal': 'checkedChanged',
             '_down_signal': 'downChanged', '_canceled_signal': 'canceled',
-            '_active_focus_signal': 'activeFocusChanged',
+            '_active_signal': 'activeFocusChanged',
             '_enabled_signal': 'enabledChanged',
             '_visible_signal': 'visibleChanged'}
         self.__integrate_graphic_elements(self.__ui)

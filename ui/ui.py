@@ -40,11 +40,17 @@ class UI(QtObject):
             *args, **kwargs) -> None:
         super().__init__(name=name, base=base, *args, **kwargs)
         self.__base = base
-        
-        self._QtObject__qml = self._QtObject__qml + '  // Close ' + name
+
+        # Signals
+        self.__active_signal = Signal()
         self.__app_signal = Signal()
-        self.__app = None
+        self.__enabled_signal = Signal()
+        self.__visible_signal = Signal()
         
+        # Properties
+        self._QtObject__qml = self._QtObject__qml + '  // Close ' + name
+        self.__app = None
+
         self.__width = None
         self.__min_width = None
         self.__max_width = None
@@ -53,6 +59,7 @@ class UI(QtObject):
         self.__min_height = None
         self.__max_height = None
 
+        # Flags
         self.__width_has_set = False
         self.__height_has_set = False
 
@@ -88,9 +95,24 @@ class UI(QtObject):
             width, 'Width', self.__width, self.__min_width, self.__max_width)
 
     @property
+    def _active_signal(self) -> Signal:
+        """..."""
+        return self.__active_signal
+
+    @property
     def _app_signal(self) -> Signal:
         """..."""
         return self.__app_signal
+
+    @property
+    def _enabled_signal(self) -> Signal:
+        """..."""
+        return self.__enabled_signal
+
+    @property
+    def _visible_signal(self) -> Signal:
+        """..."""
+        return self.__visible_signal
 
     @property
     def _app(self):

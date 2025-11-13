@@ -11,7 +11,6 @@ from ...enum.hint import Hint
 class Frame(Add, UI):
     """..."""
     def __init__(self, *args, **kwargs) -> None:
-        # Inheritance
         super().__init__(name='Window', base='Frame', *args, **kwargs)
         self._UI__app = self
 
