@@ -1,17 +1,11 @@
 #!/usr/bin/env python3
-from .view import View
+from .abstract_button import AbstractButton
 from ...core.signal import Signal
 
 
-class Button(View):
+class Button(AbstractButton):
     def __init__(self, text: str = None, *args, **kwargs) -> None:
-        super().__init__(name='Button', *args, **kwargs)
-        self.__checked_signal = Signal()
-        self.__clicked_signal = Signal()
-        self.__hovered_signal = Signal()
-        self.__pressed_signal = Signal()
-        self.__released_signal = Signal()
-        self.__toggled_signal = Signal()
+        super().__init__(*args, **kwargs)
 
         self.__text = text
         if self.__text:
@@ -41,33 +35,3 @@ class Button(View):
     def text(self, text: str) -> None:
         self.__text = text
         self._QtObject__set_property('text', text)
-
-    @property
-    def _checked_signal(self) -> Signal:
-        """..."""
-        return self.__checked_signal
-
-    @property
-    def _clicked_signal(self) -> Signal:
-        """..."""
-        return self.__clicked_signal
-
-    @property
-    def _hovered_signal(self) -> Signal:
-        """..."""
-        return self.__hovered_signal
-
-    @property
-    def _pressed_signal(self) -> Signal:
-        """..."""
-        return self.__pressed_signal
-
-    @property
-    def _released_signal(self) -> Signal:
-        """..."""
-        return self.__released_signal
-
-    @property
-    def _toggled_signal(self) -> Signal:
-        """..."""
-        return self.__toggled_signal

@@ -26,7 +26,7 @@ binding = """
     // +
 """
 
-class Layout(Add, UI):
+class AbstractLayout(Add, UI):
     """..."""
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, base='Layout', **kwargs)

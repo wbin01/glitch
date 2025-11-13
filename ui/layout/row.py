@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-from .layout import Layout
+from .abstract_layout import AbstractLayout
 
 
-class Row(Layout):
+class Row(AbstractLayout):
     """..."""
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(name='RowLayout', *args, **kwargs)
