@@ -6,19 +6,11 @@ from ...core.signal import Signal
 class Button(AbstractButton):
     def __init__(self, text: str = None, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
-
         self.__text = text
+
         if self.__text:
             self._QtObject__set_property('text', self.__text)
-
         self._QtObject__set_property('Layout.fillWidth', 'true')
-        # self._QtObject__set_property('checkable', 'true')
-        # self._QtObject__set_property(
-        #     'onToggled', 'console.log("Estado:", checked)')
-        # TODO
-        # self._QtObject__set_property(
-        #     'icon.source',
-        #     '/usr/share/icons/breeze-dark/actions/16/document-open.svg')
 
     def __repr__(self) -> str:
         return f'{self.__class__.__name__}(text={self.__text!r})'
