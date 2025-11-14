@@ -70,6 +70,18 @@ class UI(QtObject):
         return self.__class__.__name__
 
     @property
+    def enabled(self) -> bool:
+        """..."""
+        value = self._QtObject__property('enabled')
+        if value is None:
+            return True
+        return value
+
+    @enabled.setter
+    def enabled(self, value: str) -> None:
+        self._QtObject__set_property('enabled', value)
+    
+    @property
     def height(self) -> tuple:
         """..."""
         height = self._QtObject__property('height')
@@ -81,6 +93,18 @@ class UI(QtObject):
         self.__height, self.__min_height, self.__max_height = self.__w_or_h(
             height, 'Height',
             self.__height, self.__min_height, self.__max_height)
+
+    @property
+    def visible(self) -> bool:
+        """..."""
+        value = self._QtObject__property('visible')
+        if value is None:
+            return True
+        return value
+
+    @visible.setter
+    def visible(self, value: str) -> None:
+        self._QtObject__set_property('visible', value)
 
     @property
     def width(self) -> tuple:

@@ -282,20 +282,32 @@ Button {
         anchors.fill: parent
 
         color:
+            !button.enabled && button.checked ?
+                "[Button:checked:inactive]background_color" :
+            !button.enabled ?
+                "[Button:inactive]background_color" :
+
             button.checked && button.hovered ?
                 "[Button:checked:hover]background_color" :
             button.checked ?
                 "[Button:checked]background_color" :
+            
             button.down ?
                 "[Button:clicked]background_color" :
             button.hovered ?
                 "[Button:hover]background_color" : "[Button]background_color"
 
         border.color:
+            !button.enabled && button.checked ?
+                "[Button:checked:inactive]border_color" :
+            !button.enabled ?
+                "[Button:inactive]border_color" :
+
             button.checked && button.hovered ?
                 "[Button:checked:hover]border_color" :
             button.checked ?
                 "[Button:checked]border_color" :
+            
             button.down ?
                 "[Button:clicked]border_color" :
             button.hovered ?
