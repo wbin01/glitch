@@ -15,11 +15,6 @@ class Platform(object):
         self.__style = Style()
         self.__accent_color = None
 
-        self.__light_suffixes = ['-light', '-Light', ' light', ' Light']
-        self.__dark_suffixes = ['-dark', '-Dark', ' dark', ' Dark']
-        self.__icon_theme_paths = [
-            '/usr/share/icons/', '/home/user/.local/share/icons/',
-            '/home/user/.icons/']
         self.__dark = color_converter.is_dark(color_converter.hex_to_rgba(
             self._style['[AppFrame]']['background_color']))
         self.__icon_theme = None
@@ -61,25 +56,5 @@ class Platform(object):
         """..."""
         return self.__style.style()
 
-    def _variant_icon_theme(
-            self, theme: str, frame_is_dark: bool) -> str:
-        """Dark or light variant icon theme"""
-        icon_theme = ''
-        for path in self.__icon_theme_paths:
-            for suffix in self.__dark_suffixes:
-                
-                if frame_is_dark and 'dark' not in theme.lower():
-                    if 'light' in theme.lower():
-                        
-                        for x in self.__light_suffixes:
-                            theme = theme.replace(x, '')
-
-                    if Path(path + theme + suffix).exists():
-                        icon_theme = theme + suffix
-
-                elif not frame_is_dark and 'dark' in theme.lower():
-                    temp = theme.replace(suffix, '')
-                    if Path(path + temp).exists() and 'dark' not in temp.lower():
-                        icon_theme = temp
-
-        return icon_theme
+    def icon_source(self, source: str) -> str:
+        return self.__icons.icon_source(source)

@@ -1,16 +1,22 @@
 #!/usr/bin/env python3
 from .view import View
+from ...platform_ import Icons, OSDesk
 from ...core.signal import Signal
 
 
 class AbstractButton(View):
     def __init__(
-            self, name='Button', icon_source: str = None, *args, **kwargs
-            ) -> None:
-        super().__init__(name=name, icon_source=icon_source, *args, **kwargs)
-        self.__icon = icon_source
+            self, name='Button', icon: str = None, *args, **kwargs) -> None:
+        super().__init__(name=name, icon=icon, *args, **kwargs)
+        self.__icon = icon
+
+        self.__desk = OSDesk()
+        self.__icons = Icons(self.__desk.desktop_environment)
+        # self.__icons.icon_theme_light_variant()
+
         if self.__icon:
-            self._QtObject__set_property('icon.source', self.__icon)
+            self._QtObject__set_property(
+                'icon.source', self.__icons.icon_source(self.__icon))
         else:
             self._QtObject__set_property('icon.source', '""')
             self._QtObject__set_property('icon.width', '0')
@@ -83,3 +89,32 @@ class AbstractButton(View):
     def _toggled_signal(self) -> Signal:
         """..."""
         return self.__toggled_signal
+
+    # def __update_icon(self) -> None:
+    #     # Fix: DE updates dark icons without registering
+    #     if hasattr(self._frame, '_platform'):
+    #         self.__icon_theme = self._frame._platform.icon_theme
+
+    #         is_dark = color_converter.is_dark(color_converter.hex_to_rgba(
+    #             style_value(
+    #                 self._frame.style,
+    #                 '[' + self._name + ']', 'background_color')))
+
+    #         # TODO Condition for dark or light !=
+    #         icon_theme = self._frame._platform.variant_icon_theme(
+    #             self.__icon_theme, is_dark)
+
+    #         icon = self.__icon.strip('"')
+    #         icon_path = None
+    #         for theme in [icon_theme, self.__icon_theme]:
+    #             self._frame._platform.icon_theme = theme
+    #             if theme:
+    #                 icon_path = IconTheme.getIconPath(
+    #                     iconname=Path(icon).stem,
+    #                     size=self.__icon_size,
+    #                     theme=theme,
+    #                     extensions=['png', 'svg'])  # 'xpm'
+    #                 if icon_path:
+    #                     break
+
+    #         self.icon = icon_path if icon_path else icon

@@ -16,6 +16,7 @@ class Frame(Add, UI):
 
         # Signals
         self.__hint_signal = Signal()
+        self.__platform_signal = Signal()
         self.__render_signal = Signal()
         self.__resize_signal = Signal()
         self.__shape_signal = Signal()

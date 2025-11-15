@@ -94,7 +94,8 @@ class Application(object):
         self.__platform = Platform()
         qml_style = QmlStyle(self.__platform._style, self.__qml_theme_path)
         qml_style.build()
-        self.__ui._AppFrame__platform = self.__platform
+        self.__ui._Frame__platform = self.__platform
+        # self.__ui._Frame__platform_signal.emit()
 
         self.__qt_gui_application = QtGui.QGuiApplication(sys.argv)
         self.__engine = QtQml.QQmlApplicationEngine()
