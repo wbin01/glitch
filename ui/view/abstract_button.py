@@ -11,6 +11,10 @@ class AbstractButton(View):
         self.__icon = icon_source
         if self.__icon:
             self._QtObject__set_property('icon.source', self.__icon)
+        else:
+            self._QtObject__set_property('icon.source', '""')
+            self._QtObject__set_property('icon.width', '0')
+            self._QtObject__set_property('icon.height', '0')
 
         # Signals
         self.__checked_signal = Signal()

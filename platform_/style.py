@@ -359,7 +359,7 @@ class Style(object):
         if self.__app_frame_is_dark:
             self.__app_frame_bd = colr.lighten_hex(self.__app_frame_bg, 15)
         
-        self.__app_frame_rd = '8, 8, 8, 8'
+        self.__app_frame_rd = '6, 6, 6, 6'
         self.__app_frame_io = '1.0'
 
         # Inactive

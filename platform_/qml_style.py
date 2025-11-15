@@ -277,6 +277,40 @@ ScrollView {
 Button {
     id: button
     implicitHeight: 32
+    icon.source: ""
+    
+    contentItem: Item {
+        id: wrapper
+        anchors.fill: parent
+
+        Row {
+            id: row
+            spacing: button.icon.source !== "" ? 6 : 0
+            anchors.centerIn: parent
+
+            Image {
+                id: iconItem
+                source: button.icon.source
+                width: button.icon.width
+                height: visible ? button.icon.height : 0
+                fillMode: Image.PreserveAspectFit
+                visible: button.icon.source !== ""
+
+                opacity: button.enabled ? 
+                    [Button]icon_opacity : [Button:inactive]icon_opacity
+            }
+
+            Text {
+                id: label
+                text: button.text
+                font: button.font
+                verticalAlignment: Text.AlignVCenter
+
+                color: !button.enabled ?
+                    "[Button:inactive]font_color" : "[Button]font_color"
+            }
+        }
+    }
 
     background: Rectangle {
         anchors.fill: parent
@@ -481,14 +515,35 @@ MinButton {
 ToolButton {
     id: toolButton
 
+    icon.source: ""
+    
+    contentItem: Image {
+        id: iconItem
+        anchors.centerIn: parent
+
+        source: toolButton.icon.source
+        width: toolButton.icon.width
+        height: toolButton.icon.height
+        fillMode: Image.PreserveAspectFit
+
+        opacity: toolButton.enabled ? 
+            [ToolButton]icon_opacity : [ToolButton:inactive]icon_opacity
+    }
+
     background: Rectangle {
         anchors.fill: parent
 
         color:
+            !toolButton.enabled && toolButton.checked ?
+                "[ToolButton:checked:inactive]background_color" :
+            !toolButton.enabled ?
+                "[ToolButton:inactive]background_color" :
+
             toolButton.checked && toolButton.hovered ?
                 "[ToolButton:checked:hover]background_color" :
             toolButton.checked ?
                 "[ToolButton:checked]background_color" :
+            
             toolButton.down ?
                 "[ToolButton:clicked]background_color" :
             toolButton.hovered ?
@@ -496,10 +551,16 @@ ToolButton {
                 "[ToolButton]background_color"
 
         border.color:
+            !toolButton.enabled && toolButton.checked ?
+                "[ToolButton:checked:inactive]border_color" :
+            !toolButton.enabled ?
+                "[ToolButton:inactive]border_color" :
+
             toolButton.checked && toolButton.hovered ?
                 "[ToolButton:checked:hover]border_color" :
             toolButton.checked ?
                 "[ToolButton:checked]border_color" :
+            
             toolButton.down ?
                 "[ToolButton:clicked]border_color" :
             toolButton.hovered ?
@@ -512,7 +573,8 @@ ToolButton {
 // +
 Label {
     id: label
-    color: "[Label]font_color"
+    color:
+        !label.enabled ? "[Label:inactive]font_color" : "[Label]font_color"
 }
 """
 
