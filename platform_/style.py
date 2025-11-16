@@ -370,9 +370,9 @@ class Style(object):
             self.__app_frame_in_io = self.__app_frame_io
             self.__app_frame_in_bd = self.__app_frame_bd
         else:
-            self.__app_frame_in_fg = '#99' + self.__app_frame_fg[3:]
+            self.__app_frame_in_fg = '#50' + self.__app_frame_fg[3:]
             self.__app_frame_in_bg = colr.darken_hex(self.__app_frame_bg, 4)
-            self.__app_frame_in_io = '0.5'
+            self.__app_frame_in_io = '0.2'
 
             self.__app_frame_in_bd = self.__app_frame_in_bg
             if self.__app_frame_is_dark:
@@ -415,8 +415,8 @@ class Style(object):
             self.__button_in_bg = self.__button_bg
             self.__button_in_bd = self.__button_bd
         else:
-            self.__button_in_bg = self.__app_frame_in_bg
-            self.__button_in_bd = '#33' + self.__button_bd[3:]
+            self.__button_in_bg = '#AA' + self.__button_bg[3:]  # self.__app_frame_in_bg
+            self.__button_in_bd = '#80' + self.__button_bd[3:]
         
         self.__button_in_io = self.__app_frame_in_io
 
@@ -463,8 +463,8 @@ class Style(object):
         self.__tool_button_rd = self.__button_rd
 
         # Inactive
-        self.__tool_button_in_bg = self.__app_frame_in_bg
-        self.__tool_button_in_bd = self.__app_frame_in_bg
+        self.__tool_button_in_bg = '#00000000'  # self.__app_frame_in_bg
+        self.__tool_button_in_bd = '#00000000'  # self.__app_frame_in_bg
         self.__tool_button_in_io = self.__button_in_io
         
         # Hover

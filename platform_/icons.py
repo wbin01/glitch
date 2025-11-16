@@ -94,6 +94,14 @@ class Icons(object):
             if not Path(icon).exists():
                 return str(self.__icon_path / 'empty.svg')
             return icon
+
+        variant_theme = self.__icon_theme
+        if dark and 'dark' not in self.__icon_theme.lower():
+            variant_theme = self.icon_theme_dark_variant(self.__icon_theme)
+        elif not dark and 'dark' in self.__icon_theme.lower():
+            variant_theme = self.icon_theme_light_variant(self.__icon_theme)
+
+        if variant_theme: self.__icon_theme = variant_theme 
         
         icon_path = IconTheme.getIconPath(
             iconname=icon,

@@ -91,6 +91,10 @@ class AbstractButton(View):
         return self.__toggled_signal
 
     def __update_icon(self) -> None:
+        if not self._QtObject__obj:
+            self._render_signal.connect(self.__update_icon)
+            return
+
         if not self.__style:
             self.__style = self._app._platform._style[
                 '[' + self._QtObject__name + ']']
@@ -98,9 +102,6 @@ class AbstractButton(View):
                 color_converter.hex_to_rgba(self.__style['background_color']))
             self.__icons = self._app._platform
 
-        if not self._QtObject__obj:
-            self._render_signal.connect(self.__update_icon)
-            return
-
         self._QtObject__set_property(
-            'iconSource', self._app._platform.icon_source(self.__icon))
+            'iconSource', self._app._platform.icon_source(
+                self.__icon, dark=True if self.__is_dark else False))

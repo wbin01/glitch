@@ -56,8 +56,8 @@ class Platform(object):
         """..."""
         return self.__style.style()
 
-    def icon_source(self, source: str | None) -> str:
-        return self.__icons.icon_source(source)
+    def icon_source(self, source: str | None, dark: bool = None) -> str:
+        return self.__icons.icon_source(source, dark=dark)
 
     def icon_theme_variant(
             self, icon_theme: str = None, dark: bool = None) -> str:
