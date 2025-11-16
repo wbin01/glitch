@@ -10,17 +10,16 @@ class AbstractButton(View):
             self, name='Button', icon: str = None, *args, **kwargs) -> None:
         super().__init__(name=name, icon=icon, *args, **kwargs)
         self.__icon = icon
-        self.__style = None
-        self.__is_dark = False
 
-        self._QtObject__set_property('icon.source', '/home/user/Dev/github/glitch/static/icons/linux/call-stop.svg')
+        # Flag
+        self.__is_dark = None
 
+        # Set
         if not self.__icon and self._QtObject__name == 'Button':
             self._QtObject__set_property('icon.width', '0')
             self._QtObject__set_property('icon.height', '0')
         else:
-            self._app_signal.connect(
-                lambda: self._app._platform_signal.connect(self.__update_icon))
+            self._render_signal.connect(self.__update_icon)
 
         # Signals
         self.__checked_signal = Signal()
@@ -31,9 +30,6 @@ class AbstractButton(View):
         self.__toggled_signal = Signal()
     
     def __repr__(self) -> str:
-        return f'{self.__class__.__name__}()'
-
-    def __str__(self) -> str:
         return f'{self.__class__.__name__}()'
 
     @property
@@ -91,16 +87,10 @@ class AbstractButton(View):
         return self.__toggled_signal
 
     def __update_icon(self) -> None:
-        if not self._QtObject__obj:
-            self._render_signal.connect(self.__update_icon)
-            return
-
-        if not self.__style:
-            self.__style = self._app._platform._style[
-                '[' + self._QtObject__name + ']']
+        if self.__is_dark is None:
             self.__is_dark = color_converter.is_dark(
-                color_converter.hex_to_rgba(self.__style['background_color']))
-            self.__icons = self._app._platform
+                color_converter.hex_to_rgba(self._app._platform._style[
+                    '[' + self._QtObject__name + ']']['background_color']))
 
         self._QtObject__set_property(
             'iconSource', self._app._platform.icon_source(
