@@ -103,35 +103,28 @@ class Header(View):
 
     def __center_title(self, shape=False) -> None:
         # Size vars
+        controls = self.__control_buttons._QtObject__property('width')
         left = int(self.__left._QtObject__property('width'))
         left_margin = int(self.__left_margin._QtObject__property('width'))
         left_span = int(self.__left_span._QtObject__property('width'))
 
         title = int(self.__text._QtObject__property('width'))
 
-        right = int(self.__right._QtObject__property('width'))
-        right_margin = int(self.__right_margin._QtObject__property('width'))
         right_span = int(self.__right_span._QtObject__property('width'))
-        
+        right_margin = int(self.__right_margin._QtObject__property('width'))
+        right = int(self.__right._QtObject__property('width'))
         icon = int(self.__icon._QtObject__property('width'))
+
         window = int(self._app._QtObject__obj.width())
         ratio = self._app._QtObject__obj.devicePixelRatio()
 
         # New stop point
-        used_area = (self.__control_buttons._QtObject__property(
-            'width') * ratio) + left + title + right + icon
+        used_area = (controls * ratio) + left + title + right + icon
         self.__stop = True if window < used_area + 20 else False
         if self.__stop:
             self.__right_margin._QtObject__set_property('rwidth', 5)
             self.__left_margin._QtObject__set_property('lwidth', 5)
             return
-
-        left_side = (self.__control_buttons._QtObject__property(
-            'width') * ratio) + (left * ratio)
-        if left_side < 0: left_side = 0
-
-        right_side = (right * ratio) + (icon * ratio)
-        if right_side < 0: right_side = 0
 
         # Signals
         if shape:
@@ -145,6 +138,12 @@ class Header(View):
             self.__resize = True
 
         # Equal sides +
+        left_side = (controls * ratio) + (left * ratio)
+        if left_side < 0: left_side = 0
+
+        right_side = (right * ratio) + (icon * ratio)
+        if right_side < 0: right_side = 0
+        
         if left_side > right_side:
             self.__rwidth = int(left_side - right_side)
             self.__side = 'right'
@@ -165,16 +164,12 @@ class Header(View):
 
         rwidth = right_margin - dt
         if self.__side == 'right' and not right_span and rwidth > 2:
-            # self.__stop = True if left_margin < 10 and rwidth < 10 else False
-            # self.__stop = True if window < used_area else False
             if self.__stop: rwidth = 5
             if self.__margin_delta > right_margin - dt:
                 self.__right_margin._QtObject__set_property('rwidth', rwidth)
 
         lwidth = left_margin - dt
         if self.__side == 'left' and not left_span and lwidth > 2:
-            # self.__stop = True if right_margin < 10 and lwidth < 10 else False
-            # self.__stop = True if window < used_area else False
             if self.__stop: lwidth = 5
             if self.__margin_delta > left_margin - dt:
                 self.__left_margin._QtObject__set_property('lwidth', lwidth)
