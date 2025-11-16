@@ -67,6 +67,7 @@ class Handler(QtCore.QObject):
                     continue
 
                 ui_element._QtObject__obj = gui_element
+                if ui_element._base == 'View': ui_element._render_signal.emit()
                 for ui_signal, gui_signal in self.__signals.items():
                     if not hasattr(ui_element, ui_signal):
                         continue

@@ -277,7 +277,9 @@ ScrollView {
 Button {
     id: button
     implicitHeight: 32
+
     icon.source: ""
+    property alias iconSource: iconItem.source
     
     contentItem: Item {
         id: wrapper
@@ -516,6 +518,7 @@ ToolButton {
     id: toolButton
 
     icon.source: ""
+    property alias iconSource: iconItem.source
     
     contentItem: Image {
         id: iconItem

@@ -122,6 +122,11 @@ class Frame(Add, UI):
         return self.__hint_signal
 
     @property
+    def _platform_signal(self):
+        """..."""
+        return self.__platform_signal
+
+    @property
     def _render_signal(self):
         """..."""
         return self.__render_signal
@@ -135,6 +140,11 @@ class Frame(Add, UI):
     def _shape_signal(self):
         """..."""
         return self.__shape_signal
+
+    @property
+    def _platform(self):
+        """..."""
+        return self.__platform
 
     def close(self) -> None:
         """..."""

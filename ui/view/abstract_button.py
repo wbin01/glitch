@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from .view import View
+from ...tools import color_converter
 from ...platform_ import Icons, OSDesk
 from ...core.signal import Signal
 
@@ -9,18 +10,17 @@ class AbstractButton(View):
             self, name='Button', icon: str = None, *args, **kwargs) -> None:
         super().__init__(name=name, icon=icon, *args, **kwargs)
         self.__icon = icon
+        self.__style = None
+        self.__is_dark = False
 
-        self.__desk = OSDesk()
-        self.__icons = Icons(self.__desk.desktop_environment)
-        # self.__icons.icon_theme_light_variant()
+        self._QtObject__set_property('icon.source', '/home/user/Dev/github/glitch/static/icons/linux/call-stop.svg')
 
-        if self.__icon:
-            self._QtObject__set_property(
-                'icon.source', self.__icons.icon_source(self.__icon))
-        else:
-            self._QtObject__set_property('icon.source', '""')
+        if not self.__icon and self._QtObject__name == 'Button':
             self._QtObject__set_property('icon.width', '0')
             self._QtObject__set_property('icon.height', '0')
+        else:
+            self._app_signal.connect(
+                lambda: self._app._platform_signal.connect(self.__update_icon))
 
         # Signals
         self.__checked_signal = Signal()
@@ -29,7 +29,7 @@ class AbstractButton(View):
         self.__pressed_signal = Signal()
         self.__released_signal = Signal()
         self.__toggled_signal = Signal()
-
+    
     def __repr__(self) -> str:
         return f'{self.__class__.__name__}()'
 
@@ -90,31 +90,17 @@ class AbstractButton(View):
         """..."""
         return self.__toggled_signal
 
-    # def __update_icon(self) -> None:
-    #     # Fix: DE updates dark icons without registering
-    #     if hasattr(self._frame, '_platform'):
-    #         self.__icon_theme = self._frame._platform.icon_theme
+    def __update_icon(self) -> None:
+        if not self.__style:
+            self.__style = self._app._platform._style[
+                '[' + self._QtObject__name + ']']
+            self.__is_dark = color_converter.is_dark(
+                color_converter.hex_to_rgba(self.__style['background_color']))
+            self.__icons = self._app._platform
 
-    #         is_dark = color_converter.is_dark(color_converter.hex_to_rgba(
-    #             style_value(
-    #                 self._frame.style,
-    #                 '[' + self._name + ']', 'background_color')))
+        if not self._QtObject__obj:
+            self._render_signal.connect(self.__update_icon)
+            return
 
-    #         # TODO Condition for dark or light !=
-    #         icon_theme = self._frame._platform.variant_icon_theme(
-    #             self.__icon_theme, is_dark)
-
-    #         icon = self.__icon.strip('"')
-    #         icon_path = None
-    #         for theme in [icon_theme, self.__icon_theme]:
-    #             self._frame._platform.icon_theme = theme
-    #             if theme:
-    #                 icon_path = IconTheme.getIconPath(
-    #                     iconname=Path(icon).stem,
-    #                     size=self.__icon_size,
-    #                     theme=theme,
-    #                     extensions=['png', 'svg'])  # 'xpm'
-    #                 if icon_path:
-    #                     break
-
-    #         self.icon = icon_path if icon_path else icon
+        self._QtObject__set_property(
+            'iconSource', self._app._platform.icon_source(self.__icon))
