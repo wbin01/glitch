@@ -25,8 +25,9 @@ class MaxButton(View):
 
     def __on_app_signal(self):
         self.__clicked_signal.connect(self.__max_restore)
-        self._app._render_signal.connect(
-            lambda: self._app._shape_signal.connect(self.__update_icon))
+        if hasattr(self._app, '_shape_signal'):
+            self._app._render_signal.connect(
+                lambda: self._app._shape_signal.connect(self.__update_icon))
 
     def __max_restore(self) -> None:
         # showNormal() .showFullScreen()

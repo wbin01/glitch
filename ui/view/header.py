@@ -93,7 +93,8 @@ class Header(View):
 
     def __signals_conf(self) -> None:
         self._app._render_signal.connect(self.__center_title)
-        self._app._shape_signal.connect(self.__shape_signal_thread)
+        if hasattr(self._app, '_shape_signal'):
+            self._app._shape_signal.connect(self.__shape_signal_thread)
 
     def __shape_signal_thread(self) -> None:
         QTimer.singleShot(100, self.__on_shape_signal)

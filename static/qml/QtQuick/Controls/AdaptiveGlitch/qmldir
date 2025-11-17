@@ -1,5 +1,7 @@
 module QtQuick.Controls.AdaptiveGlitch
 
+BaseFrame 1.0 BaseFrame.qml
+MainFrame 1.0 MainFrame.qml
 Window 1.0 Window.qml
 CloseButton 1.0 CloseButton.qml
 MaxButton 1.0 MaxButton.qml

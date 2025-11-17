@@ -6,7 +6,136 @@ import QtQuick
 import QtQuick.Controls
 // sep imports-elements
 // +
-Window {
+BaseFrame {
+    title: "Glitch App"
+    color: "transparent"
+    flags: Qt.FramelessWindowHint
+
+    width: 400
+    height: 400
+
+    minimumWidth: 100
+    minimumHeight: 30
+
+    visible: true
+    visibility: Window.Windowed
+
+    property alias borderWidth: mainRectangle.borderWidth
+    property alias outLineWidth: mainRectangle.outLineWidth
+    property alias outLineColor: mainRectangle.outLineColor
+    property alias backgroundColor: mainRectangle.backgroundColor
+    property alias borderColor: mainRectangle.borderColor
+
+    property alias radiusTopLeft: mainRectangle.radiusTopLeft
+    property alias radiusTopRight: mainRectangle.radiusTopRight
+    property alias radiusBottomRight: mainRectangle.radiusBottomRight
+    property alias radiusBottomLeft: mainRectangle.radiusBottomLeft
+
+    property alias spacing: mainColumnLayout.spacing
+    property alias borderSpacing: canvas.borderSpacing
+
+    MouseArea {
+        anchors.fill: parent
+        acceptedButtons: Qt.RightButton
+        onPressed: logic.connections()
+    }
+
+    Rectangle {
+        id: mainRectangle
+        objectName: "mainRectangle"
+        anchors.fill: parent
+        color: "transparent"
+        z: 1
+        property bool isActive: true
+
+        property color backgroundColor: "[AppFrame]background_color"
+        property color borderColor: "[AppFrame]border_color"
+        property color outLineColor: "#44000000"
+        property int borderWidth: 1
+        property int outLineWidth: 1
+
+        property int radiusTopLeft: [AppFrame]border_radius_tl
+        property int radiusTopRight: [AppFrame]border_radius_tr
+        property int radiusBottomRight: [AppFrame]border_radius_br
+        property int radiusBottomLeft: [AppFrame]border_radius_bl
+
+        Canvas {
+            id: canvas
+            objectName: "canvas"
+            anchors.fill: parent
+            property int borderSpacing: 1
+
+            onPaint: {
+                var ctx = getContext("2d");
+                ctx.clearRect(0, 0, width, height);
+
+                // Function to draw rounded rectangle with individuals corners
+                function roundedRect(x, y, w, h, rtl, rtr, rbr, rbl) {
+                    ctx.beginPath();
+                    ctx.moveTo(x + rtl, y);
+                    ctx.lineTo(x + w - rtr, y);
+                    ctx.arcTo(x + w, y, x + w, y + rtr, rtr);
+                    ctx.lineTo(x + w, y + h - rbr);
+                    ctx.arcTo(x + w, y + h, x + w - rbr, y + h, rbr);
+                    ctx.lineTo(x + rbl, y + h);
+                    ctx.arcTo(x, y + h, x, y + h - rbl, rbl);
+                    ctx.lineTo(x, y + rtl);
+                    ctx.arcTo(x, y, x + rtl, y, rtl);
+                    ctx.closePath();
+                }
+
+                // --- Background ---
+                roundedRect(
+                    1, 1, width - 2, height - 2,
+                    mainRectangle.radiusTopLeft,
+                    mainRectangle.radiusTopRight,
+                    mainRectangle.radiusBottomRight,
+                    mainRectangle.radiusBottomLeft);
+
+                ctx.fillStyle = mainRectangle.backgroundColor;
+                ctx.fill();
+
+                // --- Outer border ---
+                roundedRect(
+                    0, 0, width, height,
+                    mainRectangle.radiusTopLeft + 2,
+                    mainRectangle.radiusTopRight + 2,
+                    mainRectangle.radiusBottomRight + 2,
+                    mainRectangle.radiusBottomLeft + 2);
+
+                ctx.strokeStyle = mainRectangle.outLineColor;
+                ctx.lineWidth = mainRectangle.outLineWidth;
+                ctx.stroke();
+
+                // --- Inner border ---
+                var inset = borderSpacing + mainRectangle.borderWidth / 2;
+                roundedRect(
+                    inset, inset,
+                    width - inset * 2,
+                    height - inset * 2,
+                    Math.max(0, mainRectangle.radiusTopLeft - inset),
+                    Math.max(0, mainRectangle.radiusTopRight - inset),
+                    Math.max(0, mainRectangle.radiusBottomRight - inset),
+                    Math.max(0, mainRectangle.radiusBottomLeft - inset));
+
+                ctx.strokeStyle = mainRectangle.borderColor;
+                ctx.lineWidth = mainRectangle.borderWidth;
+                ctx.stroke();
+            }
+        }
+
+        ColumnLayout {
+            id: mainColumnLayout
+            anchors.fill: parent
+            anchors.margins: 1
+            spacing: 6
+            clip: true
+        }
+    }
+    default property alias content: mainColumnLayout.data
+}
+// +
+MainFrame {
     title: "Glitch App"
     color: "transparent"
     flags: Qt.FramelessWindowHint
@@ -613,11 +742,13 @@ class QmlStyle(object):
             element_name = theme.strip().split('\n')[0].rstrip('{').strip()
 
             imports_add = ''
-            if element_name in ('Window',
+            if element_name in (
+                    'Window', 'BaseFrame', 'MainFrame',
                     'ScrollView', 'Layout', 'ColumnLayout', 'RowLayout'):
                 imports_add = 'import QtQuick.Layouts\n'
 
             for flip in (
+                    ('BaseFrame', 'Window'), ('MainFrame', 'Window'),
                     ('CloseButton', 'ToolButton'),
                     ('MaxButton', 'ToolButton'),
                     ('MinButton', 'ToolButton')):

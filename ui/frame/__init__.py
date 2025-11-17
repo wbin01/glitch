@@ -1,3 +1,3 @@
 #!/usr/bin/env python3
-from .app_frame import AppFrame
+from .main_frame import MainFrame
 from .frame import Frame

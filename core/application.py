@@ -60,7 +60,8 @@ class AppEventFilter(QtCore.QObject):
             self.__ui._resize_signal.emit()
 
         elif event_type == QtCore.QEvent.WindowStateChange:
-            self.__ui._shape_signal.emit()
+            if hasattr(self.__ui, '_shape_signal'):
+                self.__ui._shape_signal.emit()
 
         elif event_type == QtCore.QEvent.Paint:
             if not self.__paint:
