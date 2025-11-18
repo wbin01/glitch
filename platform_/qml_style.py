@@ -136,6 +136,7 @@ BaseFrame {
 }
 // +
 MainFrame {
+    id: win
     title: "Glitch App"
     color: "transparent"
     flags: Qt.FramelessWindowHint
@@ -145,6 +146,9 @@ MainFrame {
 
     minimumWidth: 100
     minimumHeight: 30
+
+    property bool movable: false
+    property bool resizable: false
 
     visible: true
     visibility: Window.Windowed
@@ -270,11 +274,15 @@ MainFrame {
             MouseArea {
                 anchors.fill: parent
                 // drag.target: <id>
-                onPressed: logic.start_move()
+                // onPressed: logic.start_move()
+                onPressed: {
+                    if (win.movable) {
+                        logic.start_move()
+                    }
+                }
             }
         }
         // Drag area
-
 
         // Resize corners
         // Top left - resize NW
@@ -284,9 +292,16 @@ MainFrame {
             height: 10
             anchors.top: parent.top
             anchors.left: parent.left
-            cursorShape: Qt.SizeFDiagCursor
+            // cursorShape: Qt.SizeFDiagCursor
+            cursorShape: win.resizable ? Qt.SizeFDiagCursor : Qt.ArrowCursor
+            // enabled: win.resizable
             hoverEnabled: true
-            onPressed: logic.start_resize(Qt.TopEdge | Qt.LeftEdge)
+            // onPressed: logic.start_resize(Qt.TopEdge | Qt.LeftEdge)
+            onPressed: {
+                if (win.resizable) {
+                    logic.start_resize(Qt.TopEdge | Qt.LeftEdge)
+                }
+            }
         }
 
         // Top right - resize NE
@@ -296,9 +311,13 @@ MainFrame {
             height: 10
             anchors.top: parent.top
             anchors.right: parent.right
-            cursorShape: Qt.SizeBDiagCursor
+            cursorShape: win.resizable ? Qt.SizeBDiagCursor : Qt.ArrowCursor
             hoverEnabled: true
-            onPressed: logic.start_resize(Qt.TopEdge | Qt.RightEdge)
+            onPressed: {
+                if (win.resizable) {
+                    logic.start_resize(Qt.TopEdge | Qt.RightEdge)
+                }
+            }
         }
 
         // Bottom left - resize SW
@@ -308,9 +327,14 @@ MainFrame {
             height: 10
             anchors.bottom: parent.bottom
             anchors.left: parent.left
-            cursorShape: Qt.SizeBDiagCursor
+            cursorShape: win.resizable ? Qt.SizeBDiagCursor : Qt.ArrowCursor
             hoverEnabled: true
-            onPressed: logic.start_resize(Qt.BottomEdge | Qt.LeftEdge)
+            // onPressed: logic.start_resize(Qt.BottomEdge | Qt.LeftEdge)
+            onPressed: {
+                if (win.resizable) {
+                    logic.start_resize(Qt.BottomEdge | Qt.LeftEdge)
+                }
+            }
         }
 
         // Bottom right - resize SE
@@ -320,9 +344,14 @@ MainFrame {
             height: 10
             anchors.bottom: parent.bottom
             anchors.right: parent.right
-            cursorShape: Qt.SizeFDiagCursor
+            cursorShape: win.resizable ? Qt.SizeFDiagCursor : Qt.ArrowCursor
             hoverEnabled: true
-            onPressed: logic.start_resize(Qt.BottomEdge | Qt.RightEdge)
+            // onPressed: logic.start_resize(Qt.BottomEdge | Qt.RightEdge)
+            onPressed: {
+                if (win.resizable) {
+                    logic.start_resize(Qt.BottomEdge | Qt.RightEdge)
+                }
+            }
         }
 
         // Top - N
@@ -332,9 +361,14 @@ MainFrame {
             anchors.left: resizeTopLeft.right
             anchors.right: resizeTopRight.left
             height: 5
-            cursorShape: Qt.SizeVerCursor
+            cursorShape: win.resizable ? Qt.SizeVerCursor : Qt.ArrowCursor
             hoverEnabled: true
-            onPressed: logic.start_resize(Qt.TopEdge)
+            // onPressed: logic.start_resize(Qt.TopEdge)
+            onPressed: {
+                if (win.resizable) {
+                    logic.start_resize(Qt.TopEdge)
+                }
+            }
         }
 
         // Bottom - S
@@ -344,9 +378,14 @@ MainFrame {
             anchors.left: resizeBottomLeft.right
             anchors.right: resizeBottomRight.left
             height: 5
-            cursorShape: Qt.SizeVerCursor
+            cursorShape: win.resizable ? Qt.SizeVerCursor : Qt.ArrowCursor
             hoverEnabled: true
-            onPressed: logic.start_resize(Qt.BottomEdge)
+            // onPressed: logic.start_resize(Qt.BottomEdge)
+            onPressed: {
+                if (win.resizable) {
+                    logic.start_resize(Qt.BottomEdge)
+                }
+            }
         }
 
         // Left - W
@@ -356,9 +395,14 @@ MainFrame {
             anchors.bottom: resizeBottomLeft.top
             anchors.left: parent.left
             width: 5
-            cursorShape: Qt.SizeHorCursor
+            cursorShape: win.resizable ? Qt.SizeHorCursor : Qt.ArrowCursor
             hoverEnabled: true
-            onPressed: logic.start_resize(Qt.LeftEdge)
+            // onPressed: logic.start_resize(Qt.LeftEdge)
+            onPressed: {
+                if (win.resizable) {
+                    logic.start_resize(Qt.LeftEdge)
+                }
+            }
         }
 
         // Right - E
@@ -368,9 +412,14 @@ MainFrame {
             anchors.bottom: resizeBottomRight.top
             anchors.right: parent.right
             width: 5
-            cursorShape: Qt.SizeHorCursor
+            cursorShape: win.resizable ? Qt.SizeHorCursor : Qt.ArrowCursor
             hoverEnabled: true
-            onPressed: logic.start_resize(Qt.RightEdge)
+            // onPressed: logic.start_resize(Qt.RightEdge)
+            onPressed: {
+                if (win.resizable) {
+                    logic.start_resize(Qt.RightEdge)
+                }
+            }
         }
         // Resize corners
 

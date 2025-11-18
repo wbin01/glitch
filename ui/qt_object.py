@@ -100,6 +100,18 @@ class QtObject(object):
         # Apply Qobj
         self.__obj.setProperty(name_camel, value)
 
+    def __insert_code(self, code) -> None:
+        new_qml = ''
+        for line in self.__qml.split('\n'):
+            if '// code' in line:
+                space, _ = line.split('// code')
+                new_qml += f'{space}{code}\n'
+                new_qml += space + '// code\n'
+            else:
+                if line:
+                    new_qml += f'{line}\n'
+        self.__qml = new_qml
+
     @property
     def _name(self) -> str:
         """..."""
