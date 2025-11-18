@@ -154,3 +154,14 @@ class Handler(QtCore.QObject):
         """
         edge = QtCore.Qt.Edge(edge)
         self.__gui.startSystemResize(edge)
+
+    @QtCore.Slot()
+    def max_min(self) -> None:
+        QtCore.QTimer.singleShot(100, self.__max_min)
+
+    @QtCore.Slot()
+    def __max_min(self) -> None:
+        if self.__gui.windowState() == QtCore.Qt.WindowState.WindowMaximized:
+            self.__gui.showNormal()
+        else:
+            self.__gui.showMaximized()

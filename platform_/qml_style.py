@@ -280,6 +280,12 @@ MainFrame {
                         logic.start_move()
                     }
                 }
+
+                onDoubleClicked: {
+                    if (win.resizable) {
+                        logic.max_min()
+                    }
+                }
             }
         }
         // Drag area
