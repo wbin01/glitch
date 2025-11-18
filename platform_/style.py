@@ -58,15 +58,6 @@ class Style(object):
             self.__set_styles()
 
         self.__style = {
-            '[AppFrame]': {
-                'background_color': self.__app_frame_bg,
-                'border_color': self.__app_frame_bd,
-                'border_radius': self.__app_frame_rd,
-                },
-            '[AppFrame:inactive]': {
-                'background_color': self.__app_frame_in_bg,
-                'border_color': self.__app_frame_in_bd,
-                },
             '[Button]': {
                 'background_color': self.__button_bg,
                 'border_color': self.__button_bd,
@@ -85,19 +76,19 @@ class Style(object):
                 'background_color': self.__button_hv_bg,
                 'border_color': self.__button_hv_bd,
                 'font_color': self.__button_hv_fg,
-                'icon_opacity': self.__button_hv_io,
+                # 'icon_opacity': self.__button_hv_io,
                 },
             '[Button:clicked]': {
                 'background_color': self.__button_ck_bg,
                 'border_color': self.__button_ck_bd,
                 'font_color': self.__button_ck_fg,
-                'icon_opacity': self.__button_ck_io,
+                # 'icon_opacity': self.__button_ck_io,
                 },
             '[Button:checked]': {
                 'background_color': self.__button_ch_bg,
                 'border_color': self.__button_ch_bd,
                 'font_color': self.__button_ch_fg,
-                'icon_opacity': self.__button_ch_io,
+                # 'icon_opacity': self.__button_ch_io,
                 },
             '[Button:checked:inactive]': {
                 'background_color': self.__button_ch_in_bg,
@@ -109,7 +100,7 @@ class Style(object):
                 'background_color': self.__button_ch_hv_bg,
                 'border_color': self.__button_ch_hv_bd,
                 'font_color': self.__button_ch_hv_fg,
-                'icon_opacity': self.__button_ch_hv_io,
+                # 'icon_opacity': self.__button_ch_hv_io,
                 },
             '[CloseButton]': {
                 'background_color': self.__close_button_bg,
@@ -191,6 +182,15 @@ class Style(object):
             '[Label:inactive]': {
                 'font_color': self.__label_in_fg,
                 'background_color': self.__label_in_bg,
+                },
+            '[MainFrame]': {
+                'background_color': self.__app_frame_bg,
+                'border_color': self.__app_frame_bd,
+                'border_radius': self.__app_frame_rd,
+                },
+            '[MainFrame:inactive]': {
+                'background_color': self.__app_frame_in_bg,
+                'border_color': self.__app_frame_in_bd,
                 },
             '[MaxButton]': {
                 'background_color': self.__max_button_bg,
@@ -384,7 +384,7 @@ class Style(object):
         self.__frame_fg = self.__app_frame_fg
         self.__frame_bg = self.__app_frame_bg
         self.__frame_bd = self.__app_frame_bd
-        self.__frame_rd = self.__app_frame_rd[0]
+        self.__frame_rd = (self.__app_frame_rd.split(',')[0] + ',') * 4
         self.__frame_in_fg = self.__app_frame_in_fg
         self.__frame_in_bg = self.__app_frame_in_bg
         self.__frame_in_bd = self.__app_frame_in_bd

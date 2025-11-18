@@ -48,16 +48,16 @@ BaseFrame {
         z: 1
         property bool isActive: true
 
-        property color backgroundColor: "[AppFrame]background_color"
-        property color borderColor: "[AppFrame]border_color"
+        property color backgroundColor: "[Frame]background_color"
+        property color borderColor: "[Frame]border_color"
         property color outLineColor: "#44000000"
         property int borderWidth: 1
         property int outLineWidth: 1
 
-        property int radiusTopLeft: [AppFrame]border_radius_tl
-        property int radiusTopRight: [AppFrame]border_radius_tr
-        property int radiusBottomRight: [AppFrame]border_radius_br
-        property int radiusBottomLeft: [AppFrame]border_radius_bl
+        property int radiusTopLeft: [Frame]border_radius_tl
+        property int radiusTopRight: [Frame]border_radius_tr
+        property int radiusBottomRight: [Frame]border_radius_br
+        property int radiusBottomLeft: [Frame]border_radius_bl
 
         Canvas {
             id: canvas
@@ -181,16 +181,16 @@ MainFrame {
         z: 1
         property bool isActive: true
 
-        property color backgroundColor: "[AppFrame]background_color"
-        property color borderColor: "[AppFrame]border_color"
+        property color backgroundColor: "[MainFrame]background_color"
+        property color borderColor: "[MainFrame]border_color"
         property color outLineColor: "#44000000"
         property int borderWidth: 1
         property int outLineWidth: 1
 
-        property int radiusTopLeft: [AppFrame]border_radius_tl
-        property int radiusTopRight: [AppFrame]border_radius_tr
-        property int radiusBottomRight: [AppFrame]border_radius_br
-        property int radiusBottomLeft: [AppFrame]border_radius_bl
+        property int radiusTopLeft: [MainFrame]border_radius_tl
+        property int radiusTopRight: [MainFrame]border_radius_tr
+        property int radiusBottomRight: [MainFrame]border_radius_br
+        property int radiusBottomLeft: [MainFrame]border_radius_bl
 
         Canvas {
             id: canvas
@@ -775,11 +775,11 @@ class QmlStyle(object):
         for style_header, style_key in self.__style.items():
             for key, value in style_key.items():
                 mark = style_header + key
-                if mark == '[AppFrame]border_radius':
+                if 'Frame' in style_header and key == 'border_radius':
                     for val, edge in zip(
-                            value.split(','), ('tl', 'tr', 'br', 'bl')):
+                            value.split(','), ('_tl', '_tr', '_br', '_bl')):
                         self.__qml_style = self.__qml_style.replace(
-                            '[AppFrame]border_radius_' + edge, val.strip())
+                            mark + edge, val.strip())
                 else:
                     self.__qml_style = self.__qml_style.replace(mark, value)
 

@@ -16,7 +16,7 @@ class Platform(object):
         self.__accent_color = None
 
         self.__dark = color_converter.is_dark(color_converter.hex_to_rgba(
-            self._style['[AppFrame]']['background_color']))
+            self._style['[MainFrame]']['background_color']))
         self.__icon_theme = None
 
     @property
