@@ -51,3 +51,20 @@ class Add(object):
                 self.__add_app(item)
 
         return item
+
+    def __add(self, item: UI) -> UI:
+        """..."""
+        if item not in self._QtObject__items:
+            self._QtObject__add(item)
+
+        if self._UI__app:
+            item._UI__app = self._UI__app
+            item._UI__app_signal.emit()
+
+            qml_base = f'_{item.__class__.__name__}__qml_base'
+            if (item._base == 'Layout' or
+                    hasattr(item, qml_base) and
+                    getattr(item, qml_base) == 'Layout'):
+                self.__add_app(item)
+
+        return item

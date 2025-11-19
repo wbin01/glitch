@@ -15,7 +15,7 @@ class ControlButtons(View):
         self.__max_btn = self._QtObject__add(MaxButton())
         self.__min_btn = self._QtObject__add(MinButton())
         self._QtObject__set_property('Layout.margins', 6)
-        self._QtObject__set_property('Layout.topMargin', 4)
+        self._QtObject__set_property('Layout.topMargin', 5)
 
     def __repr__(self) -> str:
         return f'{self.__class__.__name__}()'

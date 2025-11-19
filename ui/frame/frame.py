@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-from PySide6 import QtCore
-
-from ..ui import UI
+from ..layout.column import Column
 from ..mixin import Add
+from ..ui import UI
 from ...core.signal import Signal
+from ...enum.align import Align
 from ...enum.hint import Hint
 
 
@@ -27,8 +27,16 @@ class Frame(Add, UI):
         # Flags
         self.__shape_border = None
 
+        # Container
+        self.__container = self._Add__add(Column())
+        self.__container.align = Align.TOP
+
     def __repr__(self) -> str:
         return self.__class__.__name__
+
+    def add(self, item: UI) -> UI:
+        """..."""
+        return self.__container.add(item)
 
     @property
     def hint(self) -> Hint:

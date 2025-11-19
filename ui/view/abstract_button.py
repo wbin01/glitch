@@ -8,7 +8,7 @@ from ...core.signal import Signal
 class AbstractButton(View):
     def __init__(
             self, name='Button', icon: str = None, *args, **kwargs) -> None:
-        super().__init__(name=name, icon=icon, *args, **kwargs)
+        super().__init__(name=name, *args, **kwargs)
         self.__icon = icon
 
         # Flag
@@ -19,6 +19,8 @@ class AbstractButton(View):
             self._QtObject__set_property('icon.width', '0')
             self._QtObject__set_property('icon.height', '0')
         else:
+            if '/' in self.__icon:
+                self._QtObject__set_property('iconSource', self.__icon)
             self._render_signal.connect(self.__update_icon)
 
         # Signals

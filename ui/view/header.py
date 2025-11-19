@@ -8,16 +8,20 @@ from .label import Label
 from .tool_button import ToolButton
 from .view import View
 from ..ui import UI
-from ..layout import Row
+from ..layout import Row, Column
 
 
 class Header(View):
-    def __init__(self, text: str = 'Olá mundo!', *args, **kwargs) -> None:
+    def __init__(self, text: str = '', *args, **kwargs) -> None:
         super().__init__(name='RowLayout', *args, **kwargs)
         # set
         self.__qml_base = 'Layout'
         self._QtObject__set_property('spacing', 0)
         self._QtObject__set_property('Layout.fillWidth', 'true')
+        self._QtObject__set_property('Layout.fillHeight', 'false')
+        # self._QtObject__set_property('Layout.preferredHeight', '32')
+        # self._QtObject__set_property('Layout.maximumHeight', '32')
+        # self.height = 32, 32, 32
         self.__resize = False
 
         # Flags

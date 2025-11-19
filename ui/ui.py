@@ -90,7 +90,7 @@ class UI(QtObject):
 
     @height.setter
     def height(self, height: int | tuple) -> None:
-        self.__height, self.__min_height, self.__max_height = self.__w_or_h(
+        self.__height, self.__min_height, self.__max_height = self.__frame_size(
             height, 'Height',
             self.__height, self.__min_height, self.__max_height)
 
@@ -115,7 +115,7 @@ class UI(QtObject):
 
     @width.setter
     def width(self, width: int | tuple) -> None:
-        self.__width, self.__min_width, self.__max_width = self.__w_or_h(
+        self.__width, self.__min_width, self.__max_width = self.__frame_size(
             width, 'Width', self.__width, self.__min_width, self.__max_width)
 
     @property
@@ -177,7 +177,7 @@ class UI(QtObject):
             return True
         return False
 
-    def __w_or_h(
+    def __frame_size(
             self, wh: int | tuple, wh_type: str,
             property_: int, property_min: int, property_max: int) -> tuple:
         if not wh: return property_, property_min, property_max

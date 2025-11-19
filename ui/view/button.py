@@ -4,8 +4,10 @@ from ...core.signal import Signal
 
 
 class Button(AbstractButton):
-    def __init__(self, text: str = None, *args, **kwargs) -> None:
-        super().__init__(*args, **kwargs)
+    def __init__(
+            self, text: str = None, icon: str = None,
+            *args, **kwargs) -> None:
+        super().__init__(icon=icon, *args, **kwargs)
         self.__text = text
 
         if self.__text:

@@ -93,6 +93,7 @@ class QmlBuilder(object):
                 elif '}' in line:
                     sparse_qml += line + '\n'
                 else:
+                    if '<id>' in line: line = ''
                     sparse_qml += line + '\n'
         self.__qml_code = qml_imports.lstrip() + '\n' + sparse_qml.replace(
             '// Close ', '// ')
