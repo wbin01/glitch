@@ -9,5 +9,3 @@ from .ui.view import (
     Header,
     CloseButton, MaxButton, MinButton, ControlButtons, Button, ToolButton,
     Label)
-
-import glitch.ui.frame as frame
