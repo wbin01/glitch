@@ -16,23 +16,36 @@ class Platform(object):
         self.__accent_color = None
 
         self.__dark = color_converter.is_dark(color_converter.hex_to_rgba(
-            self._style['[MainFrame]']['background_color']))
+            self.style['[MainFrame]']['background_color']))
         self.__icon_theme = None
 
     @property
-    def _accent_color(self) -> str:
+    def accent_color(self) -> str:
         """..."""
         if not self.__accent_color:
             self.__accent_color = self.__style.accent_color()
         return self.__accent_color
 
+    @accent_color.setter
+    def accent_color(self, accent_color: str) -> None:
+        self.__accent_color = accent_color
+
     @property
-    def _de(self) -> str:
+    def de(self) -> str:
         """..."""
         return self.__os_desk.desktop_environment
+
+    @de.setter
+    def de(self, desktop_environment: str) -> None:
+        self.__os_desk.desktop_environment = desktop_environment
+
     @property
-    def _display_server(self) -> str:
+    def display_server(self) -> str:
         return self.__os_desk.display_server
+
+    @display_server.setter
+    def display_server(self, display_server: str) -> None:
+        self.__os_desk.display_server = display_server
 
     @property
     def icon_theme(self) -> str | None:
@@ -47,14 +60,22 @@ class Platform(object):
         self.__icon_theme = icon_theme
 
     @property
-    def _os(self) -> str:
+    def os(self) -> str:
         """..."""
         return self.__os_desk.operational_system
 
+    @os.setter
+    def os(self, operational_system: str) -> None:
+        self.__os_desk.operational_system = operational_system
+
     @property
-    def _style(self) -> dict:
+    def style(self) -> dict:
         """..."""
-        return self.__style.style()
+        return self.__style.style
+
+    @style.setter
+    def style(self, style: dict) -> None:
+        self.__style.style = style
 
     def icon_source(self, source: str | None, dark: bool = None) -> str:
         return self.__icons.icon_source(source, dark=dark)

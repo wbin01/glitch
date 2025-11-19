@@ -28,6 +28,7 @@ class Style(object):
         self.__symbolic = ''
         self.__app_frame_bg = None
 
+    @property
     def accent_color(self) -> str:
         """..."""
         if not self.__conf:
@@ -39,13 +40,11 @@ class Style(object):
 
         return self.__accent_color
 
-    def print(self) -> None:
-        for key, value in self.style().items():
-            print(key)
-            for k, v in value.items():
-                print(f'{k}: {v}')
-            print()
+    @accent_color.setter
+    def accent_color(self, accent_color: str) -> None:
+        self.__accent_color = self.__accent_color
 
+    @property
     def style(self) -> dict:
         """..."""
         if self.__style:
@@ -305,6 +304,17 @@ class Style(object):
                 },
             }
         return self.__style
+
+    @style.setter
+    def style(self, style: dict) -> None:
+        self.__style = style
+
+    def print(self) -> None:
+        for key, value in self.style().items():
+            print(key)
+            for k, v in value.items():
+                print(f'{k}: {v}')
+            print()
 
     def __color_to_hex(self, color, alt_color) -> str:
         color = color.split(',')

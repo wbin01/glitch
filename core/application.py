@@ -93,7 +93,7 @@ class Application(object):
 
         # Style
         self.__platform = Platform()
-        qml_style = QmlStyle(self.__platform._style, self.__qml_theme_path)
+        qml_style = QmlStyle(self.__platform.style, self.__qml_theme_path)
         qml_style.build()
         self.__ui._Frame__platform = self.__platform
         self.__ui._platform_signal.emit()

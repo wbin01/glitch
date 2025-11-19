@@ -91,7 +91,7 @@ class AbstractButton(View):
     def __update_icon(self) -> None:
         if self.__is_dark is None:
             self.__is_dark = color_converter.is_dark(
-                color_converter.hex_to_rgba(self._app._platform._style[
+                color_converter.hex_to_rgba(self._app._platform.style[
                     '[' + self._QtObject__name + ']']['background_color']))
 
         self._QtObject__set_property(
