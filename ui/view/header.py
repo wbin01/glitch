@@ -32,6 +32,7 @@ class Header(View):
         self.__left = self._QtObject__add(Row())
         self.__left.spacing = 6
         self.__left._QtObject__set_property('Layout.topMargin', 2)
+        self.__left._QtObject__set_property('Layout.leftMargin', 2)
         
         self.__left_plus = self._QtObject__add(Expander())
         self.__left_plus._QtObject__set_property('property int lw', 0)
@@ -50,6 +51,7 @@ class Header(View):
         self.__right = self._QtObject__add(Row())
         self.__right.spacing = 6
         self.__right._QtObject__set_property('Layout.topMargin', 2)
+        self.__right._QtObject__set_property('Layout.rightMargin', 2)
 
         self.__icon = self._QtObject__add(Image('glitch'))
         self.__icon._QtObject__set_property('Layout.margins', 5)
