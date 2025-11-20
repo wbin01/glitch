@@ -50,7 +50,7 @@ class Header(View):
         self.__right.spacing = 6
         self.__right._QtObject__set_property('Layout.topMargin', 2)
 
-        self.__icon = self._QtObject__add(Image())
+        self.__icon = self._QtObject__add(Image('glitch'))
         self.__icon._QtObject__set_property('Layout.margins', 5)
 
         self._app_signal.connect(self.__signals_conf)

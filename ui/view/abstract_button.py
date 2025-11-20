@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+import pathlib
+
 from .view import View
 from ...tools import color_converter
 from ...platform_ import Icons, OSDesk
@@ -21,6 +23,10 @@ class AbstractButton(View):
         else:
             if '/' in self.__icon:
                 self._QtObject__set_property('iconSource', self.__icon)
+            else:
+                self._QtObject__set_property(
+                    'iconSource', pathlib.Path(__file__).parent.parent.parent 
+                    / 'static' / 'icons' / 'empty.svg')
             self._render_signal.connect(self.__update_icon)
 
         # Signals
