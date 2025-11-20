@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-from .abstract_layout import AbstractLayout
+from .layout import Layout
 
 
-class Column(AbstractLayout):
+class Column(Layout):
     """..."""
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(name='ColumnLayout', *args, **kwargs)

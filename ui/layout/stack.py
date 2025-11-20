@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-from .abstract_layout import AbstractLayout
+from .layout import Layout
 
 
-class Stack(AbstractLayout):
+class Stack(Layout):
     """..."""
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(name='StackLayout', *args, **kwargs)
