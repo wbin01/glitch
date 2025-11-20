@@ -219,6 +219,7 @@ MainFrame {
 
                 // --- Background ---
                 roundedRect(
+                    // 10, 10, width - 20, height - 20,
                     1, 1, width - 2, height - 2,
                     mainRectangle.radiusTopLeft,
                     mainRectangle.radiusTopRight,
@@ -237,10 +238,12 @@ MainFrame {
                     mainRectangle.radiusBottomLeft + 2);
 
                 ctx.strokeStyle = mainRectangle.outLineColor;
+                // ctx.lineWidth = 20;
                 ctx.lineWidth = mainRectangle.outLineWidth;
                 ctx.stroke();
 
                 // --- Inner border ---
+                // var inset = borderSpacing + mainRectangle.borderWidth / 2 + 10;
                 var inset = borderSpacing + mainRectangle.borderWidth / 2;
                 roundedRect(
                     inset, inset,

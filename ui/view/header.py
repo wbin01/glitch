@@ -120,6 +120,9 @@ class Header(View):
         window = int(self._app.width[0])
         ratio = self._app._QtObject__obj.devicePixelRatio()
 
+        if not self.__control_buttons.visible: controls = 0
+        if not self.__icon.visible: icon = 0
+
         # New stop point
         used_area = (controls * ratio) + left + title + right + icon
         self.__stop = True if window < used_area + 20 else False
