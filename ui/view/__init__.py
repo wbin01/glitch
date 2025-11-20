@@ -4,6 +4,7 @@ from .close_button import CloseButton
 from .control_buttons import ControlButtons
 from .expander import Expander
 from .header import Header
+from .image import Image
 from .label import Label
 from .max_button import MaxButton
 from .min_button import MinButton

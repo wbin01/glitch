@@ -1,14 +1,11 @@
 #!/usr/bin/env python3
-import pathlib
-
 from PySide6.QtCore import QTimer
 
 from .control_buttons import ControlButtons
-from .label import Label
-from .tool_button import ToolButton
-from .view import View
 from .expander import Expander
-from ..ui import UI
+from .image import Image
+from .label import Label
+from .view import View
 from ..layout import Row
 
 
@@ -33,35 +30,27 @@ class Header(View):
         self.__control_buttons = self._QtObject__add(ControlButtons())
         self.__left = self._QtObject__add(Row())
         self.__left.spacing = 6
-        self.__left._QtObject__set_property('Layout.fillWidth', 'true')
         self.__left._QtObject__set_property('Layout.topMargin', 2)
         
-        self.__left_margin = self._QtObject__add(Expander())
-        self.__left_margin._QtObject__set_property('property int lwidth', 0)
-        self.__left_margin._QtObject__set_property(
-            'Layout.preferredWidth', 'lwidth')
+        self.__left_plus = self._QtObject__add(Expander())
+        self.__left_plus._QtObject__set_property('property int lw', 0)
+        self.__left_plus._QtObject__set_property('Layout.preferredWidth', 'lw')
 
         # Text
-        self.__left_span = self._QtObject__add(Expander())
-        self.__left_span._QtObject__set_property('Layout.fillWidth', 'true')
+        self.__left_span = self._QtObject__add(Expander(horizontal=True))
         self.__text = self._QtObject__add(Label(text))
-        self.__right_span = self._QtObject__add(Expander())
-        self.__right_span._QtObject__set_property('Layout.fillWidth', 'true')
+        self.__right_span = self._QtObject__add(Expander(horizontal=True))
 
         # Right
-        self.__right_margin = self._QtObject__add(Expander())
-        self.__right_margin._QtObject__set_property('property int rwidth', 0)
-        self.__right_margin._QtObject__set_property(
-            'Layout.preferredWidth', 'rwidth')
+        self.__right_plus = self._QtObject__add(Expander())
+        self.__right_plus._QtObject__set_property('property int rw', 0)
+        self.__right_plus._QtObject__set_property('Layout.preferredWidth','rw')
 
         self.__right = self._QtObject__add(Row())
         self.__right.spacing = 6
-        self.__right._QtObject__set_property('Layout.fillWidth', 'true')
         self.__right._QtObject__set_property('Layout.topMargin', 2)
 
-        self.__icon = self._QtObject__add(UI('Image'))
-        self.__icon._QtObject__set_property('source', pathlib.Path(
-            __file__).parent.parent.parent / 'static' / 'icons' / 'glitch.svg')
+        self.__icon = self._QtObject__add(Image())
         self.__icon._QtObject__set_property('Layout.margins', 5)
 
         self._app_signal.connect(self.__signals_conf)
@@ -87,7 +76,7 @@ class Header(View):
     def text(self, text: str) -> None:
         self.__text.text = text
 
-    def add(self, item: ToolButton, right: bool = False) -> ToolButton:
+    def add(self, item: View, right: bool = False) -> View:
         """..."""
         if right:
             return self.__right.add(item)
@@ -108,13 +97,13 @@ class Header(View):
         # Size vars
         controls = int(self.__control_buttons.width[0])
         left = int(self.__left.width[0])
-        left_margin = int(self.__left_margin.width[0])
+        left_margin = int(self.__left_plus.width[0])
         left_span = int(self.__left_span.width[0])
 
         title = int(self.__text.width[0])
 
         right_span = int(self.__right_span.width[0])
-        right_margin = int(self.__right_margin.width[0])
+        right_margin = int(self.__right_plus.width[0])
         right = int(self.__right.width[0])
         icon = int(self.__icon.width[0])
 
@@ -125,14 +114,14 @@ class Header(View):
         used_area = (controls * ratio) + left + title + right + icon
         self.__stop = True if window < used_area + 20 else False
         if self.__stop:
-            self.__right_margin._QtObject__set_property('rwidth', 5)
-            self.__left_margin._QtObject__set_property('lwidth', 5)
+            self.__right_plus._QtObject__set_property('rw', 5)
+            self.__left_plus._QtObject__set_property('lw', 5)
             return
 
         # Signals
         if shape:
-            self.__right_margin._QtObject__set_property('rwidth', 0)
-            self.__left_margin._QtObject__set_property('lwidth', 0)
+            self.__right_plus._QtObject__set_property('rw', 0)
+            self.__left_plus._QtObject__set_property('lw', 0)
             self.__stop = False
             QTimer.singleShot(50, self.__center_title)
 
@@ -152,13 +141,13 @@ class Header(View):
             self.__side = 'right'
             self.__margin_delta = self.__rwidth
             rwidth = 0 if self.__stop else self.__rwidth
-            self.__right_margin._QtObject__set_property('rwidth', rwidth)
+            self.__right_plus._QtObject__set_property('rw', rwidth)
         else:
             self.__lwidth = int(right_side - left_side)
             self.__side = 'left'
             self.__margin_delta = self.__lwidth
             lwidth = 0 if self.__stop else self.__lwidth
-            self.__left_margin._QtObject__set_property('lwidth', lwidth)
+            self.__left_plus._QtObject__set_property('lw', lwidth)
 
         # Equal sides -
         total_left = left_side + left_margin + left_span
@@ -169,10 +158,10 @@ class Header(View):
         if self.__side == 'right' and not right_span and rwidth > 2:
             if self.__stop: rwidth = 5
             if self.__margin_delta > right_margin - dt:
-                self.__right_margin._QtObject__set_property('rwidth', rwidth)
+                self.__right_plus._QtObject__set_property('rw', rwidth)
 
         lwidth = left_margin - dt
         if self.__side == 'left' and not left_span and lwidth > 2:
             if self.__stop: lwidth = 5
             if self.__margin_delta > left_margin - dt:
-                self.__left_margin._QtObject__set_property('lwidth', lwidth)
+                self.__left_plus._QtObject__set_property('lw', lwidth)
