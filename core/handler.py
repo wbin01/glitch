@@ -2,6 +2,7 @@
 from PySide6 import QtCore, QtQuick
 
 from ..ui import UI
+from ..enum.shape import Shape
 
 
 class Handler(QtCore.QObject):
@@ -105,6 +106,13 @@ class Handler(QtCore.QObject):
             self.__gui.setProperty('radiusBottomLeft', self.__shape_border[3])
             self.__gui.setProperty('borderColor', self.__shape_border[4])
             self.__gui.setProperty('outLineColor', self.__shape_border[5])
+
+        if shape == QtCore.Qt.WindowState.WindowFullScreen:
+            self.__ui._MainFrame__shape = Shape.FULL
+        elif shape == QtCore.Qt.WindowState.WindowMaximized:
+            self.__ui._MainFrame__shape = Shape.MAX
+        else:
+            self.__ui._MainFrame__shape = Shape.FRAME
         
         self.__gui.findChild(QtCore.QObject, 'canvas').requestPaint()
 

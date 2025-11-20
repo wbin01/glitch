@@ -7,6 +7,7 @@ from .image import Image
 from .label import Label
 from .view import View
 from ..layout import Row
+from ...enum.shape import Shape
 
 
 class Header(View):
@@ -92,6 +93,15 @@ class Header(View):
 
     def __on_shape_signal(self) -> None:
         self.__center_title(True)
+
+        if self._app._platform.global_menu:
+            if self._app.shape == Shape.MAX or self._app.shape == Shape.FULL:
+                if self.__control_buttons.visible:
+                    self.__control_buttons.visible = False
+                    self.__icon.visible = False
+            else:
+                self.__control_buttons.visible = True
+                self.__icon.visible = True
 
     def __center_title(self, shape=False) -> None:
         # Size vars
