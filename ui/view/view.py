@@ -16,15 +16,3 @@ class View(UI):
     def _render_signal(self):
         """..."""
         return self.__render_signal
-
-    # @property
-    # def visible(self) -> bool:
-    #     """..."""
-    #     visible = self._QtObject__property('visible')
-    #     if visible is None:
-    #         return True
-    #     return visible
-
-    # @visible.setter
-    # def visible(self, visible: bool) -> None:
-    #     self._QtObject__set_property('visible', visible)

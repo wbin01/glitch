@@ -7,21 +7,19 @@ from .control_buttons import ControlButtons
 from .label import Label
 from .tool_button import ToolButton
 from .view import View
+from .expander import Expander
 from ..ui import UI
-from ..layout import Row, Column
+from ..layout import Row
 
 
 class Header(View):
-    def __init__(self, text: str = '', *args, **kwargs) -> None:
+    def __init__(self, text: str = 'Header text', *args, **kwargs) -> None:
         super().__init__(name='RowLayout', *args, **kwargs)
         # set
         self.__qml_base = 'Layout'
         self._QtObject__set_property('spacing', 0)
         self._QtObject__set_property('Layout.fillWidth', 'true')
         self._QtObject__set_property('Layout.fillHeight', 'false')
-        # self._QtObject__set_property('Layout.preferredHeight', '32')
-        # self._QtObject__set_property('Layout.maximumHeight', '32')
-        # self.height = 32, 32, 32
         self.__resize = False
 
         # Flags
@@ -38,20 +36,20 @@ class Header(View):
         self.__left._QtObject__set_property('Layout.fillWidth', 'true')
         self.__left._QtObject__set_property('Layout.topMargin', 2)
         
-        self.__left_margin = self._QtObject__add(UI())
+        self.__left_margin = self._QtObject__add(Expander())
         self.__left_margin._QtObject__set_property('property int lwidth', 0)
         self.__left_margin._QtObject__set_property(
             'Layout.preferredWidth', 'lwidth')
 
         # Text
-        self.__left_span = self._QtObject__add(UI())
+        self.__left_span = self._QtObject__add(Expander())
         self.__left_span._QtObject__set_property('Layout.fillWidth', 'true')
         self.__text = self._QtObject__add(Label(text))
-        self.__right_span = self._QtObject__add(UI())
+        self.__right_span = self._QtObject__add(Expander())
         self.__right_span._QtObject__set_property('Layout.fillWidth', 'true')
 
         # Right
-        self.__right_margin = self._QtObject__add(UI())
+        self.__right_margin = self._QtObject__add(Expander())
         self.__right_margin._QtObject__set_property('property int rwidth', 0)
         self.__right_margin._QtObject__set_property(
             'Layout.preferredWidth', 'rwidth')
@@ -108,19 +106,19 @@ class Header(View):
 
     def __center_title(self, shape=False) -> None:
         # Size vars
-        controls = self.__control_buttons._QtObject__property('width')
-        left = int(self.__left._QtObject__property('width'))
-        left_margin = int(self.__left_margin._QtObject__property('width'))
-        left_span = int(self.__left_span._QtObject__property('width'))
+        controls = int(self.__control_buttons.width[0])
+        left = int(self.__left.width[0])
+        left_margin = int(self.__left_margin.width[0])
+        left_span = int(self.__left_span.width[0])
 
-        title = int(self.__text._QtObject__property('width'))
+        title = int(self.__text.width[0])
 
-        right_span = int(self.__right_span._QtObject__property('width'))
-        right_margin = int(self.__right_margin._QtObject__property('width'))
-        right = int(self.__right._QtObject__property('width'))
-        icon = int(self.__icon._QtObject__property('width'))
+        right_span = int(self.__right_span.width[0])
+        right_margin = int(self.__right_margin.width[0])
+        right = int(self.__right.width[0])
+        icon = int(self.__icon.width[0])
 
-        window = int(self._app._QtObject__obj.width())
+        window = int(self._app.width[0])
         ratio = self._app._QtObject__obj.devicePixelRatio()
 
         # New stop point
