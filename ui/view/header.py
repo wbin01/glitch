@@ -28,7 +28,7 @@ class Header(View):
         self.__stop = False
 
         # Left
-        self.__control_buttons = self._QtObject__add(ControlButtons())
+        self.__control_buttons_left = self._QtObject__add(ControlButtons(0))
         self.__left = self._QtObject__add(Row())
         self.__left.spacing = 6
         self.__left.margin = 2, None, None, 2
@@ -50,9 +50,8 @@ class Header(View):
         self.__right = self._QtObject__add(Row())
         self.__right.spacing = 6
         self.__right.margin = 2, 2
-
-        self.__icon = self._QtObject__add(Image('glitch'))
-        self.__icon.margin = 5
+        self.__control_buttons_right = self._QtObject__add(ControlButtons(1))
+        self.__control_buttons_right.margin = 5
 
         self._app_signal.connect(self.__signals_conf)
 
@@ -96,16 +95,16 @@ class Header(View):
 
         if self._app._platform.global_menu:
             if self._app.shape == Shape.MAX or self._app.shape == Shape.FULL:
-                if self.__control_buttons.visible:
-                    self.__control_buttons.visible = False
-                    self.__icon.visible = False
+                if self.__control_buttons_left.visible:
+                    self.__control_buttons_left.visible = False
+                    self.__control_buttons_right.visible = False
             else:
-                self.__control_buttons.visible = True
-                self.__icon.visible = True
+                self.__control_buttons_left.visible = True
+                self.__control_buttons_right.visible = True
 
     def __center_title(self, shape=False) -> None:
         # Size vars
-        controls = int(self.__control_buttons.width[0])
+        controls = int(self.__control_buttons_left.width[0])
         left = int(self.__left.width[0])
         left_margin = int(self.__left_plus.width[0])
         left_span = int(self.__left_span.width[0])
@@ -115,13 +114,13 @@ class Header(View):
         right_span = int(self.__right_span.width[0])
         right_margin = int(self.__right_plus.width[0])
         right = int(self.__right.width[0])
-        icon = int(self.__icon.width[0])
+        icon = int(self.__control_buttons_right.width[0])
 
         window = int(self._app.width[0])
         ratio = self._app._QtObject__obj.devicePixelRatio()
 
-        if not self.__control_buttons.visible: controls = 0
-        if not self.__icon.visible: icon = 0
+        if not self.__control_buttons_left.visible: controls = 0
+        if not self.__control_buttons_right.visible: icon = 0
 
         # New stop point
         used_area = (controls * ratio) + left + title + right + icon

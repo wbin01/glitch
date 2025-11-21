@@ -16,30 +16,18 @@ class Platform(object):
 
         # Properties
         self.__accent_color = None
-        self.__dark = color_converter.is_dark(color_converter.hex_to_rgba(
-            self.style['[MainFrame]']['background_color']))
-        self.__icon_theme = None
-
+        self.__control_buttons_order = None
+        self.__dark_variant = None
         self.__de = None
-        self.__os = None
         self.__display_server = None
+        self.__global_menu = None
+        self.__icon_theme = None
+        self.__os = None
 
         # Set
-        self.__kwinrc = None
         self.__breezerc = None
         self.__kde_globals = None
-
-    @property
-    def global_menu(self) -> bool:
-        """..."""
-        if not self.__kwinrc:
-            self.__set__kwinrc()
-
-        group, key = '[Windows]', 'BorderlessMaximizedWindows'
-        if group in self.__kwinrc and key in self.__kwinrc[group]:
-            return True if self.__kwinrc[group][key] == 'true' else False
-
-        return False
+        self.__kwinrc = None
 
     @property
     def accent_color(self) -> str:
@@ -51,6 +39,63 @@ class Platform(object):
     @accent_color.setter
     def accent_color(self, accent_color: str) -> None:
         self.__accent_color = accent_color
+
+    @property
+    def control_buttons_order(self) -> tuple:
+        """XAI M -> (2, 1, 0), (3,)
+
+        Close     Max       Min       Icon      Above all
+        X = 2     A = 1     I = 0     M = 3     F = 4
+
+        (2, 1, 0), (3,) -> [Close Max Min ............. Icon]
+        """
+        if self.__control_buttons_order:
+            return self.__control_buttons_order
+
+        if self.de != 'plasma':
+            self.__control_buttons_order = ('close', 'max', 'min'), ('icon',)
+            return self.__control_buttons_order  # (2, 1, 0), (3,)
+
+        if not self.__kwinrc:
+            self.__set__kwinrc()
+
+        left_buttons = 'M'  # M = icon, F = above all
+        right_buttons = 'IAX'  # X = close, A = max, I = min
+
+        kdecoration = '[org.kde.kdecoration2]'
+        buttons_on_left, buttons_on_right = 'ButtonsOnLeft', 'ButtonsOnRight'
+        if kdecoration in self.__kwinrc:
+            if buttons_on_left in self.__kwinrc[kdecoration]:
+                left_buttons = self.__kwinrc[kdecoration][buttons_on_left]
+
+            if buttons_on_right in self.__kwinrc[kdecoration]:
+                right_buttons = self.__kwinrc[kdecoration][buttons_on_right]
+
+        # d = {'X': 2, 'A': 1, 'I': 0, 'M': 3}
+        d = {'X': 'close', 'A': 'max', 'I': 'min', 'M': 'icon'}
+        self.__control_buttons_order = tuple(
+            d[x] for x in left_buttons
+            if x == 'X' or x == 'A' or x == 'I' or x == 'M'), tuple(
+            d[x] for x in right_buttons
+            if x == 'X' or x == 'A' or x == 'I' or x == 'M')
+
+        return self.__control_buttons_order
+
+    @property
+    def dark_variant(self) -> bool:
+        """..."""
+        if self.__dark_variant is not None:
+            return self.__dark_variant
+
+        self.__dark_variant = color_converter.is_dark(
+            color_converter.hex_to_rgba(
+                self.style['[MainFrame]']['background_color']))
+
+        return self.__dark_variant
+
+    @dark_variant.setter
+    def dark_variant(self, dark_variant: bool) -> None:
+        self.__dark_variant = dark_variant
 
     @property
     def de(self) -> str:
@@ -89,6 +134,26 @@ class Platform(object):
         self.__icon_theme = icon_theme
 
     @property
+    def global_menu(self) -> bool:
+        """..."""
+        if self.__global_menu is not None:
+            return self.__global_menu
+
+        if not self.__kwinrc:
+            self.__set__kwinrc()
+
+        self.__global_menu = False
+        group, key = '[Windows]', 'BorderlessMaximizedWindows'
+        if group in self.__kwinrc and key in self.__kwinrc[group]:
+            if self.__kwinrc[group][key] == 'true': self.__global_menu = True
+
+        return self.__global_menu
+
+    @global_menu.setter
+    def global_menu(self, global_menu: bool) -> None:
+        self.__global_menu = global_menu
+
+    @property
     def os(self) -> str:
         """..."""
         if not self.__os:
@@ -120,7 +185,7 @@ class Platform(object):
         """..."""
         if not icon_theme: icon_theme = self.icon_theme
         if dark is None:
-            dark = False if self.__dark else True
+            dark = False if self.__dark_variant else True
 
         return self.__icons.icon_theme_variant(icon_theme, dark)
 
