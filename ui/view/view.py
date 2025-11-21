@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
+from ..mixin import Margin
 from ..ui import UI
 from ...core.signal import Signal
 
 
-class View(UI):
+class View(Margin, UI):
     """..."""
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(base='View', *args, **kwargs)

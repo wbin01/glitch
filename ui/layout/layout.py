@@ -3,7 +3,7 @@ from PySide6.QtQml import QQmlComponent, QQmlEngine, QQmlContext
 from PySide6.QtCore import QUrl
 
 from ..ui import UI
-from ..mixin import Add
+from ..mixin import Add, Margin
 from ...enum.align import Align
 
 
@@ -26,7 +26,7 @@ binding = """
     // +
 """
 
-class Layout(Add, UI):
+class Layout(Add, Margin, UI):
     """..."""
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, base='Layout', **kwargs)
