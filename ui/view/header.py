@@ -28,14 +28,15 @@ class Header(View):
         self.__stop = False
 
         # Left
-        self.__control_buttons_left = self._QtObject__add(ControlButtons(0))
+        self.__control_l = self._QtObject__add(ControlButtons(0))
         self.__left = self._QtObject__add(Row())
         self.__left.spacing = 6
-        self.__left.margin = 2, None, None, 2
+        self.__left.margin = 2, 0, 0, 2 if self.__control_l._has_buttons else 0
         
         self.__left_plus = self._QtObject__add(Expander())
         self.__left_plus._QtObject__set_property('property int lw', 0)
         self.__left_plus._QtObject__set_property('Layout.preferredWidth', 'lw')
+        self.__left_plus.margin = 0
 
         # Text
         self.__left_span = self._QtObject__add(Expander(horizontal=True))
@@ -46,12 +47,12 @@ class Header(View):
         self.__right_plus = self._QtObject__add(Expander())
         self.__right_plus._QtObject__set_property('property int rw', 0)
         self.__right_plus._QtObject__set_property('Layout.preferredWidth','rw')
+        self.__right_plus.margin = 0
 
         self.__right = self._QtObject__add(Row())
         self.__right.spacing = 6
-        self.__right.margin = 2, 2
-        self.__control_buttons_right = self._QtObject__add(ControlButtons(1))
-        self.__control_buttons_right.margin = 5
+        self.__control_r = self._QtObject__add(ControlButtons(1))
+        self.__right.margin = 2, 0,0, 2 if self.__control_r._has_buttons else 0
 
         self._app_signal.connect(self.__signals_conf)
 
@@ -95,16 +96,16 @@ class Header(View):
 
         if self._app._platform.global_menu:
             if self._app.shape == Shape.MAX or self._app.shape == Shape.FULL:
-                if self.__control_buttons_left.visible:
-                    self.__control_buttons_left.visible = False
-                    self.__control_buttons_right.visible = False
+                if self.__control_l.visible:
+                    self.__control_l.visible = False
+                    self.__control_r.visible = False
             else:
-                self.__control_buttons_left.visible = True
-                self.__control_buttons_right.visible = True
+                self.__control_l.visible = True
+                self.__control_r.visible = True
 
     def __center_title(self, shape=False) -> None:
         # Size vars
-        controls = int(self.__control_buttons_left.width[0])
+        controls = int(self.__control_l.width[0])
         left = int(self.__left.width[0])
         left_margin = int(self.__left_plus.width[0])
         left_span = int(self.__left_span.width[0])
@@ -114,13 +115,13 @@ class Header(View):
         right_span = int(self.__right_span.width[0])
         right_margin = int(self.__right_plus.width[0])
         right = int(self.__right.width[0])
-        icon = int(self.__control_buttons_right.width[0])
+        icon = int(self.__control_r.width[0])
 
         window = int(self._app.width[0])
         ratio = self._app._QtObject__obj.devicePixelRatio()
 
-        if not self.__control_buttons_left.visible: controls = 0
-        if not self.__control_buttons_right.visible: icon = 0
+        if not self.__control_l.visible: controls = 0
+        if not self.__control_r.visible: icon = 0
 
         # New stop point
         used_area = (controls * ratio) + left + title + right + icon

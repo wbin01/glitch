@@ -13,21 +13,32 @@ class ControlButtons(View):
     def __init__(self, side=0, *args, **kwargs) -> None:
         super().__init__(name='RowLayout', *args, **kwargs)
         self.__qml_base = 'Layout'
-        self.spacing = 6
-        self.margin = 5, 6, 6, 6
 
         self.__control_buttons_order = self.__get_control_buttons_order()
         self.__buttons = {'close': CloseButton(), 'max': MaxButton(),
             'min': MinButton(), 'icon': Image('glitch')}
 
         control_buttons_side = self.__control_buttons_order[side]
-        if not control_buttons_side: control_buttons_side = ('icon',)
 
+        self.__has_buttons = False
+        if not control_buttons_side:
+            self.__empty = self._QtObject__add(View())
+            self.__empty.width = 2
+            self.__empty.margin = 0
+            return
+
+        self.__has_buttons = True
+        self.spacing = 6
+        self.margin = 5, 6, 6, 6
         for button in control_buttons_side:
             setattr(self, button, self._QtObject__add(self.__buttons[button]))
 
     def __repr__(self) -> str:
         return f'{self.__class__.__name__}()'
+
+    def _has_buttons(self) -> bool:
+        """..."""
+        return self.__has_buttons
     
     def __get_control_buttons_order(self) -> tuple:
         """XAI M -> (2, 1, 0), (3,)
