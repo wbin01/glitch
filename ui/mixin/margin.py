@@ -22,6 +22,8 @@ class Margin(object):
         self._QtObject__set_property('property int lMargin', 0)
         self._QtObject__set_property('Layout.leftMargin', 'lMargin')
 
+        self.__image_margin = None
+
     def __repr__(self) -> str:
         return self.__class__.__name__
 
@@ -37,6 +39,11 @@ class Margin(object):
     @margin.setter
     def margin(self, margin: int | tuple) -> None:
         # Values
+        if not self._QtObject__obj and self._name == 'Image':
+            self.__image_margin = margin
+            self._render_signal.connect(self.__set_margin)
+            return
+
         top, right, bottom, left = None, None, None, None
         if isinstance(margin, int):
             top, right, bottom, left = margin, margin, margin, margin
@@ -58,3 +65,7 @@ class Margin(object):
         if right: self._QtObject__set_property('rMargin', right)
         if bottom: self._QtObject__set_property('bMargin', bottom)
         if left: self._QtObject__set_property('lMargin', left)
+
+    def __set_margin(self) -> None:
+        print(self.__image_margin)
+        self.margin = self.__image_margin
