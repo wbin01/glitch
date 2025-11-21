@@ -67,5 +67,4 @@ class Margin(object):
         if left: self._QtObject__set_property('lMargin', left)
 
     def __set_margin(self) -> None:
-        print(self.__image_margin)
         self.margin = self.__image_margin

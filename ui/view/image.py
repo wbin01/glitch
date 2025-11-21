@@ -5,7 +5,9 @@ from .view import View
 
 
 class Image(View):
-    def __init__(self, image: str = None, *args, **kwargs) -> None:
+    def __init__(
+            self, image: str = None, width: int = None, height: int = None,
+            *args, **kwargs) -> None:
         super().__init__(name='Image', *args, **kwargs)
 
         if not image: self.__image = pathlib.Path(
@@ -20,6 +22,9 @@ class Image(View):
                 __file__).parent.parent.parent /'static'/'icons'/'image.svg'
 
         self._QtObject__set_property('source', self.__image)
+
+        if width is not None: self.width = width
+        if height is not None: self.height = height
 
     def __repr__(self) -> str:
         return f'{self.__class__.__name__}(image={self.__image!r})'
