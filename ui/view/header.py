@@ -26,6 +26,8 @@ class Header(View):
         self.__lwidth = 0
         self.__margin_delta = 0
         self.__stop = False
+        self.__left_count = 0
+        self.__right_count = 0
 
         # Left
         self.__control_l = self._QtObject__add(ControlButtons(0))
@@ -80,7 +82,10 @@ class Header(View):
     def add(self, item: View, right: bool = False) -> View:
         """..."""
         if right:
+            self.__right_count += 1
             return self.__right.add(item)
+
+        self.__left_count += 1
         return self.__left.add(item)
 
     def __signals_conf(self) -> None:
@@ -120,8 +125,15 @@ class Header(View):
         control_r = int(self.__control_r.width[0])
 
         window = int(self._app.width[0])
+        
         if not self.__control_l.visible: control_l = 0
         if not self.__control_r.visible: control_r = 0
+
+        # temp
+        if not self.__left_count:
+            left = (window/2) - (title/2) -control_l - left_margin - left_span
+        if not self.__right_count:
+            right = (window/2)-(title/2) -control_r - right_margin - right_span
 
         # New stop point
         # (control_l * ratio) + left + title + right + (control_r * ratio)
