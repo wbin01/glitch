@@ -9,6 +9,7 @@ from .qml_builder import QmlBuilder
 from ..platform_ import Platform
 from ..platform_.qml_style import QmlStyle
 from ..ui import UI
+from ..ui.frame.app_frame import AppFrame
 
 
 class AppEventFilter(QtCore.QObject):
@@ -110,10 +111,28 @@ class Application(object):
         self.__ui._QtObject__obj = self.__gui
         self.__handler = Handler(self.__ui, self.__gui)
 
+        # Properties
+        self.__name = None
+        self.__icon = None
+
     def __repr__(self) -> str:
         return self.__class__.__name__
 
-    def frame(self) -> UI:
+    @property
+    def name(self) -> str:
+        """..."""
+        return self.__name
+
+    @name.setter
+    def name(self, name: str) -> None:
+        self.__name = name
+        self.__ui._QtObject__set_property('title', name)
+        if isinstance(self.__ui, AppFrame):
+            if not self.__ui.header.text:
+                self.__ui.header.text = name
+
+    @property
+    def _frame(self) -> UI:
         """The Application UI UI.
         
         The UI class passed to the constructor of this class.

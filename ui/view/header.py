@@ -11,7 +11,7 @@ from ...enum.shape import Shape
 
 
 class Header(View):
-    def __init__(self, text: str = 'Header text', *args, **kwargs) -> None:
+    def __init__(self, text: str = '', *args, **kwargs) -> None:
         super().__init__(name='RowLayout', *args, **kwargs)
         # set
         self.__qml_base = 'Layout'
