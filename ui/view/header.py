@@ -33,7 +33,7 @@ class Header(View):
         self.__control_l = self._QtObject__add(ControlButtons(0))
         self.__left = self._QtObject__add(Row())
         self.__left.spacing = 6
-        self.__left.margin = 2, 0, 0, 2 if self.__control_l._has_buttons else 0
+        self.__left.margin = 2, 0, 0, 2 if self.__control_l._count else 0
         
         self.__left_plus = self._QtObject__add(Expander())
         self.__left_plus._QtObject__set_property('property int lw', 0)
@@ -54,7 +54,7 @@ class Header(View):
         self.__right = self._QtObject__add(Row())
         self.__right.spacing = 6
         self.__control_r = self._QtObject__add(ControlButtons(1))
-        self.__right.margin = 2, 0,0, 2 if self.__control_r._has_buttons else 0
+        self.__right.margin = 2, 0, 0, 2 if self.__control_r._count else 0
 
         self._app_signal.connect(self.__signals_conf)
 
@@ -114,13 +114,13 @@ class Header(View):
 
         control_l = int(self.__control_l.width[0])
         left = int(self.__left.width[0])
-        left_margin = int(self.__left_plus.width[0])
+        left_plus = int(self.__left_plus.width[0])
         left_span = int(self.__left_span.width[0])
 
         title = int(self.__text.width[0])
 
         right_span = int(self.__right_span.width[0])
-        right_margin = int(self.__right_plus.width[0])
+        right_plus = int(self.__right_plus.width[0])
         right = int(self.__right.width[0])
         control_r = int(self.__control_r.width[0])
 
@@ -129,11 +129,8 @@ class Header(View):
         if not self.__control_l.visible: control_l = 0
         if not self.__control_r.visible: control_r = 0
 
-        # temp
-        if not self.__left_count:
-            left = (window/2) - (title/2) -control_l - left_margin - left_span
-        if not self.__right_count:
-            right = (window/2)-(title/2) -control_r - right_margin - right_span
+        if not self.__left_count and left != 0: self.__left.width = 0
+        if not self.__right_count and right != 0: self.__right.width = 0
 
         # New stop point
         # (control_l * ratio) + left + title + right + (control_r * ratio)
@@ -178,18 +175,18 @@ class Header(View):
             self.__left_plus._QtObject__set_property('lw', lwidth)
 
         # Equal sides -
-        total_left = left_side + left_margin + left_span
-        total_right = right_side + right_margin + right_span
+        total_left = left_side + left_plus + left_span
+        total_right = right_side + right_plus + right_span
         dt = (total_left + title + total_right + 20) - window
 
-        rwidth = right_margin - dt
+        rwidth = right_plus - dt
         if self.__side == 'right' and not right_span and rwidth > 2:
             if self.__stop: rwidth = 5
-            if self.__margin_delta > right_margin - dt:
+            if self.__margin_delta > right_plus - dt:
                 self.__right_plus._QtObject__set_property('rw', rwidth)
 
-        lwidth = left_margin - dt
+        lwidth = left_plus - dt
         if self.__side == 'left' and not left_span and lwidth > 2:
             if self.__stop: lwidth = 5
-            if self.__margin_delta > left_margin - dt:
+            if self.__margin_delta > left_plus - dt:
                 self.__left_plus._QtObject__set_property('lw', lwidth)

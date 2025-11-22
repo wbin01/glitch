@@ -19,15 +19,14 @@ class ControlButtons(View):
             'min': MinButton(), 'icon': Image('glitch')}
 
         control_buttons_side = self.__control_buttons_order[side]
+        self.__count = len(control_buttons_side)
 
-        self.__has_buttons = False
         if not control_buttons_side:
             self.__empty = self._QtObject__add(View())
             self.__empty.width = 2
             self.__empty.margin = 0
             return
 
-        self.__has_buttons = True
         self.spacing = 6
         self.margin = 5, 6, 6, 6
         for button in control_buttons_side:
@@ -36,9 +35,10 @@ class ControlButtons(View):
     def __repr__(self) -> str:
         return f'{self.__class__.__name__}()'
 
-    def _has_buttons(self) -> bool:
+    @property
+    def _count(self) -> bool:
         """..."""
-        return self.__has_buttons
+        return self.__count
     
     def __get_control_buttons_order(self) -> tuple:
         """XAI M -> (2, 1, 0), (3,)
