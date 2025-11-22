@@ -97,8 +97,6 @@ class Header(View):
         QTimer.singleShot(100, self.__on_shape_signal)
 
     def __on_shape_signal(self) -> None:
-        self.__center_title(True)
-
         if self._app._platform.global_menu:
             if self._app.shape == Shape.MAX or self._app.shape == Shape.FULL:
                 if self.__control_l.visible:
@@ -107,6 +105,7 @@ class Header(View):
             else:
                 self.__control_l.visible = True
                 self.__control_r.visible = True
+        self.__center_title(True)
 
     def __center_title(self, shape=False) -> None:
         # Size vars
@@ -129,8 +128,8 @@ class Header(View):
         if not self.__control_l.visible: control_l = 0
         if not self.__control_r.visible: control_r = 0
 
-        if not self.__left_count and left != 0: self.__left.width = 0
-        if not self.__right_count and right != 0: self.__right.width = 0
+        if not self.__left_count and left != 32: self.__left.width = 32
+        if not self.__right_count and right != 32: self.__right.width = 32
 
         # New stop point
         # (control_l * ratio) + left + title + right + (control_r * ratio)
