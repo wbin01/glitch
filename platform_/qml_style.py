@@ -703,6 +703,7 @@ MinButton {
 // +
 ToolButton {
     id: toolButton
+    // implicitHeight: 32
 
     icon.source: ""
     property alias iconSource: iconItem.source

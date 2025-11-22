@@ -105,7 +105,9 @@ class Header(View):
 
     def __center_title(self, shape=False) -> None:
         # Size vars
-        controls = int(self.__control_l.width[0])
+        ratio = self._app._QtObject__obj.devicePixelRatio()
+
+        control_l = int(self.__control_l.width[0])
         left = int(self.__left.width[0])
         left_margin = int(self.__left_plus.width[0])
         left_span = int(self.__left_span.width[0])
@@ -115,16 +117,15 @@ class Header(View):
         right_span = int(self.__right_span.width[0])
         right_margin = int(self.__right_plus.width[0])
         right = int(self.__right.width[0])
-        icon = int(self.__control_r.width[0])
+        control_r = int(self.__control_r.width[0])
 
         window = int(self._app.width[0])
-        ratio = self._app._QtObject__obj.devicePixelRatio()
-
-        if not self.__control_l.visible: controls = 0
-        if not self.__control_r.visible: icon = 0
+        if not self.__control_l.visible: control_l = 0
+        if not self.__control_r.visible: control_r = 0
 
         # New stop point
-        used_area = (controls * ratio) + left + title + right + icon
+        # (control_l * ratio) + left + title + right + (control_r * ratio)
+        used_area = control_l + left + title + right + control_r
         self.__stop = True if window < used_area + 20 else False
         if self.__stop:
             self.__right_plus._QtObject__set_property('rw', 5)
@@ -143,10 +144,12 @@ class Header(View):
             self.__resize = True
 
         # Equal sides +
-        left_side = (controls * ratio) + (left * ratio)
+        # left_side = (control_l * ratio) + (left * ratio)
+        left_side = control_l + left
         if left_side < 0: left_side = 0
 
-        right_side = (right * ratio) + (icon * ratio)
+        # right_side = (right * ratio) + (control_r * ratio)
+        right_side = right + control_r
         if right_side < 0: right_side = 0
         
         if left_side > right_side:

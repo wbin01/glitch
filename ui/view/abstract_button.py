@@ -102,4 +102,4 @@ class AbstractButton(View):
 
         self._QtObject__set_property(
             'iconSource', self._app._platform.icon_source(
-                self.__icon, dark=True if self.__is_dark else False))
+                self.__icon, dark=True if self.__is_dark else False, size=16))

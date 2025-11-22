@@ -76,7 +76,7 @@ class Icons(object):
             return self.__icon_theme
 
     def icon_source(
-            self, icon: str | None, icon_size: int = 16, dark: bool = None
+            self, icon: str | None, size: int = 16, dark: bool = None
             ) -> str:
         """..."""
         if not self.__icon_theme:
@@ -105,7 +105,7 @@ class Icons(object):
         
         icon_path = IconTheme.getIconPath(
             iconname=icon,
-            size=icon_size,
+            size=size,
             theme=self.__icon_theme,
             extensions=['png', 'svg', 'xpm'])
 

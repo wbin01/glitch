@@ -177,8 +177,10 @@ class Platform(object):
     def style(self, style: dict | None) -> None:
         self.__style = style
 
-    def icon_source(self, source: str | None, dark: bool = None) -> str:
-        return self.__icons.icon_source(source, dark=dark)
+    def icon_source(
+            self, source: str | None, dark: bool = None, size: int = 16
+            ) -> str:
+        return self.__icons.icon_source(source, dark=dark, size=size)
 
     def icon_theme_variant(
             self, icon_theme: str = None, dark: bool = None) -> str:
