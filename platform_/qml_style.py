@@ -36,6 +36,7 @@ BaseFrame {
 
     MouseArea {
         anchors.fill: parent
+        z: -1
         acceptedButtons: Qt.RightButton
         onPressed: logic.connections()
     }
@@ -169,6 +170,7 @@ MainFrame {
 
     MouseArea {
         anchors.fill: parent
+        z: -1
         acceptedButtons: Qt.RightButton
         onPressed: logic.connections()
     }

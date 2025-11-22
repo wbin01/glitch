@@ -9,7 +9,7 @@ from ...enum.shape import Shape
 class MainFrame(Frame):
     """..."""
     def __init__(
-            self, movable: bool = True, resizable: bool = True,
+            self, movable: bool = False, resizable: bool = False,
             *args, **kwargs) -> None:
         super().__init__(name='MainFrame', *args, **kwargs)
         self._UI__app = self

@@ -119,10 +119,7 @@ class Handler(QtCore.QObject):
     @QtCore.Slot()
     def connections(self):
         """Processes callback properties for QML.
-        
-        MOUSE_RIGHT_PRESS Event
         """
-
         """
         Qt.LeftButton
         Qt.RightButton
@@ -142,8 +139,7 @@ class Handler(QtCore.QObject):
         Only middle:
             acceptedButtons: Qt.MiddleButton
         """
-        print('Right clicked')
-        # self.__ui.mouse_right_press_signal.callback()()
+        self.__ui._right_pressed_signal.emit()
 
     @QtCore.Slot()
     def start_move(self) -> None:

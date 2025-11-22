@@ -18,6 +18,7 @@ class Frame(Add, UI):
         self.__platform_signal = Signal()
         self.__render_signal = Signal()
         self.__resize_signal = Signal()
+        self._right_pressed_signal = Signal()
         
         # Properties
         self.__hint = Hint.FRAME
