@@ -103,25 +103,3 @@ class Frame(Add, UI):
     def close(self) -> None:
         """..."""
         if self._QtObject__obj: self._QtObject__obj.close()
-
-    def open(self) -> None:
-        """..."""
-        if self._QtObject__obj:
-            self._QtObject__obj.show()
-
-        # if not self._app._QtObject__obj:
-        #     return
-
-        # el = self._app._Frame__qt_qml.QQmlComponent(self._app._Frame__engine)
-        # el.setData(
-        #     QmlBuilder(self)._qml.encode('utf-8'),
-        #     self._app._Frame__qt_core.QUrl())
-
-        # if el.status() == self._app._Frame__qt_qml.QQmlComponent.Error:
-        #     print(el.errors())
-
-        # frame = el.create()
-        # self._QtObject__obj = frame
-
-        # frame.closing.connect(lambda: print('close'))
-        # frame.show()

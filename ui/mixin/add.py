@@ -26,18 +26,6 @@ class Add(object):
     def add(self, item: UI) -> UI:
         """..."""
         return self.__add(item)
-    
-    def __add_app(self, layout: None):
-        for x in layout._QtObject__items:
-            qml_base = f'_{x.__class__.__name__}__qml_base'
-            if (x._base == 'Layout' or
-                    hasattr(x, qml_base) and
-                    getattr(x, qml_base) == 'Layout'):
-                self.__add_app(x)
-
-            if not x._UI__app or x._UI__app != self._UI__app:
-                x._UI__app = self._UI__app
-                x._UI__app_signal.emit()
 
     def __add(self, item: UI) -> UI:
         """..."""
@@ -58,3 +46,15 @@ class Add(object):
                 self.__add_app(item)
 
         return item
+    
+    def __add_app(self, layout: None):
+        for x in layout._QtObject__items:
+            qml_base = f'_{x.__class__.__name__}__qml_base'
+            if (x._base == 'Layout' or
+                    hasattr(x, qml_base) and
+                    getattr(x, qml_base) == 'Layout'):
+                self.__add_app(x)
+
+            if not x._UI__app or x._UI__app != self._UI__app:
+                x._UI__app = self._UI__app
+                x._UI__app_signal.emit()
