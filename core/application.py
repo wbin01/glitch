@@ -109,6 +109,9 @@ class Application(object):
 
         self.__gui = self.__engine.rootObjects()[0]
         self.__ui._QtObject__obj = self.__gui
+        self.__ui._Frame__engine = self.__engine
+        self.__ui._Frame__qt_qml = QtQml
+        self.__ui._Frame__qt_core = QtCore
         self.__handler = Handler(self.__ui, self.__gui)
 
         # Properties

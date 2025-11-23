@@ -11,8 +11,8 @@ BaseFrame {
     color: "transparent"
     flags: Qt.FramelessWindowHint
 
-    width: 400
-    height: 400
+    width: 100
+    height: 50
 
     minimumWidth: 100
     minimumHeight: 30

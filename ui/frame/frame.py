@@ -21,6 +21,11 @@ class Frame(Add, UI):
         self._right_pressed_signal = Signal()
         
         # Properties
+        self.__engine = None
+        self.__qt_qml = None
+        self.__qt_core = None
+        self.__attached = False
+
         self.__hint = Hint.FRAME
         self.__visibility = 'Window.Windowed'
         self.__platform = None
@@ -88,3 +93,21 @@ class Frame(Add, UI):
     def close(self) -> None:
         """..."""
         if self._QtObject__obj: self._QtObject__obj.close()
+
+    def open(self) -> None:
+        if not self._app._QtObject__obj:
+            return
+
+        qml = (
+            'import QtQuick\n'
+            'import QtQuick.Controls\n'
+            'import QtQuick.Controls.AdaptiveGlitch\n\n') + self._QtObject__qml
+
+        comp = self._app._Frame__qt_qml.QQmlComponent(self._app._Frame__engine)
+        comp.setData(qml.encode('utf-8'), self._app._Frame__qt_core.QUrl())
+
+        if comp.status() == self._app._Frame__qt_qml.QQmlComponent.Error:
+            print(comp.errors())
+
+        frame = comp.create()
+        frame.show()

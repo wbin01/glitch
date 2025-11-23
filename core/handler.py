@@ -56,6 +56,7 @@ class Handler(QtCore.QObject):
 
             qml_base = f'_{ui_element.__class__.__name__}__qml_base'  # Header
             if (ui_element._base == 'Layout' or
+                    ui_element._base == 'Frame' or
                     hasattr(ui_element, qml_base) and
                     getattr(ui_element, qml_base) == 'Layout'):
                 self.__integrate_graphic_elements(ui_element)

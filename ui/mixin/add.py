@@ -37,6 +37,9 @@ class Add(object):
 
     def add(self, item: UI) -> UI:
         """..."""
+        if item.__class__.__name__ == 'Frame':
+            item._Frame__attached = True
+
         if item not in self._QtObject__items:
             self._QtObject__add(item)
 
