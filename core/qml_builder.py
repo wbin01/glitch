@@ -73,7 +73,6 @@ class QmlBuilder(object):
 
             if hasattr(element, '_Frame__attached'):
                 if element._Frame__attached:
-                    print(element._Frame__attached)
                     continue
 
             element_items = (getattr(element, '_QtObject__items')

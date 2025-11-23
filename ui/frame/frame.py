@@ -2,6 +2,7 @@
 from ..layout.column import Column
 from ..mixin import Add
 from ..ui import UI
+from ...core.qml_builder import QmlBuilder
 from ...core.signal import Signal
 from ...enum.align import Align
 from ...enum.hint import Hint
@@ -21,10 +22,10 @@ class Frame(Add, UI):
         self._right_pressed_signal = Signal()
         
         # Properties
-        self.__engine = None
-        self.__qt_qml = None
-        self.__qt_core = None
-        self.__attached = False
+        self.__qt_core = None    # PySide6.QtCore
+        self.__qt_qml = None     # PySide6.QtQml
+        self.__engine = None     # ref = QtQml.QQmlApplicationEngine()
+        self.__attached = False  # like a context menu / not writed on main.qml
 
         self.__hint = Hint.FRAME
         self.__visibility = 'Window.Windowed'
@@ -98,16 +99,14 @@ class Frame(Add, UI):
         if not self._app._QtObject__obj:
             return
 
-        qml = (
-            'import QtQuick\n'
-            'import QtQuick.Controls\n'
-            'import QtQuick.Controls.AdaptiveGlitch\n\n') + self._QtObject__qml
-
         comp = self._app._Frame__qt_qml.QQmlComponent(self._app._Frame__engine)
-        comp.setData(qml.encode('utf-8'), self._app._Frame__qt_core.QUrl())
+        comp.setData(
+            QmlBuilder(self)._qml.encode('utf-8'),
+            self._app._Frame__qt_core.QUrl())
 
         if comp.status() == self._app._Frame__qt_qml.QQmlComponent.Error:
             print(comp.errors())
 
         frame = comp.create()
+        frame.closing.connect(lambda: print('close kkkk'))
         frame.show()
