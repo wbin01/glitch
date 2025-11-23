@@ -23,6 +23,10 @@ class Add(object):
     def spacing(self, spacing: int) -> None:
         self._QtObject__set_property('spacing', spacing)
 
+    def add(self, item: UI) -> UI:
+        """..."""
+        return self.__add(item)
+    
     def __add_app(self, layout: None):
         for x in layout._QtObject__items:
             qml_base = f'_{x.__class__.__name__}__qml_base'
@@ -35,28 +39,11 @@ class Add(object):
                 x._UI__app = self._UI__app
                 x._UI__app_signal.emit()
 
-    def add(self, item: UI) -> UI:
-        """..."""
-        if item.__class__.__name__ == 'Frame':
-            item._Frame__attached = True
-
-        if item not in self._QtObject__items:
-            self._QtObject__add(item)
-
-        if self._UI__app:
-            item._UI__app = self._UI__app
-            item._UI__app_signal.emit()
-
-            qml_base = f'_{item.__class__.__name__}__qml_base'
-            if (item._base == 'Layout' or
-                    hasattr(item, qml_base) and
-                    getattr(item, qml_base) == 'Layout'):
-                self.__add_app(item)
-
-        return item
-
     def __add(self, item: UI) -> UI:
         """..."""
+        if item._base == 'Frame':
+            item.visible = False
+
         if item not in self._QtObject__items:
             self._QtObject__add(item)
 

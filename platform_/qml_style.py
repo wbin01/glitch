@@ -17,7 +17,6 @@ BaseFrame {
     minimumWidth: 100
     minimumHeight: 30
 
-    visible: true
     visibility: Window.Windowed
 
     property alias borderWidth: mainRectangle.borderWidth

@@ -70,11 +70,6 @@ class QmlBuilder(object):
         tab += '    '
         self.__first_iteration = False
         for element in ui._QtObject__items:
-
-            if hasattr(element, '_Frame__attached'):
-                if element._Frame__attached:
-                    continue
-
             element_items = (getattr(element, '_QtObject__items')
                 if hasattr(element, '_QtObject__items') else None)
             

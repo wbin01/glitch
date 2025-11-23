@@ -2,7 +2,6 @@
 from ..layout.column import Column
 from ..mixin import Add
 from ..ui import UI
-from ...core.qml_builder import QmlBuilder
 from ...core.signal import Signal
 from ...enum.align import Align
 from ...enum.hint import Hint
@@ -25,7 +24,6 @@ class Frame(Add, UI):
         self.__qt_core = None    # PySide6.QtCore
         self.__qt_qml = None     # PySide6.QtQml
         self.__engine = None     # ref = QtQml.QQmlApplicationEngine()
-        self.__attached = False  # like a context menu / not writed on main.qml
 
         self.__hint = Hint.FRAME
         self.__visibility = 'Window.Windowed'
@@ -67,6 +65,17 @@ class Frame(Add, UI):
         self._hint_signal.emit()
 
     @property
+    def visible(self) -> bool:
+        """..."""
+        value = self._QtObject__property('visibility').value
+        return False if not value else True
+
+    @visible.setter
+    def visible(self, value: str) -> None:
+        value = 'Window.Windowed' if value else 'Window.Hidden'
+        self._QtObject__set_property('visibility', value)
+
+    @property
     def _hint_signal(self):
         """..."""
         return self.__hint_signal
@@ -96,17 +105,23 @@ class Frame(Add, UI):
         if self._QtObject__obj: self._QtObject__obj.close()
 
     def open(self) -> None:
-        if not self._app._QtObject__obj:
-            return
+        """..."""
+        if self._QtObject__obj:
+            self._QtObject__obj.show()
 
-        comp = self._app._Frame__qt_qml.QQmlComponent(self._app._Frame__engine)
-        comp.setData(
-            QmlBuilder(self)._qml.encode('utf-8'),
-            self._app._Frame__qt_core.QUrl())
+        # if not self._app._QtObject__obj:
+        #     return
 
-        if comp.status() == self._app._Frame__qt_qml.QQmlComponent.Error:
-            print(comp.errors())
+        # el = self._app._Frame__qt_qml.QQmlComponent(self._app._Frame__engine)
+        # el.setData(
+        #     QmlBuilder(self)._qml.encode('utf-8'),
+        #     self._app._Frame__qt_core.QUrl())
 
-        frame = comp.create()
-        frame.closing.connect(lambda: print('close kkkk'))
-        frame.show()
+        # if el.status() == self._app._Frame__qt_qml.QQmlComponent.Error:
+        #     print(el.errors())
+
+        # frame = el.create()
+        # self._QtObject__obj = frame
+
+        # frame.closing.connect(lambda: print('close'))
+        # frame.show()
