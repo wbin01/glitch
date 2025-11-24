@@ -512,8 +512,8 @@ class Style(object):
         ico = icon if self.__plasma_close_button_with_circle else icon + '-b'
         self.__symbolic = '-symbolic' if self.__app_frame_is_dark else ''
 
-        self.__close_button_bg = self.__app_frame_bg
-        self.__close_button_bd = self.__app_frame_bg
+        self.__close_button_bg = '#00000000'
+        self.__close_button_bd = '#00000000'
         self.__close_button_fg = self.__app_frame_fg
         self.__close_button_io = self.__button_io
         self.__close_button_i = (

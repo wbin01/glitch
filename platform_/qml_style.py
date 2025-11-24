@@ -537,7 +537,7 @@ Panel {
         id: panelColumnLayout
         anchors.fill: parent
         spacing: 6
-        anchors.margins: 4
+        anchors.margins: 0
     }
 
     default property alias content: panelColumnLayout.data
