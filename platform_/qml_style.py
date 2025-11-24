@@ -449,6 +449,7 @@ Panel {
     width: 300
     x: 0
     y: 0
+    // modal: true
 
     property color backgroundColor: "[Panel]background_color"
     property color borderColor: "[Panel]border_color"
