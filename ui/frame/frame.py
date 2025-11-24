@@ -65,17 +65,6 @@ class Frame(Add, UI):
         self._hint_signal.emit()
 
     @property
-    def visible(self) -> bool:
-        """..."""
-        value = self._QtObject__property('visibility').value
-        return False if not value else True
-
-    @visible.setter
-    def visible(self, value: str) -> None:
-        value = 'Window.Windowed' if value else 'Window.Hidden'
-        self._QtObject__set_property('visibility', value)
-
-    @property
     def _hint_signal(self):
         """..."""
         return self.__hint_signal

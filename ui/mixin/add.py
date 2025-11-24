@@ -29,7 +29,10 @@ class Add(object):
 
     def __add(self, item: UI) -> UI:
         """..."""
-        if item._base == 'Frame':
+        qml_base = f'_{item.__class__.__name__}__qml_base'
+        if (item._base == 'Frame' and
+                hasattr(item, qml_base) and
+                getattr(item, qml_base) == 'Context'):
             item.visible = False
 
         if item not in self._QtObject__items:

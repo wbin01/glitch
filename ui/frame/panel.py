@@ -1,31 +1,20 @@
 #!/usr/bin/env python3
 from PySide6.QtCore import QTimer
 
-from .frame import Frame
-from ...enum.hint import Hint
+from ..ui import UI
+from ..mixin.add import Add
+from ..frame.frame import Frame
 
 
-class Context(Frame):
+class Panel(Frame):
     """..."""
     def __init__(self, *args, **kwargs) -> None:
-        super().__init__(*args, **kwargs)
+        super().__init__(name='Panel', *args, **kwargs)
         self._UI__app = self
         self.__height = 0
-        self.__qml_base = 'Context'
 
     def __repr__(self) -> str:
         return self.__class__.__name__
-
-    @property
-    def visible(self) -> bool:
-        """..."""
-        value = self._QtObject__property('visibility').value
-        return False if not value else True
-
-    @visible.setter
-    def visible(self, value: str) -> None:
-        value = 'Window.Windowed' if value else 'Window.Hidden'
-        self._QtObject__set_property('visibility', value)
 
     def open(
             self, x: int = 0, y: int = 0,
@@ -34,29 +23,12 @@ class Context(Frame):
         self.__height = 0
         if self._QtObject__obj:
             self.height = height if height else self.__get_height(self)
-            self.width = width if width else int(self.width[0]) + 2
+        #     self.width = 300
 
-            QTimer.singleShot(100, lambda: self.__pos(x, y))
-            self._QtObject__obj.show()
-
-        # if not self._app._QtObject__obj:
-        #     return
-
-        # el = self._app._Frame__qt_qml.QQmlComponent(self._app._Frame__engine)
-        # el.setData(
-        #     QmlBuilder(self)._qml.encode('utf-8'),
-        #     self._app._Frame__qt_core.QUrl())
-
-        # if el.status() == self._app._Frame__qt_qml.QQmlComponent.Error:
-        #     print(el.errors())
-
-        # frame = el.create()
-        # self._QtObject__obj = frame
-
-        # frame.closing.connect(lambda: print('close'))
-        # frame.show()
+        QTimer.singleShot(100, lambda: self.__pos(x, y))
+        self._QtObject__obj.open()
     
-    def __get_height(self, frame: Frame) -> int:
+    def __get_height(self, frame: UI) -> int:
         if len(frame._QtObject__items) > 1:
             self.__height += frame.spacing
 

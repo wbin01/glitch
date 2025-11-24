@@ -3,3 +3,4 @@ from .app_frame import AppFrame
 from .context import Context
 from .frame import Frame
 from .main_frame import MainFrame
+from .panel import Panel

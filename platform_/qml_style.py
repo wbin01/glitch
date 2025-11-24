@@ -17,7 +17,7 @@ BaseFrame {
     minimumWidth: 100
     minimumHeight: 30
 
-    visibility: Window.Windowed
+    // visibility: Window.Windowed
 
     property alias borderWidth: mainRectangle.borderWidth
     property alias outLineWidth: mainRectangle.outLineWidth
@@ -444,6 +444,21 @@ MainFrame {
     default property alias content: mainColumnLayout.data
 }
 // +
+Panel {
+    id: panel
+    width: 300
+    height: 200
+
+    contentItem: ColumnLayout {
+        id: panelColumnLayout
+        anchors.fill: parent
+        spacing: 6
+    }
+
+    default property alias content: panelColumnLayout.data
+}
+
+// +
 ScrollView {
     id: scroll
     clip: true
@@ -803,12 +818,13 @@ class QmlStyle(object):
 
             imports_add = ''
             if element_name in (
-                    'Window', 'BaseFrame', 'MainFrame',
+                    'Window', 'BaseFrame', 'MainFrame', 'Panel',
                     'ScrollView', 'Layout', 'ColumnLayout', 'RowLayout'):
                 imports_add = 'import QtQuick.Layouts\n'
 
             for flip in (
                     ('BaseFrame', 'Window'), ('MainFrame', 'Window'),
+                    ('Panel', 'Popup'),
                     ('CloseButton', 'ToolButton'),
                     ('MaxButton', 'ToolButton'),
                     ('MinButton', 'ToolButton')):

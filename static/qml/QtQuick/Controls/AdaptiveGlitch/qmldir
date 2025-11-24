@@ -1,13 +1,12 @@
 module QtQuick.Controls.AdaptiveGlitch
 
 BaseFrame 1.0 BaseFrame.qml
-MainFrame 1.0 MainFrame.qml
-Window 1.0 Window.qml
+Button 1.0 Button.qml
 CloseButton 1.0 CloseButton.qml
+Label 1.0 Label.qml
+Panel 1.0 Panel.qml
+MainFrame 1.0 MainFrame.qml
 MaxButton 1.0 MaxButton.qml
 MinButton 1.0 MinButton.qml
 ScrollView 1.0 ScrollView.qml
-Button 1.0 Button.qml
 ToolButton 1.0 ToolButton.qml
-Label 1.0 Label.qml
-Layout 1.0 Layout.qml
