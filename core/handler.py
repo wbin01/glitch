@@ -53,13 +53,10 @@ class Handler(QtCore.QObject):
         # >>> ui_element._QtObject__obj = gui_element
         
         for ui_element in layout._QtObject__items:
-
-            qml_base = f'_{ui_element.__class__.__name__}__qml_base'  # Header
-            if (ui_element._base == 'Layout' or
-                    ui_element._base == 'Frame' or
-                    hasattr(ui_element, qml_base) and
-                    getattr(ui_element, qml_base) == 'Layout'):
-                self.__integrate_graphic_elements(ui_element)
+            mro = str(type(ui_element).__mro__)
+            for layout_type in layout._QtObject__layout_types:
+                if layout_type in mro:
+                    self.__integrate_graphic_elements(ui_element)
 
             if isinstance(ui_element, UI):
                 gui_element = self.__gui.findChild(

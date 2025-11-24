@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-
-
 class UI(object):
     pass
 
@@ -29,10 +27,6 @@ class Add(object):
 
     def __add(self, item: UI) -> UI:
         """..."""
-        qml_base = f'_{item.__class__.__name__}__qml_base'
-        if hasattr(item, qml_base) and getattr(item, qml_base) == 'Context':
-            item.visible = False
-
         if item not in self._QtObject__items:
             self._QtObject__add(item)
 
@@ -40,21 +34,17 @@ class Add(object):
             item._UI__app = self._UI__app
             item._UI__app_signal.emit()
 
-            qml_base = f'_{item.__class__.__name__}__qml_base'
-            if (item._base == 'Layout' or
-                    hasattr(item, qml_base) and
-                    getattr(item, qml_base) == 'Layout'):
-                self.__add_app(item)
+            mro = str(type(item).__mro__)
+            for layout_type in self._QtObject__layout_types:
+                if layout_type in mro: self.__add_app(item)
 
         return item
     
     def __add_app(self, layout: None):
         for x in layout._QtObject__items:
-            qml_base = f'_{x.__class__.__name__}__qml_base'
-            if (x._base == 'Layout' or
-                    hasattr(x, qml_base) and
-                    getattr(x, qml_base) == 'Layout'):
-                self.__add_app(x)
+            mro = str(type(x).__mro__)
+            for layout_type in self._QtObject__layout_types:
+                if layout_type in mro: self.__add_app(x)
 
             if not x._UI__app or x._UI__app != self._UI__app:
                 x._UI__app = self._UI__app

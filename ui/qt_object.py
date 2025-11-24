@@ -15,6 +15,9 @@ class QtObject(object):
         self.__obj = None
         self.__items = []
         self.__id = None
+        self.__layout_types = (
+            'layout.Layout', 'frame.Frame', 'header.Header',
+            'control_buttons.ControlButtons')
 
     def __repr__(self) -> str:
         return f'{self.__class__.__name__}(name={self.__name!r})'

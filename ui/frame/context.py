@@ -11,7 +11,7 @@ class Context(Frame):
         super().__init__(*args, **kwargs)
         self._UI__app = self
         self.__height = 0
-        self.__qml_base = 'Context'
+        self.visible = False
 
     def __repr__(self) -> str:
         return self.__class__.__name__

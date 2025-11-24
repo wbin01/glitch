@@ -10,6 +10,7 @@ class Panel(Frame):
     """..."""
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(name='Panel', *args, **kwargs)
+        self._UI__app = None
 
     def __repr__(self) -> str:
         return self.__class__.__name__
