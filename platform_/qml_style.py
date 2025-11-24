@@ -447,12 +447,12 @@ MainFrame {
 Panel {
     id: panel
     width: 300
-    x: -1
-    y: -1
+    x: 0
+    y: 0
 
-    property color backgroundColor: "[Frame]background_color"
-    property color borderColor: "[Frame]border_color"
-    property color outLineColor: "#44000000"
+    property color backgroundColor: "[Panel]background_color"
+    property color borderColor: "[Panel]border_color"
+    property color outLineColor: "#00000000"
     property int borderWidth: 1
     property int outLineWidth: 1
 

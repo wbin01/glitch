@@ -17,5 +17,5 @@ class Panel(Frame):
     def open(self) -> None:
         """..."""
         if self._QtObject__obj:
-            self.height = int(self._app.height[0])
+            self.height = int(self._app.height[0]) - 2
             self._QtObject__obj.open()
