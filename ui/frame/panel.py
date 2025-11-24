@@ -21,33 +21,23 @@ class Panel(Frame):
         self.__fx = 0
         self.__width = 300
         self.__float = True
-        self.__side = 0
+        self.__side = 3
         self.__size = 300
 
     def __repr__(self) -> str:
         return self.__class__.__name__
 
     @property
-    def x(self) -> int:
+    def floating(self) -> int:
         """..."""
         return self.__fx
 
-    @x.setter
-    def x(self, x: int) -> None:
-        self.__fx = x
+    @floating.setter
+    def floating(self, floating: int) -> None:
+        self.__fx, self.__fy = floating, floating
 
-    @property
-    def y(self) -> int:
+    def open(self) -> None:
         """..."""
-        return self.__fy
-
-    @y.setter
-    def y(self, y: int) -> None:
-        self.__fy = y
-
-    def open(self, side=2) -> None:
-        """..."""
-        self.__side = side
         fy = (self.__fy * 2 if self.__float else self.__fy)
         fx = (self.__fx * 2 if self.__float else self.__fx)
         height = int(self._app.height[0])
@@ -83,7 +73,6 @@ class Panel(Frame):
                 self._QtObject__set_property('x', self.__fx)
                 size = (self.__size + 2) + self.__fy
                 end = self.__fy if self.__side == 2 else height - size
-
 
             start = -self.__size if self.__side == 2 else height
 
