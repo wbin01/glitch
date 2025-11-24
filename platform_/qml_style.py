@@ -447,12 +447,97 @@ MainFrame {
 Panel {
     id: panel
     width: 300
-    height: 200
+    x: -1
+    y: -1
+
+    property color backgroundColor: "[Frame]background_color"
+    property color borderColor: "[Frame]border_color"
+    property color outLineColor: "#44000000"
+    property int borderWidth: 1
+    property int outLineWidth: 1
+
+    property int radiusTopLeft: [Frame]border_radius_tl
+    property int radiusTopRight: [Frame]border_radius_tr
+    property int radiusBottomRight: [Frame]border_radius_br
+    property int radiusBottomLeft: [Frame]border_radius_bl
+
+    background: Item {
+        id: bg
+        anchors.fill: parent   // Isso é OK; background não é gerenciado por layouts
+
+        Canvas {
+            id: canvas
+            objectName: "canvas"
+            anchors.fill: parent
+            // Layout.fillWidth: true
+            // Layout.fillHeight: true
+            property int borderSpacing: 1
+
+            onPaint: {
+                var ctx = getContext("2d");
+                ctx.clearRect(0, 0, width, height);
+
+                // Function to draw rounded rectangle with individuals corners
+                function roundedRect(x, y, w, h, rtl, rtr, rbr, rbl) {
+                    ctx.beginPath();
+                    ctx.moveTo(x + rtl, y);
+                    ctx.lineTo(x + w - rtr, y);
+                    ctx.arcTo(x + w, y, x + w, y + rtr, rtr);
+                    ctx.lineTo(x + w, y + h - rbr);
+                    ctx.arcTo(x + w, y + h, x + w - rbr, y + h, rbr);
+                    ctx.lineTo(x + rbl, y + h);
+                    ctx.arcTo(x, y + h, x, y + h - rbl, rbl);
+                    ctx.lineTo(x, y + rtl);
+                    ctx.arcTo(x, y, x + rtl, y, rtl);
+                    ctx.closePath();
+                }
+
+                // --- Background ---
+                roundedRect(
+                    1, 1, width - 2, height - 2,
+                    panel.radiusTopLeft,
+                    panel.radiusTopRight,
+                    panel.radiusBottomRight,
+                    panel.radiusBottomLeft);
+
+                ctx.fillStyle = panel.backgroundColor;
+                ctx.fill();
+
+                // --- Outer border ---
+                roundedRect(
+                    0, 0, width, height,
+                    panel.radiusTopLeft + 2,
+                    panel.radiusTopRight + 2,
+                    panel.radiusBottomRight + 2,
+                    panel.radiusBottomLeft + 2);
+
+                ctx.strokeStyle = panel.outLineColor;
+                ctx.lineWidth = panel.outLineWidth;
+                ctx.stroke();
+
+                // --- Inner border ---
+                var inset = borderSpacing + panel.borderWidth / 2;
+                roundedRect(
+                    inset, inset,
+                    width - inset * 2,
+                    height - inset * 2,
+                    Math.max(0, panel.radiusTopLeft - inset),
+                    Math.max(0, panel.radiusTopRight - inset),
+                    Math.max(0, panel.radiusBottomRight - inset),
+                    Math.max(0, panel.radiusBottomLeft - inset));
+
+                ctx.strokeStyle = panel.borderColor;
+                ctx.lineWidth = panel.borderWidth;
+                ctx.stroke();
+            }
+        }
+    }
 
     contentItem: ColumnLayout {
         id: panelColumnLayout
         anchors.fill: parent
         spacing: 6
+        anchors.margins: 4
     }
 
     default property alias content: panelColumnLayout.data
