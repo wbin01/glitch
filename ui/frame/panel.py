@@ -99,10 +99,12 @@ class Panel(Frame):
         if isinstance(w, int): self.__w = w
         if isinstance(h, int): self.__h = h
 
-    def open(self) -> None:
+    def open(self, animation: Animation = None) -> None:
         """..."""
         if not self._QtObject__obj or not self._app:
             return
+
+        if animation: self.animation = animation
 
         scale = False
         if self.__animation == Animation.FROM_LEFT:
@@ -155,7 +157,6 @@ class Panel(Frame):
         self.__anim.addAnimation(fade_in)
 
         self.__anim.start()
-
 
     def __anim_from_top(self) -> tuple:
         app_height = int(self._app.height[0])
