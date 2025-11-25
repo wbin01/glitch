@@ -125,8 +125,8 @@ class Panel(Frame):
 
         self._QtObject__obj.open()
 
-        anim_type = b'x' if (self.__animation == Animation.FROM_LEFT or
-            self.__animation == Animation.FROM_RIGHT) else b'y'
+        value = self.__animation.value
+        anim_type = b'x' if 'LEFT' in value or 'RIGHT' in value else b'y'
 
         self.__anim = None
         slide_in = QtCore.QPropertyAnimation(self._QtObject__obj, anim_type)
@@ -224,7 +224,16 @@ class Panel(Frame):
         return -app_height, end
 
     def __anim_center_from_right(self) -> tuple:
-        return self.__anim_center_from_bottom()
+        app_height = int(self._app.height[0])
+        app_width = int(self._app.width[0])
+
+        self.width = 300 if self.__w is None else self.__w
+        
+        height = 300 if self.__h is None else self.__h
+        self.height = height
+        
+        self._QtObject__set_property('y', (app_height // 2) - (height // 2))
+        return app_width, (app_width // 2) - (self.width[0] // 2)
 
     def __anim_center_from_bottom(self) -> tuple:
         app_height = int(self._app.height[0])
