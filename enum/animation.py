@@ -10,7 +10,11 @@ class Animation(Enum):
     FROM_RIGHT = 'FROM_RIGHT'
     FROM_TOP = 'FROM_TOP'
     FROM_BOTTOM = 'FROM_BOTTOM'
-    # FROM_CENTER = 'FROM_CENTER'
+    CENTER = 'CENTER'
+    CENTER_FROM_TOP = 'CENTER_FROM_TOP'
+    CENTER_FROM_RIGHT = 'CENTER_FROM_RIGHT'
+    CENTER_FROM_BOTTOM = 'CENTER_FROM_BOTTOM'
+    CENTER_FROM_LEFT = 'CENTER_FROM_LEFT'
     
     def __repr__(self) -> str:
         return f'{self.__class__.__name__}.{self.name}'
