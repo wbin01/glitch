@@ -144,20 +144,21 @@ class Panel(Frame):
         self.__anim.addAnimation(fade_in)
         self.__anim.start()
 
-    def __anim_from_left(self) -> tuple:
-        height = int(self._app.height[0]) if self.__h is None else self.__h
-        self.width = 300 if self.__w is None else self.__w
+    def __anim_from_top(self) -> tuple:
+        app_height = int(self._app.height[0])
+        width = int(self._app.width[0]) if self.__w is None else self.__w
+        self.height = 300 if self.__h is None else self.__h
 
         if self._app.shape == Shape.MAX or self._app.shape == Shape.FULL:
-            self.height = (height + 2) - (self.__mt + self.__mb)
-            self._QtObject__set_property('y', self.__mt - 1)
+            self.width = width - (self.__ml + self.__mr)
+            self._QtObject__set_property('x', self.__ml - 1)
             end = -1
         else:
-            self.height = (height - 2) - (self.__mt + self.__mb)
-            self._QtObject__set_property('y', self.__mt)
+            self.width = (width - 2) - (self.__ml + self.__mr)
+            self._QtObject__set_property('x', self.__ml)
             end = 0
 
-        return -self.width[0], end + self.__ml
+        return -app_height, end + self.__mt
 
     def __anim_from_right(self) -> tuple:
         height = int(self._app.height[0]) if self.__h is None else self.__h
@@ -175,22 +176,6 @@ class Panel(Frame):
 
         return app_width, end - self.__mr
 
-    def __anim_from_top(self) -> tuple:
-        app_height = int(self._app.height[0])
-        width = int(self._app.width[0]) if self.__w is None else self.__w
-        self.height = 300 if self.__h is None else self.__h
-
-        if self._app.shape == Shape.MAX or self._app.shape == Shape.FULL:
-            self.width = width - (self.__ml + self.__mr)
-            self._QtObject__set_property('x', self.__ml - 1)
-            end = -1
-        else:
-            self.width = (width - 2) - (self.__ml + self.__mr)
-            self._QtObject__set_property('x', self.__ml)
-            end = 0
-
-        return -app_height, end + self.__mt
-
     def __anim_from_bottom(self) -> tuple:
         width = int(self._app.width[0]) if self.__w is None else self.__w
         app_height = int(self._app.height[0])
@@ -207,6 +192,21 @@ class Panel(Frame):
 
         return app_height, end - self.__mb
 
+    def __anim_from_left(self) -> tuple:
+        height = int(self._app.height[0]) if self.__h is None else self.__h
+        self.width = 300 if self.__w is None else self.__w
+
+        if self._app.shape == Shape.MAX or self._app.shape == Shape.FULL:
+            self.height = (height + 2) - (self.__mt + self.__mb)
+            self._QtObject__set_property('y', self.__mt - 1)
+            end = -1
+        else:
+            self.height = (height - 2) - (self.__mt + self.__mb)
+            self._QtObject__set_property('y', self.__mt)
+            end = 0
+
+        return -self.width[0], end + self.__ml
+
     def __anim_center(self) -> tuple:
         return self.__anim_center_from_bottom()
 
@@ -216,23 +216,22 @@ class Panel(Frame):
 
         width = 300 if self.__w is None else self.__w
         self.height = 300 if self.__h is None else self.__h
-
         self.width = width
-        self._QtObject__set_property('x', (app_width // 2) - (width // 2))
-        end = (app_height // 2) - (self.height[0] // 2)
 
-        return -app_height, end
+        self._QtObject__set_property('x', (app_width // 2) - (width // 2))
+
+        return -app_height, (app_height // 2) - (self.height[0] // 2)
 
     def __anim_center_from_right(self) -> tuple:
         app_height = int(self._app.height[0])
         app_width = int(self._app.width[0])
 
         self.width = 300 if self.__w is None else self.__w
-        
         height = 300 if self.__h is None else self.__h
         self.height = height
         
         self._QtObject__set_property('y', (app_height // 2) - (height // 2))
+
         return app_width, (app_width // 2) - (self.width[0] // 2)
 
     def __anim_center_from_bottom(self) -> tuple:
@@ -244,12 +243,20 @@ class Panel(Frame):
         self.height = 300 if self.__h is None else self.__h
         
         self._QtObject__set_property('x', (app_width // 2) - (width // 2))
-        end = app_height - (self.height[0] + 2)
 
         return app_height, (app_height // 2) - self.height[0] // 2
 
     def __anim_center_from_left(self) -> tuple:
-        return self.__anim_center_from_bottom()
+        app_height = int(self._app.height[0])
+        app_width = int(self._app.width[0])
+
+        height = 300 if self.__h is None else self.__h
+        self.width = 300 if self.__w is None else self.__w
+        self.height = height
+
+        self._QtObject__set_property('y', (app_height // 2) - (height // 2))
+
+        return -self.width[0], (app_width // 2) - (self.width[0] // 2)
 
     def __app_shape(self) -> None:
         self._app._shape_signal.connect(lambda: self._QtObject__obj.close())
