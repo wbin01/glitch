@@ -15,14 +15,14 @@ class Panel(Frame):
         """
         self._UI__app = None
 
-        self._app_signal.connect(self.__app_shape)
         self.__anim = None
+        self.__side = 3
         self.__fy = 0
         self.__fx = 0
         self.__w = 300
-        self.__h = None
-        self.__float = True
-        self.__side = 0
+        self.__h = 300
+
+        self._app_signal.connect(self.__app_shape)
 
     def __repr__(self) -> str:
         return self.__class__.__name__
@@ -98,69 +98,60 @@ class Panel(Frame):
         self.__anim.start()
 
     def __anim_from_left(self, width: int, height: int) -> tuple:
-        fy = (self.__fy * 2 if self.__float else self.__fy)
         size_w = self.__w if self.__w < width - 100 else width - 100
-
         self.width = size_w
+
         if self._app.shape == Shape.MAX or self._app.shape == Shape.FULL:
-            self.height = height + 4 - fy
+            self.height = height + 4 - self.__fy
             self._QtObject__set_property('y', self.__fy - 1)
             end = self.__fx - 1
         else:
-            self.height = height - 2 - fy
+            self.height = height - 2 - self.__fy
             self._QtObject__set_property('y', self.__fy)
             end = self.__fx
 
         return -size_w, end
 
     def __anim_from_right(self, width: int, height: int) -> tuple:
-        fy = (self.__fy * 2 if self.__float else self.__fy)
         size_w = self.__w if self.__w < width - 100 else width - 100
-
         self.width = size_w
+
         if self._app.shape == Shape.MAX or self._app.shape == Shape.FULL:
-            self.height = height + 4 - fy
+            self.height = height + 4 - self.__fy
             self._QtObject__set_property('y', self.__fy - 1)
             end = width - ((size_w + 1) + self.__fx)
         else:
-            self.height = height - 2 - fy
+            self.height = height - 2 - self.__fy
             self._QtObject__set_property('y', self.__fy)
             end = width - ((size_w + 2) + self.__fx)
 
         return width + size_w, end
 
     def __anim_from_top(self, width: int, height: int) -> tuple:
-        fx = (self.__fx * 2 if self.__float else self.__fx)
-        size_h = height // 2
-        if self.__h:
-            size_h = self.__h if self.__h < height - 100 else height - 100
-
+        size_h = self.__h if self.__h < height - 100 else height - 100
         self.height = size_h
+
         if self._app.shape == Shape.MAX or self._app.shape == Shape.FULL:
-            self.width = width - fx
+            self.width = width - self.__fx
             self._QtObject__set_property('x', self.__fx - 1)
             end = self.__fy - 1
         else:
-            self.width = width - 2 - fx
+            self.width = width - 2 - self.__fx
             self._QtObject__set_property('x', self.__fx)
             end = self.__fy
 
         return -size_h, end
 
     def __anim_from_bottom(self, width: int, height: int) -> tuple:
-        fx = (self.__fx * 2 if self.__float else self.__fx)
-        size_h = height // 2
-
-        if self.__h:
-            size_h = self.__h if self.__h < height - 100 else height - 100
-
+        size_h = self.__h if self.__h < height - 100 else height - 100
         self.height = size_h
+
         if self._app.shape == Shape.MAX or self._app.shape == Shape.FULL:
-            self.width = width - fx
+            self.width = width - self.__fx
             self._QtObject__set_property('x', self.__fx - 1)
             end = height - ((size_h + 1) + self.__fy)
         else:
-            self.width = width - 2 - fx
+            self.width = width - 2 - self.__fx
             self._QtObject__set_property('x', self.__fx)
             end = height - ((size_h + 2) + self.__fy)
 
