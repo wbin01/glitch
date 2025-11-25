@@ -2,12 +2,15 @@
 from PySide6 import QtCore
 
 from ...enum.shape import Shape
+from ...enum.animation import Animation
 from ..frame.frame import Frame
 
 
 class Panel(Frame):
     """..."""
-    def __init__(self, *args, **kwargs) -> None:
+    def __init__(
+            self, animation: Animation = Animation.FROM_LEFT,
+            *args, **kwargs) -> None:
         super().__init__(name='Panel', *args, **kwargs)
         """
         transformOrigin: 
@@ -15,7 +18,7 @@ class Panel(Frame):
         """
         self._UI__app = None
 
-        self.__side = 3
+        self.__animation = animation
         self.__fy = 0
         self.__fx = 0
         self.__w = 300
@@ -26,6 +29,15 @@ class Panel(Frame):
 
     def __repr__(self) -> str:
         return self.__class__.__name__
+
+    @property
+    def animation(self) -> int:
+        """..."""
+        return self.__animation
+
+    @animation.setter
+    def animation(self, animation: int) -> None:
+        self.__animation = animation
 
     @property
     def floating(self) -> int:
@@ -69,17 +81,19 @@ class Panel(Frame):
         height = int(self._app.height[0])
         width = int(self._app.width[0])
 
-        if self.__side == 0:
+        if self.__animation == Animation.FROM_LEFT:
             start, end = self.__anim_from_left(width, height)
-        elif self.__side == 1:
+        elif self.__animation == Animation.FROM_RIGHT:
             start, end = self.__anim_from_right(width, height)
-        elif self.__side == 2:
+        elif self.__animation == Animation.FROM_TOP:
             start, end = self.__anim_from_top(width, height)
         else:
             start, end = self.__anim_from_bottom(width, height)
 
         self._QtObject__obj.open()
-        anim_type = b'x' if self.__side < 2 else b'y'
+
+        anim_type = b'x' if (self.__animation == Animation.FROM_LEFT or
+            self.__animation == Animation.FROM_RIGHT) else b'y'
 
         self.__anim = None
         slide_in = QtCore.QPropertyAnimation(self._QtObject__obj, anim_type)

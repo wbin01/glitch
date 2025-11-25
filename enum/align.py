@@ -22,4 +22,4 @@ class Align(Enum):
     NONE = 0
     
     def __repr__(self) -> str:
-        return f"{self.__class__.__name__}.{self.name}"
+        return f'{self.__class__.__name__}.{self.name}'
