@@ -15,13 +15,13 @@ class Panel(Frame):
         """
         self._UI__app = None
 
-        self.__anim = None
         self.__side = 3
         self.__fy = 0
         self.__fx = 0
         self.__w = 300
         self.__h = 300
-
+        self.__anim = None
+        
         self._app_signal.connect(self.__app_shape)
 
     def __repr__(self) -> str:
@@ -102,11 +102,11 @@ class Panel(Frame):
         self.width = size_w
 
         if self._app.shape == Shape.MAX or self._app.shape == Shape.FULL:
-            self.height = height + 4 - self.__fy
+            self.height = height + 4 - (self.__fy * 2)
             self._QtObject__set_property('y', self.__fy - 1)
             end = self.__fx - 1
         else:
-            self.height = height - 2 - self.__fy
+            self.height = height - 2 - (self.__fy * 2)
             self._QtObject__set_property('y', self.__fy)
             end = self.__fx
 
@@ -117,11 +117,11 @@ class Panel(Frame):
         self.width = size_w
 
         if self._app.shape == Shape.MAX or self._app.shape == Shape.FULL:
-            self.height = height + 4 - self.__fy
+            self.height = height + 4 - (self.__fy * 2)
             self._QtObject__set_property('y', self.__fy - 1)
             end = width - ((size_w + 1) + self.__fx)
         else:
-            self.height = height - 2 - self.__fy
+            self.height = height - 2 - (self.__fy * 2)
             self._QtObject__set_property('y', self.__fy)
             end = width - ((size_w + 2) + self.__fx)
 
@@ -132,11 +132,11 @@ class Panel(Frame):
         self.height = size_h
 
         if self._app.shape == Shape.MAX or self._app.shape == Shape.FULL:
-            self.width = width - self.__fx
+            self.width = width - (self.__fx * 2)
             self._QtObject__set_property('x', self.__fx - 1)
             end = self.__fy - 1
         else:
-            self.width = width - 2 - self.__fx
+            self.width = width - 2 - (self.__fx * 2)
             self._QtObject__set_property('x', self.__fx)
             end = self.__fy
 
@@ -147,11 +147,11 @@ class Panel(Frame):
         self.height = size_h
 
         if self._app.shape == Shape.MAX or self._app.shape == Shape.FULL:
-            self.width = width - self.__fx
+            self.width = width - (self.__fx * 2)
             self._QtObject__set_property('x', self.__fx - 1)
             end = height - ((size_h + 1) + self.__fy)
         else:
-            self.width = width - 2 - self.__fx
+            self.width = width - 2 - (self.__fx * 2)
             self._QtObject__set_property('x', self.__fx)
             end = height - ((size_h + 2) + self.__fy)
 
