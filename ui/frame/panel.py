@@ -104,6 +104,7 @@ class Panel(Frame):
         if not self._QtObject__obj or not self._app:
             return
 
+        scale = False
         if self.__animation == Animation.FROM_LEFT:
             start, end = self.__anim_from_left()
         elif self.__animation == Animation.FROM_RIGHT:
@@ -113,7 +114,7 @@ class Panel(Frame):
         elif self.__animation == Animation.FROM_BOTTOM:
             start, end = self.__anim_from_bottom()
         elif self.__animation == Animation.CENTER:
-            start, end = self.__anim_center()
+            scale = self.__anim_center()
         elif self.__animation == Animation.CENTER_FROM_TOP:
             start, end = self.__anim_center_from_top()
         elif self.__animation == Animation.CENTER_FROM_RIGHT:
@@ -129,20 +130,32 @@ class Panel(Frame):
         anim_type = b'x' if 'LEFT' in value or 'RIGHT' in value else b'y'
 
         self.__anim = None
-        slide_in = QtCore.QPropertyAnimation(self._QtObject__obj, anim_type)
-        slide_in.setDuration(300)
-        slide_in.setStartValue(start)
-        slide_in.setEndValue(end)
-        slide_in.setEasingCurve(QtCore.QEasingCurve.OutCubic)
+        self.__anim = QtCore.QParallelAnimationGroup()
+        
+        if scale:
+            scale = QtCore.QPropertyAnimation(self._QtObject__obj, b'scale')
+            scale.setDuration(300)
+            scale.setStartValue(0.0)
+            scale.setEndValue(1.0)
+            scale.setEasingCurve(QtCore.QEasingCurve.OutCubic)
+            self.__anim.addAnimation(scale)
+        else:
+            slide_in = QtCore.QPropertyAnimation(self._QtObject__obj, anim_type)
+            slide_in.setDuration(300)
+            slide_in.setStartValue(start)
+            slide_in.setEndValue(end)
+            slide_in.setEasingCurve(QtCore.QEasingCurve.OutCubic)
+            self.__anim.addAnimation(slide_in)
+
         fade_in = QtCore.QPropertyAnimation(self._QtObject__obj, b'opacity')
         fade_in.setDuration(300)
         fade_in.setStartValue(0)
         fade_in.setEndValue(1)
         fade_in.setEasingCurve(QtCore.QEasingCurve.OutCubic)
-        self.__anim = QtCore.QParallelAnimationGroup()
-        self.__anim.addAnimation(slide_in)
         self.__anim.addAnimation(fade_in)
+
         self.__anim.start()
+
 
     def __anim_from_top(self) -> tuple:
         app_height = int(self._app.height[0])
@@ -207,8 +220,20 @@ class Panel(Frame):
 
         return -self.width[0], end + self.__ml
 
-    def __anim_center(self) -> tuple:
-        return self.__anim_center_from_bottom()
+    def __anim_center(self) -> bool:
+        app_height = int(self._app.height[0])
+        app_width = int(self._app.width[0])
+
+        width = 300 if self.__w is None else self.__w
+        self.width = width
+        
+        height = 300 if self.__h is None else self.__h
+        self.height = height
+
+        self._QtObject__set_property('x', (app_width // 2) - (width // 2))
+        self._QtObject__set_property('y', (app_height // 2) - (height // 2))
+
+        return True
 
     def __anim_center_from_top(self) -> tuple:
         app_height = int(self._app.height[0])
