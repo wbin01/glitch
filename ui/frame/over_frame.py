@@ -5,7 +5,7 @@ from .frame import Frame
 from ...enum.hint import Hint
 
 
-class Context(Frame):
+class OverFrame(Frame):
     """..."""
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
@@ -29,7 +29,7 @@ class Context(Frame):
 
     def open(
             self, x: int = 0, y: int = 0,
-            height: int = 30, width: int = 100) -> None:
+            height: int = None, width: int = None) -> None:
         """..."""
         self.__height = 0
         if self._QtObject__obj:
@@ -55,7 +55,7 @@ class Context(Frame):
             if element_items and isinstance(element_items, list):
                 self.__get_height(element)
 
-        return int(self.__height) + 2
+        return int(self.__height) + 2 if self.__height else 30
 
     def __pos(self, x: int, y: int) -> None:
         self._QtObject__obj.x = x
