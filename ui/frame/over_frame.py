@@ -6,7 +6,10 @@ from ...enum.hint import Hint
 
 
 class OverFrame(Frame):
-    """..."""
+    """Legacy context-overlay Frame (like a context menu).
+
+    Warning! Close with "close" to avoid the "Segmentation fault".
+    """
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self._UI__app = self
@@ -34,7 +37,7 @@ class OverFrame(Frame):
         self.__height = 0
         if self._QtObject__obj:
             self.height = height if height else self.__get_height(self)
-            self.width = width if width else int(self.width[0]) + 2
+            self.width = width if width else self.__get_width()
 
             QTimer.singleShot(100, lambda: self.__pos(x, y))
             self._QtObject__obj.show()
@@ -55,7 +58,12 @@ class OverFrame(Frame):
             if element_items and isinstance(element_items, list):
                 self.__get_height(element)
 
-        return int(self.__height) + 2 if self.__height else 30
+        return self.__height + 2 if self.__height else 30
+
+    def __get_width(self) -> int:
+        width = self.width[0]
+        return width + 2 if not width else 100
+
 
     def __pos(self, x: int, y: int) -> None:
         self._QtObject__obj.x = x
