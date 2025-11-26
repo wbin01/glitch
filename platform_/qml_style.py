@@ -450,6 +450,8 @@ Panel {
     x: 0
     y: 0
     // modal: true
+    // transformOrigin: Item.Left
+    closePolicy: Popup.autoClose  // Popup.NoAutoClose
 
     property color backgroundColor: "[Panel]background_color"
     property color borderColor: "[Panel]border_color"
@@ -543,7 +545,6 @@ Panel {
 
     default property alias content: panelColumnLayout.data
 }
-
 // +
 ScrollView {
     id: scroll
