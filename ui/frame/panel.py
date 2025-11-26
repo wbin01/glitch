@@ -233,8 +233,16 @@ class Panel(Frame):
         height = 300 if self.__h is None else self.__h
         self.height = height
 
-        self._QtObject__set_property('x', (app_width // 2) - (width // 2))
-        self._QtObject__set_property('y', (app_height // 2) - (height // 2))
+        y = (app_height // 2) - (height // 2)
+        if self.__mt > self.__mb: y = y + (self.__mt - self.__mb)
+        if self.__mb > self.__mt: y = y - (self.__mb - self.__mt)
+
+        x = (app_width // 2) - (width // 2)
+        if self.__ml > self.__mr: x = x + (self.__ml - self.__mr)
+        if self.__mr > self.__ml: x = x - (self.__mr - self.__ml)
+
+        self._QtObject__set_property('x', x)
+        self._QtObject__set_property('y', y)
 
         return True
 
