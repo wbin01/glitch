@@ -27,7 +27,7 @@ class Panel(Frame):
         self.__scale_anim_time = 300
         self.__slide_anim_time = 300
         self.__fade_anim_time = 300
-        self.__local = False
+        self.__transition = True
         self.__static = False
         
         self._app_signal.connect(self.__app_shape)
@@ -56,12 +56,12 @@ class Panel(Frame):
         self._QtObject__set_property('closePolicy', 0 if static else 1)
 
     @property
-    def local(self) -> bool:
-        return self.__local
+    def transition(self) -> bool:
+        return self.__transition
 
-    @local.setter
-    def local(self, local: bool) -> None:
-        self.__local = local
+    @transition.setter
+    def transition(self, transition: bool) -> None:
+        self.__transition = transition
 
     @property
     def margin(self) -> tuple:
@@ -100,13 +100,13 @@ class Panel(Frame):
             animation: Anim = Anim.LEFT,
             size: tuple = (None, None),
             margin: tuple = 0,
-            local: bool = False,
+            transition: bool = True,
             static: bool = False) -> None:
         """..."""
         self.animation = animation
         self.size = size
         self.margin = margin
-        self.local = local
+        self.transition = transition
         self.static = static
 
     @property
@@ -145,8 +145,9 @@ class Panel(Frame):
             return
 
         if animation: self.__animation = animation
-        slide_anim_time = 0 if self.__local else self.__slide_anim_time
-
+        slide_time = 0 if not self.__transition else self.__slide_anim_time
+        scale_time = 0 if not self.__transition else self.__scale_anim_time
+        
         scale = False
         if self.__animation == Anim.LEFT:
             start, end = self.__anim_left()
@@ -177,14 +178,14 @@ class Panel(Frame):
         
         if scale:
             scale = QtCore.QPropertyAnimation(self._QtObject__obj, b'scale')
-            scale.setDuration(self.__scale_anim_time)
+            scale.setDuration(scale_time)
             scale.setStartValue(0.0)
             scale.setEndValue(1.0)
             scale.setEasingCurve(QtCore.QEasingCurve.OutCubic)
             self.__anim.addAnimation(scale)
         else:
             slide_in = QtCore.QPropertyAnimation(self._QtObject__obj, anim_type)
-            slide_in.setDuration(slide_anim_time)
+            slide_in.setDuration(slide_time)
             slide_in.setStartValue(start)
             slide_in.setEndValue(end)
             slide_in.setEasingCurve(QtCore.QEasingCurve.OutCubic)
