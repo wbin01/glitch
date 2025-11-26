@@ -2,15 +2,13 @@
 from PySide6 import QtCore
 
 from ...enum.shape import Shape
-from ...enum.animation import Animation
+from ...enum.anim import Anim
 from ..frame.frame import Frame
 
 
 class Panel(Frame):
     """..."""
-    def __init__(
-            self, animation: Animation = Animation.FROM_LEFT,
-            *args, **kwargs) -> None:
+    def __init__(self, animation: Anim = Anim.LEFT, *args, **kwargs) -> None:
         super().__init__(name='Panel', *args, **kwargs)
         """
         transformOrigin: 
@@ -99,31 +97,31 @@ class Panel(Frame):
         if isinstance(w, int): self.__w = w
         if isinstance(h, int): self.__h = h
 
-    def open(self, animation: Animation = None) -> None:
+    def open(self, animation: Anim = None) -> None:
         """..."""
         if not self._QtObject__obj or not self._app:
             return
 
-        if animation: self.animation = animation
+        if animation: self.__animation = animation
 
         scale = False
-        if self.__animation == Animation.FROM_LEFT:
-            start, end = self.__anim_from_left()
-        elif self.__animation == Animation.FROM_RIGHT:
-            start, end = self.__anim_from_right()
-        elif self.__animation == Animation.FROM_TOP:
-            start, end = self.__anim_from_top()
-        elif self.__animation == Animation.FROM_BOTTOM:
-            start, end = self.__anim_from_bottom()
-        elif self.__animation == Animation.CENTER:
+        if self.__animation == Anim.LEFT:
+            start, end = self.__anim_left()
+        elif self.__animation == Anim.RIGHT:
+            start, end = self.__anim_right()
+        elif self.__animation == Anim.TOP:
+            start, end = self.__anim_top()
+        elif self.__animation == Anim.BOTTOM:
+            start, end = self.__anim_bottom()
+        elif self.__animation == Anim.CENTER:
             scale = self.__anim_center()
-        elif self.__animation == Animation.CENTER_FROM_TOP:
+        elif self.__animation == Anim.CENTER_FROM_TOP:
             start, end = self.__anim_center_from_top()
-        elif self.__animation == Animation.CENTER_FROM_RIGHT:
+        elif self.__animation == Anim.CENTER_FROM_RIGHT:
             start, end = self.__anim_center_from_right()
-        elif self.__animation == Animation.CENTER_FROM_BOTTOM:
+        elif self.__animation == Anim.CENTER_FROM_BOTTOM:
             start, end = self.__anim_center_from_bottom()
-        elif self.__animation == Animation.CENTER_FROM_LEFT:
+        elif self.__animation == Anim.CENTER_FROM_LEFT:
             start, end = self.__anim_center_from_left()
 
         self._QtObject__obj.open()
@@ -158,7 +156,7 @@ class Panel(Frame):
 
         self.__anim.start()
 
-    def __anim_from_top(self) -> tuple:
+    def __anim_top(self) -> tuple:
         app_height = int(self._app.height[0])
         width = int(self._app.width[0]) if self.__w is None else self.__w
         self.height = 300 if self.__h is None else self.__h
@@ -174,7 +172,7 @@ class Panel(Frame):
 
         return -app_height, end + self.__mt
 
-    def __anim_from_right(self) -> tuple:
+    def __anim_right(self) -> tuple:
         height = int(self._app.height[0]) if self.__h is None else self.__h
         app_width = int(self._app.width[0])
         self.width = 300 if self.__w is None else self.__w
@@ -190,7 +188,7 @@ class Panel(Frame):
 
         return app_width, end - self.__mr
 
-    def __anim_from_bottom(self) -> tuple:
+    def __anim_bottom(self) -> tuple:
         width = int(self._app.width[0]) if self.__w is None else self.__w
         app_height = int(self._app.height[0])
         self.height = 300 if self.__h is None else self.__h
@@ -206,7 +204,7 @@ class Panel(Frame):
 
         return app_height, end - self.__mb
 
-    def __anim_from_left(self) -> tuple:
+    def __anim_left(self) -> tuple:
         height = int(self._app.height[0]) if self.__h is None else self.__h
         self.width = 300 if self.__w is None else self.__w
 

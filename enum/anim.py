@@ -4,12 +4,12 @@ from enum import Enum
 from PySide6 import QtCore
 
 
-class Animation(Enum):
+class Anim(Enum):
     """Align enumeration."""
-    FROM_LEFT = 'FROM_LEFT'
-    FROM_RIGHT = 'FROM_RIGHT'
-    FROM_TOP = 'FROM_TOP'
-    FROM_BOTTOM = 'FROM_BOTTOM'
+    LEFT = 'LEFT'
+    RIGHT = 'RIGHT'
+    TOP = 'TOP'
+    BOTTOM = 'BOTTOM'
     CENTER = 'CENTER'
     CENTER_FROM_TOP = 'CENTER_FROM_TOP'
     CENTER_FROM_RIGHT = 'CENTER_FROM_RIGHT'
