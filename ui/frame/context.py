@@ -38,23 +38,6 @@ class Context(Frame):
 
             QTimer.singleShot(100, lambda: self.__pos(x, y))
             self._QtObject__obj.show()
-
-        # if not self._app._QtObject__obj:
-        #     return
-
-        # el = self._app._Frame__qt_qml.QQmlComponent(self._app._Frame__engine)
-        # el.setData(
-        #     QmlBuilder(self)._qml.encode('utf-8'),
-        #     self._app._Frame__qt_core.QUrl())
-
-        # if el.status() == self._app._Frame__qt_qml.QQmlComponent.Error:
-        #     print(el.errors())
-
-        # frame = el.create()
-        # self._QtObject__obj = frame
-
-        # frame.closing.connect(lambda: print('close'))
-        # frame.show()
     
     def __get_height(self, frame: Frame) -> int:
         if len(frame._QtObject__items) > 1:
@@ -75,6 +58,5 @@ class Context(Frame):
         return int(self.__height) + 2
 
     def __pos(self, x: int, y: int) -> None:
-        # self._QtObject__obj.move(x, y)
         self._QtObject__obj.x = x
         self._QtObject__obj.y = y
