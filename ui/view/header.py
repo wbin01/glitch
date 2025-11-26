@@ -111,19 +111,19 @@ class Header(View):
         # Size vars
         ratio = self._app._QtObject__obj.devicePixelRatio()
 
-        control_l = int(self.__control_l.width[0])
-        left = int(self.__left.width[0])
-        left_plus = int(self.__left_plus.width[0])
-        left_span = int(self.__left_span.width[0])
+        control_l = self.__control_l.width[0]
+        left = self.__left.width[0]
+        left_plus = self.__left_plus.width[0]
+        left_span = self.__left_span.width[0]
 
-        title = int(self.__text.width[0])
+        title = self.__text.width[0]
 
-        right_span = int(self.__right_span.width[0])
-        right_plus = int(self.__right_plus.width[0])
-        right = int(self.__right.width[0])
-        control_r = int(self.__control_r.width[0])
+        right_span = self.__right_span.width[0]
+        right_plus = self.__right_plus.width[0]
+        right = self.__right.width[0]
+        control_r = self.__control_r.width[0]
 
-        window = int(self._app.width[0])
+        window = self._app.width[0]
         
         if not self.__control_l.visible: control_l = 0
         if not self.__control_r.visible: control_r = 0
@@ -132,7 +132,6 @@ class Header(View):
         if not self.__right_count and right != 32: self.__right.width = 32
 
         # New stop point
-        # (control_l * ratio) + left + title + right + (control_r * ratio)
         used_area = control_l + left + title + right + control_r
         self.__stop = True if window < used_area + 20 else False
         if self.__stop:
@@ -152,11 +151,9 @@ class Header(View):
             self.__resize = True
 
         # Equal sides +
-        # left_side = (control_l * ratio) + (left * ratio)
         left_side = control_l + left
         if left_side < 0: left_side = 0
 
-        # right_side = (right * ratio) + (control_r * ratio)
         right_side = right + control_r
         if right_side < 0: right_side = 0
         

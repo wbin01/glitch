@@ -73,7 +73,11 @@ class Panel(Frame):
 
     @property
     def size(self) -> tuple:
-        """Min is 100 (auto)"""
+        """
+        None is auto:
+            Left and right is 300-width and app-height.
+            Top and bottom is app-width and 300-height.
+        """
         return self.__w, self.__h
 
     @size.setter
@@ -94,8 +98,8 @@ class Panel(Frame):
             else:
                 w, h = size[:2]
 
-        if isinstance(w, int): self.__w = w
-        if isinstance(h, int): self.__h = h
+        if isinstance(w, int) or w is None: self.__w = w
+        if isinstance(h, int) or h is None: self.__h = h
 
     def open(self, animation: Anim = None) -> None:
         """..."""
@@ -157,8 +161,8 @@ class Panel(Frame):
         self.__anim.start()
 
     def __anim_top(self) -> tuple:
-        app_height = int(self._app.height[0])
-        width = int(self._app.width[0]) if self.__w is None else self.__w
+        app_height = self._app.height[0]
+        width = self._app.width[0] if self.__w is None else self.__w
         self.height = 300 if self.__h is None else self.__h
 
         if self._app.shape == Shape.MAX or self._app.shape == Shape.FULL:
@@ -173,8 +177,8 @@ class Panel(Frame):
         return -app_height, end + self.__mt
 
     def __anim_right(self) -> tuple:
-        height = int(self._app.height[0]) if self.__h is None else self.__h
-        app_width = int(self._app.width[0])
+        height = self._app.height[0] if self.__h is None else self.__h
+        app_width = self._app.width[0]
         self.width = 300 if self.__w is None else self.__w
 
         if self._app.shape == Shape.MAX or self._app.shape == Shape.FULL:
@@ -189,8 +193,8 @@ class Panel(Frame):
         return app_width, end - self.__mr
 
     def __anim_bottom(self) -> tuple:
-        width = int(self._app.width[0]) if self.__w is None else self.__w
-        app_height = int(self._app.height[0])
+        width = self._app.width[0] if self.__w is None else self.__w
+        app_height = self._app.height[0]
         self.height = 300 if self.__h is None else self.__h
 
         if self._app.shape == Shape.MAX or self._app.shape == Shape.FULL:
@@ -205,7 +209,7 @@ class Panel(Frame):
         return app_height, end - self.__mb
 
     def __anim_left(self) -> tuple:
-        height = int(self._app.height[0]) if self.__h is None else self.__h
+        height = self._app.height[0] if self.__h is None else self.__h
         self.width = 300 if self.__w is None else self.__w
 
         if self._app.shape == Shape.MAX or self._app.shape == Shape.FULL:
@@ -220,8 +224,8 @@ class Panel(Frame):
         return -self.width[0], end + self.__ml
 
     def __anim_center(self) -> bool:
-        app_height = int(self._app.height[0])
-        app_width = int(self._app.width[0])
+        app_height = self._app.height[0]
+        app_width = self._app.width[0]
 
         width = 300 if self.__w is None else self.__w
         self.width = width
@@ -235,8 +239,8 @@ class Panel(Frame):
         return True
 
     def __anim_center_from_top(self) -> tuple:
-        app_height = int(self._app.height[0])
-        app_width = int(self._app.width[0])
+        app_height = self._app.height[0]
+        app_width = self._app.width[0]
 
         width = 300 if self.__w is None else self.__w
         self.height = 300 if self.__h is None else self.__h
@@ -247,8 +251,8 @@ class Panel(Frame):
         return -app_height, (app_height // 2) - (self.height[0] // 2)
 
     def __anim_center_from_right(self) -> tuple:
-        app_height = int(self._app.height[0])
-        app_width = int(self._app.width[0])
+        app_height = self._app.height[0]
+        app_width = self._app.width[0]
 
         self.width = 300 if self.__w is None else self.__w
         height = 300 if self.__h is None else self.__h
@@ -259,8 +263,8 @@ class Panel(Frame):
         return app_width, (app_width // 2) - (self.width[0] // 2)
 
     def __anim_center_from_bottom(self) -> tuple:
-        app_height = int(self._app.height[0])
-        app_width = int(self._app.width[0])
+        app_height = self._app.height[0]
+        app_width = self._app.width[0]
 
         width = 300 if self.__w is None else self.__w
         self.width = width
@@ -271,8 +275,8 @@ class Panel(Frame):
         return app_height, (app_height // 2) - self.height[0] // 2
 
     def __anim_center_from_left(self) -> tuple:
-        app_height = int(self._app.height[0])
-        app_width = int(self._app.width[0])
+        app_height = self._app.height[0]
+        app_width = self._app.width[0]
 
         height = 300 if self.__h is None else self.__h
         self.width = 300 if self.__w is None else self.__w
