@@ -311,9 +311,16 @@ class Panel(Frame):
         self.width = 300 if self.__w is None else self.__w
         self.height = height
 
-        self._QtObject__set_property('y', (app_height // 2) - (height // 2))
+        y = (app_height // 2) - (height // 2)
+        if self.__mt > self.__mb: y = y + (self.__mt - self.__mb)
+        if self.__mb > self.__mt: y = y - (self.__mb - self.__mt)
+        self._QtObject__set_property('y', y)
 
-        return -self.width[0], (app_width // 2) - (self.width[0] // 2)
+        end = (app_width // 2) - (self.width[0] // 2)
+        if self.__ml > self.__mr: end = end + (self.__ml - self.__mr)
+        if self.__mr > self.__ml: end = end - (self.__mr - self.__ml)
+
+        return -self.width[0], end
 
     def __app_shape(self) -> None:
         self._app._shape_signal.connect(lambda: self._QtObject__obj.close())
