@@ -29,7 +29,7 @@ class Context(Frame):
 
     def open(
             self, x: int = 0, y: int = 0,
-            height: int = None, width: int = None) -> None:
+            height: int = 30, width: int = 100) -> None:
         """..."""
         self.__height = 0
         if self._QtObject__obj:
