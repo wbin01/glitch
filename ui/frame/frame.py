@@ -65,6 +65,14 @@ class Frame(Add, UI):
         self._hint_signal.emit()
 
     @property
+    def spacing(self) -> int:
+        return self.__container.spacing
+
+    @spacing.setter
+    def spacing(self, spacing: int) -> None:
+        self.__container.spacing = spacing
+
+    @property
     def _hint_signal(self):
         """..."""
         return self.__hint_signal

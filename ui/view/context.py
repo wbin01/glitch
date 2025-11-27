@@ -8,15 +8,30 @@ from ...enum.anim import Anim
 class Context(View):
     def __init__(self, text: str = None, *args, **kwargs) -> None:
         super().__init__(name='Context', *args, **kwargs)
-        self.visible = False
-
         self.__obj = None
         self.__anim = None
         self.__close_conn = None
+        self.__t_type = b'yScale'
+        self.__visible = False
 
-        self.__transition_type = 'yScale'
+    @property
+    def visible_panel(self) -> bool:
+        """..."""
+        return self.__visible
+
+    @visible_panel.setter
+    def visible_panel(self, visible_panel: bool) -> None:
+        self.open() if visible_panel else self.close()
 
     def open(self) -> None:
+        """..."""
+        self.__anim_open()
+
+    def close(self) -> None:
+        """..."""
+        self.__anim_close()
+
+    def __anim_open(self) -> None:
         """..."""
         if not self.__obj:
             self.__obj = self._QtObject__obj.findChild(
@@ -32,21 +47,22 @@ class Context(View):
             self.__close_conn = None
 
         # Animation
-        self.visible = True
+        self._QtObject__set_property('panelVisible', True)
+        self.__visible = True
 
         if not self.__anim:
-            self.__anim = QtCore.QPropertyAnimation(self.__obj, b'yScale')
+            self.__anim = QtCore.QPropertyAnimation(self.__obj, self.__t_type)
             self.__anim.setDuration(100)
 
         self.__anim.setStartValue(0.0)
         self.__anim.setEndValue(1.0)
         self.__anim.start()
 
-    def close(self) -> None:
+    def __anim_close(self) -> None:
         if not self.__obj:
             self.__obj = self._QtObject__obj.findChild(
                 QtCore.QObject, 'scaleTransform')
-        
+
         # Animation running
         if (self.__anim
                 and self.__anim.state() == QtCore.QAbstractAnimation.Running):
@@ -54,7 +70,7 @@ class Context(View):
 
         # Animation
         if not self.__anim:
-            self.__anim = QtCore.QPropertyAnimation(self.__obj, b'yScale')
+            self.__anim = QtCore.QPropertyAnimation(self.__obj, self.__t_type)
             self.__anim.setDuration(100)
 
         self.__anim.setStartValue(1.0)
@@ -65,7 +81,8 @@ class Context(View):
         self.__anim.start()
 
     def __close(self) -> None:
-        self.visible = False
+        self._QtObject__set_property('panelVisible', False)
+        self.__visible = False
 
     def __repr__(self) -> str:
         return f'{self.__class__.__name__}()'

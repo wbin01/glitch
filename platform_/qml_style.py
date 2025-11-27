@@ -459,10 +459,10 @@ Panel {
     property int borderWidth: 1
     property int outLineWidth: 1
 
-    property int radiusTopLeft: [Frame]border_radius_tl
-    property int radiusTopRight: [Frame]border_radius_tr
-    property int radiusBottomRight: [Frame]border_radius_br
-    property int radiusBottomLeft: [Frame]border_radius_bl
+    property int radiusTopLeft: [Panel]border_radius_tl
+    property int radiusTopRight: [Panel]border_radius_tr
+    property int radiusBottomRight: [Panel]border_radius_br
+    property int radiusBottomLeft: [Panel]border_radius_bl
 
     background: Item {
         id: bg
@@ -548,34 +548,73 @@ Panel {
 // +
 Context {
     id: context
-    width: 100
-    height: 100
-    clip: true
+    width: 0
+    height: 0
 
-    transform: Scale {
-        id: scaleTransform
-        objectName: "scaleTransform"
-        xScale: 1
-        yScale: 1
-        origin.x: 0
-        origin.y: 0
+    property color backgroundColor: "[Panel]background_color"
+    property color borderColor: "[Panel]border_color"
+    property int borderWidth: 1
+    property int borderRadius: [Panel]border_radius_tl
+
+    Layout.preferredWidth: 0
+    Layout.preferredHeight: 0
+    Layout.minimumWidth: 0
+    Layout.minimumHeight: 0
+    Layout.maximumWidth: 0
+    Layout.maximumHeight: 0
+    implicitWidth: 0
+    implicitHeight: 0
+
+    x: 0
+    y: 0
+    z: 999
+
+    property alias panelVisible: contextItem.visible
+
+    Layout.margins: 0
+
+    MouseArea {
+        id: overlay
+        anchors.fill: parent // window
+        visible: context.visible
+        enabled: context.visible
+        z: 998
+
+        onClicked: contextPy.close()
     }
 
-    Rectangle {
-        anchors.fill: parent
-        color: "#202020"
-        border.color: "#505050"
-        border.width: 1
-        radius: 8
-    }
+    Item {
+        id: contextItem
+        objectName: "contextItem"
+        width: 100
+        height: 100
+        anchors.margins: 0
+        visible: false
+        // clip: true
 
-    ColumnLayout {
-        id: contextColumnLayout
-        anchors.fill: parent
-        anchors.margins: 10
+        transform: Scale {
+            id: scaleTransform
+            objectName: "scaleTransform"
+            xScale: 1
+            yScale: 1
+            origin.x: 0
+            origin.y: 0
+        }
 
-        // Label { text: "Título" }
-        // Button { text: "Botão" }
+        Rectangle {
+            anchors.fill: parent
+            color: context.backgroundColor
+            border.color: context.borderColor
+            border.width: context.borderWidth
+            radius: context.borderRadius
+            anchors.margins: 0
+        }
+
+        ColumnLayout {
+            id: contextColumnLayout
+            anchors.fill: parent
+            anchors.margins: 0
+        }
     }
     default property alias content: contextColumnLayout.data
 }
@@ -922,7 +961,8 @@ class QmlStyle(object):
         for style_header, style_key in self.__style.items():
             for key, value in style_key.items():
                 mark = style_header + key
-                if 'Frame' in style_header and key == 'border_radius':
+                if (('Frame' in style_header or 'Panel' in style_header) and
+                            key == 'border_radius'):
                     for val, edge in zip(
                             value.split(','), ('_tl', '_tr', '_br', '_bl')):
                         self.__qml_style = self.__qml_style.replace(
