@@ -556,26 +556,18 @@ Context {
     property int borderWidth: 1
     property int borderRadius: [Panel]border_radius_tl
 
-    Layout.preferredWidth: 0
-    Layout.preferredHeight: 0
-    Layout.minimumWidth: 0
-    Layout.minimumHeight: 0
-    Layout.maximumWidth: 0
-    Layout.maximumHeight: 0
-    implicitWidth: 0
-    implicitHeight: 0
-
     x: 0
     y: 0
     z: 999
 
     property alias panelVisible: contextItem.visible
+    property alias appParent: overlay.anchors.fill
 
     Layout.margins: 0
 
     MouseArea {
         id: overlay
-        anchors.fill: parent // window
+        anchors.fill: parent
         visible: context.visible
         enabled: context.visible
         z: 998

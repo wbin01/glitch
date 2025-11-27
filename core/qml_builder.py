@@ -22,6 +22,7 @@ class QmlBuilder(object):
         self.__qml_code = ''
         self.__first_iteration = True
         self.__suffix = 0
+        self.__main_id = None
         self.__write_qml(self.__ui)
         self.__qml_finish()
 
@@ -44,7 +45,7 @@ class QmlBuilder(object):
         # Layout ID
         if '<id>' in ui._QtObject__qml and self.__first_iteration:
             id_ = f'{ui.__class__.__name__.lower()}_{self.__suffix}'
-            # ui._QtObject__id = id_
+            self.__main_id = id_
             ui._QtObject__qml = ui._QtObject__qml.replace(
                 '<id>', f'{id_}').replace(
                 '// Close ' + ui._name, '// Close ' + id_)

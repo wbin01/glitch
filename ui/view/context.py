@@ -6,13 +6,29 @@ from ...enum.anim import Anim
 
 
 class Context(View):
-    def __init__(self, text: str = None, *args, **kwargs) -> None:
+    def __init__(
+            self, push: bool = True, width: int = 100, height: int = 100,
+            *args, **kwargs) -> None:
         super().__init__(name='Context', *args, **kwargs)
+        self.__push = push
+        self.__width = width
+        self.__height = height
+
+        self.visible = True
+        if self.__push:
+            self.visible = False
+            self._QtObject__set_property('width', self.__width)
+            self._QtObject__set_property('height', self.__height)
+
         self.__obj = None
         self.__anim = None
         self.__close_conn = None
-        self.__t_type = b'yScale'
+        self.__t_type = b'xScale'
         self.__visible = False
+
+        self._render_signal.connect(
+            lambda: self._QtObject__set_property(
+                'appParent', self._app._QtObject__obj.property('objectName')))
 
     @property
     def visible_panel(self) -> bool:
@@ -47,8 +63,9 @@ class Context(View):
             self.__close_conn = None
 
         # Animation
-        self._QtObject__set_property('panelVisible', True)
+        self._QtObject__set_property('panelVisible', True)        
         self.__visible = True
+        if self.__push: self.visible = True
 
         if not self.__anim:
             self.__anim = QtCore.QPropertyAnimation(self.__obj, self.__t_type)
@@ -83,6 +100,7 @@ class Context(View):
     def __close(self) -> None:
         self._QtObject__set_property('panelVisible', False)
         self.__visible = False
+        if self.__push: self.visible = False
 
     def __repr__(self) -> str:
         return f'{self.__class__.__name__}()'
