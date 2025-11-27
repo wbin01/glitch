@@ -115,7 +115,7 @@ class Handler(QtCore.QObject):
         self.__gui.findChild(QtCore.QObject, 'canvas').requestPaint()
 
     @QtCore.Slot()
-    def connections(self):
+    def connections(self) -> None:
         """Processes callback properties for QML.
         """
         """
@@ -138,6 +138,11 @@ class Handler(QtCore.QObject):
             acceptedButtons: Qt.MiddleButton
         """
         self.__ui._right_pressed_signal.emit()
+
+    @QtCore.Slot(QtCore.QObject)
+    def context_close(self, element: QtCore.QObject) -> None:
+        # id = element.property('objectName')
+        element.setProperty('visible', False)
 
     @QtCore.Slot()
     def start_move(self) -> None:

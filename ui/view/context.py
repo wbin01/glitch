@@ -7,12 +7,12 @@ from ...enum.anim import Anim
 
 class Context(View):
     def __init__(
-            self, push: bool = True, width: int = 100, height: int = 100,
+            self, width: int = 100, height: int = 100, push: bool = True,
             *args, **kwargs) -> None:
         super().__init__(name='Context', *args, **kwargs)
-        self.__push = push
         self.__width = width
         self.__height = height
+        self.__push = push
 
         self.visible = True
         if self.__push:
@@ -20,11 +20,13 @@ class Context(View):
             self._QtObject__set_property('width', self.__width)
             self._QtObject__set_property('height', self.__height)
 
+        self._QtObject__set_property('panelWidth', self.__width)
+        self._QtObject__set_property('panelHeight', self.__height)
+
         self.__obj = None
         self.__anim = None
         self.__close_conn = None
         self.__t_type = b'xScale'
-        self.__visible = False
 
         self._render_signal.connect(
             lambda: self._QtObject__set_property(
@@ -33,7 +35,7 @@ class Context(View):
     @property
     def visible_panel(self) -> bool:
         """..."""
-        return self.__visible
+        return self._QtObject__property('panelVisible')
 
     @visible_panel.setter
     def visible_panel(self, visible_panel: bool) -> None:
@@ -64,7 +66,6 @@ class Context(View):
 
         # Animation
         self._QtObject__set_property('panelVisible', True)        
-        self.__visible = True
         if self.__push: self.visible = True
 
         if not self.__anim:
@@ -99,7 +100,6 @@ class Context(View):
 
     def __close(self) -> None:
         self._QtObject__set_property('panelVisible', False)
-        self.__visible = False
         if self.__push: self.visible = False
 
     def __repr__(self) -> str:

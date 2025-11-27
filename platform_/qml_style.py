@@ -550,30 +550,29 @@ Context {
     id: context
     width: 0
     height: 0
+    property alias panelWidth: contextItem.width
+    property alias panelHeight: contextItem.height
+    x: 0
+    y: 0
+    z: 9997
 
+    Layout.margins: 0
     property color backgroundColor: "[Panel]background_color"
     property color borderColor: "[Panel]border_color"
     property int borderWidth: 1
     property int borderRadius: [Panel]border_radius_tl
 
-    x: 0
-    y: 0
-    z: 999
-
     property alias panelVisible: contextItem.visible
-    property alias appParent: overlay.anchors.fill
+    // property alias appParent: overlay.anchors.fill
 
-    Layout.margins: 0
-
-    MouseArea {
-        id: overlay
-        anchors.fill: parent
-        visible: context.visible
-        enabled: context.visible
-        z: 998
-
-        onClicked: contextPy.close()
-    }
+    // MouseArea {
+    //     id: overlay
+    //     anchors.fill: parent
+    //     visible: context.visible
+    //     enabled: context.visible
+    //     z: 9998
+    //     onClicked: logic.context_close(context)
+    // }
 
     Item {
         id: contextItem
@@ -582,6 +581,7 @@ Context {
         height: 100
         anchors.margins: 0
         visible: false
+        // z: 9999
         // clip: true
 
         transform: Scale {
