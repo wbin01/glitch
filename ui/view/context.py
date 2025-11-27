@@ -15,13 +15,15 @@ class Context(View):
         self.__push = push
 
         self.visible = True
-        if self.__push:
-            self.visible = False
-            self._QtObject__set_property('width', self.__width)
-            self._QtObject__set_property('height', self.__height)
+        self.width = self.__width
+        self.height = self.__height
+        # if self.__push:
+        #     self.visible = False
+        #     self._QtObject__set_property('width', self.__width)
+        #     self._QtObject__set_property('height', self.__height)
 
-        self._QtObject__set_property('panelWidth', self.__width)
-        self._QtObject__set_property('panelHeight', self.__height)
+        # self._QtObject__set_property('panelWidth', self.__width)
+        # self._QtObject__set_property('panelHeight', self.__height)
 
         self.__obj = None
         self.__anim = None
@@ -31,6 +33,45 @@ class Context(View):
         self._render_signal.connect(
             lambda: self._QtObject__set_property(
                 'appParent', self._app._QtObject__obj.property('objectName')))
+
+    @property
+    def height(self) -> tuple:
+        """..."""
+        return self._QtObject__property('panelHeight')
+
+    @height.setter
+    def height(self, height: int | tuple) -> None:
+        if isinstance(height, tuple):
+            height = height[0]
+
+        self._QtObject__set_property('panelHeight', height)
+        if self.__push:
+            self.visible = False
+            self._QtObject__set_property('height', height)
+
+    # @property
+    # def visible(self) -> bool:
+    #     """..."""
+    #     return self.__get_visible()
+
+    # @visible.setter
+    # def visible(self, value: str) -> None:
+    #     self.__set_visible(value)
+
+    @property
+    def width(self) -> tuple:
+        """..."""
+        return self._QtObject__property('panelWidth')
+
+    @width.setter
+    def width(self, width: int | tuple) -> None:
+        if isinstance(width, tuple):
+            width = width[0]
+
+        self._QtObject__set_property('panelWidth', width)
+        if self.__push:
+            self.visible = False
+            self._QtObject__set_property('width', width)
 
     @property
     def visible_panel(self) -> bool:
