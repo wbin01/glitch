@@ -577,8 +577,8 @@ Context {
     Item {
         id: contextItem
         objectName: "contextItem"
-        width: 100
-        height: 100
+        width: 50
+        height: 50
         anchors.margins: 0
         visible: false
         // z: 9999

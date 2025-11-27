@@ -6,24 +6,14 @@ from ...enum.anim import Anim
 
 
 class Context(View):
-    def __init__(
-            self, width: int = 100, height: int = 100, push: bool = True,
-            *args, **kwargs) -> None:
+    def __init__(self, panel: bool = False, *args, **kwargs) -> None:
         super().__init__(name='Context', *args, **kwargs)
-        self.__width = width
-        self.__height = height
-        self.__push = push
+        self.__panel = panel
 
-        self.visible = True
-        self.width = self.__width
-        self.height = self.__height
-        # if self.__push:
-        #     self.visible = False
-        #     self._QtObject__set_property('width', self.__width)
-        #     self._QtObject__set_property('height', self.__height)
 
-        # self._QtObject__set_property('panelWidth', self.__width)
-        # self._QtObject__set_property('panelHeight', self.__height)
+        self.visible = True if self.__panel else False
+        self.height = 50
+        self.width = 50
 
         self.__obj = None
         self.__anim = None
@@ -45,8 +35,8 @@ class Context(View):
             height = height[0]
 
         self._QtObject__set_property('panelHeight', height)
-        if self.__push:
-            self.visible = False
+        if not self.__panel:
+            # self.visible = False
             self._QtObject__set_property('height', height)
 
     # @property
@@ -69,8 +59,8 @@ class Context(View):
             width = width[0]
 
         self._QtObject__set_property('panelWidth', width)
-        if self.__push:
-            self.visible = False
+        if not self.__panel:
+            # self.visible = False
             self._QtObject__set_property('width', width)
 
     @property
@@ -107,7 +97,7 @@ class Context(View):
 
         # Animation
         self._QtObject__set_property('panelVisible', True)        
-        if self.__push: self.visible = True
+        if not self.__panel: self.visible = True
 
         if not self.__anim:
             self.__anim = QtCore.QPropertyAnimation(self.__obj, self.__t_type)
@@ -141,7 +131,7 @@ class Context(View):
 
     def __close(self) -> None:
         self._QtObject__set_property('panelVisible', False)
-        if self.__push: self.visible = False
+        if not self.__panel: self.visible = False
 
     def __repr__(self) -> str:
         return f'{self.__class__.__name__}()'
