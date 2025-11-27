@@ -84,42 +84,29 @@ class UI(QtObject):
     @property
     def height(self) -> tuple:
         """..."""
-        height = self._QtObject__property('height')
-        self.__height = int(height) if height else 0
-        if self.__min_height: self.__min_height = int(self.__min_height)
-        if self.__max_height: self.__max_height = int(self.__max_height)
-        return self.__height, self.__min_height, self.__max_height
+        return self.__get_height()
 
     @height.setter
     def height(self, height: int | tuple) -> None:
-        self.__height, self.__min_height, self.__max_height = self.__size(
-            height,'Height',self.__height, self.__min_height,self.__max_height)
+        self.__set_height(height)
 
     @property
     def visible(self) -> bool:
         """..."""
-        value = self._QtObject__property('visible')
-        if value is None:
-            return True
-        return value
+        return self.__get_visible()
 
     @visible.setter
     def visible(self, value: str) -> None:
-        self._QtObject__set_property('visible', value)
+        self.__set_visible(value)
 
     @property
     def width(self) -> tuple:
         """..."""
-        width = self._QtObject__property('width')
-        self.__width = int(width) if width else 0
-        if self.__min_width: self.__min_width = int(self.__min_width)
-        if self.__max_width: self.__max_width = int(self.__max_width)
-        return self.__width, self.__min_width, self.__max_width
+        return self.__get_width()
 
     @width.setter
     def width(self, width: int | tuple) -> None:
-        self.__width, self.__min_width, self.__max_width = self.__size(
-            width, 'Width', self.__width, self.__min_width, self.__max_width)
+        self.__set_width(width)
 
     @property
     def _active_signal(self) -> Signal:
@@ -252,3 +239,37 @@ class UI(QtObject):
                         'layoutMaximum' + wh_type, max_wh)
 
         return property_, property_min, property_max
+
+    def __get_visible(self) -> bool:
+        """..."""
+        value = self._QtObject__property('visible')
+        if value is None:
+            return True
+        return value
+
+    def __set_visible(self, value: str) -> None:
+        self._QtObject__set_property('visible', value)
+
+    def __get_width(self) -> tuple:
+        """..."""
+        width = self._QtObject__property('width')
+        self.__width = int(width) if width else 0
+        if self.__min_width: self.__min_width = int(self.__min_width)
+        if self.__max_width: self.__max_width = int(self.__max_width)
+        return self.__width, self.__min_width, self.__max_width
+
+    def __set_width(self, width: int | tuple) -> None:
+        self.__width, self.__min_width, self.__max_width = self.__size(
+            width, 'Width', self.__width, self.__min_width, self.__max_width)
+
+    def __get_height(self) -> tuple:
+        """..."""
+        height = self._QtObject__property('height')
+        self.__height = int(height) if height else 0
+        if self.__min_height: self.__min_height = int(self.__min_height)
+        if self.__max_height: self.__max_height = int(self.__max_height)
+        return self.__height, self.__min_height, self.__max_height
+
+    def __set_height(self, height: int | tuple) -> None:
+        self.__height, self.__min_height, self.__max_height = self.__size(
+            height,'Height',self.__height, self.__min_height,self.__max_height)

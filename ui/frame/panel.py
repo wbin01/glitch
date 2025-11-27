@@ -23,9 +23,9 @@ class Panel(Frame):
         self.__mr = 0
         self.__mb = 0
         self.__ml = 0
-        self.__scale_anim_time = 300
-        self.__slide_anim_time = 300
-        self.__fade_anim_time = 300
+        self.__scale_anim_time = 200
+        self.__slide_anim_time = 200
+        self.__fade_anim_time = 200
         self.__transition = True
         self.__static = False
 
