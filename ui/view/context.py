@@ -10,15 +10,14 @@ class Context(View):
         super().__init__(name='Context', *args, **kwargs)
         self.__panel = panel
 
-
-        self.visible = True if self.__panel else False
+        self._UI__set_visible(True if self.__panel else False)
         self.height = 50
         self.width = 50
 
         self.__obj = None
         self.__anim = None
         self.__close_conn = None
-        self.__t_type = b'xScale'
+        self.__tr = b'xScale'
 
         self._render_signal.connect(
             lambda: self._QtObject__set_property(
@@ -36,17 +35,7 @@ class Context(View):
 
         self._QtObject__set_property('panelHeight', height)
         if not self.__panel:
-            # self.visible = False
             self._QtObject__set_property('height', height)
-
-    # @property
-    # def visible(self) -> bool:
-    #     """..."""
-    #     return self.__get_visible()
-
-    # @visible.setter
-    # def visible(self, value: str) -> None:
-    #     self.__set_visible(value)
 
     @property
     def width(self) -> tuple:
@@ -60,17 +49,16 @@ class Context(View):
 
         self._QtObject__set_property('panelWidth', width)
         if not self.__panel:
-            # self.visible = False
             self._QtObject__set_property('width', width)
 
     @property
-    def visible_panel(self) -> bool:
+    def visible(self) -> bool:
         """..."""
         return self._QtObject__property('panelVisible')
 
-    @visible_panel.setter
-    def visible_panel(self, visible_panel: bool) -> None:
-        self.open() if visible_panel else self.close()
+    @visible.setter
+    def visible(self, visible: bool) -> None:
+        self.open() if visible else self.close()
 
     def open(self) -> None:
         """..."""
@@ -96,11 +84,11 @@ class Context(View):
             self.__close_conn = None
 
         # Animation
-        self._QtObject__set_property('panelVisible', True)        
-        if not self.__panel: self.visible = True
+        self._QtObject__set_property('panelVisible', True)
+        if not self.__panel: self._UI__set_visible(True)
 
         if not self.__anim:
-            self.__anim = QtCore.QPropertyAnimation(self.__obj, self.__t_type)
+            self.__anim = QtCore.QPropertyAnimation(self.__obj, self.__tr)
             self.__anim.setDuration(100)
 
         self.__anim.setStartValue(0.0)
@@ -119,7 +107,7 @@ class Context(View):
 
         # Animation
         if not self.__anim:
-            self.__anim = QtCore.QPropertyAnimation(self.__obj, self.__t_type)
+            self.__anim = QtCore.QPropertyAnimation(self.__obj, self.__tr)
             self.__anim.setDuration(100)
 
         self.__anim.setStartValue(1.0)
@@ -131,7 +119,7 @@ class Context(View):
 
     def __close(self) -> None:
         self._QtObject__set_property('panelVisible', False)
-        if not self.__panel: self.visible = False
+        if not self.__panel: self._UI__set_visible(False)
 
     def __repr__(self) -> str:
         return f'{self.__class__.__name__}()'
