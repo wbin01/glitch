@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from .button import Button
 from .close_button import CloseButton
+from .context import Context
 from .control_buttons import ControlButtons
 from .expander import Expander
 from .header import Header

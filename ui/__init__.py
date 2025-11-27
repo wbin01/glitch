@@ -4,6 +4,6 @@ from .ui import UI
 from .frame import AppFrame, Frame, MainFrame, Panel, OverFrame
 from .layout import Column, Grid, Row, Scroll
 from .view import (
-	Header, Expander, Image,
+	Header, Context, Expander, Image,
 	CloseButton, MaxButton, MinButton, ControlButtons, Button, ToolButton,
 	Label)

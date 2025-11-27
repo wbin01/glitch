@@ -41,7 +41,7 @@ class OverFrame(Frame):
 
             QTimer.singleShot(100, lambda: self.__pos(x, y))
             self._QtObject__obj.show()
-    
+
     def __get_height(self, frame: Frame) -> int:
         if len(frame._QtObject__items) > 1:
             self.__height += frame.spacing
@@ -63,7 +63,6 @@ class OverFrame(Frame):
     def __get_width(self) -> int:
         width = self.width[0]
         return width + 2 if not width else 100
-
 
     def __pos(self, x: int, y: int) -> None:
         self._QtObject__obj.x = x

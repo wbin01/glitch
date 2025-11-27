@@ -546,6 +546,40 @@ Panel {
     default property alias content: panelColumnLayout.data
 }
 // +
+Context {
+    id: context
+    width: 100
+    height: 100
+    clip: true
+
+    transform: Scale {
+        id: scaleTransform
+        objectName: "scaleTransform"
+        xScale: 1
+        yScale: 1
+        origin.x: 0
+        origin.y: 0
+    }
+
+    Rectangle {
+        anchors.fill: parent
+        color: "#202020"
+        border.color: "#505050"
+        border.width: 1
+        radius: 8
+    }
+
+    ColumnLayout {
+        id: contextColumnLayout
+        anchors.fill: parent
+        anchors.margins: 10
+
+        // Label { text: "Título" }
+        // Button { text: "Botão" }
+    }
+    default property alias content: contextColumnLayout.data
+}
+// +
 ScrollView {
     id: scroll
     clip: true
@@ -905,13 +939,13 @@ class QmlStyle(object):
 
             imports_add = ''
             if element_name in (
-                    'Window', 'BaseFrame', 'MainFrame', 'Panel',
+                    'Window', 'BaseFrame', 'MainFrame', 'Panel', 'Context',
                     'ScrollView', 'Layout', 'ColumnLayout', 'RowLayout'):
                 imports_add = 'import QtQuick.Layouts\n'
 
             for flip in (
                     ('BaseFrame', 'Window'), ('MainFrame', 'Window'),
-                    ('Panel', 'Popup'),
+                    ('Panel', 'Popup'), ('Context', 'Item'),
                     ('CloseButton', 'ToolButton'),
                     ('MaxButton', 'ToolButton'),
                     ('MinButton', 'ToolButton')):

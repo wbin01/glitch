@@ -23,13 +23,13 @@ class Panel(Frame):
         self.__mr = 0
         self.__mb = 0
         self.__ml = 0
-        self.__anim = None
         self.__scale_anim_time = 300
         self.__slide_anim_time = 300
         self.__fade_anim_time = 300
         self.__transition = True
         self.__static = False
-        
+
+        self.__anim = None
         self._app_signal.connect(self.__app_shape)
 
     def __repr__(self) -> str:
@@ -143,6 +143,10 @@ class Panel(Frame):
         """..."""
         if not self._QtObject__obj or not self._app:
             return
+
+        if (self.__anim and
+                self.__anim.state() == QtCore.QAbstractAnimation.Running):
+            self.__anim.stop()
 
         if animation: self.__animation = animation
         slide_time = 0 if not self.__transition else self.__slide_anim_time
