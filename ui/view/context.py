@@ -11,13 +11,18 @@ class Context(View):
             x: int | None = None, y: int | None = None,
             true_visible: bool = False, *args, **kwargs) -> None:
         """
-        Note: 
+        x and y: 
             The `x` and `y` arguments do not have properties and need to be 
             defined when the instance is created.
 
             If the x and y positions are configured, the `Context` positioning 
-            will be absolute relative to the 'Layout' in which it was added.
+            will be absolute relative to the 'Layout' (Column/Row) in which it 
+            was added.
 
+            The x and y positioning only works with `true_visible` and `panel` 
+            set to `False`.
+
+        true_visible:
             The `true_visible` argument causes the 'Layout' (Column/Row) to 
             not include the `Context` when it is not visible, removing its 
             `spacing` and causing a slight visual shift.
@@ -141,6 +146,13 @@ class Context(View):
             self.__anim.finished.disconnect(self.__close_conn)
             self.__close_conn = None
 
+        self._QtObject__set_property('panelVisible', True)
+        if self.__true_visible:
+            self._UI__set_visible(True)
+        elif not self.__panel:
+            self._UI__set_visible(True)
+        self._UI__set_visible(True)
+
         # Animation
         if animation: self.__animation = animation
         slide_time = 0 if not self.__transition else self.__slide_anim_time
@@ -166,22 +178,7 @@ class Context(View):
         ani = self.__animation.value
         self.__tr = b'xScale' if 'LEFT' in ani or 'RIGHT' in ani else b'yScale'
 
-        self._QtObject__set_property('panelVisible', True)
-        if self.__true_visible:
-            self._UI__set_visible(True)
-        elif not self.__panel:
-            self._UI__set_visible(True)
-
-        # if not self.__anim:
-        #     self.__anim = QtCore.QPropertyAnimation(self.__obj, self.__tr)
-        #     self.__anim.setDuration(100)
-
-        # self.__anim.setStartValue(0.0)
-        # self.__anim.setEndValue(1.0)
-        # self.__anim.addAnimation(scale_in)
-
-        if not self.__anim:
-            self.__anim = QtCore.QParallelAnimationGroup()
+        self.__anim = QtCore.QParallelAnimationGroup()
 
         scale_in = QtCore.QPropertyAnimation(self.__obj, self.__tr)
         scale_in.setDuration(100)
@@ -206,24 +203,11 @@ class Context(View):
                 QtCore.QObject, 'scaleTransform')
 
         # Animation running
-        if (self.__anim
-                and self.__anim.state() == QtCore.QAbstractAnimation.Running):
-            self.__anim.stop()
-
+        # if (self.__anim
+        #         and self.__anim.state() == QtCore.QAbstractAnimation.Running):
+        #     self.__anim.stop()
         self.__close()
-
-        # Animation
-        # if not self.__anim:
-        #     self.__anim = QtCore.QParallelAnimationGroup()
-
-        # slide_out = QtCore.QPropertyAnimation(self.__obj, self.__tr)
-        # slide_out.setDuration(100)
-        # slide_out.setStartValue(1.0)
-        # slide_out.setEndValue(0.0)
-        # slide_out.setEasingCurve(QtCore.QEasingCurve.OutCubic)
-        # self.__anim.addAnimation(slide_out)
-        
-        # self.__close_conn = self.__anim.finished.connect(self.__close)
+        self.__close_conn = self.__anim.finished.connect(self.__close)
         # self.__anim.start()
 
     def __app_parent(self):

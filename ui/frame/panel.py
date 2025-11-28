@@ -176,7 +176,6 @@ class Panel(Frame):
         value = self.__animation.value
         anim_type = b'x' if 'LEFT' in value or 'RIGHT' in value else b'y'
 
-        self.__anim = None
         self.__anim = QtCore.QParallelAnimationGroup()
         
         slide_in = QtCore.QPropertyAnimation(self._QtObject__obj, anim_type)
