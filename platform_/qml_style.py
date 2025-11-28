@@ -562,6 +562,9 @@ Context {
     property int borderWidth: 1
     property int borderRadius: [Panel]border_radius_tl
 
+    property alias originX: scaleTransform.origin.x
+    property alias originY: scaleTransform.origin.y
+
     property alias panelVisible: contextItem.visible
     // property alias appParent: overlay.anchors.fill
 
@@ -583,6 +586,7 @@ Context {
         visible: false
         // z: 9999
         // clip: true
+
 
         transform: Scale {
             id: scaleTransform
