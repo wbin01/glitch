@@ -33,7 +33,10 @@ class Panel(Frame):
         self._app_signal.connect(self.__app_shape)
 
     def __repr__(self) -> str:
-        return self.__class__.__name__
+        return f'{self.__class__.__name__}(animation={self.__animation!r})'
+
+    def __str__(self) -> str:
+        return f'{self.__class__.__name__}({self.__animation!r})'
 
     @property
     def animation(self) -> int:
@@ -45,23 +48,20 @@ class Panel(Frame):
         self.__animation = animation
 
     @property
-    def static(self) -> bool:
-        """..."""
-        return self.__static
+    def height(self) -> int:
+        """
+        None is auto:
+            Left and right is 300-width and app-height.
+            Top and bottom is app-width and 300-height.
+        """
+        return self.__h
 
-    @static.setter
-    def static(self, static: bool) -> None:
-        # 0 Popup.NoAutoClose, 1: Popup.autoClose
-        self.__static = static
-        self._QtObject__set_property('closePolicy', 0 if static else 1)
+    @height.setter
+    def height(self, height: int | tuple) -> None:
+        if isinstance(height, tuple):
+            height = height[0]
 
-    @property
-    def transition(self) -> bool:
-        return self.__transition
-
-    @transition.setter
-    def transition(self, transition: bool) -> None:
-        self.__transition = transition
+        self.__size((self.__w, height))
 
     @property
     def margin(self) -> tuple:
@@ -95,49 +95,40 @@ class Panel(Frame):
         if isinstance(mb, int): self.__mb = mb
         if isinstance(ml, int): self.__ml = ml
 
-    def reset(
-            self,
-            animation: Anim = Anim.LEFT,
-            size: tuple = (None, None),
-            margin: tuple = 0,
-            transition: bool = True,
-            static: bool = False) -> None:
+    @property
+    def static(self) -> bool:
         """..."""
-        self.animation = animation
-        self.size = size
-        self.margin = margin
-        self.transition = transition
-        self.static = static
+        return self.__static
+
+    @static.setter
+    def static(self, static: bool) -> None:
+        # 0 Popup.NoAutoClose, 1: Popup.autoClose
+        self.__static = static
+        self._QtObject__set_property('closePolicy', 0 if static else 1)
 
     @property
-    def size(self) -> tuple:
+    def transition(self) -> bool:
+        return self.__transition
+
+    @transition.setter
+    def transition(self, transition: bool) -> None:
+        self.__transition = transition
+
+    @property
+    def width(self) -> int:
         """
         None is auto:
             Left and right is 300-width and app-height.
             Top and bottom is app-width and 300-height.
         """
-        return self.__w, self.__h
+        return self.__w
 
-    @size.setter
-    def size(self, size: int | tuple = None) -> None:
-        if size is None:
-            return
+    @width.setter
+    def width(self, width: int | tuple) -> None:
+        if isinstance(width, tuple):
+            width = width[0]
 
-        w, h = None, None
-        if isinstance(size, int):
-            w = size
-
-        elif isinstance(size, tuple):
-            if not size:
-                return
-
-            elif len(size) == 1:
-                w = size[0]
-            else:
-                w, h = size[:2]
-
-        if isinstance(w, int) or w is None: self.__w = w
-        if isinstance(h, int) or h is None: self.__h = h
+        self.__size(width)
 
     def open(self, animation: Anim = None) -> None:
         """..."""
@@ -204,17 +195,30 @@ class Panel(Frame):
 
         self.__anim.start()
 
+    def reset(
+            self,
+            animation: Anim = Anim.LEFT,
+            size: tuple = (None, None),
+            margin: tuple = 0,
+            transition: bool = True,
+            static: bool = False) -> None:
+        """..."""
+        self.animation = animation
+        self.margin = margin
+        self.transition = transition
+        self.static = static
+
     def __anim_top(self) -> tuple:
         app_height = self._app.height[0]
         width = self._app.width[0] if self.__w is None else self.__w
-        self.height = 300 if self.__h is None else self.__h
+        self._UI__set_height(300 if self.__h is None else self.__h)
 
         if self._app.shape == Shape.MAX or self._app.shape == Shape.FULL:
-            self.width = width - (self.__ml + self.__mr)
+            self._UI__set_width(width - (self.__ml + self.__mr))
             self._QtObject__set_property('x', self.__ml - 1)
             end = -1
         else:
-            self.width = (width - 2) - (self.__ml + self.__mr)
+            self._UI__set_width((width - 2) - (self.__ml + self.__mr))
             self._QtObject__set_property('x', self.__ml)
             end = 0
 
@@ -223,59 +227,59 @@ class Panel(Frame):
     def __anim_right(self) -> tuple:
         height = self._app.height[0] if self.__h is None else self.__h
         app_width = self._app.width[0]
-        self.width = 300 if self.__w is None else self.__w
+        self._UI__set_width(300 if self.__w is None else self.__w)
 
         if self._app.shape == Shape.MAX or self._app.shape == Shape.FULL:
-            self.height = (height + 2) - (self.__mt + self.__mb)
+            self._UI__set_height((height + 2) - (self.__mt + self.__mb))
             self._QtObject__set_property('y', self.__mt - 1)
-            end = app_width - (self.width[0] + 1)
+            end = app_width - (self._UI__get_width()[0] + 1)
         else:
-            self.height = (height - 2) - (self.__mt + self.__mb)
+            self._UI__set_height((height - 2) - (self.__mt + self.__mb))
             self._QtObject__set_property('y', self.__mt)
-            end = app_width - (self.width[0] + 2)
+            end = app_width - (self._UI__get_width()[0] + 2)
 
         return app_width, end - self.__mr
 
     def __anim_bottom(self) -> tuple:
         width = self._app.width[0] if self.__w is None else self.__w
         app_height = self._app.height[0]
-        self.height = 300 if self.__h is None else self.__h
+        self._UI__set_height(300 if self.__h is None else self.__h)
 
         if self._app.shape == Shape.MAX or self._app.shape == Shape.FULL:
-            self.width = width - (self.__ml + self.__mr)
+            self._UI__set_width(width - (self.__ml + self.__mr))
             self._QtObject__set_property('x', self.__ml - 1)
-            end = app_height - (self.height[0] + 1)
+            end = app_height - (self._UI__get_height()[0] + 1)
         else:
-            self.width = (width - 2) - (self.__ml + self.__mr)
+            self._UI__set_width((width - 2) - (self.__ml + self.__mr))
             self._QtObject__set_property('x', self.__ml)
-            end = app_height - (self.height[0] + 2)
+            end = app_height - (self._UI__get_height()[0] + 2)
 
         return app_height, end - self.__mb
 
     def __anim_left(self) -> tuple:
         height = self._app.height[0] if self.__h is None else self.__h
-        self.width = 300 if self.__w is None else self.__w
+        self._UI__set_width(300 if self.__w is None else self.__w)
 
         if self._app.shape == Shape.MAX or self._app.shape == Shape.FULL:
-            self.height = (height + 2) - (self.__mt + self.__mb)
+            self._UI__set_height((height + 2) - (self.__mt + self.__mb))
             self._QtObject__set_property('y', self.__mt - 1)
             end = -1
         else:
-            self.height = (height - 2) - (self.__mt + self.__mb)
+            self._UI__set_height((height - 2) - (self.__mt + self.__mb))
             self._QtObject__set_property('y', self.__mt)
             end = 0
 
-        return -self.width[0], end + self.__ml
+        return -self._UI__get_width()[0], end + self.__ml
 
     def __anim_center(self) -> bool:
         app_height = self._app.height[0]
         app_width = self._app.width[0]
 
         width = 300 if self.__w is None else self.__w
-        self.width = width
+        self._UI__set_width(width)
         
         height = 300 if self.__h is None else self.__h
-        self.height = height
+        self._UI__set_height(height)
 
         y = (app_height // 2) - (height // 2)
         if self.__mt > self.__mb: y = y + (self.__mt - self.__mb)
@@ -295,15 +299,15 @@ class Panel(Frame):
         app_width = self._app.width[0]
 
         width = 300 if self.__w is None else self.__w
-        self.height = 300 if self.__h is None else self.__h
-        self.width = width
+        self._UI__set_height(300 if self.__h is None else self.__h)
+        self._UI__set_width(width)
 
         x = (app_width // 2) - (width // 2)
         if self.__ml > self.__mr: x = x + (self.__ml - self.__mr)
         if self.__mr > self.__ml: x = x - (self.__mr - self.__ml)
         self._QtObject__set_property('x', x)
 
-        end = (app_height // 2) - (self.height[0] // 2)
+        end = (app_height // 2) - (self._UI__get_height()[0] // 2)
         if self.__mt > self.__mb: end = end + (self.__mt - self.__mb)
         if self.__mb > self.__mt: end = end - (self.__mb - self.__mt)
 
@@ -313,16 +317,16 @@ class Panel(Frame):
         app_height = self._app.height[0]
         app_width = self._app.width[0]
 
-        self.width = 300 if self.__w is None else self.__w
+        self._UI__set_width(300 if self.__w is None else self.__w)
         height = 300 if self.__h is None else self.__h
-        self.height = height
+        self._UI__set_height(height)
         
         y = (app_height // 2) - (height // 2)
         if self.__mt > self.__mb: y = y + (self.__mt - self.__mb)
         if self.__mb > self.__mt: y = y - (self.__mb - self.__mt)
         self._QtObject__set_property('y', y)
 
-        end = (app_width // 2) - (self.width[0] // 2)
+        end = (app_width // 2) - (self._UI__get_width()[0] // 2)
         if self.__ml > self.__mr: end = end + (self.__ml - self.__mr)
         if self.__mr > self.__ml: end = end - (self.__mr - self.__ml)
 
@@ -333,15 +337,15 @@ class Panel(Frame):
         app_width = self._app.width[0]
 
         width = 300 if self.__w is None else self.__w
-        self.width = width
-        self.height = 300 if self.__h is None else self.__h
+        self._UI__set_width(width)
+        self._UI__set_height(300 if self.__h is None else self.__h)
 
         x = (app_width // 2) - (width // 2)
         if self.__ml > self.__mr: x = x + (self.__ml - self.__mr)
         if self.__mr > self.__ml: x = x - (self.__mr - self.__ml)
         self._QtObject__set_property('x', x)
 
-        end = (app_height // 2) - (self.height[0] // 2)
+        end = (app_height // 2) - (self._UI__get_height()[0] // 2)
         if self.__mt > self.__mb: end = end + (self.__mt - self.__mb)
         if self.__mb > self.__mt: end = end - (self.__mb - self.__mt)
         
@@ -352,19 +356,39 @@ class Panel(Frame):
         app_width = self._app.width[0]
 
         height = 300 if self.__h is None else self.__h
-        self.width = 300 if self.__w is None else self.__w
-        self.height = height
+        self._UI__set_width(300 if self.__w is None else self.__w)
+        self._UI__set_height(height)
 
         y = (app_height // 2) - (height // 2)
         if self.__mt > self.__mb: y = y + (self.__mt - self.__mb)
         if self.__mb > self.__mt: y = y - (self.__mb - self.__mt)
         self._QtObject__set_property('y', y)
 
-        end = (app_width // 2) - (self.width[0] // 2)
+        end = (app_width // 2) - (self._UI__get_width()[0] // 2)
         if self.__ml > self.__mr: end = end + (self.__ml - self.__mr)
         if self.__mr > self.__ml: end = end - (self.__mr - self.__ml)
 
-        return -self.width[0], end
+        return -self._UI__get_width()[0], end
 
     def __app_shape(self) -> None:
         self._app._shape_signal.connect(lambda: self._QtObject__obj.close())
+
+    def __size(self, size: int | tuple = None) -> None:
+        if size is None:
+            return
+
+        w, h = None, None
+        if isinstance(size, int):
+            w = size
+
+        elif isinstance(size, tuple):
+            if not size:
+                return
+
+            elif len(size) == 1:
+                w = size[0]
+            else:
+                w, h = size[:2]
+
+        if isinstance(w, int) or w is None: self.__w = w
+        if isinstance(h, int) or h is None: self.__h = h
