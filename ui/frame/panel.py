@@ -60,7 +60,16 @@ class Panel(Frame):
         if isinstance(height, tuple):
             height = height[0]
 
-        self.__size((self.__w, height))
+        h = None
+        if isinstance(height, int):
+            h = height
+
+        elif isinstance(height, tuple):
+            if not height:
+                return
+            h = height[0]
+
+        if isinstance(h, int) or h is None: self.__h = h
 
     @property
     def margin(self) -> tuple:
@@ -127,7 +136,16 @@ class Panel(Frame):
         if isinstance(width, tuple):
             width = width[0]
 
-        self.__size(width)
+        w = None
+        if isinstance(width, int):
+            w = width
+
+        elif isinstance(width, tuple):
+            if not width:
+                return
+            w = width[0]
+
+        if isinstance(w, int) or w is None: self.__w = w
 
     def open(self, animation: Anim = None) -> None:
         """..."""
@@ -180,15 +198,19 @@ class Panel(Frame):
     def reset(
             self,
             animation: Anim = Anim.LEFT,
-            size: tuple = (None, None),
+            width: int = None,
+            height: int = None,
             margin: tuple = 0,
-            transition: bool = True,
-            static: bool = False) -> None:
+            static: bool = False,
+            transition: bool = True
+            ) -> None:
         """..."""
         self.animation = animation
+        self.width = width
+        self.height = height
         self.margin = margin
-        self.transition = transition
         self.static = static
+        self.transition = transition
 
     def __anim_top(self) -> tuple:
         app_height = self._app.height[0]
@@ -255,23 +277,3 @@ class Panel(Frame):
 
     def __app_shape(self) -> None:
         self._app._shape_signal.connect(lambda: self._QtObject__obj.close())
-
-    def __size(self, size: int | tuple = None) -> None:
-        if size is None:
-            return
-
-        w, h = None, None
-        if isinstance(size, int):
-            w = size
-
-        elif isinstance(size, tuple):
-            if not size:
-                return
-
-            elif len(size) == 1:
-                w = size[0]
-            else:
-                w, h = size[:2]
-
-        if isinstance(w, int) or w is None: self.__w = w
-        if isinstance(h, int) or h is None: self.__h = h
