@@ -6,8 +6,12 @@ from ...enum.anim import Anim
 
 
 class Context(View):
-    def __init__(self, panel: bool = False, *args, **kwargs) -> None:
+    def __init__(
+            self, x: int = 0, y: int = 0, panel: bool = False,
+            *args, **kwargs) -> None:
         super().__init__(name='Context', *args, **kwargs)
+        self.__x = x
+        self.__y = y
         self.__panel = panel
 
         self._UI__set_visible(True if self.__panel else False)
@@ -19,9 +23,11 @@ class Context(View):
         self.__close_conn = None
         self.__tr = b'xScale'
 
-        self._render_signal.connect(
-            lambda: self._QtObject__set_property(
-                'appParent', self._app._QtObject__obj.property('objectName')))
+        self._render_signal.connect(self.__app_parent)
+
+    def __app_parent(self):
+        self._QtObject__set_property(
+            'appParent', self._app._QtObject__obj.property('objectName'))
 
     @property
     def height(self) -> tuple:
@@ -62,6 +68,8 @@ class Context(View):
 
     def open(self) -> None:
         """..."""
+        self._QtObject__set_property('x', self.__x)
+        self._QtObject__set_property('y', self.__y)
         self.__anim_open()
 
     def close(self) -> None:

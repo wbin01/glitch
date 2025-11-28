@@ -3,4 +3,5 @@ from .app_frame import AppFrame
 from .over_frame import OverFrame
 from .frame import Frame
 from .main_frame import MainFrame
+from .modal import Modal
 from .panel import Panel

@@ -6,7 +6,7 @@ from ...enum.anim import Anim
 from ..frame.frame import Frame
 
 
-class Panel(Frame):
+class Modal(Frame):
     """..."""
     def __init__(self, animation: Anim = Anim.LEFT, *args, **kwargs) -> None:
         super().__init__(name='Panel', *args, **kwargs)
@@ -23,6 +23,7 @@ class Panel(Frame):
         self.__mr = 0
         self.__mb = 0
         self.__ml = 0
+        self.__scale_anim_time = 200
         self.__slide_anim_time = 200
         self.__fade_anim_time = 200
         self.__transition = True
@@ -140,10 +141,9 @@ class Panel(Frame):
 
         if animation: self.__animation = animation
         slide_time = 0 if not self.__transition else self.__slide_anim_time
-
-        if self.__animation == Anim.CENTER:
-            return
-
+        scale_time = 0 if not self.__transition else self.__scale_anim_time
+        
+        scale = False
         if self.__animation == Anim.LEFT:
             start, end = self.__anim_left()
         elif self.__animation == Anim.RIGHT:
@@ -152,6 +152,8 @@ class Panel(Frame):
             start, end = self.__anim_top()
         elif self.__animation == Anim.BOTTOM:
             start, end = self.__anim_bottom()
+        elif self.__animation == Anim.CENTER:
+            scale = self.__anim_center()
 
         self._QtObject__obj.open()
 
@@ -161,12 +163,20 @@ class Panel(Frame):
         self.__anim = None
         self.__anim = QtCore.QParallelAnimationGroup()
         
-        slide_in = QtCore.QPropertyAnimation(self._QtObject__obj, anim_type)
-        slide_in.setDuration(slide_time)
-        slide_in.setStartValue(start)
-        slide_in.setEndValue(end)
-        slide_in.setEasingCurve(QtCore.QEasingCurve.OutCubic)
-        self.__anim.addAnimation(slide_in)
+        if scale:
+            scale = QtCore.QPropertyAnimation(self._QtObject__obj, b'scale')
+            scale.setDuration(scale_time)
+            scale.setStartValue(0.0)
+            scale.setEndValue(1.0)
+            scale.setEasingCurve(QtCore.QEasingCurve.OutCubic)
+            self.__anim.addAnimation(scale)
+        else:
+            slide_in = QtCore.QPropertyAnimation(self._QtObject__obj, anim_type)
+            slide_in.setDuration(slide_time)
+            slide_in.setStartValue(start)
+            slide_in.setEndValue(end)
+            slide_in.setEasingCurve(QtCore.QEasingCurve.OutCubic)
+            self.__anim.addAnimation(slide_in)
 
         fade_in = QtCore.QPropertyAnimation(self._QtObject__obj, b'opacity')
         fade_in.setDuration(self.__fade_anim_time)
@@ -190,68 +200,104 @@ class Panel(Frame):
         self.transition = transition
         self.static = static
 
+    def __anim_center(self) -> bool:
+        app_height = self._app.height[0]
+        app_width = self._app.width[0]
+
+        width = 300 if self.__w is None else self.__w
+        self._UI__set_width(width)
+        
+        height = 300 if self.__h is None else self.__h
+        self._UI__set_height(height)
+
+        y = (app_height // 2) - (height // 2)
+        if self.__mt > self.__mb: y = y + (self.__mt - self.__mb)
+        if self.__mb > self.__mt: y = y - (self.__mb - self.__mt)
+
+        x = (app_width // 2) - (width // 2)
+        if self.__ml > self.__mr: x = x + (self.__ml - self.__mr)
+        if self.__mr > self.__ml: x = x - (self.__mr - self.__ml)
+
+        self._QtObject__set_property('x', x)
+        self._QtObject__set_property('y', y)
+
+        return True
+
     def __anim_top(self) -> tuple:
         app_height = self._app.height[0]
-        width = self._app.width[0] if self.__w is None else self.__w
+        app_width = self._app.width[0]
+
+        width = 300 if self.__w is None else self.__w
         self._UI__set_height(300 if self.__h is None else self.__h)
+        self._UI__set_width(width)
 
-        if self._app.shape == Shape.MAX or self._app.shape == Shape.FULL:
-            self._UI__set_width(width - (self.__ml + self.__mr))
-            self._QtObject__set_property('x', self.__ml - 1)
-            end = -1
-        else:
-            self._UI__set_width((width - 2) - (self.__ml + self.__mr))
-            self._QtObject__set_property('x', self.__ml)
-            end = 0
+        x = (app_width // 2) - (width // 2)
+        if self.__ml > self.__mr: x = x + (self.__ml - self.__mr)
+        if self.__mr > self.__ml: x = x - (self.__mr - self.__ml)
+        self._QtObject__set_property('x', x)
 
-        return -app_height, end + self.__mt
+        end = (app_height // 2) - (self._UI__get_height()[0] // 2)
+        if self.__mt > self.__mb: end = end + (self.__mt - self.__mb)
+        if self.__mb > self.__mt: end = end - (self.__mb - self.__mt)
+
+        return -app_height, end
 
     def __anim_right(self) -> tuple:
-        height = self._app.height[0] if self.__h is None else self.__h
+        app_height = self._app.height[0]
         app_width = self._app.width[0]
+
         self._UI__set_width(300 if self.__w is None else self.__w)
+        height = 300 if self.__h is None else self.__h
+        self._UI__set_height(height)
+        
+        y = (app_height // 2) - (height // 2)
+        if self.__mt > self.__mb: y = y + (self.__mt - self.__mb)
+        if self.__mb > self.__mt: y = y - (self.__mb - self.__mt)
+        self._QtObject__set_property('y', y)
 
-        if self._app.shape == Shape.MAX or self._app.shape == Shape.FULL:
-            self._UI__set_height((height + 2) - (self.__mt + self.__mb))
-            self._QtObject__set_property('y', self.__mt - 1)
-            end = app_width - (self._UI__get_width()[0] + 1)
-        else:
-            self._UI__set_height((height - 2) - (self.__mt + self.__mb))
-            self._QtObject__set_property('y', self.__mt)
-            end = app_width - (self._UI__get_width()[0] + 2)
+        end = (app_width // 2) - (self._UI__get_width()[0] // 2)
+        if self.__ml > self.__mr: end = end + (self.__ml - self.__mr)
+        if self.__mr > self.__ml: end = end - (self.__mr - self.__ml)
 
-        return app_width, end - self.__mr
+        return app_width, end
 
     def __anim_bottom(self) -> tuple:
-        width = self._app.width[0] if self.__w is None else self.__w
         app_height = self._app.height[0]
+        app_width = self._app.width[0]
+
+        width = 300 if self.__w is None else self.__w
+        self._UI__set_width(width)
         self._UI__set_height(300 if self.__h is None else self.__h)
 
-        if self._app.shape == Shape.MAX or self._app.shape == Shape.FULL:
-            self._UI__set_width(width - (self.__ml + self.__mr))
-            self._QtObject__set_property('x', self.__ml - 1)
-            end = app_height - (self._UI__get_height()[0] + 1)
-        else:
-            self._UI__set_width((width - 2) - (self.__ml + self.__mr))
-            self._QtObject__set_property('x', self.__ml)
-            end = app_height - (self._UI__get_height()[0] + 2)
+        x = (app_width // 2) - (width // 2)
+        if self.__ml > self.__mr: x = x + (self.__ml - self.__mr)
+        if self.__mr > self.__ml: x = x - (self.__mr - self.__ml)
+        self._QtObject__set_property('x', x)
 
-        return app_height, end - self.__mb
+        end = (app_height // 2) - (self._UI__get_height()[0] // 2)
+        if self.__mt > self.__mb: end = end + (self.__mt - self.__mb)
+        if self.__mb > self.__mt: end = end - (self.__mb - self.__mt)
+        
+        return app_height, end
 
     def __anim_left(self) -> tuple:
-        height = self._app.height[0] if self.__h is None else self.__h
+        app_height = self._app.height[0]
+        app_width = self._app.width[0]
+
+        height = 300 if self.__h is None else self.__h
         self._UI__set_width(300 if self.__w is None else self.__w)
+        self._UI__set_height(height)
 
-        if self._app.shape == Shape.MAX or self._app.shape == Shape.FULL:
-            self._UI__set_height((height + 2) - (self.__mt + self.__mb))
-            self._QtObject__set_property('y', self.__mt - 1)
-            end = -1
-        else:
-            self._UI__set_height((height - 2) - (self.__mt + self.__mb))
-            self._QtObject__set_property('y', self.__mt)
-            end = 0
+        y = (app_height // 2) - (height // 2)
+        if self.__mt > self.__mb: y = y + (self.__mt - self.__mb)
+        if self.__mb > self.__mt: y = y - (self.__mb - self.__mt)
+        self._QtObject__set_property('y', y)
 
-        return -self._UI__get_width()[0], end + self.__ml
+        end = (app_width // 2) - (self._UI__get_width()[0] // 2)
+        if self.__ml > self.__mr: end = end + (self.__ml - self.__mr)
+        if self.__mr > self.__ml: end = end - (self.__mr - self.__ml)
+
+        return -self._UI__get_width()[0], end
 
     def __app_shape(self) -> None:
         self._app._shape_signal.connect(lambda: self._QtObject__obj.close())
