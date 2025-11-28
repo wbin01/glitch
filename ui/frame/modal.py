@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 from PySide6 import QtCore
 
-from ...enum.shape import Shape
 from ...enum.anim import Anim
 from ..frame.frame import Frame
 
