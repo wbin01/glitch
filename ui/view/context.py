@@ -6,40 +6,39 @@ from ...enum.anim import Anim
 
 
 class Context(View):
+    """Simple context panel"""
     def __init__(
             self, animation: Anim = Anim.LEFT, panel: bool = False,
             x: int | None = None, y: int | None = None,
-            true_visible: bool = False, *args, **kwargs) -> None:
+            *args, **kwargs) -> None:
         """
-        x and y: 
-            The `x` and `y` arguments do not have properties and need to be 
-            defined when the instance is created.
+        panel:
+            The argument `panel=False` causes the 'Layout' (Column/Row) to 
+            include the `Context` when it is visible, adding a `spacing`, 
+            which causes a slight visual change.
+
+        x and y:
+            The `x` and `y` arguments have no properties and need to be 
+            defined when the instance is created, and they only work 
+            in `panel` mode.
 
             If the x and y positions are configured, the `Context` positioning 
             will be absolute relative to the 'Layout' (Column/Row) in which it 
             was added.
 
-            The x and y positioning only works with `true_visible` and `panel` 
-            set to `False`.
-
-        true_visible:
-            The `true_visible` argument causes the 'Layout' (Column/Row) to 
-            not include the `Context` when it is not visible, removing its 
-            `spacing` and causing a slight visual shift.
-
+        :param animation: `Anim` Enumeration (Enum)`.
         :param panel: `True` will make the `Context` behave like the `Panel`.
         :param x: Absolute horizontal position in relation to the 'Layout'.
         :param y: Absolute vertical position in relation to the 'Layout'.
-        :param true_visible: If `True`, the 'Layout' removes its `spacing`.
         """
         super().__init__(name='Context', *args, **kwargs)
         self.__animation = animation
         self.__panel = panel
         self.__x = x
         self.__y = y
-        self.__true_visible = true_visible
+        self.__true_visible = False
 
-        if self.__true_visible:
+        if self.__true_visible or not self.__panel:
             self._UI__set_visible(False)
         else:
             self._UI__set_visible(True if self.__panel else False)
@@ -81,18 +80,6 @@ class Context(View):
         self._QtObject__set_property('panelHeight', height)
         if not self.__panel:
             self._QtObject__set_property('height', height)
-
-    @property
-    def true_visible(self) -> bool:
-        """..."""
-        return self.__true_visible
-
-    @true_visible.setter
-    def true_visible(self, true_visible: bool) -> None:
-        self.__true_visible = true_visible
-
-        if self.__true_visible and not self.visible:
-            self._UI__set_visible(False)
 
     @property
     def visible(self) -> bool:
@@ -147,11 +134,8 @@ class Context(View):
             self.__close_conn = None
 
         self._QtObject__set_property('panelVisible', True)
-        if self.__true_visible:
+        if self.__true_visible or not self.__panel:
             self._UI__set_visible(True)
-        elif not self.__panel:
-            self._UI__set_visible(True)
-        self._UI__set_visible(True)
 
         # Animation
         if animation: self.__animation = animation
@@ -220,7 +204,5 @@ class Context(View):
     def __close(self) -> None:
         self._QtObject__set_property('panelVisible', False)
 
-        if self.__true_visible:
-            self._UI__set_visible(False)
-        elif not self.__panel:
+        if self.__true_visible or not self.__panel:
             self._UI__set_visible(False)
