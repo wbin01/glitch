@@ -13,9 +13,13 @@ class Context(View):
             *args, **kwargs) -> None:
         """
         panel:
-            The argument `panel=False` causes the 'Layout' (Column/Row) to 
-            include the `Context` when it is visible, adding a `spacing`, 
-            which causes a slight visual change.
+            In panel mode (panel=True), the 'Layout' (Column/Row) includes 
+            spacing, which causes a slight visual change. In this case, it is 
+            recommended to add the Context at the end, especially if you are 
+            using absolute positioning with `x` and `y`.
+
+            In context mode (panel=False), which is the default, when the 
+            layout is expanded, no displacement is perceived.
 
         x and y:
             The `x` and `y` arguments have no properties and need to be 
@@ -26,7 +30,7 @@ class Context(View):
             will be absolute relative to the 'Layout' (Column/Row) in which it 
             was added.
 
-        :param animation: `Anim` Enumeration (Enum)`.
+        :param animation: `Anim` Enumeration (Enum).
         :param panel: `True` will make the `Context` behave like the `Panel`.
         :param x: Absolute horizontal position in relation to the 'Layout'.
         :param y: Absolute vertical position in relation to the 'Layout'.
