@@ -2,10 +2,11 @@
 from PySide6 import QtCore
 
 from .view import View
+from ..mixin import Add
 from ...enum.anim import Anim
 
 
-class Context(View):
+class Context(Add, View):
     """Simple context panel"""
     def __init__(
             self, animation: Anim = Anim.LEFT, panel: bool = False,

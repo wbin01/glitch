@@ -552,9 +552,7 @@ Context {
     height: 0
     property alias panelWidth: contextItem.width
     property alias panelHeight: contextItem.height
-    x: 0
-    y: 0
-    z: 9997
+    z: 1000
 
     Layout.margins: 0
     property color backgroundColor: "[Panel]background_color"
@@ -566,27 +564,19 @@ Context {
     property alias originY: scaleTransform.origin.y
 
     property alias panelVisible: contextItem.visible
-    // property alias appParent: overlay.anchors.fill
 
-    // MouseArea {
-    //     id: overlay
-    //     anchors.fill: parent
-    //     visible: context.visible
-    //     enabled: context.visible
-    //     z: 9998
-    //     onClicked: logic.context_close(context)
-    // }
+    // Layout.ignore: true
+    visible: true
 
     Item {
         id: contextItem
-        objectName: "contextItem"
-        width: 50
-        height: 50
-        anchors.margins: 0
         visible: false
-        // z: 9999
-        // clip: true
-
+        width: 0
+        height: 0
+        x: 0
+        y: 0
+        z: 1001
+        enabled: visible
 
         transform: Scale {
             id: scaleTransform
@@ -605,11 +595,24 @@ Context {
             radius: context.borderRadius
             anchors.margins: 0
         }
-
-        ColumnLayout {
-            id: contextColumnLayout
+        
+        FocusScope {
+            id: focusScope
             anchors.fill: parent
-            anchors.margins: 0
+            focus: true
+
+            MouseArea {
+                anchors.fill: parent
+                acceptedButtons: Qt.AllButtons
+                hoverEnabled: true
+                preventStealing: true
+                onPressed: focusScope.forceActiveFocus()
+            }
+
+            ColumnLayout {
+                id: contextColumnLayout
+                anchors.fill: parent
+            }
         }
     }
     default property alias content: contextColumnLayout.data
