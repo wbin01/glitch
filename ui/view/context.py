@@ -117,13 +117,17 @@ class Context(Add, View):
                 self._QtObject__set_property('x', self.__x)
             if self.__y is not None:
                 self._QtObject__set_property('y', self.__y)
-        self.__anim_open(animation)
+        self.__open(animation)
 
     def close(self) -> None:
         """..."""
-        self.__anim_close()
+        # self.__close_conn = self.__anim.finished.connect(self.close)
+        self._QtObject__set_property('panelVisible', False)
 
-    def __anim_open(self, animation: Anim = None) -> None:
+        if self.__true_visible or not self.__panel:
+            self._UI__set_visible(False)
+
+    def __open(self, animation: Anim = None) -> None:
         """..."""
         if not self.__obj:
             self.__obj = self._QtObject__obj.findChild(
@@ -186,28 +190,9 @@ class Context(Add, View):
 
         self.__anim.start()
 
-    def __anim_close(self) -> None:
-        if not self.__obj:
-            self.__obj = self._QtObject__obj.findChild(
-                QtCore.QObject, 'scaleTransform')
-
-        # Animation running
-        # if (self.__anim
-        #         and self.__anim.state() == QtCore.QAbstractAnimation.Running):
-        #     self.__anim.stop()
-        self.__close()
-        self.__close_conn = self.__anim.finished.connect(self.__close)
-        # self.__anim.start()
-
     def __app_parent(self):
         self._QtObject__set_property(
             'appParent', self._app._QtObject__obj.property('objectName'))
 
     def __app_shape(self) -> None:
-        self._app._shape_signal.connect(self.__close)
-
-    def __close(self) -> None:
-        self._QtObject__set_property('panelVisible', False)
-
-        if self.__true_visible or not self.__panel:
-            self._UI__set_visible(False)
+        self._app._shape_signal.connect(self.close)
