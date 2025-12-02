@@ -62,6 +62,10 @@ class Context(Add, View):
         self.__anim = None
         self.__close_conn = None
 
+        if not self.__panel:
+            self._QtObject__set_property('backgroundColor', '#00000000')
+            self._QtObject__set_property('borderColor', '#00000000')
+
         self._app_signal.connect(self.__app_shape)
         self._render_signal.connect(self.__app_parent)
 

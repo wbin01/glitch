@@ -67,6 +67,10 @@ class QtObject(object):
             if not self.__obj:
                 value = '"' + str(value).strip('"').strip("'") + '"'
 
+        if name.lower().endswith('color') and value.startswith('#'):
+            if not self.__obj:
+                value = '"' + str(value).strip('"').strip("'") + '"'
+
         # Set Qml obj
         name_camel = self.__snake_to_camel(name)
         if not self.__obj:
