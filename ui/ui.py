@@ -45,11 +45,13 @@ class UI(QtObject):
         self.__active_signal = Signal()
         self.__app_signal = Signal()
         self.__enabled_signal = Signal()
+        self.__parent_signal = Signal()
         self.__visible_signal = Signal()
         
         # Properties
         self._QtObject__qml = self._QtObject__qml + '  // Close ' + name
         self.__app = None
+        self.__parent = None
 
         self.__width = None
         self.__min_width = None
@@ -132,6 +134,11 @@ class UI(QtObject):
     def _app(self):
         """..."""
         return self.__app
+
+    @property
+    def _parent(self):
+        """..."""
+        return self.__parent
 
     @property
     def _base(self):

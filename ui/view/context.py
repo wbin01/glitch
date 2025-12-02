@@ -5,6 +5,8 @@ from .view import View
 from ..mixin import Add
 from ...enum.anim import Anim
 
+from ..layout import Column, Row
+
 
 class Context(Add, View):
     """Simple context panel"""
@@ -50,6 +52,8 @@ class Context(Add, View):
 
         self.height = 50
         self.width = 50
+        self.__set_width = False
+        self.__set_height = False
 
         self.__tr = b'xScale'
         self.__scale_anim_time = 200
@@ -63,8 +67,9 @@ class Context(Add, View):
         self.__close_conn = None
 
         if not self.__panel:
-            self._QtObject__set_property('backgroundColor', '#00000000')
-            self._QtObject__set_property('borderColor', '#00000000')
+            # self._QtObject__set_property('backgroundColor', '#00000000')
+            # self._QtObject__set_property('borderColor', '#00000000')
+            self._QtObject__set_property('borderRadius', '0')
 
         self._app_signal.connect(self.__app_shape)
         self._render_signal.connect(self.__app_parent)
@@ -89,6 +94,8 @@ class Context(Add, View):
         self._QtObject__set_property('panelHeight', height)
         if not self.__panel:
             self._QtObject__set_property('height', height)
+        
+        self.__set_height = True
 
     @property
     def visible(self) -> bool:
@@ -114,13 +121,24 @@ class Context(Add, View):
         if not self.__panel:
             self._QtObject__set_property('width', width)
 
+        self.__set_width = True
+
     def open(self, animation: Anim = None) -> None:
         """..."""
+        # Position
         if self.__panel:
             if self.__x is not None:
                 self._QtObject__set_property('x', self.__x)
             if self.__y is not None:
                 self._QtObject__set_property('y', self.__y)
+
+        # Auto size
+        if not self.__set_width:
+            self.width = self._parent.width[0]
+
+        if not self.__set_height:
+            self.height = self._parent.height[0]
+
         self.__open(animation)
 
     def close(self) -> None:

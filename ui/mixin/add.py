@@ -27,6 +27,9 @@ class Add(object):
 
     def __add(self, item: UI) -> UI:
         """..."""
+        item._UI__parent = self
+        item._UI__parent_signal.emit()
+
         if item not in self._QtObject__items:
             self._QtObject__add(item)
 
