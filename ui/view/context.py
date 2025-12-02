@@ -121,9 +121,56 @@ class Context(Add, View):
 
     def close(self) -> None:
         """..."""
-        # self.__close_conn = self.__anim.finished.connect(self.close)
-        self._QtObject__set_property('panelVisible', False)
+        self.__close()
 
+    def __app_parent(self):
+        self._QtObject__set_property(
+            'appParent', self._app._QtObject__obj.property('objectName'))
+
+    def __app_shape(self) -> None:
+        self._app._shape_signal.connect(self.__close_finish)
+
+    def __close(self) -> None:
+        """..."""
+        if not self.__obj:
+            self.__obj = self._QtObject__obj.findChild(
+                QtCore.QObject, 'scaleTransform')
+
+        # Animation running
+        if (self.__anim and
+                self.__anim.state() == QtCore.QAbstractAnimation.Running):
+            self.__anim.stop()
+
+        if self.__close_conn:
+            self.__anim.finished.disconnect(self.__close_conn)
+            self.__close_conn = None
+
+        center_scale = False
+        if self.__animation == Anim.CENTER:
+            center_scale = True
+
+        self.__anim = QtCore.QParallelAnimationGroup()
+
+        scale_in = QtCore.QPropertyAnimation(self.__obj, self.__tr)
+        scale_in.setDuration(100)
+        scale_in.setStartValue(1.0)
+        scale_in.setEndValue(0.0)
+        scale_in.setEasingCurve(QtCore.QEasingCurve.OutCubic)
+        self.__anim.addAnimation(scale_in)
+
+        if center_scale:
+            scale_on = QtCore.QPropertyAnimation(self.__obj, b'xScale')
+            scale_on.setDuration(100)
+            scale_on.setStartValue(1.0)
+            scale_on.setEndValue(0.0)
+            scale_on.setEasingCurve(QtCore.QEasingCurve.OutCubic)
+            self.__anim.addAnimation(scale_on)
+
+        self.__close_conn = self.__anim.finished.connect(self.__close_finish)
+        self.__anim.start()
+
+    def __close_finish(self):
+        self._QtObject__set_property('panelVisible', False)
         if self.__true_visible or not self.__panel:
             self._UI__set_visible(False)
 
@@ -174,7 +221,7 @@ class Context(Add, View):
         self.__anim = QtCore.QParallelAnimationGroup()
 
         scale_in = QtCore.QPropertyAnimation(self.__obj, self.__tr)
-        scale_in.setDuration(100)
+        scale_in.setDuration(150)
         scale_in.setStartValue(0.0)
         scale_in.setEndValue(1.0)
         scale_in.setEasingCurve(QtCore.QEasingCurve.OutCubic)
@@ -182,17 +229,10 @@ class Context(Add, View):
 
         if center_scale:
             scale_on = QtCore.QPropertyAnimation(self.__obj, b'xScale')
-            scale_on.setDuration(100)
+            scale_on.setDuration(150)
             scale_on.setStartValue(0.0)
             scale_on.setEndValue(1.0)
             scale_on.setEasingCurve(QtCore.QEasingCurve.OutCubic)
             self.__anim.addAnimation(scale_on)
 
         self.__anim.start()
-
-    def __app_parent(self):
-        self._QtObject__set_property(
-            'appParent', self._app._QtObject__obj.property('objectName'))
-
-    def __app_shape(self) -> None:
-        self._app._shape_signal.connect(self.close)
