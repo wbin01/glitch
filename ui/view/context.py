@@ -134,10 +134,12 @@ class Context(Add, View):
 
         # Auto size
         if not self.__set_width:
-            self.width = self._parent.width[0]
+            width = self._parent.width[0]
+            self.width = 50 if width < 50 else width
 
         if not self.__set_height:
-            self.height = self._parent.height[0]
+            height = self._parent.height[0]
+            self.height = 50 if height < 50 else height
 
         self.__open(animation)
 
