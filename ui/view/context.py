@@ -5,8 +5,6 @@ from .view import View
 from ..mixin import Add
 from ...enum.anim import Anim
 
-from ..layout import Column, Row
-
 
 class Context(Add, View):
     """Simple context panel"""
