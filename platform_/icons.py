@@ -124,6 +124,43 @@ class Icons(object):
     def icon_theme_light_variant(self, theme: str = None) -> str | None:
         return self.icon_theme_variant(theme, False)
 
+    def __icon_source_cinnamon(
+            self, icon: str | None, size: int = 16, dark: bool = None) -> str:
+        if dark or dark is None and 'dark' in self.__icon_theme.lower():
+            self.__icon_path =self.__path/'static'/'icons'/'linux-gtk-dark'
+        else:
+            self.__icon_path = self.__path/'static'/'icons'/'linux-gtk'
+
+        if not icon:
+            return str(self.__path / 'static' / 'icons' / 'empty.svg')
+
+        if '/' in icon:
+            if not Path(icon).exists():
+                return str(self.__path / 'static' / 'icons' / 'empty.svg')
+            return icon
+
+        variant_theme = self.__icon_theme
+        if dark and 'dark' not in self.__icon_theme.lower():
+            variant_theme = self.icon_theme_dark_variant(self.__icon_theme)
+        elif not dark and 'dark' in self.__icon_theme.lower():
+            variant_theme = self.icon_theme_light_variant(self.__icon_theme)
+
+        if variant_theme: self.__icon_theme = variant_theme
+        
+        icon_path = IconTheme.getIconPath(
+            iconname=icon,
+            size=size,
+            theme=self.__icon_theme,
+            extensions=['png', 'svg', 'xpm'])
+
+        if icon_path:
+            return icon_path
+        
+        icon = icon + '.svg'
+        path = self.__icon_path / icon
+        return str(path) if path.exists() else str(
+            self.__path / 'static' / 'icons' / 'empty.svg')
+
     def __icon_source_plasma(
             self, icon: str | None, size: int = 16, dark: bool = None) -> str:
         if dark or dark is None and 'dark' in self.__icon_theme.lower():
@@ -184,43 +221,6 @@ class Icons(object):
                 or: Default lib
                 or: callback-icon-path
         """
-
-        if icon_path:
-            return icon_path
-        
-        icon = icon + '.svg'
-        path = self.__icon_path / icon
-        return str(path) if path.exists() else str(
-            self.__path / 'static' / 'icons' / 'empty.svg')
-
-    def __icon_source_cinnamon(
-            self, icon: str | None, size: int = 16, dark: bool = None) -> str:
-        if dark or dark is None and 'dark' in self.__icon_theme.lower():
-            self.__icon_path =self.__path/'static'/'icons'/'linux-gtk-dark'
-        else:
-            self.__icon_path = self.__path/'static'/'icons'/'linux-gtk'
-
-        if not icon:
-            return str(self.__path / 'static' / 'icons' / 'empty.svg')
-
-        if '/' in icon:
-            if not Path(icon).exists():
-                return str(self.__path / 'static' / 'icons' / 'empty.svg')
-            return icon
-
-        variant_theme = self.__icon_theme
-        if dark and 'dark' not in self.__icon_theme.lower():
-            variant_theme = self.icon_theme_dark_variant(self.__icon_theme)
-        elif not dark and 'dark' in self.__icon_theme.lower():
-            variant_theme = self.icon_theme_light_variant(self.__icon_theme)
-
-        if variant_theme: self.__icon_theme = variant_theme
-        
-        icon_path = IconTheme.getIconPath(
-            iconname=icon,
-            size=size,
-            theme=self.__icon_theme,
-            extensions=['png', 'svg', 'xpm'])
 
         if icon_path:
             return icon_path
