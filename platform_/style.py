@@ -373,21 +373,29 @@ class Style(object):
             if not self.__cinnamon_theme:
                 self.__get_cinnamon_theme()
 
-            self.__app_frame_fg = '#FF333333'
-            self.__app_frame_bg = '#FFEBEBED'
-            if 'dark' in self.__cinnamon_theme:
+            if 'dark' in self.__cinnamon_theme.lower():
                 self.__app_frame_fg = '#FFCCCCCC'
                 self.__app_frame_bg = '#FF222226'
+            else:
+                self.__app_frame_fg = '#FF333333'
+                self.__app_frame_bg = '#FFEBEBED'
 
         self.__app_frame_is_dark = colr.is_dark(
             colr.hex_to_rgba(self.__app_frame_bg))
 
         self.__app_frame_bd = self.__app_frame_bg
         if self.__app_frame_is_dark:
-            self.__app_frame_bd = colr.lighten_hex(self.__app_frame_bg, 15)
-        
-        self.__app_frame_rd = '6, 6, 6, 6'
-        self.__app_frame_io = '1.0'
+            if self.__desktop == 'cinnamon':
+                self.__app_frame_bd = '#FF181818'
+            else:
+                self.__app_frame_bd = colr.lighten_hex(self.__app_frame_bg, 15)
+
+        if self.__desktop == 'cinnamon':
+            self.__app_frame_rd = '10, 10, 0, 0'
+            self.__app_frame_io = '1.0'
+        else:
+            self.__app_frame_rd = '6, 6, 6, 6'
+            self.__app_frame_io = '1.0'
 
         # Inactive
         if self.__inactive_as_platform:
@@ -429,10 +437,16 @@ class Style(object):
                 self.__conf['[Colors:Button]']['BackgroundNormal'], '#33333333')
         
         elif self.__desktop == 'cinnamon':
-            self.__button_bg = self.__app_frame_bg
+            if self.__app_frame_is_dark:
+                self.__button_bg = colr.lighten_hex(self.__app_frame_bg, 3)
+            else:
+                self.__button_bg = elf.__app_frame_bg
 
         if self.__app_frame_is_dark:
-            self.__button_bd = colr.lighten_hex(self.__button_bg, 35)
+            if self.__desktop == 'cinnamon':
+                self.__button_bd = '#FF181818'
+            else:
+                self.__button_bd = colr.lighten_hex(self.__button_bg, 35)
         else:
             self.__button_bd = colr.darken_hex(self.__button_bg, 35)
         
@@ -454,12 +468,18 @@ class Style(object):
         # Hover
         self.__button_hv_fg = self.__button_fg
         self.__button_hv_bg = self.__button_bg
+
         if self.__desktop == 'plasma':
-            self.__button_hv_bd = '#99' + self.__color_to_hex(
-                self.__conf['[Colors:Button]']['DecorationHover'],
-                '#3C8CBD')[3:]
+            self.__button_hv_bd = '#99' + self.__color_to_hex(self.__conf[
+                '[Colors:Button]']['DecorationHover'],'#3C8CBD')[3:]
+
         elif self.__desktop == 'cinnamon':
             self.__button_hv_bd = self.__button_bd
+
+            if 'dark' in self.__cinnamon_theme.lower():
+                self.__button_hv_bg = colr.lighten_hex(self.__button_bg, 5)
+            else:
+                self.__button_hv_bg = colr.darken_hex(self.__button_bg, 4)
 
         self.__button_hv_io = self.__button_io
 
