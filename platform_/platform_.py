@@ -12,7 +12,7 @@ class Platform(object):
     def __init__(self):
         self.__os_desk = OSDesk()
         self.__icons = Icons(self.__os_desk.desktop_environment)
-        self.__style = Style()
+        self.__style = Style(self.__os_desk.desktop_environment)
 
         # Properties
         self.__accent_color = None

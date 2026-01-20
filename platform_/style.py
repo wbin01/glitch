@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import os
 import pathlib
-import pprint
+import subprocess
 
 from PySide6 import QtGui
 
@@ -28,6 +28,35 @@ class Style(object):
         self.__symbolic = ''
         self.__app_frame_bg = None
 
+        self.__cinnamon_theme = None
+
+    def __get_cinnamon_theme(self):
+        if self.__cinnamon_theme:
+            return self.__cinnamon_theme
+
+        cmd = subprocess.run(
+            'gsettings get org.cinnamon.theme name',
+            shell=True, capture_output=True, text=True)
+        self.__cinnamon_theme = cmd.stdout.strip().lower()
+
+        themes = {
+            'aqua': '#6cadd0', 'blue': '#5986c9', 'brown': '#b7865e',
+            'grey': '#9d9d9d', 'orange': '#db9d61', 'pink': '#c76199',
+            'purple': '#8c6ec9', 'red': '#c15b58', 'sand': '#c8ac69',
+            'teal': '#5aaa9a'}
+
+        theme_name_end = self.__cinnamon_theme.split('-')[-1]
+        if theme_name_end in ['l', 'x', 'y']:
+            self.__accent_color = '#FF9AB87C'
+        elif theme_name_end == 'dark':
+            self.__accent_color = '#FF8FA876'
+        elif theme_name_end == 'darker':
+            self.__accent_color = '#FF9AB87C'
+        elif theme_name_end in themes:
+            self.__accent_color = themes[theme_name_end]
+        else:
+            self.__accent_color = '#FF9AB87C'
+
     @property
     def accent_color(self) -> str:
         """..."""
@@ -35,8 +64,13 @@ class Style(object):
             self.__conf = self.__get_sys_conf()
 
         if not self.__accent_color:
-            self.__accent_color = self.__color_to_hex(
-                self.__conf['[General]']['AccentColor'], '#FF3C8CBD')
+            if self.__desktop == 'plasma':
+                self.__accent_color = self.__color_to_hex(
+                    self.__conf['[General]']['AccentColor'], '#FF3C8CBD')
+
+            elif self.__desktop == 'cinnamon':
+                if not self.__cinnamon_theme:
+                    self.__get_cinnamon_theme()
 
         return self.__accent_color
 
@@ -356,11 +390,22 @@ class Style(object):
         self.__style_panel()
 
     def __app_frame_style(self) -> None:
-        self.__app_frame_fg = self.__color_to_hex(
-            self.__conf['[Colors:Window]']['ForegroundNormal'], '#FFFFFF')
-        
-        self.__app_frame_bg = self.__color_to_hex(  # Alt 282828
-            self.__conf['[Colors:Window]']['BackgroundNormal'], '#2A2A2A')
+        if self.__desktop == 'plasma':
+            self.__app_frame_fg = self.__color_to_hex(
+                self.__conf['[Colors:Window]']['ForegroundNormal'], '#FFFFFF')
+            
+            self.__app_frame_bg = self.__color_to_hex(  # Alt 282828
+                self.__conf['[Colors:Window]']['BackgroundNormal'], '#2A2A2A')
+
+        if self.__desktop == 'cinnamon':
+            if not self.__cinnamon_theme:
+                self.__get_cinnamon_theme()
+
+            self.__app_frame_fg = '#FF333333'
+            self.__app_frame_bg = '#FFEBEBED'
+            if 'dark' in self.__cinnamon_theme:
+                self.__app_frame_fg = '#FFCCCCCC'
+                self.__app_frame_bg = '#FF222226'
 
         self.__app_frame_is_dark = colr.is_dark(
             colr.hex_to_rgba(self.__app_frame_bg))
@@ -407,8 +452,12 @@ class Style(object):
 
     def __button_style(self) -> None:
         self.__button_fg = self.__app_frame_fg
-        self.__button_bg = self.__color_to_hex(
-            self.__conf['[Colors:Button]']['BackgroundNormal'], '#33333333')
+        if self.__desktop == 'plasma':
+            self.__button_bg = self.__color_to_hex(
+                self.__conf['[Colors:Button]']['BackgroundNormal'], '#33333333')
+        
+        elif self.__desktop == 'cinnamon':
+            self.__button_bg = self.__app_frame_bg
 
         if self.__app_frame_is_dark:
             self.__button_bd = colr.lighten_hex(self.__button_bg, 35)
@@ -433,8 +482,13 @@ class Style(object):
         # Hover
         self.__button_hv_fg = self.__button_fg
         self.__button_hv_bg = self.__button_bg
-        self.__button_hv_bd = '#99' + self.__color_to_hex(
-            self.__conf['[Colors:Button]']['DecorationHover'], '#3C8CBD')[3:]
+        if self.__desktop == 'plasma':
+            self.__button_hv_bd = '#99' + self.__color_to_hex(
+                self.__conf['[Colors:Button]']['DecorationHover'],
+                '#3C8CBD')[3:]
+        elif self.__desktop == 'cinnamon':
+            self.__button_hv_bd = self.__button_bd
+
         self.__button_hv_io = self.__button_io
 
         # Clicked
