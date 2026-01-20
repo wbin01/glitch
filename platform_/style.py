@@ -27,35 +27,7 @@ class Style(object):
         self.__plasma_close_button_with_circle = False
         self.__symbolic = ''
         self.__app_frame_bg = None
-
         self.__cinnamon_theme = None
-
-    def __get_cinnamon_theme(self):
-        if self.__cinnamon_theme:
-            return self.__cinnamon_theme
-
-        cmd = subprocess.run(
-            'gsettings get org.cinnamon.theme name',
-            shell=True, capture_output=True, text=True)
-        self.__cinnamon_theme = cmd.stdout.strip().lower()
-
-        themes = {
-            'aqua': '#6cadd0', 'blue': '#5986c9', 'brown': '#b7865e',
-            'grey': '#9d9d9d', 'orange': '#db9d61', 'pink': '#c76199',
-            'purple': '#8c6ec9', 'red': '#c15b58', 'sand': '#c8ac69',
-            'teal': '#5aaa9a'}
-
-        theme_name_end = self.__cinnamon_theme.split('-')[-1]
-        if theme_name_end in ['l', 'x', 'y']:
-            self.__accent_color = '#FF9AB87C'
-        elif theme_name_end == 'dark':
-            self.__accent_color = '#FF8FA876'
-        elif theme_name_end == 'darker':
-            self.__accent_color = '#FF9AB87C'
-        elif theme_name_end in themes:
-            self.__accent_color = themes[theme_name_end]
-        else:
-            self.__accent_color = '#FF9AB87C'
 
     @property
     def accent_color(self) -> str:
@@ -640,6 +612,33 @@ class Style(object):
             self.__icon_path + icon + '-clicked' + '.svg')
         self.__full_button_ck_ir = (
             self.__icon_path + restore + '-clicked' + '.svg')
+
+    def __get_cinnamon_theme(self):
+        if self.__cinnamon_theme:
+            return self.__cinnamon_theme
+
+        cmd = subprocess.run(
+            'gsettings get org.cinnamon.theme name',
+            shell=True, capture_output=True, text=True)
+        self.__cinnamon_theme = cmd.stdout.strip()
+
+        themes = {
+            'aqua': '#6cadd0', 'blue': '#5986c9', 'brown': '#b7865e',
+            'grey': '#9d9d9d', 'orange': '#db9d61', 'pink': '#c76199',
+            'purple': '#8c6ec9', 'red': '#c15b58', 'sand': '#c8ac69',
+            'teal': '#5aaa9a'}
+
+        theme_name_end = self.__cinnamon_theme.lower().split('-')[-1]
+        if theme_name_end in ['l', 'x', 'y']:
+            self.__accent_color = '#FF9AB87C'
+        elif theme_name_end == 'dark':
+            self.__accent_color = '#FF8FA876'
+        elif theme_name_end == 'darker':
+            self.__accent_color = '#FF9AB87C'
+        elif theme_name_end in themes:
+            self.__accent_color = themes[theme_name_end]
+        else:
+            self.__accent_color = '#FF9AB87C'
 
     def __max_button_style(self) -> None:
         icon = 'go-up'

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import os
+import subprocess
 import sys
 from pathlib import Path
 
@@ -55,7 +56,13 @@ class Icons(object):
                 self.__icon_theme = ini.content['[Icons]']['Theme']
                 return self.__icon_theme
 
-        if self.__desktop_environment == 'mate':
+        elif self.__desktop_environment == 'cinnamon':
+            cmd = subprocess.run(
+                'gsettings get org.cinnamon.theme name',
+                shell=True, capture_output=True, text=True)
+            self.__icon_theme = cmd.stdout.strip()
+
+        elif self.__desktop_environment == 'mate':
             if self.__icon_theme:
                 return self.__icon_theme
 
@@ -65,7 +72,7 @@ class Icons(object):
                 self.__icon_theme = gtk_icons if gtk_icons else None
                 return self.__icon_theme
 
-        if self.__desktop_environment == 'gnome':
+        elif self.__desktop_environment == 'gnome':
             if self.__icon_theme:
                 return self.__icon_theme
 
@@ -87,12 +94,15 @@ class Icons(object):
         else:
             self.__icon_path = self.__path / 'static' / 'icons' / 'linux'
 
+            if self.__desktop_environment != 'plasma':
+                self.__icon_path = self.__path / 'static' / 'icons' /'linux-gtk'
+
         if not icon:
-            return str(self.__icon_path / 'empty.svg')
+            return str(self.__path / 'static' / 'icons' / 'empty.svg')
 
         if '/' in icon:
             if not Path(icon).exists():
-                return str(self.__icon_path / 'empty.svg')
+                return str(self.__path / 'static' / 'icons' / 'empty.svg')
             return icon
 
         variant_theme = self.__icon_theme
@@ -101,7 +111,7 @@ class Icons(object):
         elif not dark and 'dark' in self.__icon_theme.lower():
             variant_theme = self.icon_theme_light_variant(self.__icon_theme)
 
-        if variant_theme: self.__icon_theme = variant_theme 
+        if variant_theme: self.__icon_theme = variant_theme
         
         icon_path = IconTheme.getIconPath(
             iconname=icon,
@@ -143,10 +153,15 @@ class Icons(object):
 
         if icon_path:
             return icon_path
+        
+        if self.__desktop_environment != 'plasma':
+            icon = icon + '-symbolic.svg'
+        else:
+            icon = icon + '.svg'
 
-        icon = icon + '.svg'
         path = self.__icon_path / icon
-        return str(path) if path.exists() else ''
+        return str(path) if path.exists() else str(
+            self.__path / 'static' / 'icons' / 'empty.svg')
 
     def icon_theme_variant(
             self, theme: str = None, dark: bool = True) -> str | None:
