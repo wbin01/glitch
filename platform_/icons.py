@@ -19,8 +19,7 @@ class Icons(object):
         self.__icon_theme = None
 
         self.__path = Path(__file__).parent.parent
-        self.__icon_path = self.__path / 'static' / 'icons' / 'linux'
-        self.__icon_empty = self.__icon_path / 'empty.svg'
+        self.__icon_path = self.__path / 'static' / 'icons'
 
         self.__light_suffixes = ['-light', '-Light', ' light', ' Light']
         self.__dark_suffixes = ['-dark', '-Dark', ' dark', ' Dark']
@@ -89,13 +88,16 @@ class Icons(object):
         if not self.__icon_theme:
             self.icon_theme()
 
-        if dark or dark is None and 'dark' in self.__icon_theme.lower():
-            self.__icon_path = self.__path / 'static' / 'icons' / 'linux-dark'
+        if self.__desktop_environment == 'plasma':
+            if dark or dark is None and 'dark' in self.__icon_theme.lower():
+                self.__icon_path = self.__path/'static'/'icons'/'linux-qt-dark'
+            else:
+                self.__icon_path = self.__path/'static'/'icons'/'linux-qt'
         else:
-            self.__icon_path = self.__path / 'static' / 'icons' / 'linux'
-
-            if self.__desktop_environment != 'plasma':
-                self.__icon_path = self.__path / 'static' / 'icons' /'linux-gtk'
+            if dark or dark is None and 'dark' in self.__icon_theme.lower():
+                self.__icon_path =self.__path/'static'/'icons'/'linux-gtk-dark'
+            else:
+                self.__icon_path = self.__path/'static'/'icons'/'linux-gtk'
 
         if not icon:
             return str(self.__path / 'static' / 'icons' / 'empty.svg')
