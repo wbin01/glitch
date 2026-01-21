@@ -386,9 +386,10 @@ class Style(object):
         self.__app_frame_is_dark = colr.is_dark(
             colr.hex_to_rgba(self.__app_frame_bg))
 
-        self.__app_frame_bd = self.__app_frame_bg
         if self.__app_frame_is_dark:
             self.__app_frame_bd = '#FF111111'
+        else:
+            self.__app_frame_bd = '#FFAAAAAA'
 
         self.__app_frame_rd = '8, 8, 0, 0'
         self.__app_frame_io = '1.0'
@@ -702,7 +703,7 @@ class Style(object):
         self.__close_button_rd = '10'
 
         # Inactive
-        self.__close_button_in_bg = "#77999999"
+        self.__close_button_in_bg = '#77999999'
         self.__close_button_in_bd = self.__app_frame_in_bg
         self.__close_button_in_fg = self.__app_frame_in_fg
         self.__close_button_in_io = self.__button_in_io
@@ -851,19 +852,19 @@ class Style(object):
     def __max_button_style_cinnamon(self) -> None:
         icon = 'go-up'
         restore = 'window-restore'
-        self.__max_button_bg = self.__close_button_bg
-        self.__max_button_bd = self.__close_button_bd
+        self.__max_button_bg = '#00000000'
+        self.__max_button_bd = '#00000000'
         self.__max_button_fg = self.__close_button_fg
         self.__max_button_io = self.__close_button_io
         self.__max_button_i = (
             self.__icon_path + icon + self.__symbolic + '.svg')
         self.__max_button_ir = (
             self.__icon_path + restore + self.__symbolic + '.svg')
-        self.__max_button_rd = self.__tool_button_rd
+        self.__max_button_rd = '10'
 
         # Inactive
-        self.__max_button_in_bg = self.__close_button_in_bg
-        self.__max_button_in_bd = self.__close_button_in_bd
+        self.__max_button_in_bg = '#00000000'
+        self.__max_button_in_bd = '#00000000'
         self.__max_button_in_fg = self.__close_button_in_fg
         self.__max_button_in_io = self.__close_button_in_io
         self.__max_button_in_i = (
@@ -872,7 +873,10 @@ class Style(object):
             self.__icon_path + restore + '-inactive' + self.__symbolic +'.svg')
         
         # Hover
-        self.__max_button_hv_bg = self.__close_button_hv_bg
+        if self.__app_frame_is_dark:
+            self.__max_button_hv_bg = '#77999999'
+        else:
+            self.__max_button_hv_bg = '#FFFFFFFF'
         self.__max_button_hv_bd = self.__close_button_hv_bd
         self.__max_button_hv_fg = self.__close_button_hv_fg
         self.__max_button_hv_io = self.__close_button_hv_io
@@ -936,24 +940,28 @@ class Style(object):
 
     def __min_button_style_cinnamon(self) -> None:
         icon = 'go-down'
-        self.__min_button_bg = self.__close_button_bg
-        self.__min_button_bd = self.__close_button_bd
+        self.__min_button_bg = '#00000000'
+        self.__min_button_bd = '#00000000'
         self.__min_button_fg = self.__close_button_fg
         self.__min_button_io = self.__close_button_io
         self.__min_button_i = (
             self.__icon_path + icon + self.__symbolic + '.svg')
-        self.__min_button_rd = self.__tool_button_rd
+        self.__min_button_rd = '10'
 
         # Inactive
-        self.__min_button_in_bg = self.__close_button_in_bg
-        self.__min_button_in_bd = self.__close_button_in_bd
+        self.__min_button_in_bg = '#00000000'
+        self.__min_button_in_bd = '#00000000'
         self.__min_button_in_fg = self.__close_button_in_fg
         self.__min_button_in_io = self.__close_button_in_io
         self.__min_button_in_i = (
             self.__icon_path + icon + '-inactive' + self.__symbolic + '.svg')
 
         # Hover
-        self.__min_button_hv_bg = self.__close_button_hv_bg
+        if self.__app_frame_is_dark:
+            self.__min_button_hv_bg = '#77999999'
+        else:
+            self.__min_button_hv_bg = '#FFFFFFFF'
+
         self.__min_button_hv_bd = self.__close_button_hv_bd
         self.__min_button_hv_fg = self.__close_button_hv_fg
         self.__min_button_hv_io = self.__close_button_hv_io

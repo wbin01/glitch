@@ -808,12 +808,16 @@ MaxButton {
     property url normalIcon: "[MaxButton]icon"
     property url hoverIcon: "[MaxButton:hover]icon"
     property url clickedIcon: "[MaxButton:clicked]icon"
+    property url inactiveIcon: "[MaxButton:inactive]icon"
 
     property url restoreNormalIcon: "[MaxButton]restore_icon"
     property url restoreHoverIcon: "[MaxButton:hover]restore_icon"
     property url restoreClickedIcon: "[MaxButton:clicked]restore_icon"
+    property url restoreInactiveIcon: "[MaxButton:inactive]restore_icon"
 
     icon.source:
+        !appMaxButton.Window.active ? 
+           inactiveIcon :
         appMaxButton.down ?
             clickedIcon :
         appMaxButton.hovered ?
@@ -852,8 +856,11 @@ MinButton {
     property url normalIcon: "[MinButton]icon"
     property url hoverIcon: "[MinButton:hover]icon"
     property url clickedIcon: "[MinButton:clicked]icon"
+    property url inactiveIcon: "[MinButton:inactive]icon"
 
     icon.source:
+        !appMinButton.Window.active ? 
+           inactiveIcon :
         appMinButton.down ?
             clickedIcon :
         appMinButton.hovered ?
