@@ -29,6 +29,8 @@ class Modal(Frame):
         self.__static = False
 
         self.__anim = None
+        self._QtObject__set_property('outLineColor', '"#77000000"')
+        # property color outLineColor: "#FF000000"
         self._app_signal.connect(self.__app_shape)
 
     def __repr__(self) -> str:

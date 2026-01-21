@@ -1007,9 +1007,9 @@ class Style(object):
 
     def __panel_style_cinnamon(self) -> None:
         if self.__app_frame_is_dark:
-            self.__panel_bg = '#FA' + colr.darken_hex(self.__app_frame_bg, 15)[3:]
+            self.__panel_bg = colr.darken_hex(self.__app_frame_bg, 5)
         else:
-            self.__panel_bg = '#FA' + colr.darken_hex(self.__app_frame_bg, 10)[3:]
+            self.__panel_bg = colr.darken_hex(self.__app_frame_bg, 10)
 
         self.__panel_bd = self.__panel_bg
         self.__panel_rd = self.__app_frame_rd
