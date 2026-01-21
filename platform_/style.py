@@ -422,7 +422,7 @@ class Style(object):
         self.__app_frame_is_dark = colr.is_dark(
             colr.hex_to_rgba(self.__app_frame_bg))
 
-        self.__app_frame_bd = self.__app_frame_bg
+        self.__app_frame_bd = colr.darken_hex(self.__app_frame_bg, 50)
         if self.__app_frame_is_dark:
             self.__app_frame_bd = colr.lighten_hex(self.__app_frame_bg, 15)
 
@@ -1019,7 +1019,13 @@ class Style(object):
         self.__panel_in_bd = self.__panel_in_bg
 
     def __panel_style_plasma(self) -> None:
-        self.__panel_bg = '#FA' + colr.darken_hex(self.__app_frame_bg, 5)[3:]
+        if self.__app_frame_is_dark:
+            self.__panel_bg = '#FA' + colr.darken_hex(
+                self.__app_frame_bg, 5)[3:]
+        else:
+            self.__panel_bg = '#FA' + colr.darken_hex(
+                self.__app_frame_bg, 15)[3:]
+
         self.__panel_bd = self.__panel_bg
         self.__panel_rd = self.__app_frame_rd
 

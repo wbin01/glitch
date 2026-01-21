@@ -34,7 +34,7 @@ class Modal(Frame):
         self.__anim = None
         if platform.system() == 'Linux':
             if os.environ['DESKTOP_SESSION'] == 'plasma':
-                self._QtObject__set_property('outLineColor', '"#77777777"')
+                self._QtObject__set_property('outLineColor', '"#55666666"')
 
             elif os.environ['DESKTOP_SESSION'] == 'cinnamon':
                 self._QtObject__set_property('outLineColor', '"#77000000"')
