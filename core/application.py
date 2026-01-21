@@ -48,14 +48,12 @@ class AppEventFilter(QtCore.QObject):
         :param event: QtCore.QEvent.
         """
         event_type = event.type()
-        # print(event_type)
+
         if event_type == QtCore.QEvent.WindowActivate:
-            # print('WindowActivate')
-            pass
+            self.__ui._active_signal.emit()
         
         elif event_type == QtCore.QEvent.WindowDeactivate:
-            # print('WindowDeactivate')
-            pass
+            self.__ui._inactive_signal.emit()
 
         if event_type == QtCore.QEvent.Resize:
             self.__ui._resize_signal.emit()

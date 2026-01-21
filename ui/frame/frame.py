@@ -14,11 +14,13 @@ class Frame(Add, UI):
         self._UI__app = self
 
         # Signals
+        self.__active_signal = Signal()
         self.__hint_signal = Signal()
+        self.__inactive_signal = Signal()
         self.__platform_signal = Signal()
         self.__render_signal = Signal()
         self.__resize_signal = Signal()
-        self._right_pressed_signal = Signal()
+        self.__right_pressed_signal = Signal()
         
         # Properties
         self.__qt_core = None    # PySide6.QtCore
@@ -73,9 +75,19 @@ class Frame(Add, UI):
         self.__container.spacing = spacing
 
     @property
+    def _active_signal(self):
+        """..."""
+        return self.__active_signal
+
+    @property
     def _hint_signal(self):
         """..."""
         return self.__hint_signal
+
+    @property
+    def _inactive_signal(self):
+        """..."""
+        return self.__inactive_signal
 
     @property
     def _platform_signal(self):
@@ -91,6 +103,11 @@ class Frame(Add, UI):
     def _resize_signal(self):
         """..."""
         return self.__resize_signal
+
+    @property
+    def _right_pressed_signal(self):
+        """..."""
+        return self.__right_pressed_signal
 
     @property
     def _platform(self):

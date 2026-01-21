@@ -19,7 +19,7 @@ class Style(object):
         self.__desktop = desktop_environment
         self.__style = None
         self.__conf = None
-        self.__inactive_as_platform = False
+        self.__inactive_as_platform = True
         self.__accent_color = None
 
         self.__path = pathlib.Path(__file__).parent.parent
@@ -345,8 +345,6 @@ class Style(object):
         return ini
 
     def __set_styles(self) -> None:
-        # self.__inactive_as_platform = True
-
         # Needs to have this order. The settings below need the settings above.
         if self.__desktop == 'cinnamon':
             self.__app_frame_style_cinnamon()
@@ -433,7 +431,7 @@ class Style(object):
         if self.__inactive_as_platform:
             # [Colors:Header][Inactive]][BackgroundNormal]
             self.__app_frame_in_fg = self.__app_frame_fg
-            self.__app_frame_in_bg = self.__app_frame_bg
+            self.__app_frame_in_bg = colr.darken_hex(self.__app_frame_bg, 4)
             self.__app_frame_in_io = self.__app_frame_io
             self.__app_frame_in_bd = self.__app_frame_bd
         else:

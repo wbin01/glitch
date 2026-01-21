@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from PySide6.QtCore import QTimer
+from PySide6 import QtCore
 
 from .control_buttons import ControlButtons
 from .expander import Expander
@@ -19,6 +19,8 @@ class Header(View):
         self._QtObject__set_property('Layout.fillWidth', 'true')
         self._QtObject__set_property('Layout.fillHeight', 'false')
         self.__resize = False
+        self.__active_color = None
+        self.__inactive_color = None
 
         # Flags
         self.__side = 'left'
@@ -88,25 +90,6 @@ class Header(View):
         self.__left_count += 1
         return self.__left.add(item)
 
-    def __signals_conf(self) -> None:
-        self._app._render_signal.connect(self.__center_title)
-        if hasattr(self._app, '_shape_signal'):
-            self._app._shape_signal.connect(self.__shape_signal_thread)
-
-    def __shape_signal_thread(self) -> None:
-        QTimer.singleShot(100, self.__on_shape_signal)
-
-    def __on_shape_signal(self) -> None:
-        if self._app._platform.global_menu:
-            if self._app.shape == Shape.MAX or self._app.shape == Shape.FULL:
-                if self.__control_l.visible:
-                    self.__control_l.visible = False
-                    self.__control_r.visible = False
-            else:
-                self.__control_l.visible = True
-                self.__control_r.visible = True
-        self.__center_title(True)
-
     def __center_title(self, shape=False) -> None:
         # Size vars
         ratio = self._app._QtObject__obj.devicePixelRatio()
@@ -144,7 +127,7 @@ class Header(View):
             self.__right_plus._QtObject__set_property('rw', 0)
             self.__left_plus._QtObject__set_property('lw', 0)
             self.__stop = False
-            QTimer.singleShot(50, self.__center_title)
+            QtCore.QTimer.singleShot(50, self.__center_title)
 
         if not self.__resize:
             self._app._resize_signal.connect(self.__center_title)
@@ -186,3 +169,49 @@ class Header(View):
             if self.__stop: lwidth = 5
             if self.__margin_delta > left_plus - dt:
                 self.__left_plus._QtObject__set_property('lw', lwidth)
+
+    def __set_active_inactive_signal(self) -> None:
+        self._app._active_signal.connect(self.__on_active_signal)
+        self._app._inactive_signal.connect(self.__on_inactive_signal)
+
+    def __shape_signal_thread(self) -> None:
+        QtCore.QTimer.singleShot(100, self.__on_shape_signal)
+
+    def __signals_conf(self) -> None:
+        self._app._render_signal.connect(self.__center_title)
+        self._app._render_signal.connect(self.__set_active_inactive_signal)
+        if hasattr(self._app, '_shape_signal'):
+            self._app._shape_signal.connect(self.__shape_signal_thread)
+
+    def __on_active_signal(self) -> None:
+        if not self.__active_color:
+            self.__active_color = self._app._platform.style[
+                '[MainFrame]']['background_color']
+        
+        self._app._QtObject__set_property(
+            'backgroundColor', self.__active_color)
+        
+        self._app._QtObject__obj.findChild(
+            QtCore.QObject, 'canvas').requestPaint()
+
+    def __on_inactive_signal(self) -> None:
+        if not self.__inactive_color:
+            self.__inactive_color = self._app._platform.style[
+                '[MainFrame:inactive]']['background_color']
+
+        self._app._QtObject__set_property(
+            'backgroundColor', self.__inactive_color)
+        
+        self._app._QtObject__obj.findChild(
+            QtCore.QObject, 'canvas').requestPaint()
+
+    def __on_shape_signal(self) -> None:
+        if self._app._platform.global_menu:
+            if self._app.shape == Shape.MAX or self._app.shape == Shape.FULL:
+                if self.__control_l.visible:
+                    self.__control_l.visible = False
+                    self.__control_r.visible = False
+            else:
+                self.__control_l.visible = True
+                self.__control_r.visible = True
+        self.__center_title(True)

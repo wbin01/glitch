@@ -719,8 +719,11 @@ CloseButton {
     property url normalIcon: "[CloseButton]icon"
     property url hoverIcon: "[CloseButton:hover]icon"
     property url clickedIcon: "[CloseButton:clicked]icon"
+    // property url inactiveIcon: "[CloseButton:inactive]icon"
 
     icon.source:
+        // !appCloseButton.enabled ? 
+        //    inactiveIcon :
         appCloseButton.down ?
             clickedIcon :
         appCloseButton.hovered ?
@@ -733,6 +736,10 @@ CloseButton {
         anchors.fill: parent
 
         color:
+            !appCloseButton.Window.active ?
+                "[CloseButton:inactive]background_color" :
+            // !appCloseButton.enabled ?
+            //    "[CloseButton:inactive]background_color" :
             appCloseButton.down ?
                 "[CloseButton:clicked]background_color" :
             appCloseButton.hovered ?
@@ -740,6 +747,8 @@ CloseButton {
                 "[CloseButton]background_color"
 
         border.color:
+            // !appCloseButton.enabled ?
+            //    "[CloseButton:inactive]border_color" :
             appCloseButton.down ?
                 "[CloseButton:clicked]border_color" :
             appCloseButton.hovered ?
@@ -817,6 +826,8 @@ MaxButton {
         anchors.fill: parent
 
         color:
+            !appMaxButton.Window.active ?
+                "[MaxButton:inactive]background_color" :
             appMaxButton.down ?
                 "[MaxButton:clicked]background_color" :
             appMaxButton.hovered ?
@@ -855,6 +866,8 @@ MinButton {
         anchors.fill: parent
 
         color:
+            !appMinButton.Window.active ?
+                "[MinButton:inactive]background_color" :
             appMinButton.down ?
                 "[MinButton:clicked]background_color" :
             appMinButton.hovered ?
@@ -901,6 +914,8 @@ ToolButton {
                 "[ToolButton:checked:inactive]background_color" :
             !toolButton.enabled ?
                 "[ToolButton:inactive]background_color" :
+            !toolButton.Window.active ?
+                "[ToolButton:inactive]background_color" :
 
             toolButton.checked && toolButton.hovered ?
                 "[ToolButton:checked:hover]background_color" :
@@ -917,6 +932,8 @@ ToolButton {
             !toolButton.enabled && toolButton.checked ?
                 "[ToolButton:checked:inactive]border_color" :
             !toolButton.enabled ?
+                "[ToolButton:inactive]border_color" :
+            !toolButton.Window.active ?
                 "[ToolButton:inactive]border_color" :
 
             toolButton.checked && toolButton.hovered ?
