@@ -656,8 +656,8 @@ class Style(object):
         self.__tool_button_rd = self.__button_rd
 
         # Inactive
-        self.__tool_button_in_bg = '#00000000'  # self.__app_frame_in_bg
-        self.__tool_button_in_bd = '#00000000'  # self.__app_frame_in_bg
+        self.__tool_button_in_bg = '#00000000'
+        self.__tool_button_in_bd = '#00000000'
         self.__tool_button_in_io = self.__button_in_io
         
         # Hover
@@ -1047,20 +1047,16 @@ class Style(object):
             'gsettings get org.cinnamon.theme name',
             shell=True, capture_output=True, text=True)
         self.__cinnamon_theme = cmd.stdout.strip().strip("'").strip('"')
-        themes = {
-            'aqua':   '#FF1F9EDE', 'blue':   '#FF5986C9', 'brown': '#FFB7865E',
-            'grey':   '#FF9D9D9D', 'orange': '#FFDB9D61', 'pink':  '#FFC76199',
-            'purple': '#FF8C6EC9', 'red':    '#FFC15b58', 'sand':  '#FFC8AC69',
-            'teal':   '#FF5AAA9A'}
+        l_themes = {
+            'aqua':   '#FF1F9EDE', 'blue':   '#FF0C75DE', 'brown': '#FFB7865E',
+            'grey':   '#FF70737A', 'orange': '#FFFF7139', 'pink':  '#FFE54980',
+            'purple': '#FF8C5DD9', 'red':    '#FFE82127', 'sand':  '#FFC5A07C',
+            'teal':   '#FF199CA8'}
 
         theme_name_end = self.__cinnamon_theme.lower().split('-')[-1]
-        if theme_name_end in ['l', 'x', 'y']:
-            self.__accent_color = '#FF9AB87C'
-        elif theme_name_end == 'dark':
-            self.__accent_color = '#FF8FA876'
-        elif theme_name_end == 'darker':
-            self.__accent_color = '#FF9AB87C'
-        elif theme_name_end in themes:
-            self.__accent_color = themes[theme_name_end]
+        if theme_name_end in ['l', 'x', 'y', 'dark', 'darker']:
+            self.__accent_color = '#FF35A854'
+        elif theme_name_end in l_themes:
+            self.__accent_color = l_themes[theme_name_end]
         else:
-            self.__accent_color = '#FF9AB87C'
+            self.__accent_color = '#FF35A854'
