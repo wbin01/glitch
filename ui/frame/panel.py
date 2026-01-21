@@ -221,9 +221,12 @@ class Panel(Frame):
             self._QtObject__set_property('x', self.__ml - 1)
             end = -1
         else:
-            self._UI__set_width((width - 2) - (self.__ml + self.__mr))
-            self._QtObject__set_property('x', self.__ml)
-            end = 0
+            # self._UI__set_width((width - 2) - (self.__ml + self.__mr))
+            # self._QtObject__set_property('x', self.__ml)
+            # end = 0
+            self._UI__set_width(width - (self.__ml + self.__mr))
+            self._QtObject__set_property('x', self.__ml - 1)
+            end = -1
 
         return -app_height, end + self.__mt
 
@@ -237,9 +240,12 @@ class Panel(Frame):
             self._QtObject__set_property('y', self.__mt - 1)
             end = app_width - (self._UI__get_width()[0] + 1)
         else:
-            self._UI__set_height((height - 2) - (self.__mt + self.__mb))
-            self._QtObject__set_property('y', self.__mt)
-            end = app_width - (self._UI__get_width()[0] + 2)
+            # self._UI__set_height((height - 2) - (self.__mt + self.__mb))
+            # self._QtObject__set_property('y', self.__mt)
+            # end = app_width - (self._UI__get_width()[0] + 2)
+            self._UI__set_height(height - (self.__mt + self.__mb))
+            self._QtObject__set_property('y', self.__mt - 1)
+            end = app_width - (self._UI__get_width()[0] + 1)
 
         return app_width, end - self.__mr
 
@@ -253,9 +259,12 @@ class Panel(Frame):
             self._QtObject__set_property('x', self.__ml - 1)
             end = app_height - (self._UI__get_height()[0] + 1)
         else:
-            self._UI__set_width((width - 2) - (self.__ml + self.__mr))
-            self._QtObject__set_property('x', self.__ml)
-            end = app_height - (self._UI__get_height()[0] + 2)
+            # self._UI__set_width((width - 2) - (self.__ml + self.__mr))
+            # self._QtObject__set_property('x', self.__ml)
+            # end = app_height - (self._UI__get_height()[0] + 2)
+            self._UI__set_width(width - (self.__ml + self.__mr))
+            self._QtObject__set_property('x', self.__ml - 1)
+            end = app_height - (self._UI__get_height()[0] + 1)
 
         return app_height, end - self.__mb
 
@@ -268,9 +277,12 @@ class Panel(Frame):
             self._QtObject__set_property('y', self.__mt - 1)
             end = -1
         else:
-            self._UI__set_height((height - 2) - (self.__mt + self.__mb))
-            self._QtObject__set_property('y', self.__mt)
-            end = 0
+            # self._UI__set_height((height - 2) - (self.__mt + self.__mb))
+            # self._QtObject__set_property('y', self.__mt)
+            # end = 0
+            self._UI__set_height(height - (self.__mt + self.__mb))
+            self._QtObject__set_property('y', self.__mt - 1)
+            end = -1
 
         return -self._UI__get_width()[0], end + self.__ml
 
