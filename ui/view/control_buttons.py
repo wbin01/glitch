@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 import os
+import subprocess
+import platform
 
 from .close_button import CloseButton
 from .image import Image
@@ -21,7 +23,7 @@ class ControlButtons(View):
         control_buttons_side = self.__control_buttons_order[side]
         self.__count = len(control_buttons_side)
 
-        if not control_buttons_side:
+        if control_buttons_side == ('',):
             self.__empty = self._QtObject__add(View())
             self.__empty.width = 2
             self.__empty.margin = 0
@@ -48,26 +50,45 @@ class ControlButtons(View):
 
         (2, 1, 0), (3,) -> [Close Max Min ............. Icon]
         """
-        filerc = os.path.join(os.environ['HOME'], '.config', 'kwinrc')
-        if not os.path.isfile(filerc):
-            return ('close', 'max', 'min'), ('icon',)
-        kwinrc = DesktopFile(url=filerc).content
+        if platform.system() == 'Linux':
+            if os.environ['DESKTOP_SESSION'] == 'cinnamon':
+                self.__platform = 'cinnamon'
 
-        left_buttons = 'M'  # M = icon, F = above all
-        right_buttons = 'IAX'  # X = close, A = max, I = min
+                cmd = subprocess.run(
+                    'gsettings get org.cinnamon.desktop.wm.preferences '
+                    'button-layout', shell=True, capture_output=True, text=True)
+                button_layout = cmd.stdout.strip().strip("'").strip('"')
 
-        kdecoration = '[org.kde.kdecoration2]'
-        buttons_on_left, buttons_on_right = 'ButtonsOnLeft', 'ButtonsOnRight'
-        if kdecoration in kwinrc:
-            if buttons_on_left in kwinrc[kdecoration]:
-                left_buttons = kwinrc[kdecoration][buttons_on_left]
+                buttons_l, buttons_r = button_layout.replace(
+                    'minimize', 'min').replace(
+                    'maximize', 'max').split(':')
+                
+                return tuple(buttons_l.split(',')), tuple(buttons_r.split(','))
 
-            if buttons_on_right in kwinrc[kdecoration]:
-                right_buttons = kwinrc[kdecoration][buttons_on_right]
+            elif os.environ['DESKTOP_SESSION'] == 'plasma':
+                filerc = os.path.join(os.environ['HOME'], '.config', 'kwinrc')
+                if not os.path.isfile(filerc):
+                    return ('close', 'max', 'min'), ('icon',)
+                kwinrc = DesktopFile(url=filerc).content
 
-        d = {'X': 'close', 'A': 'max', 'I': 'min', 'M': 'icon'}
-        return tuple(
-            d[x] for x in left_buttons
-            if x == 'X' or x == 'A' or x == 'I' or x == 'M'), tuple(
-            d[x] for x in right_buttons
-            if x == 'X' or x == 'A' or x == 'I' or x == 'M')
+                left_buttons = 'M'  # M = icon, F = above all
+                right_buttons = 'IAX'  # X = close, A = max, I = min
+
+                kdecoration = '[org.kde.kdecoration2]'
+                buttons_on_left = 'ButtonsOnLeft'
+                buttons_on_right = 'ButtonsOnRight'
+                if kdecoration in kwinrc:
+                    if buttons_on_left in kwinrc[kdecoration]:
+                        left_buttons = kwinrc[kdecoration][buttons_on_left]
+
+                    if buttons_on_right in kwinrc[kdecoration]:
+                        right_buttons = kwinrc[kdecoration][buttons_on_right]
+
+                d = {'X': 'close', 'A': 'max', 'I': 'min', 'M': 'icon'}
+                return tuple(
+                    d[x] for x in left_buttons
+                    if x == 'X' or x == 'A' or x == 'I' or x == 'M'), tuple(
+                    d[x] for x in right_buttons
+                    if x == 'X' or x == 'A' or x == 'I' or x == 'M')
+
+        return ('close', 'max', 'min'), ('icon',)

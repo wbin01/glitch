@@ -42,7 +42,7 @@ class Style(object):
 
             elif self.__desktop == 'cinnamon':
                 if not self.__cinnamon_theme:
-                    self.__get_cinnamon_theme()
+                    self.__set_cinnamon_theme()
 
         return self.__accent_color
 
@@ -376,7 +376,7 @@ class Style(object):
 
     def __app_frame_style_cinnamon(self) -> None:
         if not self.__cinnamon_theme:
-            self.__get_cinnamon_theme()
+            self.__set_cinnamon_theme()
 
         if 'dark' in self.__cinnamon_theme.lower():
             self.__app_frame_fg = '#FFCCCCCC'
@@ -390,9 +390,9 @@ class Style(object):
 
         self.__app_frame_bd = self.__app_frame_bg
         if self.__app_frame_is_dark:
-            self.__app_frame_bd = '#FF181818'
+            self.__app_frame_bd = '#FF111111'
 
-        self.__app_frame_rd = '10, 10, 0, 0'
+        self.__app_frame_rd = '8, 8, 0, 0'
         self.__app_frame_io = '1.0'
 
         # Inactive
@@ -484,7 +484,7 @@ class Style(object):
         if self.__app_frame_is_dark:
             self.__button_bg = colr.lighten_hex(self.__app_frame_bg, 3)
         else:
-            self.__button_bg = elf.__app_frame_bg
+            self.__button_bg = self.__app_frame_bg
 
         if self.__app_frame_is_dark:
             self.__button_bd = '#FF181818'
@@ -851,33 +851,6 @@ class Style(object):
         self.__full_button_ck_ir = (
             self.__icon_path + restore + '-clicked' + '.svg')
 
-    def __get_cinnamon_theme(self):
-        if self.__cinnamon_theme:
-            return self.__cinnamon_theme
-
-        cmd = subprocess.run(
-            'gsettings get org.cinnamon.theme name',
-            shell=True, capture_output=True, text=True)
-        self.__cinnamon_theme = cmd.stdout.strip()
-
-        themes = {
-            'aqua': '#6cadd0', 'blue': '#5986c9', 'brown': '#b7865e',
-            'grey': '#9d9d9d', 'orange': '#db9d61', 'pink': '#c76199',
-            'purple': '#8c6ec9', 'red': '#c15b58', 'sand': '#c8ac69',
-            'teal': '#5aaa9a'}
-
-        theme_name_end = self.__cinnamon_theme.lower().split('-')[-1]
-        if theme_name_end in ['l', 'x', 'y']:
-            self.__accent_color = '#FF9AB87C'
-        elif theme_name_end == 'dark':
-            self.__accent_color = '#FF8FA876'
-        elif theme_name_end == 'darker':
-            self.__accent_color = '#FF9AB87C'
-        elif theme_name_end in themes:
-            self.__accent_color = themes[theme_name_end]
-        else:
-            self.__accent_color = '#FF9AB87C'
-
     def __max_button_style_cinnamon(self) -> None:
         icon = 'go-up'
         restore = 'window-restore'
@@ -1033,7 +1006,11 @@ class Style(object):
             self.__icon_path + icon + '-clicked' + '.svg')
 
     def __panel_style_cinnamon(self) -> None:
-        self.__panel_bg = '#FA' + colr.darken_hex(self.__app_frame_bg, 5)[3:]
+        if self.__app_frame_is_dark:
+            self.__panel_bg = '#FA' + colr.darken_hex(self.__app_frame_bg, 5)[3:]
+        else:
+            self.__panel_bg = '#FA' + colr.darken_hex(self.__app_frame_bg, 10)[3:]
+
         self.__panel_bd = self.__panel_bg
         self.__panel_rd = self.__app_frame_rd
 
@@ -1049,3 +1026,29 @@ class Style(object):
         # Inactive
         self.__panel_in_bg = colr.darken_hex(self.__app_frame_in_bg, 5)
         self.__panel_in_bd = self.__panel_in_bg
+
+    def __set_cinnamon_theme(self):
+        if self.__cinnamon_theme:
+            return self.__cinnamon_theme
+
+        cmd = subprocess.run(
+            'gsettings get org.cinnamon.theme name',
+            shell=True, capture_output=True, text=True)
+        self.__cinnamon_theme = cmd.stdout.strip().strip("'").strip('"')
+        themes = {
+            'aqua':   '#FF6CADD0', 'blue':   '#FF5986C9', 'brown': '#FFB7865E',
+            'grey':   '#FF9D9D9D', 'orange': '#FFDB9D61', 'pink':  '#FFC76199',
+            'purple': '#FF8C6EC9', 'red':    '#FFC15b58', 'sand':  '#FFC8AC69',
+            'teal':   '#FF5AAA9A'}
+
+        theme_name_end = self.__cinnamon_theme.lower().split('-')[-1]
+        if theme_name_end in ['l', 'x', 'y']:
+            self.__accent_color = '#FF9AB87C'
+        elif theme_name_end == 'dark':
+            self.__accent_color = '#FF8FA876'
+        elif theme_name_end == 'darker':
+            self.__accent_color = '#FF9AB87C'
+        elif theme_name_end in themes:
+            self.__accent_color = themes[theme_name_end]
+        else:
+            self.__accent_color = '#FF9AB87C'
