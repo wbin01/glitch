@@ -23,7 +23,7 @@ class Style(object):
         self.__accent_color = None
 
         self.__path = pathlib.Path(__file__).parent.parent
-        self.__icon_path = str(self.__path) + '/static/control_button/plasma/'
+        self.__icon_path = str(self.__path) + f'/static/control_button/{self.__desktop}/'
         self.__plasma_close_button_with_circle = False
         self.__symbolic = ''
         self.__app_frame_bg = None
@@ -693,27 +693,26 @@ class Style(object):
 
     def __close_button_style_cinnamon(self) -> None:
         icon = 'window-close'
-        ico = icon if self.__plasma_close_button_with_circle else icon + '-b'
         self.__symbolic = '-symbolic' if self.__app_frame_is_dark else ''
 
-        self.__close_button_bg = '#00000000'
+        self.__close_button_bg = self.__accent_color
         self.__close_button_bd = '#00000000'
         self.__close_button_fg = self.__app_frame_fg
         self.__close_button_io = self.__button_io
         self.__close_button_i = (
-            self.__icon_path + ico + self.__symbolic + '.svg')
-        self.__close_button_rd = self.__tool_button_rd
+            self.__icon_path + icon + self.__symbolic + '.svg')
+        self.__close_button_rd = '10'
 
         # Inactive
-        self.__close_button_in_bg = self.__app_frame_in_bg
+        self.__close_button_in_bg = "#77999999"
         self.__close_button_in_bd = self.__app_frame_in_bg
         self.__close_button_in_fg = self.__app_frame_in_fg
         self.__close_button_in_io = self.__button_in_io
         self.__close_button_in_i = (
-            self.__icon_path + ico + '-inactive' + self.__symbolic + '.svg')
+            self.__icon_path + icon + '-inactive' + self.__symbolic + '.svg')
 
         # Hover
-        self.__close_button_hv_bg = self.__app_frame_bg
+        self.__close_button_hv_bg = colr.lighten_hex(self.__accent_color, 15)
         self.__close_button_hv_bd = self.__app_frame_bg
         self.__close_button_hv_fg = self.__app_frame_fg
         self.__close_button_hv_io = self.__button_hv_io
@@ -721,12 +720,12 @@ class Style(object):
             self.__icon_path + icon + '-hover' + self.__symbolic + '.svg')
 
         # Clicked
-        self.__close_button_ck_bg = self.__app_frame_bg
+        self.__close_button_ck_bg = colr.darken_hex(self.__accent_color, 15)
         self.__close_button_ck_bd = self.__app_frame_bg
         self.__close_button_ck_fg = self.__app_frame_fg
         self.__close_button_ck_io = self.__button_ck_io
         self.__close_button_ck_i = (
-            self.__icon_path + icon + '-clicked' + '.svg')
+            self.__icon_path + icon + '-clicked' + self.__symbolic + '.svg')
 
     def __close_button_style_plasma(self) -> None:
         icon = 'window-close'
@@ -763,7 +762,7 @@ class Style(object):
         self.__close_button_ck_fg = self.__app_frame_fg
         self.__close_button_ck_io = self.__button_ck_io
         self.__close_button_ck_i = (
-            self.__icon_path + icon + '-clicked' + '.svg')
+            self.__icon_path + icon + '-clicked' + self.__symbolic + '.svg')
 
     def __full_button_style_cinnamon(self) -> None:
         icon = 'go-up'
@@ -1042,7 +1041,7 @@ class Style(object):
             shell=True, capture_output=True, text=True)
         self.__cinnamon_theme = cmd.stdout.strip().strip("'").strip('"')
         themes = {
-            'aqua':   '#FF6CADD0', 'blue':   '#FF5986C9', 'brown': '#FFB7865E',
+            'aqua':   '#FF1F9EDE', 'blue':   '#FF5986C9', 'brown': '#FFB7865E',
             'grey':   '#FF9D9D9D', 'orange': '#FFDB9D61', 'pink':  '#FFC76199',
             'purple': '#FF8C6EC9', 'red':    '#FFC15b58', 'sand':  '#FFC8AC69',
             'teal':   '#FF5AAA9A'}

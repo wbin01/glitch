@@ -3,7 +3,7 @@
    viewBox="0 0 18 18"
    version="1.1"
    id="svg6"
-   sodipodi:docname="window-close-inactive-symbolic.svg"
+   sodipodi:docname="window-close-inactive.svg"
    xml:space="preserve"
    inkscape:version="1.2.2 (1:1.2.2+202305151914+b0a8486541)"
    width="18"
@@ -21,9 +21,9 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      showgrid="true"
-     inkscape:zoom="22.627417"
-     inkscape:cx="6.6954173"
-     inkscape:cy="10.054175"
+     inkscape:zoom="20.85965"
+     inkscape:cx="7.4545834"
+     inkscape:cy="5.5849451"
      inkscape:window-width="1366"
      inkscape:window-height="736"
      inkscape:window-x="0"
@@ -54,6 +54,15 @@
       }
       </style><style
        type="text/css"
+       id="current-color-scheme-36-3">
+      .ColorScheme-Text {
+        color:#eff0f1;
+      }
+      .ColorScheme-NegativeText {
+        color:#da4453;
+      }
+      </style><style
+       type="text/css"
        id="current-color-scheme-35">
       .ColorScheme-Text {
         color:#eff0f1;
@@ -72,7 +81,7 @@
       }
       </style><style
        type="text/css"
-       id="current-color-scheme-36-3">
+       id="current-color-scheme-36-3-2">
       .ColorScheme-Text {
         color:#eff0f1;
       }
@@ -93,28 +102,10 @@
         }
     </style><path
      id="path343"
-     style="fill:#eff0f1;fill-opacity:1;stroke-width:0.5625;stroke-linecap:round;stroke-linejoin:round;paint-order:markers stroke fill"
+     style="fill:#232629;fill-opacity:1;stroke-width:0.5625;stroke-linecap:round;stroke-linejoin:round;paint-order:markers stroke fill"
      d="M 9 0 A 9 9 0 0 0 0 9 A 9 9 0 0 0 9 18 A 9 9 0 0 0 18 9 A 9 9 0 0 0 9 0 z M 5.3984375 4.6015625 L 6.4199219 5.625 L 9 8.2050781 L 11.580078 5.625 L 12.601562 4.6015625 L 13.398438 5.3984375 L 12.375 6.4199219 L 9.7949219 9 L 12.375 11.580078 L 13.398438 12.601562 L 12.601562 13.398438 L 11.580078 12.375 L 9 9.7949219 L 6.4199219 12.375 L 5.3984375 13.398438 L 4.6015625 12.601562 L 5.625 11.580078 L 8.2050781 9 L 5.625 6.4199219 L 4.6015625 5.3984375 L 5.3984375 4.6015625 z " /><style
      type="text/css"
      id="current-color-scheme-36">
-        .ColorScheme-Text {
-            color:#eff0f1;
-        }
-    </style><style
-     type="text/css"
-     id="current-color-scheme-3-2">
-        .ColorScheme-Text {
-            color:#eff0f1;
-        }
-    </style><style
-     type="text/css"
-     id="current-color-scheme-3-3-9">
-        .ColorScheme-Text {
-            color:#eff0f1;
-        }
-    </style><style
-     type="text/css"
-     id="current-color-scheme-36-1">
         .ColorScheme-Text {
             color:#eff0f1;
         }
@@ -127,6 +118,36 @@
     </style><style
      type="text/css"
      id="current-color-scheme-3-7">
+        .ColorScheme-Text {
+            color:#eff0f1;
+        }
+    </style><style
+     type="text/css"
+     id="current-color-scheme-3-9">
+        .ColorScheme-Text {
+            color:#eff0f1;
+        }
+    </style><style
+     type="text/css"
+     id="current-color-scheme-3-3-1">
+        .ColorScheme-Text {
+            color:#eff0f1;
+        }
+    </style><style
+     type="text/css"
+     id="current-color-scheme-36-2">
+        .ColorScheme-Text {
+            color:#eff0f1;
+        }
+    </style><style
+     type="text/css"
+     id="current-color-scheme-6-7">
+        .ColorScheme-Text {
+            color:#eff0f1;
+        }
+    </style><style
+     type="text/css"
+     id="current-color-scheme-3-7-0">
         .ColorScheme-Text {
             color:#eff0f1;
         }
