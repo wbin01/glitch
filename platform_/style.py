@@ -877,7 +877,8 @@ class Style(object):
             self.__max_button_hv_bg = '#77999999'
         else:
             self.__max_button_hv_bg = '#FFFFFFFF'
-        self.__max_button_hv_bd = self.__close_button_hv_bd
+        
+        self.__max_button_hv_bd = self.__max_button_hv_bg
         self.__max_button_hv_fg = self.__close_button_hv_fg
         self.__max_button_hv_io = self.__close_button_hv_io
         self.__max_button_hv_i = (
@@ -962,7 +963,7 @@ class Style(object):
         else:
             self.__min_button_hv_bg = '#FFFFFFFF'
 
-        self.__min_button_hv_bd = self.__close_button_hv_bd
+        self.__min_button_hv_bd = self.__min_button_hv_bg
         self.__min_button_hv_fg = self.__close_button_hv_fg
         self.__min_button_hv_io = self.__close_button_hv_io
         self.__min_button_hv_i = (

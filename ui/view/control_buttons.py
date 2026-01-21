@@ -29,8 +29,14 @@ class ControlButtons(View):
             self.__empty.margin = 0
             return
 
-        self.spacing = 6
-        self.margin = 5, 6, 6, 6
+        if platform.system() == 'Linux':
+            if os.environ['DESKTOP_SESSION'] == 'cinnamon':
+                self._QtObject__set_property('spacing', 12)
+                self.margin = 6
+            else:
+                self._QtObject__set_property('spacing', 6)
+                self.margin = 5, 6, 6, 6
+
         for button in control_buttons_side:
             setattr(self, button, self._QtObject__add(self.__buttons[button]))
 

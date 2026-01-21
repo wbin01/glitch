@@ -170,19 +170,6 @@ class Header(View):
             if self.__margin_delta > left_plus - dt:
                 self.__left_plus._QtObject__set_property('lw', lwidth)
 
-    def __set_active_inactive_signal(self) -> None:
-        self._app._active_signal.connect(self.__on_active_signal)
-        self._app._inactive_signal.connect(self.__on_inactive_signal)
-
-    def __shape_signal_thread(self) -> None:
-        QtCore.QTimer.singleShot(100, self.__on_shape_signal)
-
-    def __signals_conf(self) -> None:
-        self._app._render_signal.connect(self.__center_title)
-        self._app._render_signal.connect(self.__set_active_inactive_signal)
-        if hasattr(self._app, '_shape_signal'):
-            self._app._shape_signal.connect(self.__shape_signal_thread)
-
     def __on_active_signal(self) -> None:
         if not self.__active_color:
             self.__active_color = self._app._platform.style[
@@ -214,4 +201,19 @@ class Header(View):
             else:
                 self.__control_l.visible = True
                 self.__control_r.visible = True
+
         self.__center_title(True)
+
+    def __set_active_inactive_signal(self) -> None:
+        self._app._active_signal.connect(self.__on_active_signal)
+        self._app._inactive_signal.connect(self.__on_inactive_signal)
+
+    def __shape_signal_thread(self) -> None:
+        QtCore.QTimer.singleShot(100, self.__on_shape_signal)
+
+    def __signals_conf(self) -> None:
+        self._app._render_signal.connect(self.__center_title)
+        self._app._render_signal.connect(self.__set_active_inactive_signal)
+        
+        if hasattr(self._app, '_shape_signal'):
+            self._app._shape_signal.connect(self.__shape_signal_thread)
