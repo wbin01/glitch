@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+import os
+import platform
+
 from PySide6 import QtCore
 
 from ...enum.anim import Anim
@@ -29,8 +32,13 @@ class Modal(Frame):
         self.__static = False
 
         self.__anim = None
-        self._QtObject__set_property('outLineColor', '"#77000000"')
-        # property color outLineColor: "#FF000000"
+        if platform.system() == 'Linux':
+            if os.environ['DESKTOP_SESSION'] == 'plasma':
+                self._QtObject__set_property('outLineColor', '"#77777777"')
+
+            elif os.environ['DESKTOP_SESSION'] == 'cinnamon':
+                self._QtObject__set_property('outLineColor', '"#77000000"')
+
         self._app_signal.connect(self.__app_shape)
 
     def __repr__(self) -> str:
