@@ -12,6 +12,7 @@ class MaxButton(View):
         self.__max, self.__restore = None, None
         self.__hover, self.__restore_hover = None, None
         self.__clicked, self.__restore_clicked = None, None
+        self.__inactive, self.__restore_inactive = None, None
 
         self._app_signal.connect(self.__on_app_signal)
 
@@ -28,6 +29,8 @@ class MaxButton(View):
         if hasattr(self._app, '_shape_signal'):
             self._app._render_signal.connect(
                 lambda: self._app._shape_signal.connect(self.__update_icon))
+            self._app._render_signal.connect(
+                lambda: self._app._inactive_signal.connect(self.__on_inactive))
 
     def __max_restore(self) -> None:
         # showNormal() .showFullScreen()
@@ -57,7 +60,15 @@ class MaxButton(View):
     def __restore_icon(self) -> None:
         self._QtObject__set_property('normalIcon', self.__restore)
         self._QtObject__set_property('hoverIcon', self.__restore_hover)
-        self._QtObject__set_property('clickedIcon', self.__restore_clicked)
+        self._QtObject__set_property('clickedIcon', self.__restore_clicked)    
+
+    def __on_inactive(self) -> None:
+        if self._app.shape.name == 'MAX' or self._app.shape.name == 'FULL':
+            self._QtObject__set_property('inactiveIcon', self.__restore_inactive)
+        else:
+            if self._QtObject__property(
+                    'inactiveIcon') == self.__restore_inactive:
+                self._QtObject__set_property('inactiveIcon', self.__inactive)
 
     def __saved_properties(self) -> None:
         if not self.__max:
@@ -70,3 +81,7 @@ class MaxButton(View):
             self.__clicked = self._QtObject__property('clickedIcon')
             self.__restore_clicked = self._QtObject__property(
                 'restoreClickedIcon')
+
+            self.__inactive = self._QtObject__property('inactiveIcon')
+            self.__restore_inactive = self._QtObject__property(
+                'restoreInactiveIcon')
