@@ -23,7 +23,8 @@ class Style(object):
         self.__accent_color = None
 
         self.__path = pathlib.Path(__file__).parent.parent
-        self.__icon_path = str(self.__path) + f'/static/control_button/{self.__desktop}/'
+        self.__icon_path = str(
+            self.__path) + f'/static/control_button/{self.__desktop}/'
         self.__plasma_close_button_with_circle = False
         self.__symbolic = ''
         self.__app_frame_bg = None
@@ -1047,16 +1048,14 @@ class Style(object):
             'gsettings get org.cinnamon.theme name',
             shell=True, capture_output=True, text=True)
         self.__cinnamon_theme = cmd.stdout.strip().strip("'").strip('"')
-        l_themes = {
+        themes = {
             'aqua':   '#FF1F9EDE', 'blue':   '#FF0C75DE', 'brown': '#FFB7865E',
             'grey':   '#FF70737A', 'orange': '#FFFF7139', 'pink':  '#FFE54980',
             'purple': '#FF8C5DD9', 'red':    '#FFE82127', 'sand':  '#FFC5A07C',
             'teal':   '#FF199CA8'}
 
         theme_name_end = self.__cinnamon_theme.lower().split('-')[-1]
-        if theme_name_end in ['l', 'x', 'y', 'dark', 'darker']:
-            self.__accent_color = '#FF35A854'
-        elif theme_name_end in l_themes:
-            self.__accent_color = l_themes[theme_name_end]
+        if theme_name_end in themes:
+            self.__accent_color = themes[theme_name_end]
         else:
             self.__accent_color = '#FF35A854'
