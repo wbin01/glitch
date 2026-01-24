@@ -25,6 +25,10 @@ class Style(object):
         self.__path = pathlib.Path(__file__).parent.parent
         self.__icon_path = str(
             self.__path) + f'/static/control_button/{self.__desktop}/'
+        if not pathlib.Path(self.__icon_path).exists():
+            self.__icon_path = str(
+                self.__path) + f'/static/control_button/glitch/'
+
         self.__plasma_close_button_with_circle = False
         self.__symbolic = ''
         self.__app_frame_bg = None
@@ -44,6 +48,8 @@ class Style(object):
             elif self.__desktop == 'cinnamon':
                 if not self.__cinnamon_theme:
                     self.__set_cinnamon_theme()
+            else:
+                self.__accent_color = '#FF3C8CBD'
 
         return self.__accent_color
 
@@ -346,6 +352,8 @@ class Style(object):
         return ini
 
     def __set_styles(self) -> None:
+        self.accent_color
+
         # Needs to have this order. The settings below need the settings above.
         if self.__desktop == 'cinnamon':
             self.__app_frame_style_cinnamon()
@@ -372,6 +380,20 @@ class Style(object):
             self.__max_button_style_plasma()
             self.__min_button_style_plasma()
             self.__panel_style_plasma()
+        
+        else:
+            self.__app_frame_style_glitch()
+            self.__frame_style_plasma()
+            self.__label_style_plasma()
+            self.__button_style_glitch()
+
+            self.__tool_button_style_cinnamon()
+            self.__close_button_style_cinnamon()
+            self.__full_button_style_cinnamon()
+            self.__max_button_style_cinnamon()
+            self.__min_button_style_cinnamon()
+            self.__panel_style_cinnamon()
+
 
     def __app_frame_style_cinnamon(self) -> None:
         if not self.__cinnamon_theme:
@@ -411,6 +433,20 @@ class Style(object):
             if self.__app_frame_is_dark:
                 self.__app_frame_in_bd = colr.lighten_hex(
                     self.__app_frame_in_bg, 5)
+
+    def __app_frame_style_glitch(self) -> None:
+        self.__app_frame_fg = '#FFCCCCCC'
+        self.__app_frame_bg = '#2A2A2A'
+        self.__app_frame_is_dark = True
+        self.__app_frame_bd = '#FF181818'
+        self.__app_frame_rd = '8, 8, 0, 0'
+        self.__app_frame_io = '1.0'
+
+        # Inactive
+        self.__app_frame_in_fg = self.__app_frame_fg
+        self.__app_frame_in_bg = self.__app_frame_bg
+        self.__app_frame_in_io = self.__app_frame_io
+        self.__app_frame_in_bd = self.__app_frame_bd
 
     def __app_frame_style_plasma(self) -> None:
         self.__app_frame_fg = self.__color_to_hex(
@@ -512,6 +548,75 @@ class Style(object):
         self.__button_hv_bd = self.__button_bd
 
         if 'dark' in self.__cinnamon_theme.lower():
+            self.__button_hv_bg = colr.lighten_hex(self.__button_bg, 5)
+        else:
+            self.__button_hv_bg = colr.darken_hex(self.__button_bg, 4)
+
+        self.__button_hv_io = self.__button_io
+
+        # Clicked
+        self.__button_ck_fg = self.__button_fg
+        self.__button_ck_bg = '#33' + self.__button_hv_bd[3:]
+        self.__button_ck_bd = self.__button_hv_bd
+        self.__button_ck_io = self.__button_io
+
+        # Checked
+        self.__button_ch_fg = self.__button_fg
+        self.__button_ch_bg = '#AA' + self.__button_bd[3:]
+        self.__button_ch_bd = self.__button_bd
+        self.__button_ch_io = self.__button_io
+
+        # Checked inactive
+        self.__button_ch_in_fg = self.__button_in_fg
+
+        if self.__inactive_as_platform:
+            self.__button_ch_in_bg = self.__button_ch_bg
+        else:
+            self.__button_ch_in_bg = '#33' + self.__button_ch_bg[3:]
+
+        self.__button_ch_in_bd = self.__button_in_bd
+        self.__button_ch_in_io = self.__button_in_io
+        
+        # Checked hover
+        self.__button_ch_hv_fg = self.__button_ch_fg
+        self.__button_ch_hv_bg = self.__button_ch_bg
+        self.__button_ch_hv_bd = self.__button_hv_bd
+        self.__button_ch_hv_io = self.__button_ch_io
+
+    def __button_style_glitch(self) -> None:
+        self.__button_fg = self.__app_frame_fg
+        
+        if self.__app_frame_is_dark:
+            self.__button_bg = colr.lighten_hex(self.__app_frame_bg, 5)
+        else:
+            self.__button_bg = self.__app_frame_bg
+
+        if self.__app_frame_is_dark:
+            self.__button_bd = self.__button_bg
+        else:
+            self.__button_bd = colr.darken_hex(self.__button_bg, 35)
+        
+        self.__button_rd = '6'
+        self.__button_io = self.__app_frame_io
+
+        # Inactive
+        self.__button_in_fg = self.__app_frame_in_fg
+
+        if self.__inactive_as_platform:
+            self.__button_in_bg = self.__button_bg
+            self.__button_in_bd = self.__button_bd
+        else:
+            self.__button_in_bg = '#AA' + self.__button_bg[3:]
+            self.__button_in_bd = '#80' + self.__button_bd[3:]
+        
+        self.__button_in_io = self.__app_frame_in_io
+
+        # Hover
+        self.__button_hv_fg = self.__button_fg
+        self.__button_hv_bg = self.__button_bg
+        self.__button_hv_bd = self.__button_bd
+
+        if self.__app_frame_is_dark:
             self.__button_hv_bg = colr.lighten_hex(self.__button_bg, 5)
         else:
             self.__button_hv_bg = colr.darken_hex(self.__button_bg, 4)

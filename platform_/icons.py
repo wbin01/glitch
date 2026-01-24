@@ -90,7 +90,9 @@ class Icons(object):
         if self.__desktop_environment == 'plasma':
             return self.__icon_source_plasma(icon, size, dark)
         elif self.__desktop_environment == 'cinnamon':
-            return self.__icon_source_cinnamon(icon, size, dark)
+            return self.__icon_source_gtk(icon, size, dark)
+        else:
+            return self.__icon_source_plasma(icon, size, dark)
 
     def icon_theme_variant(
             self, theme: str = None, dark: bool = True) -> str | None:
@@ -124,7 +126,7 @@ class Icons(object):
     def icon_theme_light_variant(self, theme: str = None) -> str | None:
         return self.icon_theme_variant(theme, False)
 
-    def __icon_source_cinnamon(
+    def __icon_source_gtk(
             self, icon: str | None, size: int = 16, dark: bool = None) -> str:
         if dark or dark is None and 'dark' in self.__icon_theme.lower():
             self.__icon_path =self.__path/'static'/'icons'/'linux-gtk-dark'

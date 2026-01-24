@@ -97,4 +97,4 @@ class ControlButtons(View):
                     d[x] for x in right_buttons
                     if x == 'X' or x == 'A' or x == 'I' or x == 'M')
 
-        return ('close', 'max', 'min'), ('icon',)
+        return ('icon',), ('min', 'max', 'close')
