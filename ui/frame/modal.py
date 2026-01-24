@@ -39,6 +39,9 @@ class Modal(Frame):
             elif os.environ['DESKTOP_SESSION'] == 'cinnamon':
                 self._QtObject__set_property('outLineColor', '"#77000000"')
 
+            elif os.environ['XDG_SESSION_DESKTOP'].lower() == 'lxqt':
+                self._QtObject__set_property('outLineColor', '"#FF3C8CE6"')
+
         self._app_signal.connect(self.__app_shape)
 
     def __repr__(self) -> str:
