@@ -75,7 +75,11 @@ class Icons(object):
                 if ('[General]' in ini.content and
                         'icon_theme' in ini.content['[General]']):
                     self.__icon_theme = ini.content['[General]']['icon_theme']
-        
+
+        elif 'pantheon' in self.__desktop_environment.lower():
+            self.__icon_theme = 'elementary'
+
+        if not self.__icon_theme: self.__icon_theme = 'glitch'
         return self.__icon_theme
 
     def icon_source(

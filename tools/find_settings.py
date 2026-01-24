@@ -143,9 +143,6 @@ if __name__ == '__main__':
     import pprint
     config_path = os.path.join(os.environ['HOME'], '.config')
     f = FindModifiedFiles([
-        config_path,
-        os.path.join(config_path, 'lxqt'),
-        os.path.join(config_path, 'kde.org'),
-        os.path.join(config_path, 'gtk-3.0')
+        config_path
         ])
     pprint.pprint(f.find())

@@ -79,6 +79,9 @@ class OSDesk(object):
             if de == 'plasma' or de_s == 'kde' or de_c == 'kde':
                 de = 'plasma'
 
+            elif 'pantheon' in de or 'pantheon' in de_s or 'Pantheon' in de_c:
+                de = 'pantheon'
+
             elif de == 'cinnamon' or de_s == 'cinnamon' or de_c == 'x-cinnamon':
                 de = 'cinnamon'
 

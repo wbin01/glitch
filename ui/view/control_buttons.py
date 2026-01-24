@@ -56,6 +56,8 @@ class ControlButtons(View):
 
         (2, 1, 0), (3,) -> [Close Max Min ............. Icon]
         """
+        # elif 'pantheon' in self.__desktop_environment.lower():
+        #     self.__icon_theme = 'elementary'
         if platform.system() == 'Linux':
             if os.environ['DESKTOP_SESSION'] == 'cinnamon':
                 self.__platform = 'cinnamon'
@@ -70,6 +72,9 @@ class ControlButtons(View):
                     'maximize', 'max').split(':')
                 
                 return tuple(buttons_l.split(',')), tuple(buttons_r.split(','))
+
+            elif 'pantheon' in os.environ['XDG_SESSION_DESKTOP'].lower():
+                return ('close',), ('max',)
 
             elif os.environ['DESKTOP_SESSION'] == 'plasma':
                 filerc = os.path.join(os.environ['HOME'], '.config', 'kwinrc')

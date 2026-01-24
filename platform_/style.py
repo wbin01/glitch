@@ -376,6 +376,19 @@ class Style(object):
             self.__min_button_style_cinnamon()
             self.__panel_style_cinnamon()
 
+        if 'pantheon' in self.__desktop.lower():
+            self.__app_frame_style_glitch()
+            self.__frame_style_plasma()
+            self.__label_style_plasma()
+            self.__button_style_glitch()
+
+            self.__tool_button_style_cinnamon()
+            self.__close_button_style_lxqt()
+            self.__full_button_style_cinnamon()
+            self.__max_button_style_lxqt()
+            self.__min_button_style_lxqt()
+            self.__panel_style_cinnamon()
+
         elif self.__desktop == 'plasma':
             self.__app_frame_style_plasma()
             self.__frame_style_plasma()
