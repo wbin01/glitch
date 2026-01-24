@@ -393,7 +393,7 @@ class Style(object):
             self.__app_frame_style_lxqt()
             self.__frame_style_plasma()
             self.__label_style_plasma()
-            self.__button_style_glitch()
+            self.__button_style_lxqt()
 
             self.__tool_button_style_cinnamon()
             self.__close_button_style_lxqt()
@@ -517,6 +517,11 @@ class Style(object):
 
         self.__app_frame_is_dark = colr.is_dark(
             colr.hex_to_rgba(self.__app_frame_bg))
+
+        if self.__app_frame_fg.lower().endswith('ffffff'):
+            self.__app_frame_fg = '#FFAAAAAA'
+        if self.__app_frame_fg.lower().endswith('000000'):
+            self.__app_frame_fg = '#FF333333'
 
         self.__app_frame_bd = self.__accent_color
         self.__app_frame_rd = '0, 0, 0, 0'
@@ -659,6 +664,79 @@ class Style(object):
 
         # Hover
         self.__button_hv_fg = self.__button_fg
+        self.__button_hv_bg = self.__button_bg
+        self.__button_hv_bd = self.__button_bd
+
+        if self.__app_frame_is_dark:
+            self.__button_hv_bg = colr.lighten_hex(self.__button_bg, 5)
+        else:
+            self.__button_hv_bg = colr.darken_hex(self.__button_bg, 4)
+
+        self.__button_hv_io = self.__button_io
+
+        # Clicked
+        self.__button_ck_fg = self.__button_fg
+        self.__button_ck_bg = '#33' + self.__button_hv_bd[3:]
+        self.__button_ck_bd = self.__button_hv_bd
+        self.__button_ck_io = self.__button_io
+
+        # Checked
+        self.__button_ch_fg = self.__button_fg
+        self.__button_ch_bg = '#AA' + self.__button_bd[3:]
+        self.__button_ch_bd = self.__button_bd
+        self.__button_ch_io = self.__button_io
+
+        # Checked inactive
+        self.__button_ch_in_fg = self.__button_in_fg
+
+        if self.__inactive_as_platform:
+            self.__button_ch_in_bg = self.__button_ch_bg
+        else:
+            self.__button_ch_in_bg = '#33' + self.__button_ch_bg[3:]
+
+        self.__button_ch_in_bd = self.__button_in_bd
+        self.__button_ch_in_io = self.__button_in_io
+        
+        # Checked hover
+        self.__button_ch_hv_fg = self.__button_ch_fg
+        self.__button_ch_hv_bg = self.__button_ch_bg
+        self.__button_ch_hv_bd = self.__button_hv_bd
+        self.__button_ch_hv_io = self.__button_ch_io
+
+    def __button_style_lxqt(self) -> None:
+        self.__button_fg = self.__app_frame_fg
+        
+        if self.__app_frame_is_dark:
+            self.__button_bg = colr.lighten_hex(self.__app_frame_bg, 5)
+        else:
+            self.__button_bg = self.__app_frame_bg
+
+        if self.__app_frame_is_dark:
+            self.__button_bd = self.__button_bg
+        else:
+            self.__button_bd = colr.darken_hex(self.__button_bg, 35)
+        
+        self.__button_rd = '6'
+        self.__button_io = self.__app_frame_io
+
+        # Inactive
+        self.__button_in_fg = self.__app_frame_in_fg
+
+        if self.__inactive_as_platform:
+            self.__button_in_bg = self.__button_bg
+            self.__button_in_bd = self.__button_bd
+        else:
+            self.__button_in_bg = '#AA' + self.__button_bg[3:]
+            self.__button_in_bd = '#80' + self.__button_bd[3:]
+        
+        self.__button_in_io = self.__app_frame_in_io
+
+        # Hover
+        if self.__app_frame_is_dark:
+            self.__button_hv_fg = '#FFFFFFFF'
+        else:
+            self.__button_hv_fg = '#FF000000'
+
         self.__button_hv_bg = self.__button_bg
         self.__button_hv_bd = self.__button_bd
 
