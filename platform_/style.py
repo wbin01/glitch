@@ -519,9 +519,6 @@ class Style(object):
             colr.hex_to_rgba(self.__app_frame_bg))
 
         self.__app_frame_bd = self.__accent_color
-        if self.__app_frame_is_dark:
-            self.__app_frame_bd = colr.lighten_hex(self.__app_frame_bg, 15)
-
         self.__app_frame_rd = '0, 0, 0, 0'
         self.__app_frame_io = '1.0'
 
@@ -529,7 +526,7 @@ class Style(object):
         self.__app_frame_in_fg = self.__app_frame_fg
         self.__app_frame_in_bg = colr.darken_hex(self.__app_frame_bg, 4)
         self.__app_frame_in_io = self.__app_frame_io
-        self.__app_frame_in_bd = self.__app_frame_bg
+        self.__app_frame_in_bd = '#FF2D3036'
 
     def __frame_style_cinnamon(self) -> None:
         self.__frame_is_dark = self.__app_frame_is_dark
