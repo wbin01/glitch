@@ -2,6 +2,7 @@
 import os
 import pathlib
 import subprocess
+import pprint
 
 from PySide6 import QtGui
 
@@ -343,12 +344,16 @@ class Style(object):
         return alt_color
 
     def __get_sys_conf(self) -> dict:
-        conf_name = 'kdeglobals'
-        conf_file = pathlib.Path(os.environ['HOME']) / '.config' / conf_name
+        conf_file = pathlib.Path(os.environ['HOME']) / '.config' / 'kdeglobals'
+        if self.__desktop == 'lxqt':
+            conf_file = pathlib.Path(
+                os.environ['HOME']) / '.config' / 'lxqt' / 'lxqt.conf'
 
         ini = {}
         if conf_file.exists():
             ini = DesktopFile(conf_file).content
+
+        pprint.pprint(ini)
         return ini
 
     def __set_styles(self) -> None:
@@ -380,6 +385,19 @@ class Style(object):
             self.__max_button_style_plasma()
             self.__min_button_style_plasma()
             self.__panel_style_plasma()
+
+        elif self.__desktop == 'lxqt':
+            self.__app_frame_style_lxqt()
+            self.__frame_style_plasma()
+            self.__label_style_plasma()
+            self.__button_style_glitch()
+
+            self.__tool_button_style_cinnamon()
+            self.__close_button_style_cinnamon()
+            self.__full_button_style_cinnamon()
+            self.__max_button_style_cinnamon()
+            self.__min_button_style_cinnamon()
+            self.__panel_style_cinnamon()
         
         else:
             self.__app_frame_style_glitch()
@@ -463,6 +481,45 @@ class Style(object):
             self.__app_frame_bd = colr.lighten_hex(self.__app_frame_bg, 15)
 
         self.__app_frame_rd = '6, 6, 6, 6'
+        self.__app_frame_io = '1.0'
+
+        # Inactive
+        if self.__inactive_as_platform:
+            # [Colors:Header][Inactive]][BackgroundNormal]
+            self.__app_frame_in_fg = self.__app_frame_fg
+            self.__app_frame_in_bg = colr.darken_hex(self.__app_frame_bg, 4)
+            self.__app_frame_in_io = self.__app_frame_io
+            self.__app_frame_in_bd = self.__app_frame_bd
+        else:
+            self.__app_frame_in_fg = '#50' + self.__app_frame_fg[3:]
+            self.__app_frame_in_bg = colr.darken_hex(self.__app_frame_bg, 4)
+            self.__app_frame_in_io = '0.2'
+
+            self.__app_frame_in_bd = self.__app_frame_in_bg
+            if self.__app_frame_is_dark:
+                self.__app_frame_in_bd = colr.lighten_hex(
+                    self.__app_frame_in_bg, 5)
+
+    def __app_frame_style_lxqt(self) -> None:
+        self.__app_frame_fg = '#FFCCCCCC'
+        self.__app_frame_bg = '#FF272727'
+
+        if '[Palette]' in self.__conf:    
+            if 'window_text_color' in self.__conf['[Palette]']:
+                self.__app_frame_fg = self.__conf[
+                    '[Palette]']['window_text_color']
+
+            if 'window_color' in self.__conf['[Palette]']:
+                self.__app_frame_bg = self.__conf['[Palette]']['window_color']
+
+        self.__app_frame_is_dark = colr.is_dark(
+            colr.hex_to_rgba(self.__app_frame_bg))
+
+        self.__app_frame_bd = colr.darken_hex(self.__app_frame_bg, 50)
+        if self.__app_frame_is_dark:
+            self.__app_frame_bd = colr.lighten_hex(self.__app_frame_bg, 15)
+
+        self.__app_frame_rd = '0, 0, 0, 0'
         self.__app_frame_io = '1.0'
 
         # Inactive

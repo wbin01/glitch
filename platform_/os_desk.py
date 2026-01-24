@@ -69,29 +69,32 @@ class OSDesk(object):
         # ...
         if not self.__operational_system:
             self.__operational_system = self.__os()
+
+        de = os.environ['DESKTOP_SESSION'].lower()
+        de_s = os.environ['XDG_SESSION_DESKTOP'].lower()
+        de_c = os.environ['XDG_CURRENT_DESKTOP'].lower()
+        de = de_s.strip("'").strip('"')
         
         if self.__operational_system == 'linux':
-            if (os.environ['DESKTOP_SESSION'] == 'plasma' or
-                    os.environ['XDG_SESSION_DESKTOP'] == 'KDE' or
-                    os.environ['XDG_CURRENT_DESKTOP'] == 'KDE'):
-                return 'plasma'
+            if de == 'plasma' or de_s == 'kde' or de_c == 'kde':
+                de = 'plasma'
 
-            if (os.environ['DESKTOP_SESSION'] == 'cinnamon' or
-                    os.environ['XDG_SESSION_DESKTOP'] == 'cinnamon' or
-                    os.environ['XDG_CURRENT_DESKTOP'] == 'X-Cinnamon'):
-                return 'cinnamon'
+            elif de == 'cinnamon' or de_s == 'cinnamon' or de_c == 'x-cinnamon':
+                de = 'cinnamon'
 
-            if (os.environ['DESKTOP_SESSION'] == 'xubuntu' or
-                    os.environ['XDG_SESSION_DESKTOP'] == 'xubuntu' or
-                    os.environ['XDG_CURRENT_DESKTOP'] == 'XFCE'):
-                return 'xfce'
+            elif de == 'xubuntu' or de_s == 'xubuntu' or de_c == 'xfce':
+                de = 'xfce'
 
-            if (os.environ['DESKTOP_SESSION'] == 'mate' or
-                    os.environ['XDG_SESSION_DESKTOP'] == 'mate' or
-                    os.environ['XDG_CURRENT_DESKTOP'] == 'MATE'):
-                return 'mate'
+            elif de == 'mate' or de_s == 'mate' or de_c == 'mate':
+                de = 'mate'
 
-            return 'gnome'
+            elif de == 'lubuntu' or de_s == 'lxqt' or de_c == 'lxqt':
+                de = 'lxqt'
+
+            elif de == 'gnome' or de_s == 'gnome' or de_c == 'gnome':
+                de = 'gnome'
+
+            return de if de else 'glitch'
 
         elif self.__operational_system == 'windows':
             if platform.release() == '10':

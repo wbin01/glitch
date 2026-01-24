@@ -36,24 +36,18 @@ class Icons(object):
 
         Retrieve the name of the system icon theme.
         """
+        if self.__icon_theme:
+            return self.__icon_theme
+
         if self.__desktop_environment == 'plasma':
-
-            if self.__icon_theme:
-                return self.__icon_theme
-
             kdeglobals = Path(os.environ['HOME']) / '.config' / 'kdeglobals'
             if kdeglobals.exists():
                 ini = DesktopFile(kdeglobals)
 
                 self.__icon_theme = 'breeze'
-                if not '[Icons]' in ini.content:
-                    return self.__icon_theme
-
-                if not 'Theme' in ini.content['[Icons]']:
-                    return self.__icon_theme
-                
-                self.__icon_theme = ini.content['[Icons]']['Theme']
-                return self.__icon_theme
+                if ('[Icons]' in ini.content and
+                        'Theme' in ini.content['[Icons]']):
+                    self.__icon_theme = ini.content['[Icons]']['Theme']
 
         elif self.__desktop_environment == 'cinnamon':
             cmd = subprocess.run(
@@ -62,24 +56,27 @@ class Icons(object):
             self.__icon_theme = cmd.stdout.strip()
 
         elif self.__desktop_environment == 'mate':
-            if self.__icon_theme:
-                return self.__icon_theme
-
-                gtk_icons = subprocess.getoutput(
-                    'dconf read /org/mate/desktop/interface/icon-theme').strip(
-                    "'")
-                self.__icon_theme = gtk_icons if gtk_icons else None
-                return self.__icon_theme
+            gtk_icons = subprocess.getoutput(
+                'dconf read /org/mate/desktop/interface/icon-theme')
+            self.__icon_theme = gtk_icons.strip("'") if gtk_icons else None
 
         elif self.__desktop_environment == 'gnome':
-            if self.__icon_theme:
-                return self.__icon_theme
-
             gtk_icons = subprocess.getoutput(
-                'gsettings get org.gnome.desktop.interface icon-theme').strip(
-                "'")
-            self.__icon_theme = gtk_icons if gtk_icons else None
-            return self.__icon_theme
+                'gsettings get org.gnome.desktop.interface icon-theme')
+            self.__icon_theme = gtk_icons.strip("'") if gtk_icons else None
+
+        elif self.__desktop_environment == 'lxqt':
+            conf = Path(os.environ['HOME']) / '.config' / 'lxqt' / 'lxqt.conf'
+
+            if conf.exists():
+                ini = DesktopFile(conf)
+
+                self.__icon_theme = 'glitch'
+                if ('[General]' in ini.content and
+                        'icon_theme' in ini.content['[General]']):
+                    self.__icon_theme = ini.content['[General]']['icon_theme']
+        
+        return self.__icon_theme
 
     def icon_source(
             self, icon: str | None, size: int = 16, dark: bool = None) -> str:

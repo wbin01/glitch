@@ -4,6 +4,7 @@ import os
 import subprocess
 import sys
 import time
+import pprint
 
 
 class FindModifiedFiles(object):
@@ -28,9 +29,12 @@ class FindModifiedFiles(object):
 
     def find(self):
         if self.__monitoring():
-            print('added files:', self.__added_files)
-            print('deleted files:', self.__deleted_files)
-            print('modified files:', self.__modified_files)
+            print('added files:')
+            pprint.pprint(self.__added_files)
+            print('deleted files:')
+            pprint.pprint(self.__deleted_files)
+            print('modified files:')
+            pprint.pprint(self.__modified_files)
 
     def __check_path_type(self):
         # ...
@@ -137,5 +141,11 @@ class FindModifiedFiles(object):
 
 if __name__ == '__main__':
     import pprint
-    f = FindModifiedFiles([os.path.join(os.environ['HOME'], '.config')])
+    config_path = os.path.join(os.environ['HOME'], '.config')
+    f = FindModifiedFiles([
+        config_path,
+        os.path.join(config_path, 'lxqt'),
+        os.path.join(config_path, 'kde.org'),
+        os.path.join(config_path, 'gtk-3.0')
+        ])
     pprint.pprint(f.find())
