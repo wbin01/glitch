@@ -49,9 +49,14 @@ class Style(object):
             elif self.__desktop == 'cinnamon':
                 if not self.__cinnamon_theme:
                     self.__set_cinnamon_theme()
-            else:
-                self.__accent_color = '#FF3C8CBD'
 
+            elif self.__desktop == 'lxqt':
+                if ('[Palette]' in self.__conf and
+                        'highlight_color' in self.__conf['[Palette]']):
+                    self.__accent_color = self.__conf[
+                        '[Palette]']['highlight_color']
+
+        if not self.__accent_color: self.__accent_color = '#FF3C8CBD'
         return self.__accent_color
 
     @accent_color.setter
@@ -352,8 +357,6 @@ class Style(object):
         ini = {}
         if conf_file.exists():
             ini = DesktopFile(conf_file).content
-
-        pprint.pprint(ini)
         return ini
 
     def __set_styles(self) -> None:
@@ -393,7 +396,7 @@ class Style(object):
             self.__button_style_glitch()
 
             self.__tool_button_style_cinnamon()
-            self.__close_button_style_cinnamon()
+            self.__close_button_style_lxqt()
             self.__full_button_style_cinnamon()
             self.__max_button_style_cinnamon()
             self.__min_button_style_cinnamon()
@@ -515,7 +518,7 @@ class Style(object):
         self.__app_frame_is_dark = colr.is_dark(
             colr.hex_to_rgba(self.__app_frame_bg))
 
-        self.__app_frame_bd = colr.darken_hex(self.__app_frame_bg, 50)
+        self.__app_frame_bd = self.__accent_color
         if self.__app_frame_is_dark:
             self.__app_frame_bd = colr.lighten_hex(self.__app_frame_bg, 15)
 
@@ -523,21 +526,10 @@ class Style(object):
         self.__app_frame_io = '1.0'
 
         # Inactive
-        if self.__inactive_as_platform:
-            # [Colors:Header][Inactive]][BackgroundNormal]
-            self.__app_frame_in_fg = self.__app_frame_fg
-            self.__app_frame_in_bg = colr.darken_hex(self.__app_frame_bg, 4)
-            self.__app_frame_in_io = self.__app_frame_io
-            self.__app_frame_in_bd = self.__app_frame_bd
-        else:
-            self.__app_frame_in_fg = '#50' + self.__app_frame_fg[3:]
-            self.__app_frame_in_bg = colr.darken_hex(self.__app_frame_bg, 4)
-            self.__app_frame_in_io = '0.2'
-
-            self.__app_frame_in_bd = self.__app_frame_in_bg
-            if self.__app_frame_is_dark:
-                self.__app_frame_in_bd = colr.lighten_hex(
-                    self.__app_frame_in_bg, 5)
+        self.__app_frame_in_fg = self.__app_frame_fg
+        self.__app_frame_in_bg = colr.darken_hex(self.__app_frame_bg, 4)
+        self.__app_frame_in_io = self.__app_frame_io
+        self.__app_frame_in_bd = self.__app_frame_bg
 
     def __frame_style_cinnamon(self) -> None:
         self.__frame_is_dark = self.__app_frame_is_dark
@@ -858,6 +850,42 @@ class Style(object):
         self.__symbolic = '-symbolic' if self.__app_frame_is_dark else ''
 
         self.__close_button_bg = self.__accent_color
+        self.__close_button_bd = '#00000000'
+        self.__close_button_fg = self.__app_frame_fg
+        self.__close_button_io = self.__button_io
+        self.__close_button_i = (
+            self.__icon_path + icon + self.__symbolic + '.svg')
+        self.__close_button_rd = '10'
+
+        # Inactive
+        self.__close_button_in_bg = '#77999999'
+        self.__close_button_in_bd = self.__app_frame_in_bg
+        self.__close_button_in_fg = self.__app_frame_in_fg
+        self.__close_button_in_io = self.__button_in_io
+        self.__close_button_in_i = (
+            self.__icon_path + icon + '-inactive' + self.__symbolic + '.svg')
+
+        # Hover
+        self.__close_button_hv_bg = colr.lighten_hex(self.__accent_color, 15)
+        self.__close_button_hv_bd = self.__app_frame_bg
+        self.__close_button_hv_fg = self.__app_frame_fg
+        self.__close_button_hv_io = self.__button_hv_io
+        self.__close_button_hv_i = (
+            self.__icon_path + icon + '-hover' + self.__symbolic + '.svg')
+
+        # Clicked
+        self.__close_button_ck_bg = colr.darken_hex(self.__accent_color, 15)
+        self.__close_button_ck_bd = self.__app_frame_bg
+        self.__close_button_ck_fg = self.__app_frame_fg
+        self.__close_button_ck_io = self.__button_ck_io
+        self.__close_button_ck_i = (
+            self.__icon_path + icon + '-clicked' + self.__symbolic + '.svg')
+
+    def __close_button_style_lxqt(self) -> None:
+        icon = 'window-close'
+        self.__symbolic = '-symbolic' if self.__app_frame_is_dark else ''
+
+        self.__close_button_bg = '#00000000'
         self.__close_button_bd = '#00000000'
         self.__close_button_fg = self.__app_frame_fg
         self.__close_button_io = self.__button_io

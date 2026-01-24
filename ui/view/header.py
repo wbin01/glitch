@@ -20,7 +20,9 @@ class Header(View):
         self._QtObject__set_property('Layout.fillHeight', 'false')
         self.__resize = False
         self.__active_color = None
+        self.__active_color_bd = None
         self.__inactive_color = None
+        self.__inactive_color_bd = None
 
         # Flags
         self.__side = 'left'
@@ -174,9 +176,16 @@ class Header(View):
         if not self.__active_color:
             self.__active_color = self._app._platform.style[
                 '[MainFrame]']['background_color']
+
+        if not self.__active_color_bd:
+            self.__active_color_bd = self._app._platform.style[
+                '[MainFrame]']['border_color']
         
         self._app._QtObject__set_property(
             'backgroundColor', self.__active_color)
+
+        self._app._QtObject__set_property(
+            'borderColor', self.__active_color_bd)
         
         self._app._QtObject__obj.findChild(
             QtCore.QObject, 'canvas').requestPaint()
@@ -186,8 +195,15 @@ class Header(View):
             self.__inactive_color = self._app._platform.style[
                 '[MainFrame:inactive]']['background_color']
 
+        if not self.__inactive_color_bd:
+            self.__inactive_color_bd = self._app._platform.style[
+                '[MainFrame:inactive]']['background_color']
+
         self._app._QtObject__set_property(
             'backgroundColor', self.__inactive_color)
+
+        self._app._QtObject__set_property(
+            'borderColor', self.__inactive_color_bd)
         
         self._app._QtObject__obj.findChild(
             QtCore.QObject, 'canvas').requestPaint()
