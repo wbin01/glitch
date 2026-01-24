@@ -5,8 +5,8 @@
    width="16px"
    version="1.1"
    id="svg4"
-   sodipodi:docname="window-restore-inactive-symbolic.svg"
-   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   sodipodi:docname="window-restore-inactive.svg"
+   inkscape:version="1.4.2 (ebf0e940d0, 2025-05-08)"
    xml:space="preserve"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -85,39 +85,22 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      showgrid="true"
-     inkscape:zoom="29.5"
-     inkscape:cx="7.0169492"
-     inkscape:cy="9.8983051"
-     inkscape:window-width="1279"
+     inkscape:zoom="14.75"
+     inkscape:cx="3.2542373"
+     inkscape:cy="11.152542"
+     inkscape:window-width="1276"
      inkscape:window-height="615"
      inkscape:window-x="0"
      inkscape:window-y="36"
      inkscape:window-maximized="0"
-     inkscape:current-layer="svg4"
-     showguides="true"><inkscape:grid
+     inkscape:current-layer="svg4"><inkscape:grid
        type="xygrid"
-       id="grid687" /><sodipodi:guide
-       position="4,4"
-       orientation="0,-1"
-       id="guide809"
-       inkscape:locked="false" /><sodipodi:guide
-       position="10,12"
-       orientation="0,-1"
-       id="guide811"
-       inkscape:locked="false" /><sodipodi:guide
-       position="4,11"
-       orientation="1,0"
-       id="guide813"
-       inkscape:locked="false" /><sodipodi:guide
-       position="12,9"
-       orientation="1,0"
-       id="guide815"
-       inkscape:locked="false" /></sodipodi:namedview><path
-     d="m 2.988281,4.992188 v 8.011718 H 11 V 4.992188 Z M 4,6 h 6 v 6 H 4 Z"
-     fill="#2e3436"
-     id="path2"
-     sodipodi:nodetypes="cccccccccc"
-     style="fill:#e6e6e6;fill-opacity:0.5" /><style
+       id="grid687"
+       originx="0"
+       originy="0"
+       spacingy="1"
+       spacingx="1"
+       units="px" /></sodipodi:namedview><style
      type="text/css"
      id="current-color-scheme">
         .ColorScheme-Text {
@@ -202,6 +185,11 @@
             color:#eff0f1;
         }
     </style><path
-     id="rect869"
-     style="fill:#e6e6e6;fill-opacity:0.25"
-     d="m 5,3 v 1 h 7 v 7 h 1 V 4 3 h -1 z" /></svg>
+     id="rect1"
+     style="fill:#262626;stroke-width:2.23607;fill-opacity:0.5"
+     d="m 7,4 v 1 h 1 v 1 h 1 v 1 h 1 v 1 h 1 v 1 h 1 V 5 4 h -1 z"
+     sodipodi:nodetypes="ccccccccccccccc" /><path
+     id="path3"
+     style="fill:#262626;stroke-width:2.23607;fill-opacity:0.5"
+     d="M 9,12 V 11 H 8 V 10 H 7 V 9 H 6 V 8 H 5 V 7 H 4 v 4 1 h 1 z"
+     sodipodi:nodetypes="ccccccccccccccc" /></svg>

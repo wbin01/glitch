@@ -221,6 +221,9 @@ class Header(View):
         self.__center_title(True)
 
     def __set_active_inactive_signal(self) -> None:
+        if self._app._platform.de == 'lxqt':
+            self._app._QtObject__set_property('borderWidth', 2)
+        
         self._app._active_signal.connect(self.__on_active_signal)
         self._app._inactive_signal.connect(self.__on_inactive_signal)
 

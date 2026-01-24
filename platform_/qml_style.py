@@ -719,9 +719,11 @@ CloseButton {
     property url normalIcon: "[CloseButton]icon"
     property url hoverIcon: "[CloseButton:hover]icon"
     property url clickedIcon: "[CloseButton:clicked]icon"
-    // property url inactiveIcon: "[CloseButton:inactive]icon"
+    property url inactiveIcon: "[CloseButton:inactive]icon"
 
     icon.source:
+        !appCloseButton.Window.active ? 
+           inactiveIcon :
         // !appCloseButton.enabled ? 
         //    inactiveIcon :
         appCloseButton.down ?

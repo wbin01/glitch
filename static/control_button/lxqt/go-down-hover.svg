@@ -5,8 +5,8 @@
    width="16px"
    version="1.1"
    id="svg4"
-   sodipodi:docname="go-down.svg"
-   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   sodipodi:docname="go-down-hover.svg"
+   inkscape:version="1.4.2 (ebf0e940d0, 2025-05-08)"
    xml:space="preserve"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -85,17 +85,22 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      showgrid="true"
-     inkscape:zoom="41.7193"
-     inkscape:cx="8.1976447"
-     inkscape:cy="8.2695539"
-     inkscape:window-width="1279"
+     inkscape:zoom="20.85965"
+     inkscape:cx="0.23969721"
+     inkscape:cy="10.906223"
+     inkscape:window-width="1276"
      inkscape:window-height="615"
      inkscape:window-x="0"
      inkscape:window-y="36"
      inkscape:window-maximized="0"
      inkscape:current-layer="svg4"><inkscape:grid
        type="xygrid"
-       id="grid687" /></sodipodi:namedview><style
+       id="grid687"
+       originx="0"
+       originy="0"
+       spacingy="1"
+       spacingx="1"
+       units="px" /></sodipodi:namedview><style
      type="text/css"
      id="current-color-scheme">
         .ColorScheme-Text {
@@ -180,9 +185,9 @@
             color:#eff0f1;
         }
     </style><rect
-     style="fill:#262626;fill-opacity:1"
-     id="rect962"
+     style="fill:#262626;fill-opacity:0.80000001;stroke-width:1.41421"
+     id="rect1"
      width="8"
-     height="1"
+     height="2"
      x="4"
-     y="10" /></svg>
+     y="7" /></svg>
