@@ -75,6 +75,69 @@
       .ColorScheme-NegativeText {
         color:#da4453;
       }
+      </style><style
+       type="text/css"
+       id="current-color-scheme-36-7">
+      .ColorScheme-Text {
+        color:#eff0f1;
+      }
+      .ColorScheme-NegativeText {
+        color:#da4453;
+      }
+      </style><style
+       type="text/css"
+       id="current-color-scheme-367-5">
+      .ColorScheme-Text {
+        color:#eff0f1;
+      }
+      .ColorScheme-NegativeText {
+        color:#da4453;
+      }
+      </style><style
+       type="text/css"
+       id="current-color-scheme-5-3">
+      .ColorScheme-Text {
+        color:#eff0f1;
+      }
+      .ColorScheme-NegativeText {
+        color:#da4453;
+      }
+      </style><style
+       type="text/css"
+       id="current-color-scheme-36-3-5">
+      .ColorScheme-Text {
+        color:#eff0f1;
+      }
+      .ColorScheme-NegativeText {
+        color:#da4453;
+      }
+      </style><style
+       type="text/css"
+       id="current-color-scheme-62-6">
+      .ColorScheme-Text {
+        color:#eff0f1;
+      }
+      .ColorScheme-NegativeText {
+        color:#da4453;
+      }
+      </style><style
+       type="text/css"
+       id="current-color-scheme-5-9-2">
+      .ColorScheme-Text {
+        color:#eff0f1;
+      }
+      .ColorScheme-NegativeText {
+        color:#da4453;
+      }
+      </style><style
+       type="text/css"
+       id="current-color-scheme-36-3-1-9">
+      .ColorScheme-Text {
+        color:#eff0f1;
+      }
+      .ColorScheme-NegativeText {
+        color:#da4453;
+      }
       </style></defs><sodipodi:namedview
      id="namedview6"
      pagecolor="#ffffff"
@@ -85,9 +148,9 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      showgrid="true"
-     inkscape:zoom="7.375"
-     inkscape:cx="-13.152542"
-     inkscape:cy="8.8135593"
+     inkscape:zoom="83.4386"
+     inkscape:cx="3.1819805"
+     inkscape:cy="7.574432"
      inkscape:window-width="1276"
      inkscape:window-height="615"
      inkscape:window-x="0"
@@ -187,21 +250,96 @@
     </style><g
      inkscape:label="Camada 1"
      id="layer1"
-     transform="translate(-33.389403,-18.000841)"><g
-       id="g589"
-       transform="translate(31.389403,5.500841)"><g
-         inkscape:label="Camada 1"
-         id="layer1-5"
-         transform="translate(-23.497555,2)"><path
-           id="path61733"
-           style="fill:#ffffff;fill-opacity:1;stroke-width:14.1421;stroke-linecap:round;stroke-linejoin:round;paint-order:markers stroke fill"
-           d="m 29.497555,17 v 1 h 8 v -1 z"
-           sodipodi:nodetypes="ccccccc" /><path
-           id="path61735"
-           style="fill:#bfbfbf;fill-opacity:0.5;stroke-width:14.1421;stroke-linecap:round;stroke-linejoin:round;paint-order:markers stroke fill"
-           d="m 29.497555,18 v 1 h 8 v -1 z"
-           sodipodi:nodetypes="ccccccc" /><path
-           id="path61737"
-           style="fill:#000000;fill-opacity:0.5;stroke-width:14.1421;stroke-linecap:round;stroke-linejoin:round;paint-order:markers stroke fill"
-           d="m 29.497555,19 v 1 h 8 v -1 z"
-           sodipodi:nodetypes="ccccccc" /></g></g></g></svg>
+     transform="translate(-33.389403,-18.000841)"><rect
+       fill="#666"
+       height="2"
+       overflow="visible"
+       style="color:#bebebe;fill:#f2f2f2;fill-opacity:1;marker:none"
+       width="10"
+       x="36.389404"
+       y="25.000841"
+       id="rect1-3" /></g><style
+     type="text/css"
+     id="current-color-scheme-7">
+        .ColorScheme-Text {
+            color:#eff0f1;
+        }
+    </style><style
+     type="text/css"
+     id="current-color-scheme-535-0">
+        .ColorScheme-Text {
+            color:#eff0f1;
+        }
+    </style><style
+     type="text/css"
+     id="current-color-scheme-53-9">
+        .ColorScheme-Text {
+            color:#eff0f1;
+        }
+    </style><style
+     type="text/css"
+     id="current-color-scheme-3-36">
+        .ColorScheme-Text {
+            color:#eff0f1;
+        }
+    </style><style
+     type="text/css"
+     id="current-color-scheme-3-5-0">
+        .ColorScheme-Text {
+            color:#eff0f1;
+        }
+    </style><style
+     type="text/css"
+     id="current-color-scheme-3-3-6">
+        .ColorScheme-Text {
+            color:#eff0f1;
+        }
+    </style><style
+     type="text/css"
+     id="current-color-scheme-36-35-2">
+        .ColorScheme-Text {
+            color:#eff0f1;
+        }
+    </style><style
+     type="text/css"
+     id="current-color-scheme-6-6">
+        .ColorScheme-Text {
+            color:#eff0f1;
+        }
+    </style><style
+     type="text/css"
+     id="current-color-scheme-3-7-1">
+        .ColorScheme-Text {
+            color:#eff0f1;
+        }
+    </style><style
+     type="text/css"
+     id="current-color-scheme-3-2-8">
+        .ColorScheme-Text {
+            color:#eff0f1;
+        }
+    </style><style
+     type="text/css"
+     id="current-color-scheme-3-3-7-7">
+        .ColorScheme-Text {
+            color:#eff0f1;
+        }
+    </style><style
+     type="text/css"
+     id="current-color-scheme-36-0-9">
+        .ColorScheme-Text {
+            color:#eff0f1;
+        }
+    </style><style
+     type="text/css"
+     id="current-color-scheme-6-9-2">
+        .ColorScheme-Text {
+            color:#eff0f1;
+        }
+    </style><style
+     type="text/css"
+     id="current-color-scheme-3-7-3-0">
+        .ColorScheme-Text {
+            color:#eff0f1;
+        }
+    </style></svg>
