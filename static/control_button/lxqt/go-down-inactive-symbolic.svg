@@ -5,8 +5,8 @@
    width="16px"
    version="1.1"
    id="svg4"
-   sodipodi:docname="go-down-inactive.svg"
-   inkscape:version="1.4.2 (ebf0e940d0, 2025-05-08)"
+   sodipodi:docname="go-down-inactive-symbolic.svg"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
    xml:space="preserve"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -86,12 +86,12 @@
      inkscape:deskcolor="#d1d1d1"
      showgrid="true"
      inkscape:zoom="20.85965"
-     inkscape:cx="0.23969721"
-     inkscape:cy="10.906223"
+     inkscape:cx="-0.11984861"
+     inkscape:cy="10.882254"
      inkscape:window-width="1276"
      inkscape:window-height="615"
      inkscape:window-x="0"
-     inkscape:window-y="36"
+     inkscape:window-y="0"
      inkscape:window-maximized="0"
      inkscape:current-layer="svg4"><inkscape:grid
        type="xygrid"
@@ -185,7 +185,7 @@
             color:#eff0f1;
         }
     </style><rect
-     style="fill:#262626;fill-opacity:0.5;stroke-width:1.41421"
+     style="fill:#e5e5e5;fill-opacity:0.5;stroke-width:1.41421"
      id="rect1"
      width="8"
      height="2"

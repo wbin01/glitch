@@ -9,16 +9,17 @@ from ..tools import color_converter, DesktopFile
 
 class Platform(object):
     """..."""
-    def __init__(self):
+    def __init__(self, desktop_environment: str = None) -> None:
         self.__os_desk = OSDesk()
-        self.__icons = Icons(self.__os_desk.desktop_environment)
-        self.__style = Style(self.__os_desk.desktop_environment)
+        self.__de = (desktop_environment if desktop_environment else
+            self.__os_desk.desktop_environment)
+        self.__icons = Icons(self.__de)
+        self.__style = Style(self.__de)
 
         # Properties
         self.__accent_color = None
         self.__control_buttons_order = None
         self.__dark_variant = None
-        self.__de = None
         self.__display_server = None
         self.__global_menu = None
         self.__icon_theme = None

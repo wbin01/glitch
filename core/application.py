@@ -91,7 +91,7 @@ class Application(object):
             self.__qml_path.write_text(qml._qml)
 
         # Style
-        self.__platform = Platform()
+        self.__platform = Platform(self.__args('desktop'))
         qml_style = QmlStyle(self.__platform.style, self.__qml_theme_path)
         qml_style.build()
         self.__ui._Frame__platform = self.__platform
@@ -149,3 +149,12 @@ class Application(object):
         self.__gui.installEventFilter(event_filter)
         self.__engine.rootContext().setContextProperty('logic', self.__handler)
         self.__qt_gui_application.exec()
+
+    def __args(self, arg: str = None) -> str:
+        desktop = None
+        if arg == 'desktop':
+            for arg in sys.argv:
+                if '--desktop=' in arg:
+                    desktop = arg.split('=')[1].strip('"').strip("'").strip()
+            return desktop
+        return None
