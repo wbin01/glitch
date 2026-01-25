@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
+import sys
+
 from ..layout.column import Column
 from ..mixin import Add
+from ...platform_ import Platform
 from ..ui import UI
 from ...core.signal import Signal
 from ...enum.align import Align
@@ -17,7 +20,6 @@ class Frame(Add, UI):
         self.__active_signal = Signal()
         self.__hint_signal = Signal()
         self.__inactive_signal = Signal()
-        self.__platform_signal = Signal()
         self.__render_signal = Signal()
         self.__resize_signal = Signal()
         self.__right_pressed_signal = Signal()
@@ -26,10 +28,11 @@ class Frame(Add, UI):
         self.__qt_core = None    # PySide6.QtCore
         self.__qt_qml = None     # PySide6.QtQml
         self.__engine = None     # ref = QtQml.QQmlApplicationEngine()
+        self.__args = None
 
         self.__hint = Hint.FRAME
         self.__visibility = 'Window.Windowed'
-        self.__platform = None
+        self.__platform = Platform()
 
         # Flags
         self.__shape_border = None
@@ -88,11 +91,6 @@ class Frame(Add, UI):
     def _inactive_signal(self):
         """..."""
         return self.__inactive_signal
-
-    @property
-    def _platform_signal(self):
-        """..."""
-        return self.__platform_signal
 
     @property
     def _render_signal(self):

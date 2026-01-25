@@ -8,7 +8,7 @@ class AppFrame(MainFrame):
     """..."""
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(movable=True, resizable=True, *args, **kwargs)
-        self.header = self.add(Header())
+        self.header = self.add(Header(self._platform))
 
     def __repr__(self) -> str:
         return self.__class__.__name__

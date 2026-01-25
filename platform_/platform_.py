@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 import os
+import subprocess
+import sys
 
 from .icon import Icon
 from .os_desk import OSDesk
@@ -16,15 +18,13 @@ class Platform(object):
             icon_theme: str = None) -> None:
         
         self.__os_desk = OSDesk()
-        self.__de = (desktop_environment if desktop_environment else
-            self.__os_desk.desktop_environment)
-        self.__os_desk.desktop_environment = self.__de
+        self.__de = self.__args('desktop')
         self.__icon = Icon(self.__de)
         self.__style = Style(self.__de)
 
         # Properties
         self.__accent_color = None
-        self.__control_buttons_order = None
+        self.__controls_order = None
         self.__dark_variant = None
         self.__display_server = None
         self.__global_menu = None
@@ -57,37 +57,56 @@ class Platform(object):
 
         (2, 1, 0), (3,) -> [Close Max Min ............. Icon]
         """
-        if self.__control_buttons_order:
-            return self.__control_buttons_order
+        if self.__controls_order:
+            return self.__controls_order
 
-        if self.de != 'plasma':
-            self.__control_buttons_order = ('close', 'max', 'min'), ('icon',)
-            return self.__control_buttons_order  # (2, 1, 0), (3,)
+        self.__controls_order = ('icon',), ('min', 'max', 'close')
 
-        if not self.__kwinrc:
-            self.__set__kwinrc()
+        if self.de == 'cinnamon':
+            cmd = subprocess.run(
+                'gsettings get org.cinnamon.desktop.wm.preferences '
+                'button-layout', shell=True, capture_output=True, text=True)
+            button_layout = cmd.stdout.strip().strip("'").strip('"')
 
-        left_buttons = 'M'  # M = icon, F = above all
-        right_buttons = 'IAX'  # X = close, A = max, I = min
+            self.__controls_order = ('',), ('min', 'max', 'close')
+            if button_layout:
+                buttons_l, buttons_r = button_layout.replace(
+                    'minimize', 'min').replace(
+                    'maximize', 'max').split(':')
+                
+                self.__controls_order = tuple(
+                    buttons_l.split(',')), tuple(buttons_r.split(','))
 
-        kdecoration = '[org.kde.kdecoration2]'
-        buttons_on_left, buttons_on_right = 'ButtonsOnLeft', 'ButtonsOnRight'
-        if kdecoration in self.__kwinrc:
-            if buttons_on_left in self.__kwinrc[kdecoration]:
-                left_buttons = self.__kwinrc[kdecoration][buttons_on_left]
+        elif self.de == 'pantheon':
+                self.__controls_order = ('close',), ('max',)
 
-            if buttons_on_right in self.__kwinrc[kdecoration]:
-                right_buttons = self.__kwinrc[kdecoration][buttons_on_right]
+        elif self.de == 'plasma':
+            filerc = os.path.join(os.environ['HOME'], '.config', 'kwinrc')
+            if not os.path.isfile(filerc):
+                self.__controls_order = ('close', 'max', 'min'), ('icon',)
+            kwinrc = DesktopFile(url=filerc).content
 
-        # d = {'X': 2, 'A': 1, 'I': 0, 'M': 3}
-        d = {'X': 'close', 'A': 'max', 'I': 'min', 'M': 'icon'}
-        self.__control_buttons_order = tuple(
-            d[x] for x in left_buttons
-            if x == 'X' or x == 'A' or x == 'I' or x == 'M'), tuple(
-            d[x] for x in right_buttons
-            if x == 'X' or x == 'A' or x == 'I' or x == 'M')
+            left_buttons = 'M'  # M = icon, F = above all
+            right_buttons = 'IAX'  # X = close, A = max, I = min
 
-        return self.__control_buttons_order
+            kdecoration = '[org.kde.kdecoration2]'
+            buttons_on_left = 'ButtonsOnLeft'
+            buttons_on_right = 'ButtonsOnRight'
+            if kdecoration in kwinrc:
+                if buttons_on_left in kwinrc[kdecoration]:
+                    left_buttons = kwinrc[kdecoration][buttons_on_left]
+
+                if buttons_on_right in kwinrc[kdecoration]:
+                    right_buttons = kwinrc[kdecoration][buttons_on_right]
+
+            d = {'X': 'close', 'A': 'max', 'I': 'min', 'M': 'icon'}
+            self.__controls_order = tuple(
+                d[x] for x in left_buttons
+                if x == 'X' or x == 'A' or x == 'I' or x == 'M'), tuple(
+                d[x] for x in right_buttons
+                if x == 'X' or x == 'A' or x == 'I' or x == 'M')
+
+        return self.__controls_order
 
     @property
     def dark_variant(self) -> bool:
@@ -107,9 +126,6 @@ class Platform(object):
     @property
     def de(self) -> str:
         """..."""
-        if not self.__de:
-            self.__de = self.__os_desk.desktop_environment
-
         return self.__de
 
     @de.setter
@@ -210,6 +226,15 @@ class Platform(object):
             dark = False if self.__dark_variant else True
 
         return self.__icon.icon_theme_variant(icon_theme, dark)
+
+    def __args(self, arg: str = None) -> str:
+        desktop = None
+        if arg == 'desktop':
+            for arg in sys.argv:
+                if '--desktop=' in arg:
+                    desktop = arg.split('=')[1].strip('"').strip("'").strip()
+            return desktop if desktop else self.__os_desk.desktop_environment
+        return None
 
     def __set__kwinrc(self) -> dict:
         filerc = os.path.join(os.environ['HOME'], '.config', 'kwinrc')

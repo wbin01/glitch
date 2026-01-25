@@ -11,8 +11,12 @@ from ...enum.shape import Shape
 
 
 class Header(View):
-    def __init__(self, text: str = '', *args, **kwargs) -> None:
+    def __init__(self, platform, text: str = '', *args, **kwargs) -> None:
         super().__init__(name='RowLayout', *args, **kwargs)
+        # Args
+        self.__platform = platform
+        self.__text_arg = text
+
         # set
         self.__qml_base = 'Layout'
         self._QtObject__set_property('spacing', 0)
@@ -34,7 +38,8 @@ class Header(View):
         self.__right_count = 0
 
         # Left
-        self.__control_l = self._QtObject__add(ControlButtons(0))
+        self.__control_l = self._QtObject__add(ControlButtons(
+            self.__platform, 0))
         self.__left = self._QtObject__add(Row())
         self.__left.spacing = 6
         self.__left.margin = 2, 0, 0, 2 if self.__control_l._count else 0
@@ -46,7 +51,7 @@ class Header(View):
 
         # Text
         self.__left_span = self._QtObject__add(Expander(horizontal=True))
-        self.__text = self._QtObject__add(Label(text))
+        self.__text = self._QtObject__add(Label(self.__text_arg))
         self.__right_span = self._QtObject__add(Expander(horizontal=True))
 
         # Right
@@ -57,7 +62,8 @@ class Header(View):
 
         self.__right = self._QtObject__add(Row())
         self.__right.spacing = 6
-        self.__control_r = self._QtObject__add(ControlButtons(1))
+        self.__control_r = self._QtObject__add(ControlButtons(
+            self.__platform, 1))
         self.__right.margin = 2, 0, 0, 2 if self.__control_r._count else 0
 
         self._app_signal.connect(self.__signals_conf)
