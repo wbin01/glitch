@@ -5,7 +5,7 @@
    width="16px"
    version="1.1"
    id="svg4"
-   sodipodi:docname="go-up.svg"
+   sodipodi:docname="window-restore-inactive.svg"
    inkscape:version="1.4.2 (ebf0e940d0, 2025-05-08)"
    xml:space="preserve"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
@@ -186,10 +186,10 @@
         }
     </style><path
      id="rect1"
-     style="fill:#262626;stroke-width:2.23607;fill-opacity:1"
+     style="fill:#262626;stroke-width:2.23607;fill-opacity:0.5"
      d="m 7,4 v 1 h 1 v 1 h 1 v 1 h 1 v 1 h 1 v 1 h 1 V 5 4 h -1 z"
      sodipodi:nodetypes="ccccccccccccccc" /><path
      id="path3"
-     style="fill:#262626;stroke-width:2.23607;fill-opacity:1"
+     style="fill:#262626;stroke-width:2.23607;fill-opacity:0.5"
      d="M 9,12 V 11 H 8 V 10 H 7 V 9 H 6 V 8 H 5 V 7 H 4 v 4 1 h 1 z"
      sodipodi:nodetypes="ccccccccccccccc" /></svg>

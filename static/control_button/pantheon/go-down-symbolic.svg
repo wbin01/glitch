@@ -5,8 +5,8 @@
    width="16px"
    version="1.1"
    id="svg4"
-   sodipodi:docname="go-down.svg"
-   inkscape:version="1.4.2 (ebf0e940d0, 2025-05-08)"
+   sodipodi:docname="go-down-clicked-symbolic.svg"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
    xml:space="preserve"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -85,15 +85,15 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      showgrid="true"
-     inkscape:zoom="20.85965"
-     inkscape:cx="0.23969721"
-     inkscape:cy="10.906223"
+     inkscape:zoom="7.375"
+     inkscape:cx="-13.152542"
+     inkscape:cy="8.8135593"
      inkscape:window-width="1276"
      inkscape:window-height="615"
      inkscape:window-x="0"
-     inkscape:window-y="36"
+     inkscape:window-y="0"
      inkscape:window-maximized="0"
-     inkscape:current-layer="svg4"><inkscape:grid
+     inkscape:current-layer="layer1"><inkscape:grid
        type="xygrid"
        id="grid687"
        originx="0"
@@ -184,10 +184,24 @@
         .ColorScheme-Text {
             color:#eff0f1;
         }
-    </style><rect
-     style="fill:#262626;fill-opacity:1;stroke-width:1.41421"
-     id="rect1"
-     width="8"
-     height="2"
-     x="4"
-     y="7" /></svg>
+    </style><g
+     inkscape:label="Camada 1"
+     id="layer1"
+     transform="translate(-33.389403,-18.000841)"><g
+       id="g589"
+       transform="translate(31.389403,5.500841)"><g
+         inkscape:label="Camada 1"
+         id="layer1-5"
+         transform="translate(-23.497555,2)"><path
+           id="path61733"
+           style="fill:#ffffff;fill-opacity:1;stroke-width:14.1421;stroke-linecap:round;stroke-linejoin:round;paint-order:markers stroke fill"
+           d="m 29.497555,17 v 1 h 8 v -1 z"
+           sodipodi:nodetypes="ccccccc" /><path
+           id="path61735"
+           style="fill:#bfbfbf;fill-opacity:0.5;stroke-width:14.1421;stroke-linecap:round;stroke-linejoin:round;paint-order:markers stroke fill"
+           d="m 29.497555,18 v 1 h 8 v -1 z"
+           sodipodi:nodetypes="ccccccc" /><path
+           id="path61737"
+           style="fill:#000000;fill-opacity:0.5;stroke-width:14.1421;stroke-linecap:round;stroke-linejoin:round;paint-order:markers stroke fill"
+           d="m 29.497555,19 v 1 h 8 v -1 z"
+           sodipodi:nodetypes="ccccccc" /></g></g></g></svg>
