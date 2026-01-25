@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import os
 
-from .icons import Icons
+from .icon import Icon
 from .os_desk import OSDesk
 from .style import Style
 from ..tools import color_converter, DesktopFile
@@ -9,11 +9,15 @@ from ..tools import color_converter, DesktopFile
 
 class Platform(object):
     """..."""
-    def __init__(self, desktop_environment: str = None) -> None:
+    def __init__(
+            self,
+            desktop_environment: str = None,
+            theme: str = None,
+            icon_theme: str = None) -> None:
         self.__os_desk = OSDesk()
         self.__de = (desktop_environment if desktop_environment else
             self.__os_desk.desktop_environment)
-        self.__icons = Icons(self.__de)
+        self.__icon = Icon(self.__de)
         self.__style = Style(self.__de)
 
         # Properties
@@ -22,8 +26,9 @@ class Platform(object):
         self.__dark_variant = None
         self.__display_server = None
         self.__global_menu = None
-        self.__icon_theme = None
+        self.__icon_theme = icon_theme
         self.__os = None
+        self.__theme = theme
 
         # Set
         self.__breezerc = None
@@ -125,7 +130,7 @@ class Platform(object):
     def icon_theme(self) -> str | None:
         """..."""
         if not self.__icon_theme:
-            self.__icon_theme = self.__icons.icon_theme()
+            self.__icon_theme = self.__icon.icon_theme()
         
         return self.__icon_theme
 
@@ -178,10 +183,23 @@ class Platform(object):
     def style(self, style: dict | None) -> None:
         self.__style = style
 
+    @property
+    def theme(self) -> str | None:
+        """..."""
+        # if not self.__theme:
+        #     self.__theme = self.__icon.icon_theme()
+        
+        return self.__theme
+
+    @theme.setter
+    def theme(self, theme: str | None) -> None:
+        """..."""
+        self.__theme = theme
+
     def icon_source(
             self, source: str | None, dark: bool = None, size: int = 16
             ) -> str:
-        return self.__icons.icon_source(source, dark=dark, size=size)
+        return self.__icon.icon_source(source, dark=dark, size=size)
 
     def icon_theme_variant(
             self, icon_theme: str = None, dark: bool = None) -> str:
@@ -190,7 +208,7 @@ class Platform(object):
         if dark is None:
             dark = False if self.__dark_variant else True
 
-        return self.__icons.icon_theme_variant(icon_theme, dark)
+        return self.__icon.icon_theme_variant(icon_theme, dark)
 
     def __set__kwinrc(self) -> dict:
         filerc = os.path.join(os.environ['HOME'], '.config', 'kwinrc')

@@ -3,7 +3,7 @@ import pathlib
 
 from .view import View
 from ...tools import color_converter
-from ...platform_ import Icons, OSDesk
+from ...platform_ import Icon, OSDesk
 from ...core.signal import Signal
 
 

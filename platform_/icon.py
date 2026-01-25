@@ -9,7 +9,7 @@ from xdg import IconTheme
 from ..tools import DesktopFile
 
 
-class Icons(object):
+class Icon(object):
     """Information about operating system icons."""
     def __init__(self, desktop_environment: str) -> None:
         """
