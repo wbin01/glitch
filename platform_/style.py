@@ -376,11 +376,11 @@ class Style(object):
             self.__min_button_style_cinnamon()
             self.__panel_style_cinnamon()
 
-        if 'pantheon' in self.__desktop.lower():
-            self.__app_frame_style_glitch()
+        if self.__desktop == 'pantheon':
+            self.__app_frame_style_pantheon()
             self.__frame_style_plasma()
             self.__label_style_plasma()
-            self.__button_style_glitch()
+            self.__button_style_pantheon()
 
             self.__tool_button_style_cinnamon()
             self.__close_button_style_lxqt()
@@ -479,6 +479,20 @@ class Style(object):
         # Inactive
         self.__app_frame_in_fg = self.__app_frame_fg
         self.__app_frame_in_bg = self.__app_frame_bg
+        self.__app_frame_in_io = self.__app_frame_io
+        self.__app_frame_in_bd = self.__app_frame_bd
+
+    def __app_frame_style_pantheon(self) -> None:
+        self.__app_frame_fg = '#FFFEFEFE'
+        self.__app_frame_bg = '#FF303030'
+        self.__app_frame_is_dark = True
+        self.__app_frame_bd = '#FF111111'
+        self.__app_frame_rd = '7, 7, 7, 7'
+        self.__app_frame_io = '1.0'
+
+        # Inactive
+        self.__app_frame_in_fg = self.__app_frame_fg
+        self.__app_frame_in_bg = colr.lighten_hex(self.__app_frame_bg, 2)
         self.__app_frame_in_io = self.__app_frame_io
         self.__app_frame_in_bd = self.__app_frame_bd
 
@@ -763,6 +777,63 @@ class Style(object):
         # Clicked
         self.__button_ck_fg = self.__button_fg
         self.__button_ck_bg = '#33' + self.__button_hv_bd[3:]
+        self.__button_ck_bd = self.__button_hv_bd
+        self.__button_ck_io = self.__button_io
+
+        # Checked
+        self.__button_ch_fg = self.__button_fg
+        self.__button_ch_bg = '#AA' + self.__button_bd[3:]
+        self.__button_ch_bd = self.__button_bd
+        self.__button_ch_io = self.__button_io
+
+        # Checked inactive
+        self.__button_ch_in_fg = self.__button_in_fg
+
+        if self.__inactive_as_platform:
+            self.__button_ch_in_bg = self.__button_ch_bg
+        else:
+            self.__button_ch_in_bg = '#33' + self.__button_ch_bg[3:]
+
+        self.__button_ch_in_bd = self.__button_in_bd
+        self.__button_ch_in_io = self.__button_in_io
+        
+        # Checked hover
+        self.__button_ch_hv_fg = self.__button_ch_fg
+        self.__button_ch_hv_bg = self.__button_ch_bg
+        self.__button_ch_hv_bd = self.__button_hv_bd
+        self.__button_ch_hv_io = self.__button_ch_io
+
+    def __button_style_pantheon(self) -> None:
+        self.__button_fg = self.__app_frame_fg
+        
+        if self.__app_frame_is_dark:
+            self.__button_bg = '#FF404040'
+        else:
+            self.__button_bg = self.__app_frame_bg
+
+        if self.__app_frame_is_dark:
+            self.__button_bd = '#FF222222'
+        else:
+            self.__button_bd = colr.darken_hex(self.__button_bg, 35)
+        
+        self.__button_rd = '3'
+        self.__button_io = self.__app_frame_io
+
+        # Inactive
+        self.__button_in_fg = self.__app_frame_in_fg
+        self.__button_in_bg = colr.lighten_hex(self.__button_bg, 5)
+        self.__button_in_bd = self.__button_bd
+        self.__button_in_io = self.__app_frame_in_io
+
+        # Hover
+        self.__button_hv_fg = self.__button_fg
+        self.__button_hv_bg = self.__button_bg
+        self.__button_hv_bd = self.__button_bd
+        self.__button_hv_io = self.__button_io
+
+        # Clicked
+        self.__button_ck_fg = self.__button_fg
+        self.__button_ck_bg = '#FF2C2C2C'
         self.__button_ck_bd = self.__button_hv_bd
         self.__button_ck_io = self.__button_io
 

@@ -42,6 +42,9 @@ class Modal(Frame):
             elif os.environ['XDG_SESSION_DESKTOP'].lower() == 'lxqt':
                 self._QtObject__set_property('outLineColor', '"#FF3C8CE6"')
 
+            elif 'pantheon' in os.environ['XDG_SESSION_DESKTOP']:
+                self._QtObject__set_property('outLineColor', '#FF111111')
+
         self._app_signal.connect(self.__app_shape)
 
     def __repr__(self) -> str:
