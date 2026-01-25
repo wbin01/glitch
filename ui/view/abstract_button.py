@@ -2,7 +2,7 @@
 import pathlib
 
 from .view import View
-from ...tools import color_converter
+from ...tools import color
 from ...platform_ import Icon, OSDesk
 from ...core.signal import Signal
 
@@ -96,8 +96,8 @@ class AbstractButton(View):
 
     def __update_icon(self) -> None:
         if self.__is_dark is None:
-            self.__is_dark = color_converter.is_dark(
-                color_converter.hex_to_rgba(self._app._platform.style[
+            self.__is_dark = color.is_dark(
+                color.hex_to_rgba(self._app._platform.style[
                     '[' + self._QtObject__name + ']']['background_color']))
 
         self._QtObject__set_property(

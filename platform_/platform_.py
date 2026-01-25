@@ -4,7 +4,7 @@ import os
 from .icon import Icon
 from .os_desk import OSDesk
 from .style import Style
-from ..tools import color_converter, DesktopFile
+from ..tools import color, DesktopFile
 
 
 class Platform(object):
@@ -14,9 +14,11 @@ class Platform(object):
             desktop_environment: str = None,
             theme: str = None,
             icon_theme: str = None) -> None:
+        
         self.__os_desk = OSDesk()
         self.__de = (desktop_environment if desktop_environment else
             self.__os_desk.desktop_environment)
+        self.__os_desk.desktop_environment = self.__de
         self.__icon = Icon(self.__de)
         self.__style = Style(self.__de)
 
@@ -93,9 +95,8 @@ class Platform(object):
         if self.__dark_variant is not None:
             return self.__dark_variant
 
-        self.__dark_variant = color_converter.is_dark(
-            color_converter.hex_to_rgba(
-                self.style['[MainFrame]']['background_color']))
+        self.__dark_variant = color.is_dark(
+            color.hex_to_rgba(self.style['[MainFrame]']['background_color']))
 
         return self.__dark_variant
 

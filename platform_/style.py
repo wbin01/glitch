@@ -1,12 +1,9 @@
 #!/usr/bin/env python3
+from pathlib import Path
 import os
-import pathlib
 import subprocess
-import pprint
 
-from PySide6 import QtGui
-
-from ..tools import color_converter as colr
+from ..tools import color
 from ..tools import DesktopFile
 
 
@@ -15,18 +12,17 @@ class Style(object):
     
     Manages style information according to the platform.
     """
-
     def __init__(self, desktop_environment: str = 'plasma') -> None:
         self.__desktop = desktop_environment
         self.__style = None
         self.__conf = None
-        self.__inactive_as_platform = True
         self.__accent_color = None
 
-        self.__path = pathlib.Path(__file__).parent.parent
+        self.__path = Path(__file__).parent.parent
         self.__icon_path = str(
             self.__path) + f'/static/control_button/{self.__desktop}/'
-        if not pathlib.Path(self.__icon_path).exists():
+
+        if not Path(self.__icon_path).exists():
             self.__icon_path = str(
                 self.__path) + f'/static/control_button/glitch/'
 
@@ -335,23 +331,22 @@ class Style(object):
                 print(f'{k}: {v}')
             print()
 
-    def __color_to_hex(self, color, alt_color) -> str:
-        color = color.split(',')
-        len_color = len(color)
+    def __color_to_hex(self, rgba_color, alt_color) -> str:
+        cor = rgba_color.split(',')
+        len_color = len(cor)
 
         if self.__desktop == 'plasma':
             if len_color == 3:
-                color = int(color[0]), int(color[1]), int(color[2]), 255
+                cor = int(cor[0]), int(cor[1]), int(cor[2]), 255
             else:
-                color = int(
-                    color[0]), int(color[1]), int(color[2]), int(color[3])
-            return colr.rgba_to_hex(color)
+                cor = int(cor[0]), int(cor[1]), int(cor[2]), int(cor[3])
+            return color.rgba_to_hex(cor)
         return alt_color
 
     def __get_sys_conf(self) -> dict:
-        conf_file = pathlib.Path(os.environ['HOME']) / '.config' / 'kdeglobals'
+        conf_file = Path(os.environ['HOME']) / '.config' / 'kdeglobals'
         if self.__desktop == 'lxqt':
-            conf_file = pathlib.Path(
+            conf_file = Path(
                 os.environ['HOME']) / '.config' / 'lxqt' / 'lxqt.conf'
 
         ini = {}
@@ -440,8 +435,8 @@ class Style(object):
             self.__app_frame_fg = '#FF333333'
             self.__app_frame_bg = '#FFEBEBED'
 
-        self.__app_frame_is_dark = colr.is_dark(
-            colr.hex_to_rgba(self.__app_frame_bg))
+        self.__app_frame_is_dark = color.is_dark(
+            color.hex_to_rgba(self.__app_frame_bg))
 
         if self.__app_frame_is_dark:
             self.__app_frame_bd = '#FF111111'
@@ -452,21 +447,11 @@ class Style(object):
         self.__app_frame_io = '1.0'
 
         # Inactive
-        if self.__inactive_as_platform:
-            # [Colors:Header][Inactive]][BackgroundNormal]
-            self.__app_frame_in_fg = self.__app_frame_fg
-            self.__app_frame_in_bg = self.__app_frame_bg
-            self.__app_frame_in_io = self.__app_frame_io
-            self.__app_frame_in_bd = self.__app_frame_bd
-        else:
-            self.__app_frame_in_fg = '#50' + self.__app_frame_fg[3:]
-            self.__app_frame_in_bg = colr.darken_hex(self.__app_frame_bg, 4)
-            self.__app_frame_in_io = '0.2'
+        self.__app_frame_in_fg = self.__app_frame_fg
+        self.__app_frame_in_bg = self.__app_frame_bg
+        self.__app_frame_in_io = self.__app_frame_io
+        self.__app_frame_in_bd = self.__app_frame_bd
 
-            self.__app_frame_in_bd = self.__app_frame_in_bg
-            if self.__app_frame_is_dark:
-                self.__app_frame_in_bd = colr.lighten_hex(
-                    self.__app_frame_in_bg, 5)
 
     def __app_frame_style_glitch(self) -> None:
         self.__app_frame_fg = '#FFCCCCCC'
@@ -492,7 +477,7 @@ class Style(object):
 
         # Inactive
         self.__app_frame_in_fg = self.__app_frame_fg
-        self.__app_frame_in_bg = colr.lighten_hex(self.__app_frame_bg, 2)
+        self.__app_frame_in_bg = color.lighten_hex(self.__app_frame_bg, 2)
         self.__app_frame_in_io = self.__app_frame_io
         self.__app_frame_in_bd = self.__app_frame_bd
 
@@ -503,32 +488,22 @@ class Style(object):
         self.__app_frame_bg = self.__color_to_hex(  # Alt 282828
             self.__conf['[Colors:Window]']['BackgroundNormal'], '#2A2A2A')
 
-        self.__app_frame_is_dark = colr.is_dark(
-            colr.hex_to_rgba(self.__app_frame_bg))
+        self.__app_frame_is_dark = color.is_dark(
+            color.hex_to_rgba(self.__app_frame_bg))
 
-        self.__app_frame_bd = colr.darken_hex(self.__app_frame_bg, 50)
+        self.__app_frame_bd = color.darken_hex(self.__app_frame_bg, 50)
         if self.__app_frame_is_dark:
-            self.__app_frame_bd = colr.lighten_hex(self.__app_frame_bg, 15)
+            self.__app_frame_bd = color.lighten_hex(self.__app_frame_bg, 15)
 
         self.__app_frame_rd = '6, 6, 6, 6'
         self.__app_frame_io = '1.0'
 
         # Inactive
-        if self.__inactive_as_platform:
-            # [Colors:Header][Inactive]][BackgroundNormal]
-            self.__app_frame_in_fg = self.__app_frame_fg
-            self.__app_frame_in_bg = colr.darken_hex(self.__app_frame_bg, 4)
-            self.__app_frame_in_io = self.__app_frame_io
-            self.__app_frame_in_bd = self.__app_frame_bd
-        else:
-            self.__app_frame_in_fg = '#50' + self.__app_frame_fg[3:]
-            self.__app_frame_in_bg = colr.darken_hex(self.__app_frame_bg, 4)
-            self.__app_frame_in_io = '0.2'
+        self.__app_frame_in_fg = self.__app_frame_fg
+        self.__app_frame_in_bg = color.darken_hex(self.__app_frame_bg, 4)
+        self.__app_frame_in_io = self.__app_frame_io
+        self.__app_frame_in_bd = self.__app_frame_bd
 
-            self.__app_frame_in_bd = self.__app_frame_in_bg
-            if self.__app_frame_is_dark:
-                self.__app_frame_in_bd = colr.lighten_hex(
-                    self.__app_frame_in_bg, 5)
 
     def __app_frame_style_lxqt(self) -> None:
         self.__app_frame_fg = '#FFCCCCCC'
@@ -542,8 +517,8 @@ class Style(object):
             if 'window_color' in self.__conf['[Palette]']:
                 self.__app_frame_bg = self.__conf['[Palette]']['window_color']
 
-        self.__app_frame_is_dark = colr.is_dark(
-            colr.hex_to_rgba(self.__app_frame_bg))
+        self.__app_frame_is_dark = color.is_dark(
+            color.hex_to_rgba(self.__app_frame_bg))
 
         if self.__app_frame_fg.lower().endswith('ffffff'):
             self.__app_frame_fg = '#FFAAAAAA'
@@ -556,7 +531,7 @@ class Style(object):
 
         # Inactive
         self.__app_frame_in_fg = self.__app_frame_fg
-        self.__app_frame_in_bg = colr.darken_hex(self.__app_frame_bg, 4)
+        self.__app_frame_in_bg = color.darken_hex(self.__app_frame_bg, 4)
         self.__app_frame_in_io = self.__app_frame_io
         self.__app_frame_in_bd = '#FF2D3036'
 
@@ -596,28 +571,22 @@ class Style(object):
         self.__button_fg = self.__app_frame_fg
         
         if self.__app_frame_is_dark:
-            self.__button_bg = colr.lighten_hex(self.__app_frame_bg, 3)
+            self.__button_bg = color.lighten_hex(self.__app_frame_bg, 3)
         else:
             self.__button_bg = self.__app_frame_bg
 
         if self.__app_frame_is_dark:
             self.__button_bd = '#FF181818'
         else:
-            self.__button_bd = colr.darken_hex(self.__button_bg, 35)
+            self.__button_bd = color.darken_hex(self.__button_bg, 35)
         
         self.__button_rd = '6'
         self.__button_io = self.__app_frame_io
 
         # Inactive
         self.__button_in_fg = self.__app_frame_in_fg
-
-        if self.__inactive_as_platform:
-            self.__button_in_bg = self.__button_bg
-            self.__button_in_bd = self.__button_bd
-        else:
-            self.__button_in_bg = '#AA' + self.__button_bg[3:]
-            self.__button_in_bd = '#80' + self.__button_bd[3:]
-        
+        self.__button_in_bg = self.__button_bg
+        self.__button_in_bd = self.__button_bd
         self.__button_in_io = self.__app_frame_in_io
 
         # Hover
@@ -626,9 +595,9 @@ class Style(object):
         self.__button_hv_bd = self.__button_bd
 
         if 'dark' in self.__cinnamon_theme.lower():
-            self.__button_hv_bg = colr.lighten_hex(self.__button_bg, 5)
+            self.__button_hv_bg = color.lighten_hex(self.__button_bg, 5)
         else:
-            self.__button_hv_bg = colr.darken_hex(self.__button_bg, 4)
+            self.__button_hv_bg = color.darken_hex(self.__button_bg, 4)
 
         self.__button_hv_io = self.__button_io
 
@@ -646,12 +615,7 @@ class Style(object):
 
         # Checked inactive
         self.__button_ch_in_fg = self.__button_in_fg
-
-        if self.__inactive_as_platform:
-            self.__button_ch_in_bg = self.__button_ch_bg
-        else:
-            self.__button_ch_in_bg = '#33' + self.__button_ch_bg[3:]
-
+        self.__button_ch_in_bg = self.__button_ch_bg
         self.__button_ch_in_bd = self.__button_in_bd
         self.__button_ch_in_io = self.__button_in_io
         
@@ -665,28 +629,22 @@ class Style(object):
         self.__button_fg = self.__app_frame_fg
         
         if self.__app_frame_is_dark:
-            self.__button_bg = colr.lighten_hex(self.__app_frame_bg, 5)
+            self.__button_bg = color.lighten_hex(self.__app_frame_bg, 5)
         else:
             self.__button_bg = self.__app_frame_bg
 
         if self.__app_frame_is_dark:
             self.__button_bd = self.__button_bg
         else:
-            self.__button_bd = colr.darken_hex(self.__button_bg, 35)
+            self.__button_bd = color.darken_hex(self.__button_bg, 35)
         
         self.__button_rd = '6'
         self.__button_io = self.__app_frame_io
 
         # Inactive
         self.__button_in_fg = self.__app_frame_in_fg
-
-        if self.__inactive_as_platform:
-            self.__button_in_bg = self.__button_bg
-            self.__button_in_bd = self.__button_bd
-        else:
-            self.__button_in_bg = '#AA' + self.__button_bg[3:]
-            self.__button_in_bd = '#80' + self.__button_bd[3:]
-        
+        self.__button_in_bg = self.__button_bg
+        self.__button_in_bd = self.__button_bd
         self.__button_in_io = self.__app_frame_in_io
 
         # Hover
@@ -695,9 +653,9 @@ class Style(object):
         self.__button_hv_bd = self.__button_bd
 
         if self.__app_frame_is_dark:
-            self.__button_hv_bg = colr.lighten_hex(self.__button_bg, 5)
+            self.__button_hv_bg = color.lighten_hex(self.__button_bg, 5)
         else:
-            self.__button_hv_bg = colr.darken_hex(self.__button_bg, 4)
+            self.__button_hv_bg = color.darken_hex(self.__button_bg, 4)
 
         self.__button_hv_io = self.__button_io
 
@@ -715,12 +673,7 @@ class Style(object):
 
         # Checked inactive
         self.__button_ch_in_fg = self.__button_in_fg
-
-        if self.__inactive_as_platform:
-            self.__button_ch_in_bg = self.__button_ch_bg
-        else:
-            self.__button_ch_in_bg = '#33' + self.__button_ch_bg[3:]
-
+        self.__button_ch_in_bg = self.__button_ch_bg
         self.__button_ch_in_bd = self.__button_in_bd
         self.__button_ch_in_io = self.__button_in_io
         
@@ -734,28 +687,22 @@ class Style(object):
         self.__button_fg = self.__app_frame_fg
         
         if self.__app_frame_is_dark:
-            self.__button_bg = colr.lighten_hex(self.__app_frame_bg, 5)
+            self.__button_bg = color.lighten_hex(self.__app_frame_bg, 5)
         else:
             self.__button_bg = self.__app_frame_bg
 
         if self.__app_frame_is_dark:
             self.__button_bd = self.__button_bg
         else:
-            self.__button_bd = colr.darken_hex(self.__button_bg, 35)
+            self.__button_bd = color.darken_hex(self.__button_bg, 35)
         
         self.__button_rd = '6'
         self.__button_io = self.__app_frame_io
 
         # Inactive
         self.__button_in_fg = self.__app_frame_in_fg
-
-        if self.__inactive_as_platform:
-            self.__button_in_bg = self.__button_bg
-            self.__button_in_bd = self.__button_bd
-        else:
-            self.__button_in_bg = '#AA' + self.__button_bg[3:]
-            self.__button_in_bd = '#80' + self.__button_bd[3:]
-        
+        self.__button_in_bg = self.__button_bg
+        self.__button_in_bd = self.__button_bd
         self.__button_in_io = self.__app_frame_in_io
 
         # Hover
@@ -768,9 +715,9 @@ class Style(object):
         self.__button_hv_bd = self.__button_bd
 
         if self.__app_frame_is_dark:
-            self.__button_hv_bg = colr.lighten_hex(self.__button_bg, 5)
+            self.__button_hv_bg = color.lighten_hex(self.__button_bg, 5)
         else:
-            self.__button_hv_bg = colr.darken_hex(self.__button_bg, 4)
+            self.__button_hv_bg = color.darken_hex(self.__button_bg, 4)
 
         self.__button_hv_io = self.__button_io
 
@@ -788,12 +735,7 @@ class Style(object):
 
         # Checked inactive
         self.__button_ch_in_fg = self.__button_in_fg
-
-        if self.__inactive_as_platform:
-            self.__button_ch_in_bg = self.__button_ch_bg
-        else:
-            self.__button_ch_in_bg = '#33' + self.__button_ch_bg[3:]
-
+        self.__button_ch_in_bg = self.__button_ch_bg
         self.__button_ch_in_bd = self.__button_in_bd
         self.__button_ch_in_io = self.__button_in_io
         
@@ -814,14 +756,14 @@ class Style(object):
         if self.__app_frame_is_dark:
             self.__button_bd = '#FF222222'
         else:
-            self.__button_bd = colr.darken_hex(self.__button_bg, 35)
+            self.__button_bd = color.darken_hex(self.__button_bg, 35)
         
         self.__button_rd = '3'
         self.__button_io = self.__app_frame_io
 
         # Inactive
         self.__button_in_fg = self.__app_frame_in_fg
-        self.__button_in_bg = colr.lighten_hex(self.__button_bg, 5)
+        self.__button_in_bg = color.lighten_hex(self.__button_bg, 5)
         self.__button_in_bd = self.__button_bd
         self.__button_in_io = self.__app_frame_in_io
 
@@ -845,12 +787,7 @@ class Style(object):
 
         # Checked inactive
         self.__button_ch_in_fg = self.__button_in_fg
-
-        if self.__inactive_as_platform:
-            self.__button_ch_in_bg = self.__button_ch_bg
-        else:
-            self.__button_ch_in_bg = '#33' + self.__button_ch_bg[3:]
-
+        self.__button_ch_in_bg = self.__button_ch_bg
         self.__button_ch_in_bd = self.__button_in_bd
         self.__button_ch_in_io = self.__button_in_io
         
@@ -866,23 +803,17 @@ class Style(object):
             self.__conf['[Colors:Button]']['BackgroundNormal'], '#33333333')
 
         if self.__app_frame_is_dark:
-            self.__button_bd = colr.lighten_hex(self.__button_bg, 35)
+            self.__button_bd = color.lighten_hex(self.__button_bg, 35)
         else:
-            self.__button_bd = colr.darken_hex(self.__button_bg, 35)
+            self.__button_bd = color.darken_hex(self.__button_bg, 35)
         
         self.__button_rd = '6'
         self.__button_io = self.__app_frame_io
 
         # Inactive
         self.__button_in_fg = self.__app_frame_in_fg
-
-        if self.__inactive_as_platform:
-            self.__button_in_bg = self.__button_bg
-            self.__button_in_bd = self.__button_bd
-        else:
-            self.__button_in_bg = '#AA' + self.__button_bg[3:]  # self.__app_frame_in_bg
-            self.__button_in_bd = '#80' + self.__button_bd[3:]
-        
+        self.__button_in_bg = self.__button_bg
+        self.__button_in_bd = self.__button_bd
         self.__button_in_io = self.__app_frame_in_io
 
         # Hover
@@ -907,12 +838,7 @@ class Style(object):
 
         # Checked inactive
         self.__button_ch_in_fg = self.__button_in_fg
-
-        if self.__inactive_as_platform:
-            self.__button_ch_in_bg = self.__button_ch_bg
-        else:
-            self.__button_ch_in_bg = '#33' + self.__button_ch_bg[3:]
-
+        self.__button_ch_in_bg = self.__button_ch_bg
         self.__button_ch_in_bd = self.__button_in_bd
         self.__button_ch_in_io = self.__button_in_io
         
@@ -949,13 +875,8 @@ class Style(object):
         self.__tool_button_ch_io = self.__button_ch_io
 
         # Checked inactive
-        if self.__inactive_as_platform:
-            self.__tool_button_ch_in_bg = self.__tool_button_ch_bg
-            self.__tool_button_ch_in_bd = self.__tool_button_ch_bd
-        else:
-            self.__tool_button_ch_in_bg = '#33' + self.__tool_button_ch_bg[3:]
-            self.__tool_button_ch_in_bd = '#33' + self.__tool_button_ch_bd[3:]
-
+        self.__tool_button_ch_in_bg = self.__tool_button_ch_bg
+        self.__tool_button_ch_in_bd = self.__tool_button_ch_bd
         self.__tool_button_ch_in_io = self.__tool_button_in_io
 
         # Checked hover
@@ -990,13 +911,8 @@ class Style(object):
         self.__tool_button_ch_io = self.__button_ch_io
 
         # Checked inactive
-        if self.__inactive_as_platform:
-            self.__tool_button_ch_in_bg = self.__tool_button_ch_bg
-            self.__tool_button_ch_in_bd = self.__tool_button_ch_bd
-        else:
-            self.__tool_button_ch_in_bg = '#33' + self.__tool_button_ch_bg[3:]
-            self.__tool_button_ch_in_bd = '#33' + self.__tool_button_ch_bd[3:]
-
+        self.__tool_button_ch_in_bg = self.__tool_button_ch_bg
+        self.__tool_button_ch_in_bd = self.__tool_button_ch_bd
         self.__tool_button_ch_in_io = self.__tool_button_in_io
 
         # Checked hover
@@ -1025,7 +941,7 @@ class Style(object):
             self.__icon_path + icon + '-inactive' + self.__symbolic + '.svg')
 
         # Hover
-        self.__close_button_hv_bg = colr.lighten_hex(self.__accent_color, 15)
+        self.__close_button_hv_bg = color.lighten_hex(self.__accent_color, 15)
         self.__close_button_hv_bd = self.__app_frame_bg
         self.__close_button_hv_fg = self.__app_frame_fg
         self.__close_button_hv_io = self.__button_hv_io
@@ -1033,7 +949,7 @@ class Style(object):
             self.__icon_path + icon + '-hover' + self.__symbolic + '.svg')
 
         # Clicked
-        self.__close_button_ck_bg = colr.darken_hex(self.__accent_color, 15)
+        self.__close_button_ck_bg = color.darken_hex(self.__accent_color, 15)
         self.__close_button_ck_bd = self.__app_frame_bg
         self.__close_button_ck_fg = self.__app_frame_fg
         self.__close_button_ck_io = self.__button_ck_io
@@ -1440,30 +1356,30 @@ class Style(object):
 
     def __panel_style_cinnamon(self) -> None:
         if self.__app_frame_is_dark:
-            self.__panel_bg = colr.darken_hex(self.__app_frame_bg, 5)
+            self.__panel_bg = color.darken_hex(self.__app_frame_bg, 5)
         else:
-            self.__panel_bg = colr.darken_hex(self.__app_frame_bg, 10)
+            self.__panel_bg = color.darken_hex(self.__app_frame_bg, 10)
 
         self.__panel_bd = self.__panel_bg
         self.__panel_rd = self.__app_frame_rd
 
         # Inactive
-        self.__panel_in_bg = colr.darken_hex(self.__app_frame_in_bg, 5)
+        self.__panel_in_bg = color.darken_hex(self.__app_frame_in_bg, 5)
         self.__panel_in_bd = self.__panel_in_bg
 
     def __panel_style_plasma(self) -> None:
         if self.__app_frame_is_dark:
-            self.__panel_bg = '#FA' + colr.darken_hex(
+            self.__panel_bg = '#FA' + color.darken_hex(
                 self.__app_frame_bg, 5)[3:]
         else:
-            self.__panel_bg = '#FA' + colr.darken_hex(
+            self.__panel_bg = '#FA' + color.darken_hex(
                 self.__app_frame_bg, 15)[3:]
 
         self.__panel_bd = self.__panel_bg
         self.__panel_rd = self.__app_frame_rd
 
         # Inactive
-        self.__panel_in_bg = colr.darken_hex(self.__app_frame_in_bg, 5)
+        self.__panel_in_bg = color.darken_hex(self.__app_frame_in_bg, 5)
         self.__panel_in_bd = self.__panel_in_bg
 
     def __set_cinnamon_theme(self):
