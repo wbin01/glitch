@@ -234,7 +234,14 @@ class Platform(object):
                 if '--desktop=' in arg:
                     desktop = arg.split('=')[1].strip('"').strip("'").strip()
 
-            if desktop and 'windows' in desktop: desktop = 'windows-11'
+            if desktop:
+                if 'windows' in desktop:
+                    desktop = 'windows-11'
+
+                elif desktop not in [
+                        'cinnamon', 'plasma', 'pantheon', 'lxqt']:
+                    desktop = 'glitch'
+
             return desktop if desktop else self.__os_desk.desktop_environment
         return None
 

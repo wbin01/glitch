@@ -25,8 +25,10 @@ class Header(View):
         self.__resize = False
         self.__active_color = None
         self.__active_color_bd = None
+        self.__active_color_bd_inner = None
         self.__inactive_color = None
         self.__inactive_color_bd = None
+        self.__inactive_color_bd_inner = None
         self.margin = 0
 
         # Flags
@@ -43,7 +45,7 @@ class Header(View):
             self.__platform, 0))
         self.__left = self._QtObject__add(Row())
         self.__left.spacing = 6
-        if 'windows' in self.__platform.de:
+        if 'windows' in self.__platform.de or self.__platform.de == 'glitch':
             self.__left.margin = 0, 0, 0, 2 if self.__control_l._count else 0
         else:
             self.__left.margin = 2, 0, 0, 2 if self.__control_l._count else 0
@@ -68,7 +70,7 @@ class Header(View):
         self.__right.spacing = 6
         self.__control_r = self._QtObject__add(ControlButtons(
             self.__platform, 1))
-        if 'windows' in self.__platform.de:
+        if 'windows' in self.__platform.de or self.__platform.de == 'glitch':
             self.__right.margin = 0, 0, 0, 2 if self.__control_r._count else 0
         else:
             self.__right.margin = 2, 0, 0, 2 if self.__control_r._count else 0
@@ -193,15 +195,19 @@ class Header(View):
         if not self.__active_color_bd:
             self.__active_color_bd = self._app._platform.style[
                 '[MainFrame]']['border_color']
+
+        if not self.__active_color_bd_inner:
+            self.__active_color_bd_inner = self._app._platform.style[
+                '[MainFrame]']['border_color_inner']
         
         self._app._QtObject__set_property(
             'backgroundColor', self.__active_color)
 
         self._app._QtObject__set_property(
-            'borderColor', self.__active_color)
+            'borderColor', self.__active_color_bd)
 
         self._app._QtObject__set_property(
-            'outLineColor', self.__active_color_bd)
+            'borderColorInner', self.__active_color_bd_inner)
         
         self._app._QtObject__obj.findChild(
             QtCore.QObject, 'canvas').requestPaint()
@@ -215,14 +221,18 @@ class Header(View):
             self.__inactive_color_bd = self._app._platform.style[
                 '[MainFrame:inactive]']['border_color']
 
+        if not self.__inactive_color_bd_inner:
+            self.__inactive_color_bd_inner = self._app._platform.style[
+                '[MainFrame:inactive]']['border_color_inner']
+
         self._app._QtObject__set_property(
             'backgroundColor', self.__inactive_color)
 
         self._app._QtObject__set_property(
-            'borderColor', self.__inactive_color)
+            'borderColor', self.__inactive_color_bd)
 
         self._app._QtObject__set_property(
-            'outLineColor', self.__inactive_color_bd)
+            'borderColorInner', self.__inactive_color_bd_inner)
         
         self._app._QtObject__obj.findChild(
             QtCore.QObject, 'canvas').requestPaint()

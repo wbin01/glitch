@@ -35,6 +35,9 @@ class ControlButtons(View):
                 self.margin = 0, 0, 0, 6
             else:
                 self.margin = 0
+        elif self.__platform.de == 'glitch':
+            self._QtObject__set_property('spacing', 0)
+            self.margin = 0
         else:
             self._QtObject__set_property('spacing', 6)
             self.margin = 5, 6, 6, 6

@@ -21,9 +21,9 @@ BaseFrame {
 
     property alias borderWidth: mainRectangle.borderWidth
     property alias outLineWidth: mainRectangle.outLineWidth
-    property alias outLineColor: mainRectangle.outLineColor
     property alias backgroundColor: mainRectangle.backgroundColor
     property alias borderColor: mainRectangle.borderColor
+    property alias borderColorInner: mainRectangle.borderColorInner
 
     property alias radiusTopLeft: mainRectangle.radiusTopLeft
     property alias radiusTopRight: mainRectangle.radiusTopRight
@@ -49,8 +49,8 @@ BaseFrame {
         property bool isActive: true
 
         property color backgroundColor: "[Frame]background_color"
+        property color borderColorInner: "#00000000"
         property color borderColor: "[Frame]border_color"
-        property color outLineColor: "#44000000"
         property int borderWidth: 1
         property int outLineWidth: 1
 
@@ -103,7 +103,7 @@ BaseFrame {
                     mainRectangle.radiusBottomRight + 2,
                     mainRectangle.radiusBottomLeft + 2);
 
-                ctx.strokeStyle = mainRectangle.outLineColor;
+                ctx.strokeStyle = mainRectangle.borderColor;
                 ctx.lineWidth = mainRectangle.outLineWidth;
                 ctx.stroke();
 
@@ -118,7 +118,7 @@ BaseFrame {
                     Math.max(0, mainRectangle.radiusBottomRight - inset),
                     Math.max(0, mainRectangle.radiusBottomLeft - inset));
 
-                ctx.strokeStyle = mainRectangle.borderColor;
+                ctx.strokeStyle = mainRectangle.borderColorInner; // borderColor;
                 ctx.lineWidth = mainRectangle.borderWidth;
                 ctx.stroke();
             }
@@ -155,9 +155,9 @@ MainFrame {
 
     property alias borderWidth: mainRectangle.borderWidth
     property alias outLineWidth: mainRectangle.outLineWidth
-    property alias outLineColor: mainRectangle.outLineColor
     property alias backgroundColor: mainRectangle.backgroundColor
     property alias borderColor: mainRectangle.borderColor
+    property alias borderColorInner: mainRectangle.borderColorInner
 
     property alias radiusTopLeft: mainRectangle.radiusTopLeft
     property alias radiusTopRight: mainRectangle.radiusTopRight
@@ -183,10 +183,9 @@ MainFrame {
         property bool isActive: true
 
         property color backgroundColor: "[MainFrame]background_color"
-        property color borderColor: "[MainFrame]background_color"
-        property color outLineColor: "[MainFrame]border_color" // "#FF00FF00" // "#44000000"
+        property color borderColorInner: "[MainFrame]border_color_inner"
+        property color borderColor: "[MainFrame]border_color"
         property int borderWidth: 1
-        // property int outLineWidth: 0  // 1 // RMBD
         property int outLineWidth: 1
 
         property int radiusTopLeft: [MainFrame]border_radius_tl
@@ -223,7 +222,7 @@ MainFrame {
                 // --- Background ---
                 roundedRect(
                     // 0, 0, width, height, // 1, 1, width - 2, height - 2, // RMBD
-                    1, 1, width - 2, height - 2,
+                    1, 1, width - 2, height - 2, // RMBD
                     mainRectangle.radiusTopLeft,
                     mainRectangle.radiusTopRight,
                     mainRectangle.radiusBottomRight,
@@ -240,9 +239,8 @@ MainFrame {
                     mainRectangle.radiusBottomRight + 2,
                     mainRectangle.radiusBottomLeft + 2);
 
-                ctx.strokeStyle = mainRectangle.outLineColor;
+                ctx.strokeStyle = mainRectangle.borderColor;
                 ctx.lineWidth = mainRectangle.outLineWidth;
-                // ctx.stroke(); // RMBD
                 ctx.stroke();
 
                 // --- Inner border ---
@@ -256,7 +254,7 @@ MainFrame {
                     Math.max(0, mainRectangle.radiusBottomRight - inset),
                     Math.max(0, mainRectangle.radiusBottomLeft - inset));
 
-                ctx.strokeStyle = mainRectangle.borderColor;
+                ctx.strokeStyle = mainRectangle.borderColorInner;
                 ctx.lineWidth = mainRectangle.borderWidth;
                 ctx.stroke();
             }

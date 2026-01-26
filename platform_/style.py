@@ -148,11 +148,13 @@ class Style(object):
                 },
             '[Frame]': {
                 'background_color': self.__frame_bg,
+                'border_color_inner': self.__frame_bd_inner,
                 'border_color': self.__frame_bd,
                 'border_radius': self.__frame_rd,
                 },
             '[Frame:inactive]': {
                 'background_color': self.__frame_in_bg,
+                'border_color_inner': self.__frame_in_bd_inner,
                 'border_color': self.__frame_in_bd,
                 },
             '[Label]': {
@@ -165,11 +167,13 @@ class Style(object):
                 },
             '[MainFrame]': {
                 'background_color': self.__app_frame_bg,
+                'border_color_inner': self.__app_frame_bd_inner,
                 'border_color': self.__app_frame_bd,
                 'border_radius': self.__app_frame_rd,
                 },
             '[MainFrame:inactive]': {
                 'background_color': self.__app_frame_in_bg,
+                'border_color_inner': self.__app_frame_in_bd_inner,
                 'border_color': self.__app_frame_in_bd,
                 },
             '[MaxButton]': {
@@ -380,9 +384,9 @@ class Style(object):
             self.__plasma_label()
             self.__glitch_button()
             self.__cinnamon_tool_button()
-            self.__cinnamon_close_button()
-            self.__cinnamon_max_button()
-            self.__cinnamon_min_button()
+            self.__glitch_close_button()
+            self.__glitch_max_button()
+            self.__glitch_min_button()
             self.__cinnamon_panel()
 
     def __cinnamon_app_frame(self) -> None:
@@ -403,6 +407,7 @@ class Style(object):
             self.__app_frame_bd = '#FF111111'
         else:
             self.__app_frame_bd = '#FFAAAAAA'
+        self.__app_frame_bd_inner = self.__app_frame_bg
 
         self.__app_frame_rd = '8, 8, 0, 0'
         self.__app_frame_io = '1.0'
@@ -412,6 +417,7 @@ class Style(object):
         self.__app_frame_in_bg = self.__app_frame_bg
         self.__app_frame_in_io = self.__app_frame_io
         self.__app_frame_in_bd = self.__app_frame_bd
+        self.__app_frame_in_bd_inner = self.__app_frame_bg
 
     def __cinnamon_button(self) -> None:
         self.__button_fg = self.__app_frame_fg
@@ -512,10 +518,13 @@ class Style(object):
         self.__frame_fg = self.__app_frame_fg
         self.__frame_bg = self.__app_frame_bg
         self.__frame_bd = self.__app_frame_bd
+        self.__frame_bd_inner = self.__app_frame_bg
         self.__frame_rd = (self.__app_frame_rd.split(',')[0] + ',') * 4
+
         self.__frame_in_fg = self.__app_frame_in_fg
         self.__frame_in_bg = self.__app_frame_in_bg
         self.__frame_in_bd = self.__app_frame_in_bd
+        self.__frame_in_bd_inner = self.__app_frame_bg
 
     def __cinnamon_label(self) -> None:
         self.__label_fg = self.__app_frame_fg
@@ -679,10 +688,11 @@ class Style(object):
 
     def __glitch_app_frame(self) -> None:
         self.__app_frame_fg = '#FFCCCCCC'
-        self.__app_frame_bg = '#2A2A2A'
+        self.__app_frame_bg = '#FF202020'
         self.__app_frame_is_dark = True
-        self.__app_frame_bd = '#FF181818'
-        self.__app_frame_rd = '8, 8, 0, 0'
+        self.__app_frame_bd = '#44999999'
+        self.__app_frame_bd_inner = '#11000000'
+        self.__app_frame_rd = '8, 8, 8, 8'
         self.__app_frame_io = '1.0'
 
         # Inactive
@@ -690,6 +700,7 @@ class Style(object):
         self.__app_frame_in_bg = self.__app_frame_bg
         self.__app_frame_in_io = self.__app_frame_io
         self.__app_frame_in_bd = self.__app_frame_bd
+        self.__app_frame_in_bd_inner = self.__app_frame_bd_inner
 
     def __glitch_button(self) -> None:
         self.__button_fg = self.__app_frame_fg
@@ -749,6 +760,119 @@ class Style(object):
         self.__button_ch_hv_bd = self.__button_hv_bd
         self.__button_ch_hv_io = self.__button_ch_io
 
+    def __glitch_close_button(self) -> None:
+        icon = 'window-close'
+        self.__symbolic = '-symbolic' if self.__app_frame_is_dark else ''
+
+        self.__close_button_bg = '#00000000'
+        self.__close_button_bd = '#00000000'
+        self.__close_button_fg = self.__app_frame_fg
+        self.__close_button_io = self.__button_io
+        self.__close_button_i = (
+            self.__icon_path + icon + self.__symbolic + '.svg')
+        self.__close_button_rd = '10'
+
+        # Inactive
+        self.__close_button_in_bg = '#00000000'
+        self.__close_button_in_bd = '#00000000'
+        self.__close_button_in_fg = self.__app_frame_in_fg
+        self.__close_button_in_io = self.__button_in_io
+        self.__close_button_in_i = (
+            self.__icon_path + icon + '-inactive' + self.__symbolic + '.svg')
+
+        # Hover
+        self.__close_button_hv_bg = '#00000000'
+        self.__close_button_hv_bd = '#00000000'
+        self.__close_button_hv_fg = self.__app_frame_fg
+        self.__close_button_hv_io = self.__button_hv_io
+        self.__close_button_hv_i = (
+            self.__icon_path + icon + '-hover' + self.__symbolic + '.svg')
+
+        # Clicked
+        self.__close_button_ck_bg = '#00000000'
+        self.__close_button_ck_bd = '#00000000'
+        self.__close_button_ck_fg = self.__app_frame_fg
+        self.__close_button_ck_io = self.__button_ck_io
+        self.__close_button_ck_i = (
+            self.__icon_path + icon + '-clicked' + self.__symbolic + '.svg')
+
+    def __glitch_max_button(self) -> None:
+        icon = 'go-up'
+        restore = 'window-restore'
+        self.__max_button_bg = '#00000000'
+        self.__max_button_bd = '#00000000'
+        self.__max_button_fg = self.__close_button_fg
+        self.__max_button_io = self.__close_button_io
+        self.__max_button_i = (
+            self.__icon_path + icon + self.__symbolic + '.svg')
+        self.__max_button_ir = (
+            self.__icon_path + restore + self.__symbolic + '.svg')
+        self.__max_button_rd = '10'
+
+        # Inactive
+        self.__max_button_in_bg = '#00000000'
+        self.__max_button_in_bd = '#00000000'
+        self.__max_button_in_fg = self.__close_button_in_fg
+        self.__max_button_in_io = self.__close_button_in_io
+        self.__max_button_in_i = (
+            self.__icon_path + icon + '-inactive' + self.__symbolic + '.svg')
+        self.__max_button_in_ir = (
+            self.__icon_path + restore + '-inactive' + self.__symbolic +'.svg')
+        
+        # Hover
+        self.__max_button_hv_bg = '#00000000'
+        self.__max_button_hv_bd = '#00000000'
+        self.__max_button_hv_fg = self.__close_button_hv_fg
+        self.__max_button_hv_io = self.__close_button_hv_io
+        self.__max_button_hv_i = (
+            self.__icon_path + icon + '-hover' + self.__symbolic + '.svg')
+        self.__max_button_hv_ir = (
+            self.__icon_path + restore + '-hover' + self.__symbolic + '.svg')
+
+        # Clicked
+        self.__max_button_ck_bg = '#00000000'
+        self.__max_button_ck_bd = '#00000000'
+        self.__max_button_ck_fg = self.__close_button_ck_fg
+        self.__max_button_ck_io = self.__close_button_ck_io
+        self.__max_button_ck_i = (
+            self.__icon_path + icon + '-clicked' + self.__symbolic + '.svg')
+        self.__max_button_ck_ir = (
+            self.__icon_path + restore + '-clicked' + self.__symbolic + '.svg')
+
+    def __glitch_min_button(self) -> None:
+        icon = 'go-down'
+        self.__min_button_bg = '#00000000'
+        self.__min_button_bd = '#00000000'
+        self.__min_button_fg = self.__close_button_fg
+        self.__min_button_io = self.__close_button_io
+        self.__min_button_i = (
+            self.__icon_path + icon + self.__symbolic + '.svg')
+        self.__min_button_rd = '10'
+
+        # Inactive
+        self.__min_button_in_bg = '#00000000'
+        self.__min_button_in_bd = '#00000000'
+        self.__min_button_in_fg = self.__close_button_in_fg
+        self.__min_button_in_io = self.__close_button_in_io
+        self.__min_button_in_i = (
+            self.__icon_path + icon + '-inactive' + self.__symbolic + '.svg')
+
+        # Hover
+        self.__min_button_hv_bg = '#00000000'
+        self.__min_button_hv_bd = '#00000000'
+        self.__min_button_hv_fg = self.__close_button_hv_fg
+        self.__min_button_hv_io = self.__close_button_hv_io
+        self.__min_button_hv_i = (
+            self.__icon_path + icon + '-hover' + self.__symbolic + '.svg')
+
+        # Clicked
+        self.__min_button_ck_bg = '#00000000'
+        self.__min_button_ck_bd = '#00000000'
+        self.__min_button_ck_fg = self.__close_button_ck_fg
+        self.__min_button_ck_io = self.__close_button_ck_io
+        self.__min_button_ck_i = (
+            self.__icon_path + icon + '-clicked' + self.__symbolic + '.svg')
+
     def __lxqt_app_frame(self) -> None:
         self.__app_frame_fg = '#FFCCCCCC'
         self.__app_frame_bg = '#FF272727'
@@ -770,6 +894,7 @@ class Style(object):
             self.__app_frame_fg = '#FF333333'
 
         self.__app_frame_bd = self.__accent_color
+        self.__app_frame_bd_inner = self.__app_frame_bg
         self.__app_frame_rd = '0, 0, 0, 0'
         self.__app_frame_io = '1.0'
 
@@ -778,6 +903,7 @@ class Style(object):
         self.__app_frame_in_bg = color.darken_hex(self.__app_frame_bg, 4)
         self.__app_frame_in_io = self.__app_frame_io
         self.__app_frame_in_bd = '#FF2D3036'
+        self.__app_frame_in_bd_inner = self.__app_frame_bg
 
     def __lxqt_button(self) -> None:
         self.__button_fg = self.__app_frame_fg
@@ -1030,11 +1156,12 @@ class Style(object):
         self.__app_frame_is_dark = color.is_dark(
             color.hex_to_rgba(self.__app_frame_bg))
 
-        # self.__app_frame_bd = color.darken_hex(self.__app_frame_bg, 100)
-        # if self.__app_frame_is_dark:
-        #     self.__app_frame_bd = color.lighten_hex(self.__app_frame_bg, 50)
-        self.__app_frame_bd = '#88111111'
+        self.__app_frame_bd = color.darken_hex(self.__app_frame_bg, 100)
+        if self.__app_frame_is_dark:
+            self.__app_frame_bd = '#88' + color.lighten_hex(
+                self.__app_frame_bg, 50)[3:]
 
+        self.__app_frame_bd_inner = self.__app_frame_bg
         self.__app_frame_rd = '6, 6, 6, 6'
         self.__app_frame_io = '1.0'
 
@@ -1043,6 +1170,7 @@ class Style(object):
         self.__app_frame_in_bg = color.darken_hex(self.__app_frame_bg, 4)
         self.__app_frame_in_io = self.__app_frame_io
         self.__app_frame_in_bd = self.__app_frame_bd
+        self.__app_frame_in_bd_inner = self.__app_frame_bg
 
     def __plasma_button(self) -> None:
         self.__button_fg = self.__app_frame_fg
@@ -1137,10 +1265,12 @@ class Style(object):
         self.__frame_fg = self.__app_frame_fg
         self.__frame_bg = self.__app_frame_bg
         self.__frame_bd = self.__app_frame_bd
+        self.__frame_bd_inner = self.__app_frame_bg
         self.__frame_rd = (self.__app_frame_rd.split(',')[0] + ',') * 4
         self.__frame_in_fg = self.__app_frame_in_fg
         self.__frame_in_bg = self.__app_frame_in_bg
         self.__frame_in_bd = self.__app_frame_in_bd
+        self.__frame_in_bd_inner = self.__app_frame_bg
 
     def __plasma_label(self) -> None:
         self.__label_fg = self.__app_frame_fg
@@ -1278,9 +1408,10 @@ class Style(object):
 
     def __windows11_app_frame(self) -> None:
         self.__app_frame_fg = '#FFCCCCCC'
-        self.__app_frame_bg = '#FF2A2A2A'
+        self.__app_frame_bg = '#FF202020'
         self.__app_frame_is_dark = True
-        self.__app_frame_bd = '#88111111'
+        self.__app_frame_bd = '#44999999'
+        self.__app_frame_bd_inner = '#11000000'
         self.__app_frame_rd = '8, 8, 8, 8'
         self.__app_frame_io = '1.0'
 
@@ -1289,6 +1420,7 @@ class Style(object):
         self.__app_frame_in_bg = self.__app_frame_bg
         self.__app_frame_in_io = self.__app_frame_io
         self.__app_frame_in_bd = self.__app_frame_bd
+        self.__app_frame_in_bd_inner = self.__app_frame_bd_inner
 
     def __windows11_close_button(self) -> None:
         icon = 'window-close'
@@ -1402,3 +1534,4 @@ class Style(object):
         self.__min_button_ck_io = self.__close_button_ck_io
         self.__min_button_ck_i = (
             self.__icon_path + icon + '-clicked' + self.__symbolic + '.svg')
+
