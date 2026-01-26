@@ -198,6 +198,9 @@ class Header(View):
             'backgroundColor', self.__active_color)
 
         self._app._QtObject__set_property(
+            'borderColor', self.__active_color)
+
+        self._app._QtObject__set_property(
             'outLineColor', self.__active_color_bd)
         
         self._app._QtObject__obj.findChild(
@@ -214,6 +217,9 @@ class Header(View):
 
         self._app._QtObject__set_property(
             'backgroundColor', self.__inactive_color)
+
+        self._app._QtObject__set_property(
+            'borderColor', self.__inactive_color)
 
         self._app._QtObject__set_property(
             'outLineColor', self.__inactive_color_bd)

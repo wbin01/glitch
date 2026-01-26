@@ -1030,9 +1030,10 @@ class Style(object):
         self.__app_frame_is_dark = color.is_dark(
             color.hex_to_rgba(self.__app_frame_bg))
 
-        self.__app_frame_bd = color.darken_hex(self.__app_frame_bg, 50)
-        if self.__app_frame_is_dark:
-            self.__app_frame_bd = color.lighten_hex(self.__app_frame_bg, 15)
+        # self.__app_frame_bd = color.darken_hex(self.__app_frame_bg, 100)
+        # if self.__app_frame_is_dark:
+        #     self.__app_frame_bd = color.lighten_hex(self.__app_frame_bg, 50)
+        self.__app_frame_bd = '#88111111'
 
         self.__app_frame_rd = '6, 6, 6, 6'
         self.__app_frame_io = '1.0'
