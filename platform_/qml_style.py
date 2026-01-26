@@ -762,48 +762,6 @@ CloseButton {
     }
 }
 // +
-FullButton {
-    id: appFullButton
-    padding: 0
-    property url normalIcon: "[FullButton]icon"
-    property url hoverIcon: "[FullButton:hover]icon"
-    property url clickedIcon: "[FullButton:clicked]icon"
-
-    property url restoreNormalIcon: "[FullButton]restore_icon"
-    property url restoreHoverIcon: "[FullButton:hover]restore_icon"
-    property url restoreClickedIcon: "[FullButton:clicked]restore_icon"
-
-    icon.source:
-        appFullButton.down ?
-            clickedIcon :
-        appFullButton.hovered ?
-            hoverIcon : normalIcon
-
-    icon.width: undefined
-    icon.height: undefined
-
-    background: Rectangle {
-        anchors.fill: parent
-
-        color:
-            appFullButton.down ?
-                "[FullButton:clicked]background_color" :
-            appFullButton.hovered ?
-                "[FullButton:hover]background_color" :
-                "[FullButton]background_color"
-
-        border.color:
-            appFullButton.down ?
-                "[FullButton:clicked]border_color" :
-            appFullButton.hovered ?
-                "[FullButton:hover]border_color" :
-                "[FullButton]border_color"
-
-        border.width: [FullButton]border_width
-        radius: [FullButton]border_radius
-    }
-}
-// +
 MaxButton {
     id: appMaxButton
     padding: 0

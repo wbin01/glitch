@@ -233,6 +233,8 @@ class Platform(object):
             for arg in sys.argv:
                 if '--desktop=' in arg:
                     desktop = arg.split('=')[1].strip('"').strip("'").strip()
+
+            if desktop and 'windows' in desktop: desktop = 'windows-11'
             return desktop if desktop else self.__os_desk.desktop_environment
         return None
 
