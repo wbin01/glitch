@@ -1277,9 +1277,9 @@ class Style(object):
 
     def __windows11_app_frame(self) -> None:
         self.__app_frame_fg = '#FFCCCCCC'
-        self.__app_frame_bg = '#2A2A2A'
+        self.__app_frame_bg = '#FF2A2A2A'
         self.__app_frame_is_dark = True
-        self.__app_frame_bd = '#FF181818'
+        self.__app_frame_bd = '#88111111'
         self.__app_frame_rd = '8, 8, 8, 8'
         self.__app_frame_io = '1.0'
 

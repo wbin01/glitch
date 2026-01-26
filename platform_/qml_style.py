@@ -183,10 +183,11 @@ MainFrame {
         property bool isActive: true
 
         property color backgroundColor: "[MainFrame]background_color"
-        property color borderColor: "[MainFrame]border_color"
-        property color outLineColor: "#44000000"
+        property color borderColor: "[MainFrame]background_color"
+        property color outLineColor: "[MainFrame]border_color" // "#FF00FF00" // "#44000000"
         property int borderWidth: 1
-        property int outLineWidth: 0  // 1 // RMBD
+        // property int outLineWidth: 0  // 1 // RMBD
+        property int outLineWidth: 1
 
         property int radiusTopLeft: [MainFrame]border_radius_tl
         property int radiusTopRight: [MainFrame]border_radius_tr
@@ -197,7 +198,8 @@ MainFrame {
             id: canvas
             objectName: "canvas"
             anchors.fill: parent
-            property int borderSpacing: 0  // 1 // RMBD
+            // property int borderSpacing: 0  // 1 // RMBD
+            property int borderSpacing: 1
 
             onPaint: {
                 var ctx = getContext("2d");
@@ -220,7 +222,8 @@ MainFrame {
 
                 // --- Background ---
                 roundedRect(
-                    0, 0, width, height, // 1, 1, width - 2, height - 2, // RMBD
+                    // 0, 0, width, height, // 1, 1, width - 2, height - 2, // RMBD
+                    1, 1, width - 2, height - 2,
                     mainRectangle.radiusTopLeft,
                     mainRectangle.radiusTopRight,
                     mainRectangle.radiusBottomRight,
@@ -240,6 +243,7 @@ MainFrame {
                 ctx.strokeStyle = mainRectangle.outLineColor;
                 ctx.lineWidth = mainRectangle.outLineWidth;
                 // ctx.stroke(); // RMBD
+                ctx.stroke();
 
                 // --- Inner border ---
                 var inset = borderSpacing + mainRectangle.borderWidth / 2;

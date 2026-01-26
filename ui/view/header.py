@@ -198,7 +198,7 @@ class Header(View):
             'backgroundColor', self.__active_color)
 
         self._app._QtObject__set_property(
-            'borderColor', self.__active_color_bd)
+            'outLineColor', self.__active_color_bd)
         
         self._app._QtObject__obj.findChild(
             QtCore.QObject, 'canvas').requestPaint()
@@ -216,7 +216,7 @@ class Header(View):
             'backgroundColor', self.__inactive_color)
 
         self._app._QtObject__set_property(
-            'borderColor', self.__inactive_color_bd)
+            'outLineColor', self.__inactive_color_bd)
         
         self._app._QtObject__obj.findChild(
             QtCore.QObject, 'canvas').requestPaint()

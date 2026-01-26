@@ -84,7 +84,7 @@ class Handler(QtCore.QObject):
                 self.__gui.property('radiusBottomRight'),
                 self.__gui.property('radiusBottomLeft'),
                 self.__gui.property('borderColor'),
-                # self.__gui.property('outLineColor'),  # RMBD
+                self.__gui.property('outLineColor'),  # RMBD
                 self.__gui.property('backgroundColor'))
 
         if (shape == QtCore.Qt.WindowState.WindowFullScreen
@@ -93,21 +93,21 @@ class Handler(QtCore.QObject):
             self.__gui.setProperty('radiusTopRight', 0)
             self.__gui.setProperty('radiusBottomRight', 0)
             self.__gui.setProperty('radiusBottomLeft', 0)
-            self.__gui.setProperty('borderColor', self.__shape_border[5])
+            # self.__gui.setProperty('borderColor', self.__shape_border[5])
             # RMBD
-            # self.__gui.setProperty('borderColor', self.__shape_border[6])
-            # self.__gui.setProperty('outLineColor', self.__shape_border[6])
-            # self.__gui.setProperty('borderSpacing', 0)
+            self.__gui.setProperty('borderColor', self.__shape_border[6])
+            self.__gui.setProperty('outLineColor', self.__shape_border[6])
+            self.__gui.setProperty('borderSpacing', 0)
         else:  # borderWidth outLineWidth
             # RMBD
-            # self.__gui.setProperty('borderSpacing', 1)
+            self.__gui.setProperty('borderSpacing', 1)
             self.__gui.setProperty('radiusTopLeft', self.__shape_border[0])
             self.__gui.setProperty('radiusTopRight', self.__shape_border[1])
             self.__gui.setProperty('radiusBottomRight', self.__shape_border[2])
             self.__gui.setProperty('radiusBottomLeft', self.__shape_border[3])
-            self.__gui.setProperty('borderColor', self.__shape_border[4])
+            self.__gui.setProperty('borderColor', self.__shape_border[6]) # 4
             # RMBD
-            # self.__gui.setProperty('outLineColor', self.__shape_border[5])
+            self.__gui.setProperty('outLineColor', self.__shape_border[5])
 
         if shape == QtCore.Qt.WindowState.WindowFullScreen:
             self.__ui._MainFrame__shape = Shape.FULL
