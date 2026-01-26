@@ -324,7 +324,6 @@ class Style(object):
         self.accent_color
 
         # Needs to have this order. The settings below need the settings above.
-        print(self.__desktop)
         if self.__desktop == 'cinnamon':
             self.__cinnamon_app_frame()
             self.__cinnamon_frame()
@@ -371,9 +370,9 @@ class Style(object):
             self.__plasma_label()
             self.__glitch_button()
             self.__cinnamon_tool_button()
-            self.__cinnamon_close_button()
-            self.__cinnamon_max_button()
-            self.__cinnamon_min_button()
+            self.__windows11_close_button()
+            self.__windows11_max_button()
+            self.__windows11_min_button()
             self.__cinnamon_panel()
         else:
             self.__glitch_app_frame()
@@ -567,9 +566,9 @@ class Style(object):
         self.__max_button_ck_fg = self.__close_button_ck_fg
         self.__max_button_ck_io = self.__close_button_ck_io
         self.__max_button_ck_i = (
-            self.__icon_path + icon + '-clicked' + '.svg')
+            self.__icon_path + icon + '-clicked' + self.__symbolic + '.svg')
         self.__max_button_ck_ir = (
-            self.__icon_path + restore + '-clicked' + '.svg')
+            self.__icon_path + restore + '-clicked' + self.__symbolic + '.svg')
 
     def __cinnamon_min_button(self) -> None:
         icon = 'go-down'
@@ -607,7 +606,7 @@ class Style(object):
         self.__min_button_ck_fg = self.__close_button_ck_fg
         self.__min_button_ck_io = self.__close_button_ck_io
         self.__min_button_ck_i = (
-            self.__icon_path + icon + '-clicked' + '.svg')
+            self.__icon_path + icon + '-clicked' + self.__symbolic + '.svg')
 
     def __cinnamon_panel(self) -> None:
         if self.__app_frame_is_dark:
@@ -917,9 +916,9 @@ class Style(object):
         self.__max_button_ck_fg = self.__close_button_ck_fg
         self.__max_button_ck_io = self.__close_button_ck_io
         self.__max_button_ck_i = (
-            self.__icon_path + icon + '-clicked' + '.svg')
+            self.__icon_path + icon + '-clicked' + self.__symbolic + '.svg')
         self.__max_button_ck_ir = (
-            self.__icon_path + restore + '-clicked' + '.svg')
+            self.__icon_path + restore + '-clicked' + self.__symbolic + '.svg')
 
     def __lxqt_min_button(self) -> None:
         icon = 'go-down'
@@ -953,7 +952,7 @@ class Style(object):
         self.__min_button_ck_fg = self.__close_button_ck_fg
         self.__min_button_ck_io = self.__close_button_ck_io
         self.__min_button_ck_i = (
-            self.__icon_path + icon + '-clicked' + '.svg')
+            self.__icon_path + icon + '-clicked' + self.__symbolic + '.svg')
 
     def __pantheon_app_frame(self) -> None:
         self.__app_frame_fg = '#FFFEFEFE'
@@ -1187,9 +1186,9 @@ class Style(object):
         self.__max_button_ck_fg = self.__close_button_ck_fg
         self.__max_button_ck_io = self.__close_button_ck_io
         self.__max_button_ck_i = (
-            self.__icon_path + icon + '-clicked' + '.svg')
+            self.__icon_path + icon + '-clicked' + self.__symbolic + '.svg')
         self.__max_button_ck_ir = (
-            self.__icon_path + restore + '-clicked' + '.svg')
+            self.__icon_path + restore + '-clicked' + self.__symbolic + '.svg')
 
     def __plasma_min_button(self) -> None:
         icon = 'go-down'
@@ -1223,7 +1222,7 @@ class Style(object):
         self.__min_button_ck_fg = self.__close_button_ck_fg
         self.__min_button_ck_io = self.__close_button_ck_io
         self.__min_button_ck_i = (
-            self.__icon_path + icon + '-clicked' + '.svg')
+            self.__icon_path + icon + '-clicked' + self.__symbolic + '.svg')
 
     def __plasma_panel(self) -> None:
         if self.__app_frame_is_dark:
@@ -1281,7 +1280,7 @@ class Style(object):
         self.__app_frame_bg = '#2A2A2A'
         self.__app_frame_is_dark = True
         self.__app_frame_bd = '#FF181818'
-        self.__app_frame_rd = '8, 8, 0, 0'
+        self.__app_frame_rd = '8, 8, 8, 8'
         self.__app_frame_io = '1.0'
 
         # Inactive
@@ -1289,3 +1288,116 @@ class Style(object):
         self.__app_frame_in_bg = self.__app_frame_bg
         self.__app_frame_in_io = self.__app_frame_io
         self.__app_frame_in_bd = self.__app_frame_bd
+
+    def __windows11_close_button(self) -> None:
+        icon = 'window-close'
+        self.__symbolic = '-symbolic' if self.__app_frame_is_dark else ''
+
+        self.__close_button_bg = '#00000000'
+        self.__close_button_bd = '#00000000'
+        self.__close_button_fg = self.__app_frame_fg
+        self.__close_button_io = self.__button_io
+        self.__close_button_i = (
+            self.__icon_path + icon + self.__symbolic + '.svg')
+        self.__close_button_rd = '10'
+
+        # Inactive
+        self.__close_button_in_bg = '#00000000'
+        self.__close_button_in_bd = '#00000000'
+        self.__close_button_in_fg = self.__app_frame_in_fg
+        self.__close_button_in_io = self.__button_in_io
+        self.__close_button_in_i = (
+            self.__icon_path + icon + '-inactive' + self.__symbolic + '.svg')
+
+        # Hover
+        self.__close_button_hv_bg = '#00000000'
+        self.__close_button_hv_bd = '#00000000'
+        self.__close_button_hv_fg = self.__app_frame_fg
+        self.__close_button_hv_io = self.__button_hv_io
+        self.__close_button_hv_i = (
+            self.__icon_path + icon + '-hover' + self.__symbolic + '.svg')
+
+        # Clicked
+        self.__close_button_ck_bg = '#00000000'
+        self.__close_button_ck_bd = '#00000000'
+        self.__close_button_ck_fg = self.__app_frame_fg
+        self.__close_button_ck_io = self.__button_ck_io
+        self.__close_button_ck_i = (
+            self.__icon_path + icon + '-clicked' + self.__symbolic + '.svg')
+
+    def __windows11_max_button(self) -> None:
+        icon = 'go-up'
+        restore = 'window-restore'
+        self.__max_button_bg = '#00000000'
+        self.__max_button_bd = '#00000000'
+        self.__max_button_fg = self.__close_button_fg
+        self.__max_button_io = self.__close_button_io
+        self.__max_button_i = (
+            self.__icon_path + icon + self.__symbolic + '.svg')
+        self.__max_button_ir = (
+            self.__icon_path + restore + self.__symbolic + '.svg')
+        self.__max_button_rd = '10'
+
+        # Inactive
+        self.__max_button_in_bg = '#00000000'
+        self.__max_button_in_bd = '#00000000'
+        self.__max_button_in_fg = self.__close_button_in_fg
+        self.__max_button_in_io = self.__close_button_in_io
+        self.__max_button_in_i = (
+            self.__icon_path + icon + '-inactive' + self.__symbolic + '.svg')
+        self.__max_button_in_ir = (
+            self.__icon_path + restore + '-inactive' + self.__symbolic +'.svg')
+        
+        # Hover
+        self.__max_button_hv_bg = '#00000000'
+        self.__max_button_hv_bd = '#00000000'
+        self.__max_button_hv_fg = self.__close_button_hv_fg
+        self.__max_button_hv_io = self.__close_button_hv_io
+        self.__max_button_hv_i = (
+            self.__icon_path + icon + '-hover' + self.__symbolic + '.svg')
+        self.__max_button_hv_ir = (
+            self.__icon_path + restore + '-hover' + self.__symbolic + '.svg')
+
+        # Clicked
+        self.__max_button_ck_bg = '#00000000'
+        self.__max_button_ck_bd = '#00000000'
+        self.__max_button_ck_fg = self.__close_button_ck_fg
+        self.__max_button_ck_io = self.__close_button_ck_io
+        self.__max_button_ck_i = (
+            self.__icon_path + icon + '-clicked' + self.__symbolic + '.svg')
+        self.__max_button_ck_ir = (
+            self.__icon_path + restore + '-clicked' + self.__symbolic + '.svg')
+
+    def __windows11_min_button(self) -> None:
+        icon = 'go-down'
+        self.__min_button_bg = '#00000000'
+        self.__min_button_bd = '#00000000'
+        self.__min_button_fg = self.__close_button_fg
+        self.__min_button_io = self.__close_button_io
+        self.__min_button_i = (
+            self.__icon_path + icon + self.__symbolic + '.svg')
+        self.__min_button_rd = '10'
+
+        # Inactive
+        self.__min_button_in_bg = '#00000000'
+        self.__min_button_in_bd = '#00000000'
+        self.__min_button_in_fg = self.__close_button_in_fg
+        self.__min_button_in_io = self.__close_button_in_io
+        self.__min_button_in_i = (
+            self.__icon_path + icon + '-inactive' + self.__symbolic + '.svg')
+
+        # Hover
+        self.__min_button_hv_bg = '#00000000'
+        self.__min_button_hv_bd = '#00000000'
+        self.__min_button_hv_fg = self.__close_button_hv_fg
+        self.__min_button_hv_io = self.__close_button_hv_io
+        self.__min_button_hv_i = (
+            self.__icon_path + icon + '-hover' + self.__symbolic + '.svg')
+
+        # Clicked
+        self.__min_button_ck_bg = '#00000000'
+        self.__min_button_ck_bd = '#00000000'
+        self.__min_button_ck_fg = self.__close_button_ck_fg
+        self.__min_button_ck_io = self.__close_button_ck_io
+        self.__min_button_ck_i = (
+            self.__icon_path + icon + '-clicked' + self.__symbolic + '.svg')

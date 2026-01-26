@@ -29,6 +29,12 @@ class ControlButtons(View):
         if self.__platform.de == 'cinnamon':
             self._QtObject__set_property('spacing', 12)
             self.margin = 6
+        elif 'windows' in self.__platform.de:
+            self._QtObject__set_property('spacing', 0)
+            if side == 0:
+                self.margin = 0, 0, 0, 6
+            else:
+                self.margin = 0
         else:
             self._QtObject__set_property('spacing', 6)
             self.margin = 5, 6, 6, 6

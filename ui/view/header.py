@@ -27,6 +27,7 @@ class Header(View):
         self.__active_color_bd = None
         self.__inactive_color = None
         self.__inactive_color_bd = None
+        self.margin = 0
 
         # Flags
         self.__side = 'left'
@@ -42,7 +43,10 @@ class Header(View):
             self.__platform, 0))
         self.__left = self._QtObject__add(Row())
         self.__left.spacing = 6
-        self.__left.margin = 2, 0, 0, 2 if self.__control_l._count else 0
+        if 'windows' in self.__platform.de:
+            self.__left.margin = 0, 0, 0, 2 if self.__control_l._count else 0
+        else:
+            self.__left.margin = 2, 0, 0, 2 if self.__control_l._count else 0
         
         self.__left_plus = self._QtObject__add(Expander())
         self.__left_plus._QtObject__set_property('property int lw', 0)
@@ -64,7 +68,10 @@ class Header(View):
         self.__right.spacing = 6
         self.__control_r = self._QtObject__add(ControlButtons(
             self.__platform, 1))
-        self.__right.margin = 2, 0, 0, 2 if self.__control_r._count else 0
+        if 'windows' in self.__platform.de:
+            self.__right.margin = 0, 0, 0, 2 if self.__control_r._count else 0
+        else:
+            self.__right.margin = 2, 0, 0, 2 if self.__control_r._count else 0
 
         self._app_signal.connect(self.__signals_conf)
 
