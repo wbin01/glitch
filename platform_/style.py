@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-from pathlib import Path
 import os
 import subprocess
+from pathlib import Path
 
+from .theme import Theme
 from ..tools import color
 from ..tools import DesktopFile
 
@@ -14,9 +15,10 @@ class Style(object):
     """
     def __init__(self, desktop_environment: str = 'plasma') -> None:
         self.__desktop = desktop_environment
+
+        self.__theme = Theme(self.__desktop)
         self.__style = None
-        self.__conf = None
-        self.__accent_color = None
+        self.__accent_color = self.__theme.accent
 
         self.__path = Path(__file__).parent.parent
         self.__icon_path = str(
@@ -29,30 +31,10 @@ class Style(object):
         self.__plasma_close_button_with_circle = False
         self.__symbolic = ''
         self.__app_frame_bg = None
-        self.__cinnamon_theme = None
 
     @property
     def accent_color(self) -> str:
         """..."""
-        if not self.__conf:
-            self.__conf = self.__get_sys_conf()
-
-        if not self.__accent_color:
-            if self.__desktop == 'plasma':
-                self.__accent_color = self.__color_to_hex(
-                    self.__conf['[General]']['AccentColor'], '#FF3C8CBD')
-
-            elif self.__desktop == 'cinnamon':
-                if not self.__cinnamon_theme:
-                    self.__cinnamon_set_theme()
-
-            elif self.__desktop == 'lxqt':
-                if ('[Palette]' in self.__conf and
-                        'highlight_color' in self.__conf['[Palette]']):
-                    self.__accent_color = self.__conf[
-                        '[Palette]']['highlight_color']
-
-        if not self.__accent_color: self.__accent_color = '#FF3C8CBD'
         return self.__accent_color
 
     @accent_color.setter
@@ -64,9 +46,6 @@ class Style(object):
         """..."""
         if self.__style:
             return self.__style
-
-        if not self.__conf:
-            self.__conf = self.__get_sys_conf()
 
         if not self.__app_frame_bg:
             self.__set_styles()
@@ -390,10 +369,7 @@ class Style(object):
             self.__cinnamon_panel()
 
     def __cinnamon_app_frame(self) -> None:
-        if not self.__cinnamon_theme:
-            self.__cinnamon_set_theme()
-
-        if 'dark' in self.__cinnamon_theme.lower():
+        if 'dark' in self.__theme.theme.lower():
             self.__app_frame_fg = '#FFCCCCCC'
             self.__app_frame_bg = '#FF222226'
         else:
@@ -446,7 +422,7 @@ class Style(object):
         self.__button_hv_bg = self.__button_bg
         self.__button_hv_bd = self.__button_bd
 
-        if 'dark' in self.__cinnamon_theme.lower():
+        if 'dark' in self.__theme.theme.lower():
             self.__button_hv_bg = color.lighten_hex(self.__button_bg, 5)
         else:
             self.__button_hv_bg = color.darken_hex(self.__button_bg, 4)
@@ -629,26 +605,6 @@ class Style(object):
         # Inactive
         self.__panel_in_bg = color.darken_hex(self.__app_frame_in_bg, 5)
         self.__panel_in_bd = self.__panel_in_bg
-
-    def __cinnamon_set_theme(self):
-        if self.__cinnamon_theme:
-            return self.__cinnamon_theme
-
-        cmd = subprocess.run(
-            'gsettings get org.cinnamon.theme name',
-            shell=True, capture_output=True, text=True)
-        self.__cinnamon_theme = cmd.stdout.strip().strip("'").strip('"')
-        themes = {
-            'aqua':   '#FF1F9EDE', 'blue':   '#FF0C75DE', 'brown': '#FFB7865E',
-            'grey':   '#FF70737A', 'orange': '#FFFF7139', 'pink':  '#FFE54980',
-            'purple': '#FF8C5DD9', 'red':    '#FFE82127', 'sand':  '#FFC5A07C',
-            'teal':   '#FF199CA8'}
-
-        theme_name_end = self.__cinnamon_theme.lower().split('-')[-1]
-        if theme_name_end in themes:
-            self.__accent_color = themes[theme_name_end]
-        else:
-            self.__accent_color = '#FF35A854'
 
     def __cinnamon_tool_button(self) -> None:
         self.__tool_button_bg = self.__app_frame_bg
@@ -885,13 +841,13 @@ class Style(object):
         self.__app_frame_fg = '#FFCCCCCC'
         self.__app_frame_bg = '#FF272727'
 
-        if '[Palette]' in self.__conf:    
-            if 'window_text_color' in self.__conf['[Palette]']:
-                self.__app_frame_fg = self.__conf[
+        if '[Palette]' in self.__theme.config:    
+            if 'window_text_color' in self.__theme.config['[Palette]']:
+                self.__app_frame_fg = self.__theme.config[
                     '[Palette]']['window_text_color']
 
-            if 'window_color' in self.__conf['[Palette]']:
-                self.__app_frame_bg = self.__conf['[Palette]']['window_color']
+            if 'window_color' in self.__theme.config['[Palette]']:
+                self.__app_frame_bg = self.__theme.config['[Palette]']['window_color']
 
         self.__app_frame_is_dark = color.is_dark(
             color.hex_to_rgba(self.__app_frame_bg))
@@ -1093,6 +1049,7 @@ class Style(object):
         self.__app_frame_bg = '#FF303030'
         self.__app_frame_is_dark = True
         self.__app_frame_bd = '#FF111111'
+        self.__app_frame_bd_inner = '#FF303030'
         self.__app_frame_rd = '7, 7, 7, 7'
         self.__app_frame_io = '1.0'
 
@@ -1101,6 +1058,7 @@ class Style(object):
         self.__app_frame_in_bg = color.lighten_hex(self.__app_frame_bg, 2)
         self.__app_frame_in_io = self.__app_frame_io
         self.__app_frame_in_bd = self.__app_frame_bd
+        self.__app_frame_in_bd_inner = self.__app_frame_in_bg
 
     def __pantheon_button(self) -> None:
         self.__button_fg = self.__app_frame_fg
@@ -1156,10 +1114,10 @@ class Style(object):
 
     def __plasma_app_frame(self) -> None:
         self.__app_frame_fg = self.__color_to_hex(
-            self.__conf['[Colors:Window]']['ForegroundNormal'], '#FFFFFF')
+            self.__theme.config['[Colors:Window]']['ForegroundNormal'], '#FFFFFF')
         
         self.__app_frame_bg = self.__color_to_hex(  # Alt 282828
-            self.__conf['[Colors:Window]']['BackgroundNormal'], '#2A2A2A')
+            self.__theme.config['[Colors:Window]']['BackgroundNormal'], '#2A2A2A')
 
         self.__app_frame_is_dark = color.is_dark(
             color.hex_to_rgba(self.__app_frame_bg))
@@ -1183,7 +1141,7 @@ class Style(object):
     def __plasma_button(self) -> None:
         self.__button_fg = self.__app_frame_fg
         self.__button_bg = self.__color_to_hex(
-            self.__conf['[Colors:Button]']['BackgroundNormal'], '#33333333')
+            self.__theme.config['[Colors:Button]']['BackgroundNormal'], '#33333333')
 
         if self.__app_frame_is_dark:
             self.__button_bd = color.lighten_hex(self.__button_bg, 35)
@@ -1204,7 +1162,7 @@ class Style(object):
         self.__button_hv_bg = self.__button_bg
 
         self.__button_hv_bd = '#99' + self.__color_to_hex(
-            self.__conf['[Colors:Button]']['DecorationHover'],'#3C8CBD')[3:]
+            self.__theme.config['[Colors:Button]']['DecorationHover'],'#3C8CBD')[3:]
         self.__button_hv_io = self.__button_io
 
         # Clicked
@@ -1550,4 +1508,5 @@ class Style(object):
         self.__min_button_ck_io = self.__close_button_ck_io
         self.__min_button_ck_i = (
             self.__icon_path + icon + '-clicked' + self.__symbolic + '.svg')
+
 

@@ -78,7 +78,7 @@ class Platform(object):
                     buttons_l.split(',')), tuple(buttons_r.split(','))
 
         elif self.de == 'pantheon':
-                self.__controls_order = ('close',), ('max',)
+            self.__controls_order = ('close',), ('max',)
 
         elif self.de == 'plasma':
             filerc = os.path.join(os.environ['HOME'], '.config', 'kwinrc')
@@ -105,6 +105,9 @@ class Platform(object):
                 if x == 'X' or x == 'A' or x == 'I' or x == 'M'), tuple(
                 d[x] for x in right_buttons
                 if x == 'X' or x == 'A' or x == 'I' or x == 'M')
+
+        elif self.de == 'glitch':
+            self.__controls_order = ('min',), ('close',)
 
         return self.__controls_order
 
