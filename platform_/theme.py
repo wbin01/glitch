@@ -96,6 +96,32 @@ class Theme(object):
             if 'dark' in self.__theme.lower():
                 self.__dark = True
 
+        elif self.__desktop == 'lxqt':
+            # Theme
+            self.__theme = 'Greybird'
+
+            # Accent
+            if ('[Palette]' in self.__conf and
+                    'highlight_color' in self.__conf['[Palette]']):
+                accent = self.__conf['[Palette]']['highlight_color']
+
+                if accent: self.__accent = accent
+
+            # Dark
+            self.__dark = True
+            if ('[Palette]' in self.__conf and
+                    'window_color' in self.__theme.config['[Palette]']):
+                bg = self.__theme.config['[Palette]']['window_color']
+                
+                if bg:self.__dark = color.is_dark(color.hex_to_rgba(app_bg))
+
+        elif self.__desktop == 'pantheon':
+            # Theme
+            self.__theme = 'elementary'
+
+            # Dark
+            self.__dark = True
+
         elif self.__desktop == 'plasma':
             # Theme
             if ('[General]' in self.__conf and
@@ -119,9 +145,16 @@ class Theme(object):
 
                 if bg: self.__dark = color.is_dark(color.hex_to_rgba(bg))
 
-        elif self.__desktop == 'lxqt':
-            if ('[Palette]' in self.__conf and
-                    'highlight_color' in self.__conf['[Palette]']):
-                accent = self.__conf['[Palette]']['highlight_color']
+        elif 'windows' in self.__desktop:
+            # Theme
+            self.__theme = 'windows'
 
-                if accent: self.__accent = accent
+            # Dark
+            self.__dark = False
+
+        else: # Glitch
+            # Theme
+            self.__theme = 'glitch'
+
+            # Dark
+            self.__dark = True
