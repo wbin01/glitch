@@ -687,14 +687,22 @@ class Style(object):
         self.__tool_button_ch_hv_io = self.__tool_button_ch_io
 
     def __glitch_app_frame(self) -> None:
-        self.__app_frame_fg = '#FFCCCCCC'
-        self.__app_frame_bg = '#FF202020'
         self.__app_frame_is_dark = True
-        self.__app_frame_bd = '#44999999'
-        self.__app_frame_bd_inner = '#11000000'
+
+        if self.__app_frame_is_dark:
+            self.__app_frame_fg = '#FFCCCCCC'
+            self.__app_frame_bg = '#FF202020'
+            self.__app_frame_bd = '#44999999'
+            self.__app_frame_bd_inner = '#11000000'
+        else:
+            self.__app_frame_fg = '#FF333333'
+            self.__app_frame_bg = '#FFEBEBED'
+            self.__app_frame_bd = '#44000000'
+            self.__app_frame_bd_inner = '#11000000'
+
         self.__app_frame_rd = '8, 8, 8, 8'
         self.__app_frame_io = '1.0'
-
+        
         # Inactive
         self.__app_frame_in_fg = self.__app_frame_fg
         self.__app_frame_in_bg = self.__app_frame_bg
@@ -1407,14 +1415,22 @@ class Style(object):
         self.__tool_button_ch_hv_io = self.__tool_button_ch_io
 
     def __windows11_app_frame(self) -> None:
-        self.__app_frame_fg = '#FFCCCCCC'
-        self.__app_frame_bg = '#FF202020'
         self.__app_frame_is_dark = True
-        self.__app_frame_bd = '#44999999'
-        self.__app_frame_bd_inner = '#11000000'
+
+        if self.__app_frame_is_dark:
+            self.__app_frame_fg = '#FFCCCCCC'
+            self.__app_frame_bg = '#FF202020'
+            self.__app_frame_bd = '#44999999'
+            self.__app_frame_bd_inner = '#11000000'
+        else:
+            self.__app_frame_fg = '#FF333333'
+            self.__app_frame_bg = '#FFEBEBED'
+            self.__app_frame_bd = '#44000000'
+            self.__app_frame_bd_inner = '#11000000'
+
         self.__app_frame_rd = '8, 8, 8, 8'
         self.__app_frame_io = '1.0'
-
+        
         # Inactive
         self.__app_frame_in_fg = self.__app_frame_fg
         self.__app_frame_in_bg = self.__app_frame_bg
