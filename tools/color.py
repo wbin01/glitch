@@ -82,7 +82,7 @@ def rgba_to_qcolor(rgba: tuple) -> QtGui.QColor:
     """Convert rgba color to QColor."""
     return QtGui.QColor(rgba[0], rgba[1], rgba[2], rgba[3])
 
-def plasma_color_to_hex(plasma_rgba: str, alternative_hex: str) -> str:
+def plasma_color_to_hex(plasma_rgba: str, alternative_hex: str = None) -> str:
     """Convert KDE Plasma color config to valid hex color."""
     if ',' not in plasma_rgba:
         return alternative_hex
