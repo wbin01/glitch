@@ -30,7 +30,7 @@ class Style(object):
 
         self.__plasma_close_button_with_circle = False
         self.__symbolic = ''
-        self.__app_frame_bg = None
+        self.__set_styles()
 
     @property
     def accent_color(self) -> str:
@@ -46,9 +46,6 @@ class Style(object):
         """..."""
         if self.__style:
             return self.__style
-
-        if not self.__app_frame_bg:
-            self.__set_styles()
 
         self.__style = {
             '[Button]': {
@@ -847,7 +844,8 @@ class Style(object):
                     '[Palette]']['window_text_color']
 
             if 'window_color' in self.__theme.config['[Palette]']:
-                self.__app_frame_bg = self.__theme.config['[Palette]']['window_color']
+                self.__app_frame_bg = self.__theme.config[
+                    '[Palette]']['window_color']
 
         self.__app_frame_is_dark = color.is_dark(
             color.hex_to_rgba(self.__app_frame_bg))
@@ -1113,11 +1111,13 @@ class Style(object):
         self.__button_ch_hv_io = self.__button_ch_io
 
     def __plasma_app_frame(self) -> None:
-        self.__app_frame_fg = self.__color_to_hex(
-            self.__theme.config['[Colors:Window]']['ForegroundNormal'], '#FFFFFF')
+        self.__app_frame_fg = color.plasma_color_to_hex(
+            self.__theme.config['[Colors:Window]']['ForegroundNormal'],
+            '#FFFFFF')
         
-        self.__app_frame_bg = self.__color_to_hex(  # Alt 282828
-            self.__theme.config['[Colors:Window]']['BackgroundNormal'], '#2A2A2A')
+        self.__app_frame_bg = color.plasma_color_to_hex(
+            self.__theme.config['[Colors:Window]']['BackgroundNormal'],
+            '#2A2A2A')  # Alt 282828
 
         self.__app_frame_is_dark = color.is_dark(
             color.hex_to_rgba(self.__app_frame_bg))
@@ -1140,8 +1140,9 @@ class Style(object):
 
     def __plasma_button(self) -> None:
         self.__button_fg = self.__app_frame_fg
-        self.__button_bg = self.__color_to_hex(
-            self.__theme.config['[Colors:Button]']['BackgroundNormal'], '#33333333')
+        self.__button_bg = color.plasma_color_to_hex(
+            self.__theme.config['[Colors:Button]']['BackgroundNormal'],
+            '#33333333')
 
         if self.__app_frame_is_dark:
             self.__button_bd = color.lighten_hex(self.__button_bg, 35)
@@ -1161,8 +1162,9 @@ class Style(object):
         self.__button_hv_fg = self.__button_fg
         self.__button_hv_bg = self.__button_bg
 
-        self.__button_hv_bd = '#99' + self.__color_to_hex(
-            self.__theme.config['[Colors:Button]']['DecorationHover'],'#3C8CBD')[3:]
+        self.__button_hv_bd = '#99' + color.plasma_color_to_hex(
+            self.__theme.config['[Colors:Button]']['DecorationHover'],
+            '#3C8CBD')[3:]
         self.__button_hv_io = self.__button_io
 
         # Clicked
@@ -1508,5 +1510,3 @@ class Style(object):
         self.__min_button_ck_io = self.__close_button_ck_io
         self.__min_button_ck_i = (
             self.__icon_path + icon + '-clicked' + self.__symbolic + '.svg')
-
-
