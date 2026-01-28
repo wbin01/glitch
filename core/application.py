@@ -6,7 +6,6 @@ from PySide6 import QtCore, QtGui, QtQml, QtQuick
 
 from .handler import Handler
 from .qml_builder import QmlBuilder
-from ..platform_ import Platform
 from ..platform_.qml_style import QmlStyle
 from ..ui import UI
 from ..ui.frame.app_frame import AppFrame

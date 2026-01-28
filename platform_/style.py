@@ -51,6 +51,15 @@ class Style(object):
         self.__dark = dark
 
     @property
+    def theme(self) -> str:
+        """..."""
+        return self.__theme.name
+
+    @theme.setter
+    def theme(self, theme: str) -> None:
+        self.__theme.name = theme
+
+    @property
     def style(self) -> dict:
         """..."""
         if self.__style:
@@ -396,7 +405,7 @@ class Style(object):
         self.__button_hv_bg = self.__button_bg
         self.__button_hv_bd = self.__button_bd
 
-        if 'dark' in self.__theme.theme.lower():
+        if 'dark' in self.__theme.name.lower():
             self.__button_hv_bg = color.lighten_hex(self.__button_bg, 5)
         else:
             self.__button_hv_bg = color.darken_hex(self.__button_bg, 4)

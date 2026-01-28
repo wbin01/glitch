@@ -11,12 +11,7 @@ from ..tools import color, DesktopFile
 
 class Platform(object):
     """..."""
-    def __init__(
-            self,
-            desktop_environment: str = None,
-            theme: str = None,
-            icon_theme: str = None) -> None:
-        
+    def __init__(self, theme: str = None, icon_theme: str = None) -> None:
         self.__os_desk = OSDesk()
         self.__de = self.__args('desktop')
         self.__icon = Icon(self.__de)
@@ -206,15 +201,12 @@ class Platform(object):
     @property
     def theme(self) -> str | None:
         """..."""
-        # if not self.__theme:
-        #     self.__theme = self.__icon.icon_theme()
-        
-        return self.__theme
+        return self.__style.theme
 
     @theme.setter
     def theme(self, theme: str | None) -> None:
         """..."""
-        self.__theme = theme
+        self.__style.theme = theme
 
     def icon_source(
             self, source: str | None, dark: bool = None, size: int = 16

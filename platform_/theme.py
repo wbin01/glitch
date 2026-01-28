@@ -17,7 +17,7 @@ class Theme(object):
         self.__accent = '#FF3C8CBD'
         self.__conf = self.__get_conf()
         self.__dark = False
-        self.__theme = 'glitch'
+        self.__name = 'glitch'
         self.__set_themes()
 
     def __repr__(self) -> str:
@@ -51,13 +51,13 @@ class Theme(object):
         self.__dark = dark
 
     @property
-    def theme(self) -> str:
+    def name(self) -> str:
         """..."""
-        return self.__theme
+        return self.__name
 
-    @theme.setter
-    def theme(self, theme: str) -> None:
-        self.__theme = self.__theme
+    @name.setter
+    def name(self, name: str) -> None:
+        self.__name = name
 
     def __get_conf(self) -> dict:
         path = None
@@ -78,27 +78,27 @@ class Theme(object):
             'teal':   '#FF199CA8'}
 
         if self.__desktop == 'cinnamon':
-            # Theme
+            # Name
             cmd = subprocess.run(
                 'gsettings get org.cinnamon.theme name',
                 shell=True, capture_output=True, text=True)
             theme = cmd.stdout.strip().strip("'").strip('"')
-            self.__theme = theme if theme else 'Mint-Y'
+            self.__name = theme if theme else 'Mint-Y'
 
             # Accent
-            theme_name_end = self.__theme.lower().split('-')[-1]
+            theme_name_end = self.__name.lower().split('-')[-1]
             accent = '#FF35A854'
             if theme_name_end in cinnamon_themes:
                 accent = cinnamon_themes[theme_name_end]
             self.__accent = accent
 
             # Dark
-            if 'dark' in self.__theme.lower():
+            if 'dark' in self.__name.lower():
                 self.__dark = True
 
         elif self.__desktop == 'lxqt':
-            # Theme
-            self.__theme = 'Greybird'
+            # Name
+            self.__name = 'Greybird'
 
             # Accent
             if ('[Palette]' in self.__conf and
@@ -110,24 +110,24 @@ class Theme(object):
             # Dark
             self.__dark = True
             if ('[Palette]' in self.__conf and
-                    'window_color' in self.__theme.config['[Palette]']):
-                bg = self.__theme.config['[Palette]']['window_color']
+                    'window_color' in self.__conf['[Palette]']):
+                bg = self.__conf['[Palette]']['window_color']
                 
                 if bg:self.__dark = color.is_dark(color.hex_to_rgba(app_bg))
 
         elif self.__desktop == 'pantheon':
-            # Theme
-            self.__theme = 'elementary'
+            # Name
+            self.__name = 'elementary'
 
             # Dark
             self.__dark = True
 
         elif self.__desktop == 'plasma':
-            # Theme
+            # Name
             if ('[General]' in self.__conf and
                     'ColorScheme' in self.__conf['[General]']):
                 theme = self.__conf['[General]']['ColorScheme']
-                self.__theme = theme if theme else 'breeze'
+                self.__name = theme if theme else 'breeze'
 
             # Accent
             if ('[General]' in self.__conf and
@@ -146,15 +146,15 @@ class Theme(object):
                 if bg: self.__dark = color.is_dark(color.hex_to_rgba(bg))
 
         elif 'windows' in self.__desktop:
-            # Theme
-            self.__theme = 'windows'
+            # Name
+            self.__name = 'windows'
 
             # Dark
             self.__dark = False
 
         else: # Glitch
-            # Theme
-            self.__theme = 'glitch'
+            # Name
+            self.__name = 'glitch'
 
             # Dark
             self.__dark = True
